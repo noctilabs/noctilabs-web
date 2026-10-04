@@ -48,6 +48,22 @@ OK    Mob3 Ctrl+click no cierra el panel ni intercepta
 OK    Mob4 click fuera de la cápsula cierra
 OK    Mob5 focusout fuera cierra
 OK    Mob6 a desktop: cierra y foco al logo
+OK    M9 cerrar y reabrir antes de 120 ms: el temporizador viejo no cierra
+OK    M5 blur() sin destino con el puntero encima: cierra
+OK    M5 click en zona vacía del panel: sigue abierto y con foco
+OK    Mob5 blur() sin destino: cierra
+OK    Mob3 es #overview: cierra, foco, visible bajo el header, URL
+OK    Mob3 es #cerebro: cierra, foco, visible bajo el header, URL
+OK    Mob3 es #bi: cierra, foco, visible bajo el header, URL
+OK    Mob3 es #agentes: cierra, foco, visible bajo el header, URL
+OK    Mob3 es #control: cierra, foco, visible bajo el header, URL
+OK    Mob3 en #overview: cierra, foco, visible bajo el header, URL
+OK    Mob3 en #cerebro: cierra, foco, visible bajo el header, URL
+OK    Mob3 en #bi: cierra, foco, visible bajo el header, URL
+OK    Mob3 en #agentes: cierra, foco, visible bajo el header, URL
+OK    Mob3 en #control: cierra, foco, visible bajo el header, URL
+OK    Mob3 fragmento ya en la URL: enfoca y scrollea igual
+OK    Mob6 a desktop con foco en el botón: foco al logo
 OK    A8 cero errores de consola en las 20 rutas
 
-51/51 OK
+67/67 OK

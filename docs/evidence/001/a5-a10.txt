@@ -1,23 +1,23 @@
 A5: 1033 hrefs internos revisados, 0 rotos
-A10: máximo 1816 bytes gzip por página (umbral 3072)
-   /404.html 1471 [] inline: 1
-   /en/about/ 1471 [] inline: 1
-   /en/contact/ 1471 [] inline: 1
-   /en/ 1816 [] inline: 2
-   /en/industries/food-consumer-goods/ 1471 [] inline: 1
-   /en/industries/health-fitness/ 1471 [] inline: 1
-   /en/industries/manufacturing/ 1471 [] inline: 1
-   /en/industries/professional-services/ 1471 [] inline: 1
-   /en/industries/retail-distribution/ 1471 [] inline: 1
-   /en/insights/ 1471 [] inline: 1
-   /en/product/ 1471 [] inline: 1
-   /hablemos/ 1471 [] inline: 1
-   / 1816 [] inline: 2
-   /industrias/alimentos-consumo/ 1471 [] inline: 1
-   /industrias/manufactura/ 1471 [] inline: 1
-   /industrias/retail-distribucion/ 1471 [] inline: 1
-   /industrias/salud-fitness/ 1471 [] inline: 1
-   /industrias/servicios/ 1471 [] inline: 1
-   /insights/ 1471 [] inline: 1
-   /nosotros/ 1471 [] inline: 1
-   /producto/ 1471 [] inline: 1
+A10: máximo 1940 bytes gzip por página (umbral 3072)
+   /404.html 1559 [] inline: 1
+   /en/about/ 1559 [] inline: 1
+   /en/contact/ 1559 [] inline: 1
+   /en/ 1940 [] inline: 2
+   /en/industries/food-consumer-goods/ 1559 [] inline: 1
+   /en/industries/health-fitness/ 1559 [] inline: 1
+   /en/industries/manufacturing/ 1559 [] inline: 1
+   /en/industries/professional-services/ 1559 [] inline: 1
+   /en/industries/retail-distribution/ 1559 [] inline: 1
+   /en/insights/ 1559 [] inline: 1
+   /en/product/ 1559 [] inline: 1
+   /hablemos/ 1559 [] inline: 1
+   / 1940 [] inline: 2
+   /industrias/alimentos-consumo/ 1559 [] inline: 1
+   /industrias/manufactura/ 1559 [] inline: 1
+   /industrias/retail-distribucion/ 1559 [] inline: 1
+   /industrias/salud-fitness/ 1559 [] inline: 1
+   /industrias/servicios/ 1559 [] inline: 1
+   /insights/ 1559 [] inline: 1
+   /nosotros/ 1559 [] inline: 1
+   /producto/ 1559 [] inline: 1

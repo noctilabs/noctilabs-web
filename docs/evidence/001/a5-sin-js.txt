@@ -1,3 +1,4 @@
 paneles abiertos tras hover sin JS: 0
 labels con href (Producto, Industrias): 2
-click en label Industrias navega a: http://localhost:4932/industrias/retail-distribucion/
+click en label producto navega a: http://localhost:4932/producto/
+click en label industrias navega a: http://localhost:4932/industrias/retail-distribucion/
