@@ -1,6 +1,6 @@
 # Evidencia del spec 001 — fundación
 
-Commit verificado: `cee5b2c` (arreglos de las pasadas 1 a 3 del gate sobre `0f7730f`, más Inter como sans por decisión del dueño). Verificación local:
+Commit verificado: `45f828e` (arreglos de las pasadas 1 a 4 del gate sobre `0f7730f`, más Inter como sans por decisión del dueño). Incluye el inicio de la fase 2 (`8263092`, `25a8892`), que cambia el H1 de 4 industrias: A4 lo registra como enmienda. Verificación local:
 
 - `astro preview` en `localhost:4932`;
 - Chrome headless por CDP con emulación de foco;
@@ -17,10 +17,10 @@ del gate de implementación están en `docs/reviews/001-impl-sol-pasada-*.md`.
 | A4 | **226/226** comprobaciones de los **valores esperados** (`a4-esperados.json`, escritos a mano desde §3.2, §3.7 y la tabla de copy) contra el HTML de `dist/` (`a4-comparar.mjs`). Cubre por página: `lang`, canonical, los tres hreflang, title, descripción, H1, destino del selector (footer y menú mobile), idioma actual con `aria-current` y, en Producto, las 5 anclas con `tabindex`, H2 y `data-placeholder`. El head (viewport, favicon, theme-color, preload) se revisa en una página por idioma. En la 404: title, `noindex`, sin canonical, sin hreflang, sin selector, bloque en inglés y links a los dos homes. | `a4-esperados.json`, `a4-comparar.mjs`, `a4-comparacion.txt` |
 | A5 | **Links:** 1054 hrefs internos en `dist/`, 0 rotos (anclas incluidas). **Sin JS:** los paneles no abren, y los labels Producto e Industrias navegan a `/producto/` y a Retail. **Recorridos con JS** (en el checklist de A7): las 5 anclas del menú mobile en los dos idiomas (URL final, foco en el destino, destino visible bajo el header en top 76–92 px), el fragmento que ya estaba en la URL el Ctrl+click sin interceptar y presionar y sostener un link de los paneles (desktop y mobile) antes de soltar. Las filas registran los valores finales. | `a5-a10.txt`, `a5-sin-js.txt`, `a7-a8-checklist.txt` |
 | A6 | Capturas lado a lado: header, megamenú Producto, megamenú Industrias y footer en 1440; header, menú y footer en 390. Todas sobre fondo liso: la referencia mobile se toma en la página Producto del diseño, no sobre el video. Diferencias abajo. | `capturas/ref-*` vs `capturas/nuevo-*` |
-| A7 | **75/75** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, link presionado y sostenido (el caso de Safari), callbacks de foco viejos frente a una apertura nueva, hover que no cancela un cierre por pérdida de foco, mousedown central sin prevenir, skip link y `aria-current`. | `a7-a8-checklist.txt` |
+| A7 | **77/77** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, link presionado y sostenido (el caso de Safari), callbacks de foco viejos frente a una apertura nueva, hover que no cancela un cierre por pérdida de foco, click central sostenido sobre links de los dos paneles (sin cerrar ni navegar), tabindex explícito en los 26 links de los paneles, skip link y `aria-current`. | `a7-a8-checklist.txt` |
 | A8 | 0 errores de consola en las 20 rutas. | `a7-a8-checklist.txt` (último caso) |
 | A9 | Revisión con web-design-guidelines: abajo. | — |
-| A10 | Máximo 1982 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
+| A10 | Máximo 2016 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
 
 ## A6 — diferencias con el diseño
 
@@ -78,7 +78,11 @@ Reglas bajadas de `vercel-labs/web-interface-guidelines/command.md` (2026-10-03)
 
 ## Límites conocidos de la verificación
 
-- Toda la verificación de interacción corre en Chrome. El foco en Safari, que no enfoca botones ni links al
-  presionarlos, se cubre por código: `mousedown` con `preventDefault` en botones y paneles, y foco explícito en el
-  click de los botones. En Chrome se verificó que, con ese `preventDefault`, presionar y sostener un link deja el
-  panel abierto y la navegación ocurre al soltar. No hubo un Safari disponible para probarlo.
+- Toda la verificación de interacción corre en Chrome. El foco en Safari, que no enfoca botones al presionarlos
+  ni links sin `tabindex`, se cubre por diseño:
+  - los links de los paneles llevan `tabindex="0"` explícito, así que Safari los enfoca con cualquier botón del
+    mouse y el foco no sale del conjunto;
+  - los botones y las zonas vacías del panel retienen el foco con `preventDefault` solo en el botón principal, y
+    el click enfoca el botón explícitamente.
+
+  No hubo un Safari disponible para probarlo.

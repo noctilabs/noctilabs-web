@@ -29,7 +29,10 @@ for (const p of exp.paginas) {
     cmp(path, 'title', p.title[i], one(html, /<title>([^<]+)<\/title>/));
     cmp(path, 'description', p.desc[i], one(html, /<meta name="description" content="([^"]+)"/));
     cmp(path, 'h1', p.h1[i], one(html, /<h1[^>]*>([^<]+)<\/h1>/));
-    const switches = [...html.matchAll(/<a href="([^"]+)" hreflang="(es|en)" lang="\2"/g)].map((m) => m[1]);
+    // Orden de atributos indistinto: link del selector = <a> con href, hreflang y el mismo lang.
+    const switches = [...html.matchAll(/<a\b[^>]*>/g)].map((m) => m[0])
+      .filter((tag) => { const hl = tag.match(/hreflang="(es|en)"/); return hl && new RegExp(`\\blang="${hl[1]}"`).test(tag); })
+      .map((tag) => tag.match(/href="([^"]+)"/)[1]);
     cmp(path, 'selector → equivalente (footer y menú mobile)', [other, other], switches);
     cmp(path, 'selector: idioma actual con aria-current', loc.toUpperCase(), one(html, /<span aria-current="true"[^>]*>([A-Z]{2})<\/span>/));
     if (p.anclas) {

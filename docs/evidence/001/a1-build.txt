@@ -2,49 +2,53 @@
 > build
 > astro check && astro build
 
-07:55:39 [types] Generated 145ms
-07:55:39 [check] Getting diagnostics for Astro files in C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web...
-Result (32 files): 
+08:06:33 [content] Syncing content
+08:06:33 [content] Synced content
+08:06:33 [types] Generated 725ms
+08:06:33 [check] Getting diagnostics for Astro files in C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web...
+Result (45 files): 
 - 0 errors
 - 0 warnings
 - 0 hints
 
-07:55:47 [types] Generated 100ms
-07:55:47 [build] output: "static"
-07:55:47 [build] mode: "static"
-07:55:47 [build] directory: C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web\dist\
-07:55:47 [build] Collecting build info...
-07:55:47 [build] ✓ Completed in 228ms.
-07:55:47 [build] Building static entrypoints...
-07:55:47 [vite] ✓ built in 509ms
-07:55:47 [vite] ✓ built in 54ms
-07:55:47 [build] Rearranging server assets...
+08:06:41 [content] Syncing content
+08:06:41 [content] Synced content
+08:06:41 [types] Generated 701ms
+08:06:41 [build] output: "static"
+08:06:41 [build] mode: "static"
+08:06:41 [build] directory: C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web\dist\
+08:06:41 [build] Collecting build info...
+08:06:41 [build] ✓ Completed in 826ms.
+08:06:41 [build] Building static entrypoints...
+08:06:42 [vite] ✓ built in 579ms
+08:06:42 [vite] ✓ built in 57ms
+08:06:42 [build] Rearranging server assets...
 
  generating static routes 
-07:55:47   ├─ /404.html (+19ms) 
-07:55:47   ├─ /en/about/index.html (+12ms) 
-07:55:47   ├─ /en/contact/index.html (+7ms) 
-07:55:47   ├─ /en/industries/retail-distribution/index.html (+4ms) 
-07:55:47   ├─ /en/industries/manufacturing/index.html (+3ms) 
-07:55:47   ├─ /en/industries/food-consumer-goods/index.html (+3ms) 
-07:55:47   ├─ /en/industries/health-fitness/index.html (+3ms) 
-07:55:47   ├─ /en/industries/professional-services/index.html (+4ms) 
-07:55:47   ├─ /en/insights/index.html (+8ms) 
-07:55:47   ├─ /en/product/index.html (+7ms) 
-07:55:47   ├─ /en/index.html (+6ms) 
-07:55:47   ├─ /favicon.svg (+5ms) 
-07:55:47   ├─ /hablemos/index.html (+6ms) 
-07:55:47   ├─ /industrias/retail-distribucion/index.html (+3ms) 
-07:55:47   ├─ /industrias/manufactura/index.html (+3ms) 
-07:55:47   ├─ /industrias/alimentos-consumo/index.html (+3ms) 
-07:55:47   ├─ /industrias/salud-fitness/index.html (+3ms) 
-07:55:47   ├─ /industrias/servicios/index.html (+3ms) 
-07:55:47   ├─ /insights/index.html (+6ms) 
-07:55:47   ├─ /nosotros/index.html (+6ms) 
-07:55:47   ├─ /producto/index.html (+5ms) 
-07:55:47   ├─ /index.html (+6ms) 
-07:55:47 ✓ Completed in 158ms.
+08:06:42   ├─ /404.html (+22ms) 
+08:06:42   ├─ /en/about/index.html (+31ms) 
+08:06:42   ├─ /en/contact/index.html (+6ms) 
+08:06:42   ├─ /en/industries/retail-distribution/index.html (+4ms) 
+08:06:42   ├─ /en/industries/manufacturing/index.html (+3ms) 
+08:06:42   ├─ /en/industries/food-consumer-goods/index.html (+3ms) 
+08:06:42   ├─ /en/industries/health-fitness/index.html (+3ms) 
+08:06:42   ├─ /en/industries/professional-services/index.html (+3ms) 
+08:06:42   ├─ /en/insights/index.html (+7ms) 
+08:06:42   ├─ /en/product/index.html (+5ms) 
+08:06:42   ├─ /en/index.html (+5ms) 
+08:06:42   ├─ /favicon.svg (+3ms) 
+08:06:42   ├─ /hablemos/index.html (+5ms) 
+08:06:42   ├─ /industrias/retail-distribucion/index.html (+3ms) 
+08:06:42   ├─ /industrias/manufactura/index.html (+2ms) 
+08:06:42   ├─ /industrias/alimentos-consumo/index.html (+2ms) 
+08:06:42   ├─ /industrias/salud-fitness/index.html (+2ms) 
+08:06:42   ├─ /industrias/servicios/index.html (+2ms) 
+08:06:42   ├─ /insights/index.html (+5ms) 
+08:06:42   ├─ /nosotros/index.html (+5ms) 
+08:06:42   ├─ /producto/index.html (+5ms) 
+08:06:42   ├─ /index.html (+4ms) 
+08:06:42 ✓ Completed in 163ms.
 
-07:55:47 [build] ✓ Completed in 908ms.
-07:55:47 [build] 21 page(s) built in 1.16s
-07:55:47 [build] Complete!
+08:06:42 [build] ✓ Completed in 1.05s.
+08:06:42 [build] 21 page(s) built in 1.90s
+08:06:42 [build] Complete!
