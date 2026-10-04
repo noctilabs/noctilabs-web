@@ -1,6 +1,7 @@
 ---
-// Texto con «Nocti» / «NoctiLabs» marcados translate="no" (spec 002 §4.7).
+// Texto con las marcas de src/lib/brand.ts marcadas translate="no" (spec 002 §4.7).
+import { BRAND_SPLIT } from '../lib/brand';
 interface Props { text: string }
-const parts = Astro.props.text.split(/(NoctiLabs|Nocti)/);
+const parts = Astro.props.text.split(BRAND_SPLIT);
 ---
 {parts.map((p, i) => (i % 2 ? <span translate="no">{p}</span> : p))}

@@ -10,7 +10,8 @@ export interface AppSlotProps {
   frame: 'app' | 'control' | 'none';
   variant?: 'role-demo';
 }
-const { view, locale, contactHref, frame, variant } = Astro.props as AppSlotProps;
+interface Props extends AppSlotProps {}
+const { view, locale, contactHref, frame, variant } = Astro.props;
 const label = locale === 'es' ? 'Demo interactiva' : 'Interactive demo';
 ---
 <div class:list={['slot', `f-${frame}`]}>
@@ -20,6 +21,7 @@ const label = locale === 'es' ? 'Demo interactiva' : 'Interactive demo';
     data-app-view={view}
     data-app-locale={locale}
     data-app-contact={contactHref}
+    data-app-frame={frame}
     data-app-variant={variant}
   >
     <Mark size={36} />

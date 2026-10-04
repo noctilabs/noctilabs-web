@@ -47,8 +47,16 @@ const insights = defineCollection({
     load: async ({ store, parseData }) => {
       const docs = await fetchPosts();
       store.clear();
-      for (const doc of docs as { _id: string }[]) {
-        store.set({ id: doc._id, data: await parseData({ id: doc._id, data: doc as Record<string, unknown> }) });
+      // Un documento con datos de otro tipo se excluye con su motivo; sólo el transporte o la respuesta abortan.
+      for (const doc of docs as { _id?: unknown; slug?: unknown }[]) {
+        const id = typeof doc?._id === 'string' ? doc._id : null;
+        try {
+          if (!id) throw new Error('sin _id');
+          store.set({ id, data: await parseData({ id, data: doc as Record<string, unknown> }) });
+        } catch (e) {
+          const why = String((e as Error).message).replace(/\s+/g, ' ').slice(0, 300);
+          console.warn(`[insights] excluido: ${id ?? '?'} (${typeof doc?.slug === 'string' ? doc.slug : 'sin slug'}) — datos inválidos: ${why}`);
+        }
       }
     },
   },

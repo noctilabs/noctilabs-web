@@ -1,6 +1,7 @@
 ---
 // Página Insights (spec 002 §4.5, Inv §5): hero, destacado (el más reciente), grilla con el resto y banda.
 // Sin filtros (diferidos a la fase 5). Con 0 artículos, estado vacío.
+import Brand from '../../Brand.astro';
 import Base from '../../../layouts/Base.astro';
 import HablemosBand from '../../HablemosBand.astro';
 import Container from '../../ui/Container.astro';
@@ -35,10 +36,10 @@ const [featured, ...rest] = await getArticles();
         <a class="featured" href={href(featured.ref, locale)}>
           <div class="f-dark">
             <span class="f-kicker">{featured.category ? `${t.featured} · ${categoryLabels[featured.category][locale]}` : t.featured}</span>
-            <h2 class="f-title">{featured[locale].title}</h2>
+            <h2 class="f-title"><Brand text={featured[locale].title} /></h2>
           </div>
           <div class="f-body">
-            <p class="f-excerpt">{featured[locale].excerpt}</p>
+            <p class="f-excerpt"><Brand text={featured[locale].excerpt} /></p>
             <span class="f-foot">
               <span class="f-meta">{formatDate(featured.date, locale)} · {t.minutes(featured[locale].minutes)}</span>
               <span class="f-read">{t.read}</span>
@@ -129,7 +130,7 @@ const [featured, ...rest] = await getArticles();
     text-wrap: pretty;
   }
   .f-body { padding: 22px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
-  .f-excerpt { margin: 0; font-size: 17px; line-height: 1.5; color: var(--muted); }
+  .f-excerpt { margin: 0; font-size: 17px; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
   .f-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
   .f-meta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
   .f-read {

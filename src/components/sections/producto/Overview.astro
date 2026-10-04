@@ -1,6 +1,7 @@
 ---
 // Overview (Inv §2.3): lo que la empresa tiene → barra Nocti → quién lo usa.
 // Conectores de 3 columnas solo desde 1000 px; por debajo, uno solo centrado (spec 002 §4.2.3, Inv §11.21).
+import Brand from '../../Brand.astro';
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
 import Kicker from '../../ui/Kicker.astro';
@@ -20,7 +21,7 @@ const { t } = Astro.props;
       <div class="group">
         <Kicker size={11} as="h3">{t.inLabel}</Kicker>
         <ul class="cards">
-          {t.in.map((c) => <li class="card"><span class="ct">{c.title}</span><span class="cd">{c.text}</span></li>)}
+          {t.in.map((c) => <li class="card"><span class="ct">{c.title}</span><span class="cd"><Brand text={c.text} /></span></li>)}
         </ul>
       </div>
       <div class="links" aria-hidden="true">{[1, 2, 3].map(() => <span class="link"><span class="line" /></span>)}</div>
@@ -36,7 +37,7 @@ const { t } = Astro.props;
       <div class="group">
         <Kicker size={11} as="h3">{t.outLabel}</Kicker>
         <ul class="cards">
-          {t.out.map((c) => <li class="card"><span class="ct">{c.title}</span><span class="cd">{c.text}</span></li>)}
+          {t.out.map((c) => <li class="card"><span class="ct">{c.title}</span><span class="cd"><Brand text={c.text} /></span></li>)}
         </ul>
       </div>
     </div>

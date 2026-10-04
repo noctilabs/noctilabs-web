@@ -56,7 +56,8 @@ export function initContactForm(root: HTMLElement): void {
 
   const setSending = (on: boolean) => {
     busy = on;
-    button.disabled = on;
+    // Todo el fieldset: lo que se edite durante el envío no se mandaría (los datos ya se capturaron).
+    fieldset.disabled = on;
     button.textContent = on ? sending.textContent : label;
     sending.hidden = !on;
   };

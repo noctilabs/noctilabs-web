@@ -10,6 +10,8 @@
   line-height: 1.65;
 }
 .prose-article > * { margin: 0; }
+/* Contenido del CMS: una palabra o un identificador largo corta línea en vez de desbordar. */
+.prose-article { overflow-wrap: anywhere; }
 .prose-article p,
 .prose-article ul,
 .prose-article ol { color: var(--body-2); }

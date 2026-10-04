@@ -1,5 +1,6 @@
 ---
 // Tarjeta de la grilla de Insights (Inv §5.2): categoría, título y «{fecha} · {minutos}», todo como link.
+import Brand from '../../Brand.astro';
 import { href, type Locale } from '../../../i18n/routes';
 import { categoryLabels } from '../../../content/categories';
 import { insights } from '../../../content/pages/insights';
@@ -12,7 +13,7 @@ const t = insights[locale];
 <li>
   <a class="card" href={href(a.ref, locale)}>
     {a.category && <span class="cat">{categoryLabels[a.category][locale]}</span>}
-    <h3 class="title">{a[locale].title}</h3>
+    <h3 class="title"><Brand text={a[locale].title} /></h3>
     <span class="meta">{formatDate(a.date, locale)} · {t.minutes(a[locale].minutes)}</span>
   </a>
 </li>
