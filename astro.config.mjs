@@ -15,6 +15,8 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   integrations: [publishGuard()],
+  // Sin Markdown en el sitio: sin Shiki, que usa estilos inline incompatibles con la CSP.
+  markdown: { syntaxHighlight: false },
   // Spec 004 §2.8: CSP de carga en el <meta>, con los hashes que Astro genera por página.
   security: {
     csp: {
@@ -29,9 +31,9 @@ export default defineConfig({
         "base-uri 'self'",
         "form-action 'self'",
       ],
-      scriptDirective: { resources: ["'self'"] },
-      // Atributos `style` con valores calculados (nodos, Container, Kicker, islas): solo style-src-attr.
-      styleDirective: { resources: ["'self'", { resource: "'unsafe-inline'", kind: 'attribute' }] },
+      // script-src y style-src quedan en 'self' (el valor por defecto de Astro) más los hashes de cada página.
+      // Atributos `style` con valores calculados (nodos, Container, Kicker, islas): 'unsafe-inline' solo en style-src-attr.
+      styleDirective: { resources: [{ resource: "'unsafe-inline'", kind: 'attribute' }] },
     },
   },
 });
