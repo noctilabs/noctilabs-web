@@ -1,0 +1,8 @@
+== insights/gate-cat-a
+['_script_index_0_lang.BMrr0lOM.js">', '←', 'Insights', '<h1']
+== insights/gate-cat-b
+['_script_index_0_lang.BMrr0lOM.js">', '←', 'Insights', '<h1']
+== en/insights/gate-cat-b
+['ript_index_0_lang.BMrr0lOM.js">', '←', 'Insights', '<h1']
+== insights/no-context-no-intelligence
+['="page"', 'data-astro-cid-myhjmaxp>', '←', 'Insights', 'Tesis', '<h1']

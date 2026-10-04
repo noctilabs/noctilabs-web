@@ -1,0 +1,7 @@
+OK  P2#1 insights/gate-cat-a se publica sin categoría
+OK  P2#1 en/insights/gate-cat-a se publica sin categoría
+OK  P2#1 insights/gate-cat-b se publica sin categoría
+OK  P2#1 en/insights/gate-cat-b se publica sin categoría
+OK  P2#2 gate-hijo-c: el hijo no admitido no cuenta minutos — minutos=1
+OK  P2#2 gate-hijo-c: el cuerpo muestra solo el span válido
+OK  P2#2 gate-hijo-d: sin texto renderizable en ES, excluido

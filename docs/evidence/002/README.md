@@ -166,3 +166,18 @@ La pasada 1 del gate (`docs/reviews/002-impl-sol-pasada-1.md`) dio GATE NO, con 
 | 10 | `translate="no"` incompleto | Las marcas están en `src/lib/brand.ts` (NoctiLabs, Nocti, WhatsApp, HubSpot, SAP y Gmail), con bordes Unicode. Se aplican en Overview y en los títulos, resúmenes, índice y relacionados del CMS. | `dist/`: WhatsApp 3/3 en el home, 1/1 en Producto (ES y EN). En el cuerpo del CMS (F8), WhatsApp con `translate="no"`. | OK |
 
 Builds: F8 y normal, los dos con código 0. `astro check`: 0 errores. `vitest`: 80/80. Después de las pruebas con F8 se volvió a correr el build normal (`build-final.txt`).
+
+
+## Cierre del gate de implementación, pasada 2 (código `d0ef313`)
+
+La pasada 2 (`docs/reviews/002-impl-sol-pasada-2.md`) dio GATE NO, con 1 bloqueante, 3 importantes y 1 menor. La evidencia nueva está en `gate-p2/`. Igual que en la pasada 1, los scripts corren desde la carpeta de la sesión y aquí se guarda una copia.
+
+| # | Hallazgo | Arreglo | Verificación | Resultado |
+|---|---|---|---|---|
+| 1 | `category.en` con nombres heredados («constructor», «__proto__») rompía el render | `categoryFromEn()` busca solo claves propias (`Object.hasOwn`) y devuelve un `CategoryId` o `null`. | Fixture F9: `gate-cat-a` («constructor») y `gate-cat-b` («__proto__») se publican sin categoría en ES y EN, y antes del H1 queda solo «← Insights». La tesis conserva «Tesis». | OK (`f9-check.txt`, `f9-categoria.txt`) |
+| 2 | Publicar y contar minutos usaban texto que no se renderiza | `cleanBody()` normaliza una sola vez, antes de publicar, renderizar y contar: bloques admitidos y, dentro de ellos, solo spans con texto. Un hijo de otro tipo se ignora con el aviso `hijo no admitido ignorado`. | `gate-hijo-c` (un hijo `unsupported` de 500 palabras y el span «Hola.») marca 1 min y muestra solo «Hola.». `gate-hijo-d` (con texto únicamente en un hijo no admitido en ES) queda excluido: «el cuerpo en es está vacío». | OK |
+| 3 | Tab desde una tab inactiva volvía a la seleccionada antes de salir | El tabindex sigue al foco dentro del tablist y, al salir (`focusout` hacia fuera), vuelve a la tab seleccionada. | Con Manufactura seleccionada, desde Retail (Home) y desde Servicios (End), con Tab y Shift+Tab: se sale del grupo (Tab va al panel), la selección no cambia y la reentrada cae en Manufactura. 16/16, ES y EN. El B5 original: 30/30, sin regresiones. | OK (`b5-tabs-salida.txt`, `b5-regresion.txt`) |
+| 4 | `.rel-title` sin revalidar con títulos largos | — (el CSS ya estaba en `a11f70f`) | F9 con títulos de 121 caracteres sin espacios en «Seguir leyendo» y en las tarjetas del índice. ES/EN, a 320 px, con zoom 200 % y 400 %: sin desborde, recortes ni superposiciones (layoutcheck v2). 12/12. | OK (`b13-rel-f9.txt`) |
+| 5 | B8 medía `btn.disabled` | B8 v2 usa `:disabled` sobre el botón y todos los campos, e intenta escribir en el mensaje mientras se envía. | El botón y los campos quedan `:disabled` mientras envía. Escribir no cambia el valor. Después del error vuelven a estar habilitados, con los valores intactos. También el doble submit y `beforeunload`. 24/24. | OK (`b8-v2.txt`) |
+
+Builds: F9 y normal, los dos con código 0. `astro check`: 0 errores. Después de las pruebas con F9 se volvió a correr el build normal (`build-final-p2.txt`).
