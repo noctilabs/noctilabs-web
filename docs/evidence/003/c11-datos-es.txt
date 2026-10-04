@@ -1,0 +1,41 @@
+| # | Dato | Aparición | Valor observado | Resultado |
+|---|---|---|---|---|
+| 1 | Saludo | Inicio (CEO) | Hola, Laura. | OK |
+| 1 | Saludo | Preguntar (CEO) | Hola, Laura. | OK |
+| 1 | Saludo | Preguntar (rol agentes) | Hola. | OK |
+| 1 | Saludo | Inicio (rol agentes) | Hola. | OK |
+| 3 | Aprobaciones | Inicio · KPIs | Alertas3 / Tareas críticas5 / Agentes activos2 / Compras por aprobar1 | OK |
+| 8c | Advertencia de precios | Inicio · Requiere tu atención | Aprobación: OC-4471 a Plastar S.A. supera el límite de compra. ¦ Alerta: Riesgo de quiebre de stock en 3 productos esta semana. ¦ Insight: E | OK |
+| 4 | Recordatorios | Inicio · Actividad reciente | 09:15Martín (Comercial) aprobó 5 seguimientos. ¦ 08:50ERP sincronizado: 1.204 movimientos nuevos. ¦ AyerAgente de cobranzas envió 35 recorda | OK |
+| 2 | Umbral | Control · regla | Supera el límite de $15.000.000 para compras automáticas. Regla: Compras > límite requieren aprobación de Finanzas. | OK |
+| 3 | Aprobaciones | Control · encabezado | Vista de Carla Ruiz (Finanzas) · 1 aprobación pendiente | OK |
+| 3 | Aprobaciones | Badge de Control | Operaciones / Control1 | OK |
+| 2 | Umbral | Permisos | CEOToda la empresaTodoAprobaciones— ¦ ComercialSu cartera y pedidosClientes, ventas, stockSeguimientos, cotizacionesDescuentos > 10 % ¦ Fina | OK |
+| 3 | Agentes activos | Agentes · encabezado | Vista de administración · 2 activos · 1 pausado | OK |
+| 3 | Aprobaciones pendientes | Lista · Cobranzas / Comercial / Compras | 1 / 1 / 1 | OK |
+| 9 | Fuentes de Cobranzas | Lista · pie de Cobranzas | Fuentes: SAP · HubSpot · WhatsAppVer agente: Agente de cobranzas → | OK |
+| 4 | Recordatorios | Flujo de Cobranzas · corrida de hoy | AGENTE Preparar 38 recordatorios Listo · 1,4 s Clientes con 1 a 30 días de atraso | OK |
+| 5 | Antigüedad | Flujo de Cobranzas · tabla | Recordatorio automático 38 9.840.000 ¦ Plan de pago en cuotas 12 21.300.000 ¦ Derivar a comercial 7 17.060.000 | OK |
+| 5 | Antigüedad | Flujo de Cobranzas · regla | COMPOSICIÓN Priorizar y proponer acción Listo · 2,1 s $48,2 M por cobrar Regla: 31 a 90 días → plan de pago; más de 90 → comercial · polític | OK |
+| 5b | Clientes con deuda | Flujo de Cobranzas · tarjeta y resultado | AGENTE · HUBSPOT Historial del cliente Listo · 0,9 s 57 clientes con deuda vencida ¦ 57 Clientes con deuda vencida | OK |
+| 8b | Total de Comercial | Flujo comercial · composición | COMPOSICIÓN Detectar caídas y oportunidades Listo · 2,3 s $21,6 M en juego Regla: compra 30 % menos que su promedio → seguimiento | OK |
+| 8b | Total de Compras | Flujo de compras · composición | COMPOSICIÓN Calcular reposición Listo · 2,0 s $28,7 M a reponer Regla: compras sobre $15 M → aprobación de Finanzas | OK |
+| 2 | Umbral | Flujo de compras · regla, resumen y nota | COMPOSICIÓN Calcular reposición Listo · 2,0 s $28,7 M a reponer Regla: compras sobre $15 M → aprobación de Finanzas ¦ Hay 3 SKUs de resina p | OK |
+| 5 | Antigüedad | Respuesta del CEO | Cobranzas. $38,4 M vencidos a más de 30 días, concentrados en 6 clientes. | OK |
+| 8 | Conteos | Respuesta del CEO | Ventas del mes al 62 % del objetivo, con el 58 % del mes transcurrido. Hay tres temas para mirar: | OK |
+| 9 | Contexto consultado | CEO · Sistemas | SAP · HubSpot | OK |
+| 7 | Supermercados Delta | Respuesta Comercial | Supermercados Delta. Compra 28 % menos que hace tres meses. Último contacto hace 41 días. | OK |
+| 6 | Pedidos retenidos | Respuesta Operaciones | 12 pedidos retenidos: 8 por falta de stock del SKU 4410 y 4 por crédito. | OK |
+| 9 | Contexto consultado | Operaciones · Sistemas | SAP · Correo · Sheets | OK |
+| 5 | Antigüedad | Respuesta del agente |  1 38 recordatorios para clientes con 1 a 30 días de atraso ($9,8 M). 2 12 planes de pago para deudas de 31 a 90 días ($21,3 M), con aprobac | OK |
+| 7 | Supermercados Delta | Conversación «Clientes para contactar» | Supermercados Delta: −28 %, último pedido hace 21 días. | OK |
+| 8 | Conteos | Conversación «Clientes para contactar» | Tres clientes compran menos que su promedio de los últimos 3 meses: | OK |
+| 9 | Referencias | Conversación «Pedidos retenidos» (WMS → ERP · Depósito) | ERP ¦ ERP · Depósito | OK |
+| 9 | Catálogo | Lista (8 fuentes) | SAP · ERP · Sistema · 2,4 M ¦ HubSpot · CRM · Sistema · 86.120 ¦ Google Drive · Sistema · 12.408 ¦ Google Sheets · Sistema · 214 ¦ WhatsApp  | OK |
+| 9 | Catálogo | Centro (6 sistemas, mismos registros) | 6 sistemas · las 8 fuentes en Lista ¦ SAP · ERP ✓ 2,4 M ¦ HubSpot · CRM ✓ 86.120 ¦ Google Drive ✓ 12.408 ¦ WhatsApp Business ✓ 31.950 ¦ Goog | OK |
+| 9 | Catálogo | Badge de Conexiones | Conexiones8 | OK |
+| 9 | Referencias específicas | Inteligencia, Control y conversación | Tablero de ventas→erp ¦ Lista de precios.xlsx→planillas ¦ Contrato Plastar 2026.pdf→documentos ¦ Política de compras→conocimiento | OK |
+| — | Valores del diseño corregidos | Todo el texto recorrido | ninguno de: WMS, 41,2, 186 clientes, −32, $10.000.000, $10 M, Excepciones pendientes, dos temas, Cuatro clientes, $21,5, $28,6 | OK |
+
+36 OK, 0 FALLA
+errores de consola: []

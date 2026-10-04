@@ -1,0 +1,29 @@
+OK    capa fija con z-index -1, pointer-events none, aria-hidden y body con isolation — {"pos":"fixed","z":"-1","pe":"none","hidden":"true","rect":[0,0,1440,900],"vw":[1440,900],"bodyIso":"isolate","hits":["HEADER","DIV","DIV","P"],"bitmap":[1440,900]}
+OK    la superficie CSS del canvas es igual al viewport y el bitmap es CSS × DPR (1) — [0,0,1440,900]
+OK    elementFromPoint nunca devuelve la textura (no tapa ni captura el puntero) — ["HEADER","DIV","DIV","P"]
+OK    anima a ≤ 16 fps (promedio y máximo de frames en cualquier ventana de 1 s) — 14.26 fps, 71 frames en 5 s, máximo 15 en 1 s
+OK    «Pause background» visible al inicializar, sin aria-pressed — {"hidden":false,"text":"Pause background","pressed":null}
+OK    pausa manual: «Animate background» y cero frames en 1,5 s — {"hidden":false,"text":"Animate background","pressed":null} frames 0
+OK    preferencia guardada en localStorage
+OK    recargar: la pausa persiste (un frame inicial y ninguno más) — {"hidden":false,"text":"Animate background","pressed":null} frames 0
+OK    pausa manual + salir de reduced motion: sigue pausada — frames 0
+OK    pausa manual · tamaño 1440×900 → 1100×700: bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[1100,700],"bmp":[1100,700],"dpr":1,"vw":[1100,700],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    pausa manual · orientación (retrato 390×844): bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[390,844],"bmp":[390,844],"dpr":1,"vw":[390,844],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    pausa manual · orientación (apaisado 844×390): bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[844,390],"bmp":[844,390],"dpr":1,"vw":[844,390],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    pausa manual · vuelta a 1440×900: bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[1440,900],"bmp":[1440,900],"dpr":1,"vw":[1440,900],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    pausa manual · DPR 1 → 2: bitmap = CSS × DPR, redibujo único y sin bucle (listener de resolución rearmado) — {"css":[1440,900],"bmp":[2880,1800],"dpr":2,"vw":[1440,900],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 2dppx)"}
+OK    pausa manual · DPR 2 → 1: bitmap = CSS × DPR, redibujo único y sin bucle (listener de resolución rearmado) — {"css":[1440,900],"bmp":[1440,900],"dpr":1,"vw":[1440,900],"redraw":1,"after":0,"armed":"(resolution: 2dppx)","rearmed":"(resolution: 1dppx)"}
+OK    reduced motion · tamaño 1440×900 → 1100×700: bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[1100,700],"bmp":[1100,700],"dpr":1,"vw":[1100,700],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    reduced motion · orientación (retrato 390×844): bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[390,844],"bmp":[390,844],"dpr":1,"vw":[390,844],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    reduced motion · orientación (apaisado 844×390): bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[844,390],"bmp":[844,390],"dpr":1,"vw":[844,390],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    reduced motion · vuelta a 1440×900: bitmap = CSS × DPR, redibujo único y sin bucle — {"css":[1440,900],"bmp":[1440,900],"dpr":1,"vw":[1440,900],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 1dppx)"}
+OK    reduced motion · DPR 1 → 2: bitmap = CSS × DPR, redibujo único y sin bucle (listener de resolución rearmado) — {"css":[1440,900],"bmp":[2880,1800],"dpr":2,"vw":[1440,900],"redraw":1,"after":0,"armed":"(resolution: 1dppx)","rearmed":"(resolution: 2dppx)"}
+OK    reduced motion · DPR 2 → 1: bitmap = CSS × DPR, redibujo único y sin bucle (listener de resolución rearmado) — {"css":[1440,900],"bmp":[1440,900],"dpr":1,"vw":[1440,900],"redraw":1,"after":0,"armed":"(resolution: 2dppx)","rearmed":"(resolution: 1dppx)"}
+OK    sin pausa ni reduced motion, vuelve a animar — frames 14
+OK    pestaña oculta (API emulada): cero frames — frames 0
+OK    pestaña oculta: pausar y reanudar desde el control no reactiva el bucle mientras está oculta — frames 0
+OK    volver a la pestaña: reanuda — frames 14
+OK    localStorage bloqueado: el control pausa y reanuda, sin errores de consola — {"p2":{"x":882.3046875,"y":859.109375,"hidden":false,"text":"Pause background"},"t2":"Animate background","a2":12,"c2":12,"d2":28,"err":[]}
+
+26 OK, 0 FALLA
+errores de consola: []

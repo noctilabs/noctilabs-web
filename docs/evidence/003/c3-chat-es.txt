@@ -1,0 +1,37 @@
+
+Etapa | esperado desde el click (ms) | observado (ms) | diferencia
+tipeo | 500 | 518 | 18
+fin del tipeo | 2028 | 2037 | 9
+burbuja | 2506 | 2518 | 12
+consultando | 2856 | 2868 | 12
+fuente 1 | 3236 | 3247 | 11
+fuente 2 | 3616 | 3630 | 14
+fuente 3 | 3996 | 4005 | 9
+respuesta | 4646 | 4658 | 12
+ítem 1 | 5166 | 5177 | 11
+ítem 2 | 5686 | 5697 | 11
+ítem 3 | 6206 | 6220 | 14
+pie | 6656 | 6667 | 11
+fin (repite) | 11856 | 11866 | 10
+OK    secuencia: todas las etapas en orden con desvío ≤ 100 ms desde el click — desvío máximo 18 ms
+OK    secuencia automática: ninguna escritura en la región viva — []
+OK    pausa: la etapa queda congelada 2,5 s — 21 → 21 caracteres
+OK    pausa: el botón pasa a «Reanudar demo» sin aria-pressed
+OK    reanudar: continúa desde la etapa congelada — 21 → 38
+OK    pausa conservada al salir y volver a pantalla
+OK    rol en pausa: respuesta completa y estática — {"q":"¿Qué clientes debería contactar hoy y por qué?","items":3,"foot":true}
+OK    rol en pausa: un solo anuncio completo — [[174,"Pregunta: ¿Qué clientes debería contactar hoy y po"]]
+OK    chips «Ver como»: exactamente un aria-pressed=true y es el elegido — ["false","true","false","false"]
+OK    rol manual: una sola escritura completa — [[6427,"Pregunta: ¿Qué está frenando la operació"]]
+OK    rol manual: el anuncio llega tras el pie y antes de los 5200 ms — pie 6304 ms, anuncio 6427 ms
+OK    rol manual (normal): la secuencia se repite sin anunciar
+OK    secuencia cancelada antes del anuncio: ninguna escritura — []
+OK    salir de Preguntar: no avanza ni repite (sin cambios de etapa en 15 s) — 0 etapas después de salir
+OK    conversación: completa y estática
+OK    conversación: aria-current="true" solo en la abierta — [null,null,"true",null,null]
+OK    conversación: «Ver como» pasa al rol de la conversación (Operaciones) — ["false","false","true","false"]
+OK    misma conversación abierta dos veces: un anuncio completo por apertura — 167, 1125
+OK    conversación: sin secuencia ni repetición posterior
+
+19 OK, 0 FALLA
+errores de consola: []

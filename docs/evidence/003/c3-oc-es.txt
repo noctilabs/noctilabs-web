@@ -1,0 +1,77 @@
+OK    [pending] Inicio: KPI Agentes activos 2 y Compras por aprobar 1 — ["3","5","2","1"]
+OK    [pending] Inicio: ítem de la OC presente; advertencia de precios separada y presente — ["AprobaciónOC-4471 a Plastar S.A. supera el límite de compra.","AlertaRiesgo de quiebre de stock en 3 productos esta semana.","InsightEl margen bajó 3,2 pp en mayoristas zona sur.","AdvertenciaAgente de compras: proveedor sin lista de precios vigente."]
+OK    [pending] badge de Control = 1 — "1"
+OK    [pending] encabezado de Control — Vista de Carla Ruiz (Finanzas) · 1 aprobación pendiente
+OK    [pending] encabezado de Agentes — Vista de administración · 2 activos · 1 pausado
+OK    [pending] tarjeta de lista de Compras: Aprobaciones pendientes 1 — Agente de comprasPausadoAprobaciones pendientes1Órdenes preparadas6Tokens este mes0,4 MVersión 1.3 · 1 aprobación pendienteVer agente: Agente de compras →
+OK    [pending] flujo de Compras: pill «Pausado · 1 aprobación pendiente» — Pausado · 1 aprobación pendiente
+OK    [pending] flujo de Compras: botón «Aprobar OC-4471» — {"pill":"Pausado · 1 aprobación pendiente","btn":"Aprobar OC-4471","dis":false,"card":"Necesita tu aprobación","stat":"$18,4 MEsperando aprobación","note":"Las órdenes sobre $15 M salen con aprobación de Finanzas. El agente sigue pausado hasta entonces."}
+OK    Control · Aprobar: foco en «Deshacer» — Deshacer|oc-undo|na-link
+OK    Control · Aprobar: una sola frase en role=status — [{"t":172,"text":"OC-4471 a Plastar S.A. aprobada. El agente de compras retoma la ejecución."}]
+OK    [approved] Inicio: KPI Agentes activos 3 y Compras por aprobar 0 — ["3","5","3","0"]
+OK    [approved] Inicio: ítem de la OC ausente; advertencia de precios separada y presente — ["AlertaRiesgo de quiebre de stock en 3 productos esta semana.","InsightEl margen bajó 3,2 pp en mayoristas zona sur.","AdvertenciaAgente de compras: proveedor sin lista de precios vigente."]
+OK    [approved] badge de Control = sin número — ""
+OK    [approved] encabezado de Control — Vista de Carla Ruiz (Finanzas) · Sin aprobaciones pendientes
+OK    [approved] encabezado de Agentes — Vista de administración · 3 activos
+OK    [approved] tarjeta de lista de Compras: Aprobaciones pendientes 0 — Agente de comprasActivoAprobaciones pendientes0Órdenes preparadas6Tokens este mes0,4 MVersión 1.3 · ejecutando accionesVer agente: Agente de compras →
+OK    [approved] flujo de Compras: pill «Activo · ejecutando acciones» — Activo · ejecutando acciones
+OK    [approved] flujo de Compras: botón «Deshacer» — {"pill":"Activo · ejecutando acciones","btn":"Deshacer","dis":false,"card":"Aprobada","stat":"$18,4 MAprobado","note":"OC-4471 aprobada por Finanzas: el agente retomó la ejecución y envía la orden al proveedor."}
+OK    Compras · Deshacer: el foco queda en el botón (ahora «Aprobar OC-4471») — Aprobar OC-4471|flow-oc|na-btn na-btn-sq na-btn-blue
+OK    Compras · Deshacer: una frase «vuelve a pendiente» — [{"t":51,"text":""},{"t":174,"text":"OC-4471 vuelve a pendiente de aprobación."}]
+OK    [pending] Inicio: KPI Agentes activos 2 y Compras por aprobar 1 — ["3","5","2","1"]
+OK    [pending] Inicio: ítem de la OC presente; advertencia de precios separada y presente — ["AprobaciónOC-4471 a Plastar S.A. supera el límite de compra.","AlertaRiesgo de quiebre de stock en 3 productos esta semana.","InsightEl margen bajó 3,2 pp en mayoristas zona sur.","AdvertenciaAgente de compras: proveedor sin lista de precios vigente."]
+OK    [pending] badge de Control = 1 — "1"
+OK    [pending] encabezado de Control — Vista de Carla Ruiz (Finanzas) · 1 aprobación pendiente
+OK    [pending] encabezado de Agentes — Vista de administración · 2 activos · 1 pausado
+OK    [pending] tarjeta de lista de Compras: Aprobaciones pendientes 1 — Agente de comprasPausadoAprobaciones pendientes1Órdenes preparadas6Tokens este mes0,4 MVersión 1.3 · 1 aprobación pendienteVer agente: Agente de compras →
+OK    [pending] flujo de Compras: pill «Pausado · 1 aprobación pendiente» — Pausado · 1 aprobación pendiente
+OK    [pending] flujo de Compras: botón «Aprobar OC-4471» — {"pill":"Pausado · 1 aprobación pendiente","btn":"Aprobar OC-4471","dis":false,"card":"Necesita tu aprobación","stat":"$18,4 MEsperando aprobación","note":"Las órdenes sobre $15 M salen con aprobación de Finanzas. El agente sigue pausado hasta entonces."}
+OK    Compras · Aprobar: una frase
+OK    [approved] Inicio: KPI Agentes activos 3 y Compras por aprobar 0 — ["3","5","3","0"]
+OK    [approved] Inicio: ítem de la OC ausente; advertencia de precios separada y presente — ["AlertaRiesgo de quiebre de stock en 3 productos esta semana.","InsightEl margen bajó 3,2 pp en mayoristas zona sur.","AdvertenciaAgente de compras: proveedor sin lista de precios vigente."]
+OK    [approved] badge de Control = sin número — ""
+OK    [approved] encabezado de Control — Vista de Carla Ruiz (Finanzas) · Sin aprobaciones pendientes
+OK    [approved] encabezado de Agentes — Vista de administración · 3 activos
+OK    [approved] tarjeta de lista de Compras: Aprobaciones pendientes 0 — Agente de comprasActivoAprobaciones pendientes0Órdenes preparadas6Tokens este mes0,4 MVersión 1.3 · ejecutando accionesVer agente: Agente de compras →
+OK    [approved] flujo de Compras: pill «Activo · ejecutando acciones» — Activo · ejecutando acciones
+OK    [approved] flujo de Compras: botón «Deshacer» — {"pill":"Activo · ejecutando acciones","btn":"Deshacer","dis":false,"card":"Aprobada","stat":"$18,4 MAprobado","note":"OC-4471 aprobada por Finanzas: el agente retomó la ejecución y envía la orden al proveedor."}
+OK    Control · Deshacer: foco en «Aprobar» — Aprobar|oc-approve|na-btn na-btn-dark
+OK    Control · Rechazar: foco en «Deshacer» — Deshacer|oc-undo|na-link
+OK    Control · Deshacer y Rechazar: una frase por acción — ["OC-4471 vuelve a pendiente de aprobación.","OC-4471 a Plastar S.A. rechazada. El agente de compras sigue pausado."]
+OK    [rejected] Inicio: KPI Agentes activos 2 y Compras por aprobar 0 — ["3","5","2","0"]
+OK    [rejected] Inicio: ítem de la OC ausente; advertencia de precios separada y presente — ["PausaAgente de compras pausado: OC-4471 rechazada por Finanzas.","AlertaRiesgo de quiebre de stock en 3 productos esta semana.","InsightEl margen bajó 3,2 pp en mayoristas zona sur.","AdvertenciaAgente de compras: proveedor sin lista de precios vigente."]
+OK    [rejected] badge de Control = sin número — ""
+OK    [rejected] encabezado de Control — Vista de Carla Ruiz (Finanzas) · Sin aprobaciones pendientes
+OK    [rejected] encabezado de Agentes — Vista de administración · 2 activos · 1 pausado
+OK    [rejected] tarjeta de lista de Compras: Aprobaciones pendientes 0 — Agente de comprasPausadoAprobaciones pendientes0Órdenes preparadas6Tokens este mes0,4 MVersión 1.3 · orden rechazada por FinanzasVer agente: Agente de compras →
+OK    [rejected] flujo de Compras: pill «Pausado · orden rechazada por Finanzas» — Pausado · orden rechazada por Finanzas
+OK    [rejected] flujo de Compras: botón «Rechazada en Control» deshabilitado — {"pill":"Pausado · orden rechazada por Finanzas","btn":"Rechazada en Control","dis":true,"card":"Rechazada en Control","stat":"$18,4 MRechazado en Control","note":"Finanzas rechazó la OC-4471 en Control. El agente sigue pausado; solo «Deshacer» en Control la vuelve a pendiente."}
+OK    [rejected] tarjeta OC en el flujo: «Rechazada en Control» — Rechazada en Control
+OK    [pending] Inicio: KPI Agentes activos 2 y Compras por aprobar 1 — ["3","5","2","1"]
+OK    [pending] Inicio: ítem de la OC presente; advertencia de precios separada y presente — ["AprobaciónOC-4471 a Plastar S.A. supera el límite de compra.","AlertaRiesgo de quiebre de stock en 3 productos esta semana.","InsightEl margen bajó 3,2 pp en mayoristas zona sur.","AdvertenciaAgente de compras: proveedor sin lista de precios vigente."]
+OK    [pending] badge de Control = 1 — "1"
+OK    [pending] encabezado de Control — Vista de Carla Ruiz (Finanzas) · 1 aprobación pendiente
+OK    [pending] encabezado de Agentes — Vista de administración · 2 activos · 1 pausado
+OK    [pending] tarjeta de lista de Compras: Aprobaciones pendientes 1 — Agente de comprasPausadoAprobaciones pendientes1Órdenes preparadas6Tokens este mes0,4 MVersión 1.3 · 1 aprobación pendienteVer agente: Agente de compras →
+OK    [pending] flujo de Compras: pill «Pausado · 1 aprobación pendiente» — Pausado · 1 aprobación pendiente
+OK    [pending] flujo de Compras: botón «Aprobar OC-4471» — {"pill":"Pausado · 1 aprobación pendiente","btn":"Aprobar OC-4471","dis":false,"card":"Necesita tu aprobación","stat":"$18,4 MEsperando aprobación","note":"Las órdenes sobre $15 M salen con aprobación de Finanzas. El agente sigue pausado hasta entonces."}
+OK    detalle cob: abrir con Enter lleva el foco al título — Agente de cobranzas||na-atitle
+OK    corrida cob: aprobada (pill, botón «Deshacer», tarjetas okA/run, foco en el botón) — {"pill":"Aprobado · ejecutando acciones","btn":"Deshacer","ok":"Aprobado ✓","cards":"done,done,done,done,done,okA,done,run,run,run","focus":"flow-run"}
+OK    corrida cob: «Deshacer» la revierte (botón «Aprobar corrida (planes de pago y recordatorios)») — Aprobar corrida (planes de pago y recordatorios)
+OK    corrida cob: una frase por aprobar y por deshacer — ["Corrida de cobranzas aprobada: planes de pago y recordatorios en ejecución.","Corrida de cobranzas vuelve a pendiente de aprobación."]
+OK    «← Agentes» vuelve a la lista con el foco en la tarjeta del agente — Ver agente: Agente de cobranzas →|agent-cobranzas|na-acard-open
+OK    lista: tarjeta cob con Aprobaciones pendientes 0 — Agente de cobranzasActivoTareas procesadas hoy214Aprobaciones pendientes0Tokens este mes1,8 MFuentes: SAP · HubSpot · WhatsAppVer agente: Agente de cobranzas →
+OK    detalle com: abrir con Enter lleva el foco al título — Agente comercial||na-atitle
+OK    corrida com: aprobada (pill, botón «Deshacer», tarjetas okA/run, foco en el botón) — {"pill":"Aprobado · ejecutando acciones","btn":"Deshacer","ok":"Aprobado ✓","cards":"done,done,done,done,done,okA,done,run,run,run","focus":"flow-run"}
+OK    corrida com: «Deshacer» la revierte (botón «Aprobar corrida (cotizaciones y seguimientos)») — Aprobar corrida (cotizaciones y seguimientos)
+OK    corrida com: una frase por aprobar y por deshacer — ["Corrida comercial aprobada: cotizaciones y seguimientos en ejecución.","Corrida comercial vuelve a pendiente de aprobación."]
+OK    «← Agentes» vuelve a la lista con el foco en la tarjeta del agente — Ver agente: Agente comercial →|agent-comercial|na-acard-open
+OK    lista: tarjeta com con Aprobaciones pendientes 0 — Agente comercialActivoSeguimientos preparados14Aprobaciones pendientes0Tokens este mes0,9 MFuentes: HubSpot · SAP · WhatsAppVer agente: Agente comercial →
+OK    instancias independientes: la isla de Inicio conserva sus valores iniciales — ["3","5","2","1"]
+OK    «Crear / Integrar» es <a href> a /hablemos/ — /hablemos/
+OK    Lista/Centro: grupo nombrado, exactamente un aria-pressed antes y después del cambio — [["group","Presentación","true","false"],["false","true"]]
+OK    Ver/Ocultar transacciones — [["Ocultar transacciones","true",5],["Ver transacciones →","false",0]]
+OK    usuario: abre (nombre, rol, idioma), Esc cierra con foco en el botón, click fuera cierra — [["true",true,"Laura MéndezRol: CEODistribuidora AndesIdioma: Español"],["false",true],"false"]
+
+74 OK, 0 FALLA
+errores de consola: []

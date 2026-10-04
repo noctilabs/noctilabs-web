@@ -1,0 +1,23 @@
+region «Interactive Nocti demo with illustrative data»
+        navigation «Views»
+            button «Home»
+            button «Ask»
+            button «Intelligence»
+            button «Agents 3»
+            button «Operations / Control 1»
+            button «Connections 8»
+            button «Permissions»
+            button «What drives sales? Oct 2»
+            button «Collections follow-up Oct 5»
+            button «Orders on hold Oct 5»
+            button «Customers to contact Oct 2»
+            button «Critical resin stock Oct 5»
+          button «Laura Méndez Distribuidora Andes» expanded=false
+          group «View as»
+            button «CEO» pressed=true
+            button «Sales» pressed=false
+            button «Operations» pressed=false
+            button «Agent» pressed=false
+            button «Pause demo»
+            log «Conversation»
+  status «» live=polite

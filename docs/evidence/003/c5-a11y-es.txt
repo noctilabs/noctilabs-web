@@ -1,0 +1,24 @@
+OK    angosto: navegación con aria-label y aria-current="page" en la vista activa, antes y después de cambiar — [{"tag":"NAV","label":"Vistas","cur":["page",null,null,null,null,null,null]},[null,null,null,null,"page",null,null]]
+OK    angosto: «Conversaciones» es un disclosure con las 5 conversaciones — ["true",true,5]
+OK    angosto: abrir una conversación desde el disclosure (aria-current="true" en ella y vista Preguntar) — {"cur":[null,null,"true",null,null],"tab":[null,"page",null,null,null,null,null],"items":3}
+OK    angosto: usuario como disclosure; Esc lo cierra y devuelve el foco — [["true",true],["false",true]]
+OK    ancho: sidebar con aria-current="page" solo en la vista activa — ["Vistas",null,null,"page",null,null,null,null]
+OK    orden de Tab en las 7 vistas (299 paradas): sin controles muertos, deshabilitados o ilustrativos, con nombre y foco visible
+OK    320 con JS · región «Tabla de transacciones»: Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de transacciones","found":true,"isFocused":true,"max":307,"right":307,"lastColVisible":true,"left":0,"out":true}
+OK    320 con JS · región «Tabla de trazabilidad»: Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de trazabilidad","found":true,"isFocused":true,"max":307,"right":307,"lastColVisible":true,"left":0,"out":true}
+OK    320 con JS · región «Tabla de fuentes»: Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de fuentes","found":true,"isFocused":true,"max":307,"right":307,"lastColVisible":true,"left":0,"out":true}
+OK    320 con JS · región «Vista Centro de conexiones»: Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Vista Centro de conexiones","found":true,"isFocused":true,"max":487,"right":487,"lastColVisible":true,"left":0,"out":true}
+OK    320 con JS · región «Tabla de permisos»: Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de permisos","found":true,"isFocused":true,"max":387,"right":387,"lastColVisible":true,"left":0,"out":true}
+OK    320 con JS · región «Tabla de acciones propuestas» (agente 1): Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de acciones propuestas","found":true,"isFocused":true,"max":185,"right":185,"lastColVisible":true,"left":0,"out":true,"agente":0}
+OK    320 con JS · región «Tabla de acciones propuestas» (agente 2): Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de acciones propuestas","found":true,"isFocused":true,"max":185,"right":185,"lastColVisible":true,"left":0,"out":true,"agente":1}
+OK    320 con JS · región «Tabla de acciones propuestas» (agente 3): Tab entra, flechas a ambos extremos, última columna visible, Tab sale — {"label":"Tabla de acciones propuestas","found":true,"isFocused":true,"max":185,"right":185,"lastColVisible":true,"left":0,"out":true,"agente":2}
+OK    flujo con contenedor de 650 px (520–799): región con scroll operable con teclado — {"label":"Flujo del agente","found":true,"isFocused":true,"max":150,"right":149,"lastColVisible":true,"left":0,"out":true}
+OK    flujo: lista de 10 pasos en orden con dependencias y aprobación; lienzo y curvas aria-hidden — {"label":"Pasos del flujo, en orden","n":10,"deps":["Todos los días 8:00 dispara la corrida; de ahí salen facturas, historial y respuestas.","De ahí sale la priorización.","De ahí sale la priorización.","De ahí sale la priorización.","Priorizar y proponer acción usa facturas, historial y respuestas. De ahí salen los planes de pago y los recordatorios.","De ahí salen el envío de recordatorios, el e
+OK    gráfico de Inteligencia: tabla oculta S1–S8 con la variación destacada — {"rows":8,"cap":"Margen bruto por semana. Variación de la última semana: −3,2 pp, de 31,4 % a 28,2 %.","barsHidden":"true"}
+OK    Centro: texto alternativo con los 6 sistemas, el contexto y los usos — Seis sistemas alimentan el contexto de Nocti (6 sistemas, 64 reglas con fuente): SAP · ERP (2,4 M), HubSpot · CRM (86.120), Google Drive (12.408), WhatsApp Business (31.950), Google Sheets (214) y Correo (Gmail) (58.300). Ese contexto lo usan Preguntar (Chat por rol), Agentes (Cobranzas, compras, comercial), Tableros y alertas (Por área y por cliente) y Equipos (Dirección, ventas, operaciones). Las 8 fuentes están en Lista.
+OK    zoom 200 %, viewport bajo: con la fila de controles fuera de pantalla el chat no arranca — ["Preguntale algo a tu empresa…","Preguntale algo a tu empresa…"]
+OK    …al entrar la fila de controles, arranca
+OK    …y al salir, se congela — ["¿Cómo viene el negocio hoy y qué de|false","¿Cómo viene el negocio hoy y qué de|false"]
+
+21 OK, 0 FALLA
+errores de consola: []

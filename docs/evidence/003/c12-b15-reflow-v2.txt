@@ -1,0 +1,38 @@
+OK    320 / (antes/después «con»): scrollWidth 320
+OK    320 / (antes/después «sin»): scrollWidth 320
+OK    320 / (industria «retail»): scrollWidth 320
+OK    320 / (industria «manufactura»): scrollWidth 320
+OK    320 / (industria «consumo»): scrollWidth 320
+OK    320 / (industria «salud»): scrollWidth 320
+OK    320 / (industria «servicios»): scrollWidth 320
+OK    320 /en/ (antes/después «con»): scrollWidth 320
+OK    320 /en/ (antes/después «sin»): scrollWidth 320
+OK    320 /en/ (industria «retail»): scrollWidth 320
+OK    320 /en/ (industria «manufactura»): scrollWidth 320
+OK    320 /en/ (industria «consumo»): scrollWidth 320
+OK    320 /en/ (industria «salud»): scrollWidth 320
+OK    320 /en/ (industria «servicios»): scrollWidth 320
+OK    320 /en/about/: scrollWidth 320
+OK    320 /en/contact/: scrollWidth 320
+OK    320 /en/industries/food-consumer-goods/: scrollWidth 320
+OK    320 /en/industries/health-fitness/: scrollWidth 320
+OK    320 /en/industries/manufacturing/: scrollWidth 320
+OK    320 /en/industries/professional-services/: scrollWidth 320
+OK    320 /en/industries/retail-distribution/: scrollWidth 320
+OK    320 /en/insights/: scrollWidth 320
+OK    320 /en/insights/no-context-no-intelligence/: scrollWidth 320
+OK    320 /en/product/: scrollWidth 320
+OK    320 /hablemos/: scrollWidth 320
+OK    320 /industrias/alimentos-consumo/: scrollWidth 320
+OK    320 /industrias/manufactura/: scrollWidth 320
+OK    320 /industrias/retail-distribucion/: scrollWidth 320
+OK    320 /industrias/salud-fitness/: scrollWidth 320
+OK    320 /industrias/servicios/: scrollWidth 320
+OK    320 /insights/: scrollWidth 320
+OK    320 /insights/no-context-no-intelligence/: scrollWidth 320
+OK    320 /nosotros/: scrollWidth 320
+OK    320 /producto/: scrollWidth 320
+OK    320 /404.html: scrollWidth 320
+
+consola: []
+fallas: 0

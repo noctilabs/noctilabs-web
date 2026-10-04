@@ -1,0 +1,22 @@
+OK    1440 · Enter en la navegación abre Inteligencia
+OK    1440 · Espacio en «Ver transacciones» abre la tabla
+OK    1440 · Lista/Centro con teclado
+OK    1440 · Enter en una conversación la abre completa
+OK    1440 · Espacio en «Ver como» cambia el rol
+OK    1440 · Enter en «Pausar demo»
+OK    1440 · Aprobar y Deshacer la OC con Enter; el foco sigue a la acción siguiente — Undo → Approve
+OK    1440 · Espacio aprueba la corrida comercial y el foco queda en «Undo»
+OK    390 · Enter en la navegación abre Inteligencia
+OK    390 · Espacio en «Ver transacciones» abre la tabla
+OK    390 · Lista/Centro con teclado
+OK    390 · Enter en una conversación la abre completa
+OK    390 · Espacio en «Ver como» cambia el rol
+OK    390 · Enter en «Pausar demo»
+OK    390 · Aprobar y Deshacer la OC con Enter; el foco sigue a la acción siguiente — Undo → Approve
+OK    390 · Espacio aprueba la corrida comercial y el foco queda en «Undo»
+OK    flujo: <animate repeatCount="3"> en cada curva, total < 5 s — ["3/1.00s","3/1.15s","3/1.30s","3/1.45s","3/1.00s","3/1.15s","3/1.30s","3/1.45s","3/1.00s","3/1.15s","3/1.30s"]
+OK    flujo: el trazo se mueve al principio y queda quieto después de 5 s — {"o1":[9.9612,10.2271,10.4317],"o2":[7.44,8.03478,8.49231],"o3":[0,0,0],"o4":[0,0,0]}
+OK    árbol AX: raíz region con nombre; controles con nombre; log sin anuncios (aria-live=off), status y región polite presentes — {"controles":23,"sinNombre":[],"live":["generic:polite","status:polite"]}
+
+19 OK, 0 FALLA
+errores de consola: []

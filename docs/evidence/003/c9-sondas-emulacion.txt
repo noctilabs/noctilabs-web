@@ -1,0 +1,4 @@
+== dbg2 (emulación de DPR: eventos recibidos)
+arm 1
+== dbg3 (emulación de DPR: eventos recibidos)
+ro 1 {} | ro-css 800
