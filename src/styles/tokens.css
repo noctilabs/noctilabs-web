@@ -3,7 +3,8 @@
   --bg: #F4F4F2;
   --ink: #0B0B0C;
   --ink-hover: #2A2A2C;
-  --muted: #6B6B68;
+  /* Spec 003 §3.4: #6B6B68 → #595956, 4,60:1 sobre el punto más oscuro de la textura (#D1D1D0). */
+  --muted: #595956;
   --body-2: #3A3A38;
   --body-3: #262626;
   --line: #E2E2DE;

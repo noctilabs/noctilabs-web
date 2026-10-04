@@ -37,10 +37,14 @@ const alt = page ? alternates(page) : null;
     <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
+    <div class="texture" data-texture aria-hidden="true"><canvas></canvas></div>
     <Header locale={locale} page={page} />
     <main id="contenido" tabindex="-1">
       <slot />
     </main>
     <Footer locale={locale} page={page} />
+    <script>
+      import '../scripts/texture.ts';
+    </script>
   </body>
 </html>

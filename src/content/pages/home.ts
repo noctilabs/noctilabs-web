@@ -85,7 +85,7 @@ export const home: Localized<HomeCopy> = {
     roles: {
       h2: 'Toda la empresa puede preguntar. Cada uno ve lo que le corresponde.',
       lead: 'La experiencia cambia por rol, manteniendo el mismo cerebro organizacional y los permisos correspondientes.',
-      note: 'Cada persona y cada agente ven únicamente lo que sus permisos permiten.',
+      note: 'En Preguntar, cada persona y cada agente ven únicamente lo que sus permisos permiten.',
     },
     capabilities: {
       kicker: 'Capacidades',
@@ -160,7 +160,7 @@ export const home: Localized<HomeCopy> = {
     roles: {
       h2: 'The whole company can ask. Everyone sees what’s theirs to see.',
       lead: 'The experience changes by role, with the same organizational brain and the right permissions.',
-      note: 'Every person and every agent sees only what their permissions allow.',
+      note: 'In Ask, each person and each agent sees only what their permissions allow.',
     },
     capabilities: {
       kicker: 'Capabilities',

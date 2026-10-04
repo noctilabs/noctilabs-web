@@ -29,6 +29,7 @@ const contactHref = href({ id: 'hablemos' }, locale);
     />
     <div class="demo">
       <AppSlot view="inicio" locale={locale} contactHref={contactHref} frame="app" />
+      <p class="caption">{t.demoCaption}</p>
     </div>
     <Overview t={t.overview} />
     {t.sections.map((s) => <ModuleSection s={s} locale={locale} contactHref={contactHref} />)}
@@ -45,5 +46,9 @@ const contactHref = href({ id: 'hablemos' }, locale);
     width: 100%;
     margin: 0 auto;
     padding: clamp(26.2px, 3.3vw, 45.9px) var(--edge) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
+  .caption { margin: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; color: var(--muted); padding-left: 8px; }
 </style>
