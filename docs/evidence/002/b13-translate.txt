@@ -1,0 +1,40 @@
+FALLA /: 3
+      span.d-con: «ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados»
+      span.d-con: «ERP, CRM, documentos y personas alimentan un contexto empresarial cons»
+      span.d-con: «Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobra»
+FALLA /en/: 3
+      span.d-con: «ERP, CRM, spreadsheets, people, email, WhatsApp and documents connecte»
+      span.d-con: «ERP, CRM, documents and people feed a business context built by Nocti,»
+      span.d-con: «Sales, Finance, Operations, the sales agent, the collections agent and»
+FALLA /en/about/: 1
+      h2.kicker t-muted: «Why we build Nocti»
+OK    /en/contact/: 0
+OK    /en/industries/food-consumer-goods/: 0
+OK    /en/industries/health-fitness/: 0
+OK    /en/industries/manufacturing/: 0
+OK    /en/industries/professional-services/: 0
+OK    /en/industries/retail-distribution/: 0
+OK    /en/insights/: 0
+FALLA /en/insights/no-context-no-intelligence/: 4
+      p.: «At NoctiLabs, we are building that context layer.»
+      p.: «That is what we are building at NoctiLabs.»
+      p.: «That's what we're doing at NoctiLabs.»
+      p.: «NoctiLabs builds the infrastructure that makes AI operational.»
+OK    /en/product/: 0
+OK    /hablemos/: 0
+OK    /industrias/alimentos-consumo/: 0
+OK    /industrias/manufactura/: 0
+OK    /industrias/retail-distribucion/: 0
+OK    /industrias/salud-fitness/: 0
+OK    /industrias/servicios/: 0
+OK    /insights/: 0
+FALLA /insights/no-context-no-intelligence/: 3
+      p.: «En NoctiLabs estamos construyendo esa capa de contexto.»
+      p.: «Eso es lo que estamos haciendo en NoctiLabs.»
+      strong.: «NoctiLabs construye la infraestructura que hace que la IA sea operativ»
+FALLA /nosotros/: 1
+      h2.kicker t-muted: «Por qué construimos Nocti»
+OK    /producto/: 0
+OK    /404.html: 0
+
+Textos con «Nocti» sin translate="no": 15

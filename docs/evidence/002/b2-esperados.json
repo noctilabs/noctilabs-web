@@ -1,0 +1,125 @@
+{
+  "_fuente": "Valores esperados escritos a mano, no derivados del código ni de dist/. Rutas: contrato de URLs del spec 001 §3.2 y spec 002 §3.2 (artículos con sus slugs). Title y descripción: spec 002 §3.1 (industria = «label — NoctiLabs» + blurb; artículo = «title — NoctiLabs» + excerpt; resto desde ui.pages con el sufijo « — NoctiLabs» de la fase 1, salvo el title del home que es completo). H1: copy del diseño (Inv §1–§7) y de ui.ts; industrias = hero.h1 de industries.ts (spec 002 §3.3); artículo = title del post de Sanity. El post es post-no-context-no-intelligence (publishedAt 2026-09-28), consultado el 2026-10-04T12:01:41Z; sin slugEs, así que los dos slugs son no-context-no-intelligence (spec 002 §3.4). El excerpt en español de Sanity termina con un espacio: se espera la descripción sin ese espacio final.",
+  "origen": "https://noctilabs.io",
+  "paginas": [
+    {
+      "es": "/",
+      "en": "/en/",
+      "title": ["NoctiLabs — El cerebro operativo de tu empresa.", "NoctiLabs — Your company’s operational brain."],
+      "desc": [
+        "Un contexto compartido para que personas e IA entiendan tu negocio, decidan mejor y actúen.",
+        "A shared context so people and AI understand your business, decide better and act."
+      ],
+      "h1": ["El cerebro operativo de tu empresa.", "Your company’s operational brain."]
+    },
+    {
+      "es": "/producto/",
+      "en": "/en/product/",
+      "title": ["Producto — NoctiLabs", "Product — NoctiLabs"],
+      "desc": [
+        "Cerebro, Inteligencia y Agentes sobre una misma capa de contexto, conectada con los sistemas que tu empresa ya usa.",
+        "Brain, Intelligence and Agents on a single context layer, connected to the systems your company already uses."
+      ],
+      "h1": ["El cerebro organizacional de tu empresa.", "Your company’s organizational brain."]
+    },
+    {
+      "es": "/industrias/retail-distribucion/",
+      "en": "/en/industries/retail-distribution/",
+      "title": ["Retail y distribución — NoctiLabs", "Retail and distribution — NoctiLabs"],
+      "desc": [
+        "Pedidos, stock, cobranzas y proveedores sobre un mismo contexto, con prioridades claras cada día.",
+        "Orders, stock, collections and suppliers on a shared context, with clear priorities every day."
+      ],
+      "h1": ["Cada cliente, pedido y proveedor en un mismo contexto.", "Every customer, order and supplier in one context."]
+    },
+    {
+      "es": "/industrias/manufactura/",
+      "en": "/en/industries/manufacturing/",
+      "title": ["Manufactura — NoctiLabs", "Manufacturing — NoctiLabs"],
+      "desc": [
+        "Producción, compras y calidad conectadas con los sistemas que la planta ya usa.",
+        "Production, purchasing and quality connected to the systems your plant already uses."
+      ],
+      "h1": ["Cada orden, insumo y línea de producción en un mismo contexto.", "Every order, input and production line in one context."]
+    },
+    {
+      "es": "/industrias/alimentos-consumo/",
+      "en": "/en/industries/food-consumer-goods/",
+      "title": ["Alimentos y bienes de consumo — NoctiLabs", "Food and consumer goods — NoctiLabs"],
+      "desc": [
+        "Lotes, vencimientos, canales y márgenes en una sola vista operativa.",
+        "Batches, expiry dates, channels and margins in a single operational view."
+      ],
+      "h1": ["Cada lote, canal y cliente en un mismo contexto.", "Every batch, channel and customer in one context."]
+    },
+    {
+      "es": "/industrias/salud-fitness/",
+      "en": "/en/industries/health-fitness/",
+      "title": ["Salud y actividad física — NoctiLabs", "Health and fitness — NoctiLabs"],
+      "desc": [
+        "Socios, sedes, agenda y cobranzas, con permisos claros por rol.",
+        "Members, locations, schedules and collections, with clear permissions by role."
+      ],
+      "h1": ["Cada socio, sede y agenda en un mismo contexto.", "Every member, location and schedule in one context."]
+    },
+    {
+      "es": "/industrias/servicios/",
+      "en": "/en/industries/professional-services/",
+      "title": ["Servicios profesionales y empresariales — NoctiLabs", "Professional and business services — NoctiLabs"],
+      "desc": [
+        "Clientes, proyectos, horas y facturación conectados en un mismo contexto.",
+        "Clients, projects, hours and billing connected in a single context."
+      ],
+      "h1": ["Cada cliente, proyecto y hora en un mismo contexto.", "Every client, project and hour in one context."]
+    },
+    {
+      "es": "/nosotros/",
+      "en": "/en/about/",
+      "title": ["Nosotros — NoctiLabs", "About — NoctiLabs"],
+      "desc": [
+        "Quiénes somos y por qué construimos Nocti: contexto, IA operativa y agentes sobre la operación real.",
+        "Who we are and why we build Nocti: context, operational AI and agents on top of real operations."
+      ],
+      "h1": ["Construimos el cerebro operativo de las empresas.", "We build the operational brain of companies."]
+    },
+    {
+      "es": "/insights/",
+      "en": "/en/insights/",
+      "title": ["Insights — NoctiLabs", "Insights — NoctiLabs"],
+      "desc": [
+        "Ideas sobre contexto, IA operativa y agentes en la empresa.",
+        "Ideas on context, operational AI and agents in the enterprise."
+      ],
+      "h1": ["Contexto, IA operativa y agentes.", "Context, operational AI and agents."]
+    },
+    {
+      "es": "/hablemos/",
+      "en": "/en/contact/",
+      "title": ["Hablemos — NoctiLabs", "Contact — NoctiLabs"],
+      "desc": [
+        "Contanos cómo opera tu empresa y te mostramos cómo Nocti se conecta con lo que ya tenés.",
+        "Tell us how your company operates and we will show you how Nocti connects with what you already have."
+      ],
+      "h1": ["Hablemos.", "Let’s talk."]
+    },
+    {
+      "_articulo": "post-no-context-no-intelligence (Sanity), publishedAt 2026-09-28",
+      "es": "/insights/no-context-no-intelligence/",
+      "en": "/en/insights/no-context-no-intelligence/",
+      "title": ["Sin contexto, no hay inteligencia. Nuestra tesis — NoctiLabs", "No context, no intelligence. Our thesis — NoctiLabs"],
+      "desc": [
+        "Agregar IA a una empresa no es lo mismo que convertirse en una empresa AI-native. Por qué creemos que la base es el contexto, y qué estamos construyendo sobre ella.",
+        "Adding AI to a company isn't the same as becoming an AI-native company. Why we believe context is the foundation, and what we're building on top of it."
+      ],
+      "h1": ["Sin contexto, no hay inteligencia. Nuestra tesis", "No context, no intelligence. Our thesis"]
+    }
+  ],
+  "rutasTotales": 22,
+  "p404": {
+    "archivo": "404.html",
+    "lang": "es",
+    "title": "Página no encontrada · Page not found — NoctiLabs",
+    "robots": "noindex",
+    "h1": "Página no encontrada"
+  }
+}

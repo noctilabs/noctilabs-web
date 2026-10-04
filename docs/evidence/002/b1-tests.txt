@@ -1,0 +1,15 @@
+# B1 — npm test (vitest run) sobre 58eb398. Código de salida: 0
+
+
+> test
+> vitest run
+
+
+ RUN  v5.0.3 C:/Users/adria/OneDrive/Escritorio/TOODO/noctilabs-web
+
+
+ Test Files  1 passed (1)
+      Tests  80 passed (80)
+   Start at  09:01:25
+   Duration  259ms (transform 47%, import 29%, tests 16%, worker 7%)
+

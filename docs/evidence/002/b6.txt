@@ -1,0 +1,35 @@
+# B6 — tarjetas, ES (home/b6.mjs)
+OK    Capacidades en reposo: ejemplo visible, contraste ≥ 4,5:1 → {"min":5.35,"bgs":["rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)"]}
+OK    Capacidades hover 1: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Capacidades hover 2: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Capacidades hover 3: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Capacidades hover 4: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Pasos en reposo: 04 oscura, resto claras, ejemplos visibles, contraste ≥ 4,5:1 → {"min":4.85,"bgs":["rgb(244, 244, 242)","rgb(244, 244, 242)","rgb(244, 244, 242)","rgb(10, 10, 11)"]}
+OK    Pasos hover 1: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[true,false,false,false]}
+OK    Pasos hover 2: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[false,true,false,false]}
+OK    Pasos hover 3: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[false,false,true,false]}
+OK    Pasos hover 4: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[false,false,false,true]}
+OK    táctil: ejemplos visibles, sin estilo hover tras el tap, ≥ 4,5:1 → {"min":4.85,"bg":["rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)"],"tf":"none"}
+OK    reduce: tarjeta en hover oscura, sin translateY y sin transición → {"tf":"none","trc":"0s"}
+OK    reduce: paso en hover oscuro, sin translateY y sin transición → {"tf":"none","trs":"0s"}
+
+consola: []
+fallas: 0
+
+# B6 — EN
+OK    Capacidades en reposo: ejemplo visible, contraste ≥ 4,5:1 → {"min":5.35,"bgs":["rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)"]}
+OK    Capacidades hover 1: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Capacidades hover 2: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Capacidades hover 3: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Capacidades hover 4: oscura, elevada, ejemplo visible y contraste ≥ 4,5:1 en todas → {"min":5.35,"tf":"matrix(1, 0, 0, 1, 0, -4)","ex":{"cls":"ex","ratio":14.05,"visible":true}}
+OK    Pasos en reposo: 04 oscura, resto claras, ejemplos visibles, contraste ≥ 4,5:1 → {"min":4.85,"bgs":["rgb(244, 244, 242)","rgb(244, 244, 242)","rgb(244, 244, 242)","rgb(10, 10, 11)"]}
+OK    Pasos hover 1: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[true,false,false,false]}
+OK    Pasos hover 2: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[false,true,false,false]}
+OK    Pasos hover 3: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[false,false,true,false]}
+OK    Pasos hover 4: sólo la tarjeta bajo el puntero oscura (la 04 vuelve a clara), ejemplos visibles, ≥ 4,5:1 → {"min":4.85,"darks":[false,false,false,true]}
+OK    táctil: ejemplos visibles, sin estilo hover tras el tap, ≥ 4,5:1 → {"min":4.85,"bg":["rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)","rgb(255, 255, 255)"],"tf":"none"}
+OK    reduce: tarjeta en hover oscura, sin translateY y sin transición → {"tf":"none","trc":"0s"}
+OK    reduce: paso en hover oscuro, sin translateY y sin transición → {"tf":"none","trs":"0s"}
+
+consola: []
+fallas: 0
