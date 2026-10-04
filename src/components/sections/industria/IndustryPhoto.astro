@@ -21,6 +21,7 @@ const { photo, label, locale } = Astro.props;
         sizes="(min-width: 1391px) 1109px, (min-width: 1200px) calc(1200px - 6.6vw), (min-width: 1000px) 93.4vw, calc(100vw - 32px)"
         quality={70}
         loading="eager"
+        fetchpriority="high"
         decoding="async"
       />
     </div>

@@ -57,7 +57,7 @@ const nodeStyle = (n: DiagramNode) =>
                 ))}
               </div>
               <p class="sr-only">
-                {STATES.map((s) => <span class={`d-${s}`}>{d.desc[s]}</span>)}
+                {STATES.map((s) => <span class={`d-${s}`}><Txt text={d.desc[s]} /></span>)}
               </p>
               <figcaption class="cap">
                 <span class="cap-k m">
@@ -113,6 +113,7 @@ const nodeStyle = (n: DiagramNode) =>
     background: transparent;
     color: var(--muted);
   }
+  .seg button:hover { color: var(--ink); }
   .seg button[aria-pressed='true'] { background: var(--white); color: var(--ink); box-shadow: 0 1px 2px rgba(11, 11, 12, .08); }
 
   .grid {

@@ -28,7 +28,7 @@ const t = nosotros[locale];
     <Container gap="clamp(39.4px,4.9vw,72.2px)" class="blocks">
       {t.blocks.map((b) => (
         <div class="block">
-          <Kicker as="h2">{b.kicker}</Kicker>
+          <Kicker as="h2"><Txt text={b.kicker} /></Kicker>
           <p class="b-title">{b.title}</p>
           <p class="b-text"><Txt text={b.text} /></p>
         </div>

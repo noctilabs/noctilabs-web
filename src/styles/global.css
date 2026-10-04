@@ -2,7 +2,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { color-scheme: light; }
+/* El header sticky (76 px + aire) no tapa el elemento enfocado ni los destinos de ancla (WCAG 2.4.11). */
+html { color-scheme: light; scroll-padding-top: 84px; }
+@media (max-height: 480px) { html { scroll-padding-top: 8px; } }
 
 body {
   margin: 0;
@@ -27,7 +29,7 @@ a:hover { color: var(--ink); }
   outline-offset: 2px;
 }
 
-main [id] { scroll-margin-top: 84px; }
+/* Las anclas quedan bajo el header por el scroll-padding de html (no sumar scroll-margin). */
 
 /* Tipografía compartida de las páginas (Inv §0.2). */
 .h1-int {

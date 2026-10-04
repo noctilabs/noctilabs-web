@@ -436,6 +436,7 @@ TypeScript sin dependencias, incluido solo en la página que lo usa.
 6b. Campos del formulario con borde `#767676` (4,5:1 sobre el blanco de la tarjeta) en lugar de `#E2E2DE`, para cumplir el 3:1 de identificación de controles (WCAG 1.4.11). Los bordes decorativos de tarjetas y paneles no cambian.
 6c. Formulario con placeholders, opción vacía en Industria, errores en línea, «Enviando…», mensaje de error de envío y aviso sin JS. Son funcionales y el diseño no los tiene; se verifican contra §4.6 y no contra el diseño.
 6d. Foto de depósito en Retail, y fotogramas de stock en Consumo y Servicios (D10).
+6f. Consecuencias de §4.1.2 que se ven distinto del diseño: el texto de los nodos del antes/después escala con `clamp(9px, 3.4cqw, 13px)` (≈11 px en un lienzo de 330 px, en lugar de 13), y el H2 del antes/después usa `var(--h2)` (32 px en mobile) sin el `min(…, 5.4vw)` que en el diseño solo servía para el `nowrap`.
 6e. **Contenido editorial de Insights desde Sanity** (§3.4): título, resumen, categoría, fecha, minutos, cuerpo e índice del destacado, las tarjetas y el artículo son los del post publicado, no los del ejemplo del diseño. En B3 se compara la **estructura y los estilos** contra el diseño, y el **contenido, los metadatos y el índice** contra el post (los datos de la evidencia).
 7. Inter en lugar de Neue Haas Unica.
 8. Las diferencias de la fase 1.

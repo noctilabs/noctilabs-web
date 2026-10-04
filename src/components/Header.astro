@@ -136,6 +136,10 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
   .skip:focus-visible { top: 12px; color: var(--white); }
 
   .site-header { position: sticky; top: 0; z-index: 30; height: 76px; }
+  /* Con un viewport muy bajo (zoom alto, apaisado) el header sticky taparía el contenido enfocado: deja de ser sticky. */
+  @media (max-height: 480px) {
+    .site-header { position: relative; }
+  }
 
   .capsule {
     position: absolute;

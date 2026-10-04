@@ -90,7 +90,7 @@ const related = (await getArticles()).filter((x) => x.key !== article.key).slice
   .back:hover { background: #DCDCD7; color: var(--ink); }
   .head { display: flex; flex-direction: column; gap: 20px; max-width: 1000px; }
   /* Excepción a H1-INT (spec 002 §4.5, Inv §6.1). */
-  .title { margin: 0; font-size: clamp(32.8px, 4.4vw, 68.9px); font-weight: 500; line-height: 1; letter-spacing: -.05em; }
+  .title { margin: 0; font-size: clamp(32.8px, 4.4vw, 68.9px); font-weight: 500; line-height: 1; letter-spacing: -.05em; overflow-wrap: break-word; }
   .meta {
     margin: 0;
     display: flex;
@@ -111,7 +111,7 @@ const related = (await getArticles()).filter((x) => x.key !== article.key).slice
     flex-wrap: wrap;
     gap: 32px 64px;
   }
-  .toc { flex: 1 1 200px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--muted); }
+  .toc { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--muted); overflow-wrap: anywhere; }
   .toc-title { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
   .toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .toc a { color: var(--muted); text-decoration: none; }
@@ -137,6 +137,7 @@ const related = (await getArticles()).filter((x) => x.key !== article.key).slice
     justify-content: space-between;
     gap: 16px;
     font-size: 18px;
+    overflow-wrap: break-word;
     font-weight: 500;
     letter-spacing: -.03em;
     color: var(--ink);

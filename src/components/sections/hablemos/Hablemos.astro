@@ -156,11 +156,10 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
     border: 1px solid #767676;
     background-color: var(--bg);
     color: var(--ink);
-    outline: none;
     transition: border-color .15s ease, background-color .15s ease;
   }
   input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
-  input:focus, select:focus, textarea:focus { border-color: var(--blue); background-color: var(--white); }
+  input:focus, select:focus, textarea:focus { border-color: var(--blue); background-color: var(--white); outline: 2px solid var(--blue-link); outline-offset: 2px; }
   textarea { min-height: 130px; resize: vertical; }
   [aria-invalid='true'] { border-color: #B42318; }
   .err { margin: 0; font-size: 14px; line-height: 1.4; color: #B42318; }
@@ -204,6 +203,7 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
     font-size: 15px;
     font-weight: 500;
   }
+  .again:hover { background: var(--surface-2); }
   @media (prefers-reduced-motion: reduce) {
     input, select, textarea, .submit { transition: none; }
   }
