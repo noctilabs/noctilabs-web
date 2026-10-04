@@ -1,0 +1,97 @@
+---
+import Mark from './Mark.astro';
+import LangSwitch from './LangSwitch.astro';
+import { href, INDUSTRY_SLUGS, type IndustryId, type Locale } from '../i18n/routes';
+import { PRODUCT_SECTION_IDS, ui } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale];
+const columns = [
+  {
+    title: t.nav.producto,
+    items: PRODUCT_SECTION_IDS.map((id) => ({ label: t.productSections[id].label, href: href({ id: 'producto' }, locale, id) })),
+  },
+  {
+    title: t.nav.industrias,
+    items: (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({
+      label: t.pages[industry].title,
+      href: href({ id: 'industria', industry }, locale),
+    })),
+  },
+  {
+    title: t.nav.company,
+    items: [
+      { label: t.nav.nosotros, href: href({ id: 'nosotros' }, locale) },
+      { label: t.nav.insights, href: href({ id: 'insights' }, locale) },
+      { label: t.nav.hablemos, href: href({ id: 'hablemos' }, locale) },
+    ],
+  },
+];
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="main">
+    <div class="brand">
+      <div class="wordmark"><Mark size={28} /><span translate="no">NoctiLabs</span></div>
+      <span class="tagline">{t.tagline}</span>
+    </div>
+    {columns.map((col) => (
+      <div class="col">
+        <span class="kicker">{col.title}</span>
+        {col.items.map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    ))}
+  </div>
+  <div class="bottom">
+    <span>© {year} <span translate="no">NoctiLabs</span></span>
+    <LangSwitch />
+    <span translate="no">noctilabs.io</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(39.4px, 4.9vw, 65.6px) var(--edge) 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .main { display: flex; flex-wrap: wrap; gap: 32px 48px; }
+  .brand { flex: 2 1 260px; display: flex; flex-direction: column; gap: 14px; }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: -.045em;
+  }
+  .tagline { font-size: 16px; color: var(--muted); max-width: 30ch; }
+  .col { flex: 1 1 170px; display: flex; flex-direction: column; gap: 10px; }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 4px;
+  }
+  .col a { font-size: 15px; color: inherit; text-decoration: none; }
+  .col a:hover { color: var(--blue-link); }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+</style>

@@ -1,0 +1,12 @@
+---
+import { markSvg } from '../lib/mark';
+
+interface Props {
+  fg?: string;
+  core?: string;
+  size?: number;
+}
+const { fg = '#0B0B0C', core = '#0047FF', size = 28 } = Astro.props;
+const svg = markSvg(fg, core, `width="${size}" height="${size}" aria-hidden="true" focusable="false"`);
+---
+<Fragment set:html={svg} />

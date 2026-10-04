@@ -19,6 +19,8 @@ const copy = t.pages[pageKey(page)];
       lead={copy.description}
       primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
       secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
+      pauseLabel={t.hero.pause}
+      playLabel={t.hero.play}
     />
   ) : (
     <section class="intro">
@@ -40,7 +42,6 @@ const copy = t.pages[pageKey(page)];
     margin: 0 auto;
     padding: clamp(32.8px, 4.9vw, 72.2px) var(--edge);
   }
-  .intro { padding-top: calc(76px + clamp(32.8px, 4.9vw, 72.2px)); }
   h1 {
     margin: 0;
     font-size: var(--display);

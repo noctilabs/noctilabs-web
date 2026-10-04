@@ -61,13 +61,28 @@ const es = {
       description: 'Clientes, proyectos, horas y facturación conectados en un mismo contexto.',
     },
   },
-  hero: { primary: 'Hablemos', secondary: 'Ver el producto' },
+  hero: { primary: 'Hablemos', secondary: 'Ver el producto', pause: 'Pausar video', play: 'Reproducir video' },
   productSections: {
     overview: { label: 'Overview', desc: 'Sistemas, conocimiento y operaciones conectados en una sola capa de contexto.' },
     cerebro: { label: 'Cerebro', desc: 'Preguntá a tu empresa y recibí respuestas con fuentes, según los permisos de tu rol.' },
     bi: { label: 'Inteligencia / BI', desc: 'De la pregunta al dato y del dato a la acción, sobre datos vivos y trazables.' },
     agentes: { label: 'Agentes', desc: 'Creá, integrá y supervisá agentes que trabajan sobre el contexto real.' },
     control: { label: 'Control', desc: 'Permisos, aprobaciones y trazabilidad sobre cada persona y cada agente.' },
+  },
+  nav: {
+    label: 'Principal',
+    producto: 'Producto',
+    industrias: 'Industrias',
+    nosotros: 'Nosotros',
+    insights: 'Insights',
+    cta: 'Hablemos →',
+    openPanel: { producto: 'Abrir menú de Producto', industrias: 'Abrir menú de Industrias' },
+    openMenu: 'Abrir menú',
+    closeMenu: 'Cerrar menú',
+    skip: 'Saltar al contenido',
+    company: 'Compañía',
+    hablemos: 'Hablemos',
+    langName: { es: 'Español', en: 'English' },
   },
   notFound: { title: 'Página no encontrada', body: 'La página que buscás no existe o cambió de dirección.', home: 'Ir al inicio' },
 };
@@ -76,17 +91,17 @@ type Dict = typeof es;
 
 // D4: traducción provisoria, pendiente de revisión del dueño.
 const en: Dict = {
-  tagline: "Your company's operational brain.",
+  tagline: "Your company’s operational brain.",
   placeholder: 'Content in progress.',
   pages: {
     home: {
-      title: "NoctiLabs — Your company's operational brain.",
-      h1: "Your company's operational brain.",
+      title: "NoctiLabs — Your company’s operational brain.",
+      h1: "Your company’s operational brain.",
       description: 'A shared context so people and AI understand your business, decide better and act.',
     },
     producto: {
       title: 'Product',
-      h1: "Your company's organizational brain.",
+      h1: "Your company’s organizational brain.",
       description: 'Brain, Intelligence and Agents on a single context layer, connected to the systems your company already uses.',
     },
     nosotros: {
@@ -101,7 +116,7 @@ const en: Dict = {
     },
     hablemos: {
       title: 'Contact',
-      h1: "Let's talk.",
+      h1: "Let’s talk.",
       description: 'Tell us how your company operates and we will show you how Nocti connects with what you already have.',
     },
     retail: {
@@ -130,13 +145,28 @@ const en: Dict = {
       description: 'Clients, projects, hours and billing connected in a single context.',
     },
   },
-  hero: { primary: "Let's talk", secondary: 'See the product' },
+  hero: { primary: 'Let’s talk', secondary: 'See the product', pause: 'Pause video', play: 'Play video' },
   productSections: {
     overview: { label: 'Overview', desc: 'Systems, knowledge and operations connected in a single context layer.' },
     cerebro: { label: 'Brain', desc: 'Ask your company and get sourced answers, within the permissions of your role.' },
     bi: { label: 'Intelligence / BI', desc: 'From question to data and from data to action, on live, traceable data.' },
     agentes: { label: 'Agents', desc: 'Create, integrate and supervise agents that work on real context.' },
     control: { label: 'Control', desc: 'Permissions, approvals and traceability over every person and every agent.' },
+  },
+  nav: {
+    label: 'Main',
+    producto: 'Product',
+    industrias: 'Industries',
+    nosotros: 'About',
+    insights: 'Insights',
+    cta: "Let’s talk →",
+    openPanel: { producto: 'Open Product menu', industrias: 'Open Industries menu' },
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    skip: 'Skip to content',
+    company: 'Company',
+    hablemos: "Let’s talk",
+    langName: { es: 'Español', en: 'English' },
   },
   notFound: { title: 'Page not found', body: 'The page you are looking for does not exist or has moved.', home: 'Go to home' },
 };

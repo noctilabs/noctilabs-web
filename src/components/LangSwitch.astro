@@ -1,0 +1,36 @@
+---
+import { href, pageFromPath, type Locale } from '../i18n/routes';
+import { ui } from '../i18n/ui';
+
+interface Props {
+  class?: string;
+}
+const current = pageFromPath(Astro.url.pathname);
+const LOCALES: Locale[] = ['es', 'en'];
+---
+{current && (
+  <span class:list={['lang', Astro.props.class]}>
+    {LOCALES.map((locale, i) => (
+      <>
+        {i > 0 && <span aria-hidden="true">·</span>}
+        {locale === current.locale ? (
+          <span aria-current="true">{locale.toUpperCase()}</span>
+        ) : (
+          <a
+            href={href(current.page, locale)}
+            hreflang={locale}
+            lang={locale}
+            aria-label={ui[current.locale].nav.langName[locale]}
+          >{locale.toUpperCase()}</a>
+        )}
+      </>
+    ))}
+  </span>
+)}
+
+<style>
+  .lang { display: inline-flex; gap: 6px; align-items: center; }
+  a { color: inherit; text-decoration: none; opacity: .7; }
+  a:hover { color: inherit; opacity: 1; text-decoration: underline; }
+  [aria-current] { color: var(--ink); }
+</style>

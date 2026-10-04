@@ -3,6 +3,8 @@ import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
 import '../styles/global.css';
 import geistMono400 from '@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import { alternates, type Locale, type PageRef } from '../i18n/routes';
 
 interface Props {
@@ -32,8 +34,10 @@ const alt = page ? alternates(page) : null;
     <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
+    <Header locale={locale} />
     <main id="contenido" tabindex="-1">
       <slot />
     </main>
+    <Footer locale={locale} />
   </body>
 </html>
