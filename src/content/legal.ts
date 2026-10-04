@@ -87,13 +87,12 @@ export const notice: Localized<NoticeCopy> = {
 };
 
 export interface PolicySection { title: string; paragraphs: string[]; list?: string[] }
-export interface PolicyCopy { lead: string; updated: string; draft: string; sections: PolicySection[] }
+export interface PolicyCopy { lead: string; updated: string; sections: PolicySection[] }
 
 export const policy: Localized<PolicyCopy> = {
   es: {
     lead: 'Esta política explica qué datos personales trata NoctiLabs a través de este sitio, para qué, dónde se guardan, cuánto tiempo y cómo ejercer tus derechos según la Ley 18.331 de Protección de Datos Personales.',
     updated: 'Última actualización',
-    draft: 'Borrador pendiente de revisión profesional.',
     sections: [
       {
         title: 'Responsable',
@@ -152,7 +151,6 @@ export const policy: Localized<PolicyCopy> = {
   en: {
     lead: 'This policy explains which personal data NoctiLabs processes through this site, why, where it is stored, for how long and how to exercise your rights under Uruguayan Law 18,331 on Personal Data Protection.',
     updated: 'Last updated',
-    draft: 'Draft pending professional review.',
     sections: [
       {
         title: 'Controller',

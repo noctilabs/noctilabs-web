@@ -48,7 +48,10 @@ const year = new Date().getFullYear();
     ))}
   </div>
   <div class="bottom">
-    <span>© {year} <span translate="no">NoctiLabs</span></span>
+    <span class="legal">
+      <span>© {year} <span translate="no">NoctiLabs</span></span>
+      <a href={href({ id: 'privacidad' }, locale)}>{t.nav.privacy}</a>
+    </span>
     <LangSwitch page={page} locale={locale} />
     <span translate="no">noctilabs.io</span>
   </div>
@@ -96,4 +99,7 @@ const year = new Date().getFullYear();
     border-top: 1px solid var(--line);
     padding-top: 18px;
   }
+  .legal { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .legal a { color: inherit; }
+  .legal a:hover { color: var(--blue-link); }
 </style>

@@ -1,0 +1,65 @@
+---
+// Política de privacidad (spec 004 §2.4): `.prose-article`, sin índice. Borrador pendiente de revisión profesional.
+import '../../../styles/article.css';
+import Base from '../../../layouts/Base.astro';
+import type { Locale } from '../../../i18n/routes';
+import { ui } from '../../../i18n/ui';
+import { pageMeta } from '../../../lib/meta';
+import { formatDate } from '../../../lib/insights';
+import { POLICY_UPDATED, policy } from '../../../content/legal';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const page = { id: 'privacidad' } as const;
+const meta = pageMeta(page, locale);
+const t = policy[locale];
+---
+<Base locale={locale} page={page} title={meta.title} description={meta.description}>
+  <div class="page">
+    <div class="wrap">
+      <header class="head">
+        <h1 class="h1-int">{ui[locale].pages.privacidad.h1}</h1>
+        <p class="meta">{t.updated}: <time datetime={POLICY_UPDATED}>{formatDate(POLICY_UPDATED, locale)}</time></p>
+      </header>
+      <div class="body">
+        <div class="prose-article">
+          <p class="lead">{t.lead}</p>
+          {t.sections.map((s) => (
+            <>
+              <h2>{s.title}</h2>
+              {s.paragraphs.map((p) => <p>{p}</p>)}
+              {s.list && <ul>{s.list.map((i) => <li>{i}</li>)}</ul>}
+            </>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page { padding-bottom: 24px; }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(39.4px, 5.7vw, 85.3px) var(--edge) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .head { display: flex; flex-direction: column; gap: 16px; }
+  .meta {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .03em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .body {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    padding: clamp(23px, 4.1vw, 59px) clamp(16.4px, 3.3vw, 52.5px);
+  }
+</style>
