@@ -11,9 +11,11 @@ function focusQuietly(el: HTMLElement): void {
 
 // Un mousedown dentro de botones y paneles no mueve el foco: Safari no enfoca botones ni links al
 // presionarlos, y ese foco perdido cerraría el panel antes del click. El click y la navegación nativa
-// (incluidos modificadores y click central) no dependen del mousedown.
+// no depende del mousedown. Sólo el botón principal: el central y el secundario conservan sus acciones.
 function holdFocusOnPress(el: HTMLElement): void {
-  el.addEventListener('mousedown', (e) => e.preventDefault());
+  el.addEventListener('mousedown', (e) => {
+    if (e.button === 0) e.preventDefault();
+  });
 }
 
 export function initHeader(): void {
@@ -36,33 +38,40 @@ export function initHeader(): void {
   type Group = (typeof groups)[number];
 
   let open: { group: Group; mode: Mode } | null = null;
-  let timer: number | undefined;
+  let hoverTimer: number | undefined;
   let focusTimer: number | undefined;
-  let token = 0;
+  let hoverToken = 0;
+  let openToken = 0;
   let hovered: Group | null = null;
   let suppressed: Group | null = null;
 
   const within = (g: Group, el: EventTarget | null) => el instanceof Node && (g.item.contains(el) || g.panel.contains(el));
   const inFocusSet = (g: Group, el: EventTarget | null) => el instanceof Node && (g.button.contains(el) || g.panel.contains(el));
   const focusIn = (g: Group) => inFocusSet(g, document.activeElement);
-  // Toda apertura o cierre invalida los callbacks pendientes (hover y foco): spec 001 §3.5 paso 9.
-  const cancelTimer = () => {
-    clearTimeout(timer);
+  // El hover sólo cancela su propio cierre retardado; abrir, cerrar o reemplazar un panel invalida
+  // todos los callbacks pendientes, de hover y de foco (spec 001 §3.5 paso 9).
+  const cancelHover = () => {
+    clearTimeout(hoverTimer);
+    hoverTimer = undefined;
+    hoverToken++;
+  };
+  const cancelAll = () => {
+    cancelHover();
     clearTimeout(focusTimer);
-    timer = focusTimer = undefined;
-    token++;
+    focusTimer = undefined;
+    openToken++;
   };
 
   function show(g: Group, mode: Mode) {
     if (open && open.group !== g) hide(open.group);
-    cancelTimer();
+    cancelAll();
     g.panel.hidden = false;
     g.button.setAttribute('aria-expanded', 'true');
     open = { group: g, mode };
   }
 
   function hide(g: Group) {
-    cancelTimer();
+    cancelAll();
     g.panel.hidden = true;
     g.button.setAttribute('aria-expanded', 'false');
     if (open?.group === g) open = null;
@@ -84,7 +93,7 @@ export function initHeader(): void {
         hovered = g;
         if (suppressed === g) return;
         if (open && open.group !== g && focusIn(open.group)) return;
-        cancelTimer();
+        cancelHover();
         if (!open || open.group !== g) show(g, 'hover');
       });
       el.addEventListener('pointerleave', (e) => {
@@ -92,10 +101,10 @@ export function initHeader(): void {
         if (hovered === g) hovered = null;
         if (suppressed === g) suppressed = null;
         if (open?.group !== g || open.mode !== 'hover' || focusIn(g)) return;
-        cancelTimer();
-        const mine = token;
-        timer = window.setTimeout(() => {
-          if (mine === token && open?.group === g && open.mode === 'hover' && !focusIn(g)) hide(g);
+        cancelHover();
+        const mine = hoverToken;
+        hoverTimer = window.setTimeout(() => {
+          if (mine === hoverToken && open?.group === g && open.mode === 'hover' && !focusIn(g)) hide(g);
         }, CLOSE_DELAY);
       });
     }
@@ -105,9 +114,9 @@ export function initHeader(): void {
         if (e.relatedTarget !== null) return hide(g);
         // Sin destino (blur, foco a body): se decide con el foco efectivo después de la transición.
         clearTimeout(focusTimer);
-        const mine = token;
+        const mine = openToken;
         focusTimer = window.setTimeout(() => {
-          if (mine === token && open?.group === g && !focusIn(g)) hide(g);
+          if (mine === openToken && open?.group === g && !focusIn(g)) hide(g);
         });
       });
     }
