@@ -1,6 +1,6 @@
 # Spec 002 — Páginas
 
-Estado: borrador, pasada 4 de revisión · 2026-10-04
+Estado: borrador, pasada 5 de revisión · 2026-10-04 · enmienda: Insights desde Sanity (decisión del dueño) · hallazgos de la pasada 4 aplicados
 
 ## 1. Contexto
 
@@ -28,7 +28,8 @@ La fase 2 llena las páginas con el contenido y la interactividad del diseño, s
 - TDD solo en la costura S1;
 - reglas de UI de web-design-guidelines;
 - Vercel diferido hasta terminar la web;
-- avanzar hasta completar todas las fases.
+- avanzar hasta completar todas las fases;
+- **Insights se edita en Sanity**, en el proyecto existente `q164hlpj` (dataset `production`). Es el único contenido en el CMS: el resto del copy queda en el código (decisión del dueño, 2026-10-04).
 
 **Tipografía (D1, resuelta):** Inter, auto-hospedada como `--font-sans`, con la pila de Neue Haas Unica detrás. La fidelidad se juzga con Inter. Si el dueño trae un kit de Adobe Fonts con Neue Haas Unica, se cambia el token y se repiten las capturas.
 
@@ -56,57 +57,58 @@ Todas fieles al diseño y accesibles. Las piezas de la fase 3 quedan con lugar r
 | Metadatos de home, producto, nosotros, insights y hablemos (title, description) | `src/i18n/ui.ts` → `pages` | ya existe; se **quitan** las 5 entradas de industrias |
 | Copy de cada página | `src/content/pages/<pagina>.ts` | `export const <pagina>: Localized<PaginaCopy>` |
 | Industrias: copy visible **y** metadatos | `src/content/industries.ts` | `Record<IndustryId, Localized<Industry>>` (ver §3.3) |
-| Artículos: cuerpo **y** metadatos | colección `insights` (ver §3.4) | Markdown por artículo e idioma |
+| Artículos: cuerpo **y** metadatos | Sanity → colección `insights` (ver §3.4) | documento `post` bilingüe |
 | Fotos | `src/assets/` | importadas como `ImageMetadata` |
 
 `Localized<T> = Record<Locale, T>`: una clave que falte en inglés es error de compilación. El title y la
 descripción de cada página salen de `src/lib/meta.ts`:
 
-- `pageMeta(page: PageRef, locale): { title, description }`;
+- `pageMeta(page, locale, article?)`, con firma discriminada: para un `ArticleRef` el tercer argumento es
+  **obligatorio**. Es el `{ title, excerpt }` del post en ese idioma, que la página recibe de `getArticles()` en
+  `getStaticPaths()`. Para el resto de las páginas no se pasa;
 - industria: title `«label» — NoctiLabs` y descripción = `blurb`;
-- artículo: title `«title» — NoctiLabs` y descripción = `excerpt` de la entrada en ese idioma;
+- artículo: title `«title» — NoctiLabs` y descripción = `excerpt` del post en ese idioma;
 - resto: desde `ui.pages`.
 
 El tipo `PageKey` y `pageTitle` de la fase 1 se reemplazan por `pageMeta`, y se adaptan todos sus consumidores.
 
-### 3.2 Rutas de artículos (extiende S1)
+### 3.2 Rutas de artículos (extiende S1, enmendado por Sanity)
 
-`PageRef` suma `{ id: 'articulo', article: ArticleId }`. Hay un registro `ARTICLE_SLUGS` en `routes.ts`, igual que el de industrias:
+Los slugs de los artículos vienen de Sanity, así que ya no hay un registro fijo en el código. El `PageRef` del
+artículo **lleva sus slugs**:
 
-| ArticleId | slug es | slug en |
-|---|---|---|
-| `contexto-sistema-operativo` | `el-contexto-es-el-nuevo-sistema-operativo` | `context-is-the-new-operating-system` |
-
-URLs del contrato que se agregan:
-
-```
-/insights/el-contexto-es-el-nuevo-sistema-operativo/
-/en/insights/context-is-the-new-operating-system/
+```ts
+type ArticleRef = { id: 'articulo'; slug: Record<Locale, string> };   // slug ya validado (§3.4)
 ```
 
-**TDD de S1, en rebanadas separadas y con literales:**
-1. `href` del artículo en los dos idiomas, con y sin fragmento.
-2. `alternates` del artículo.
-3. `pageFromPath`:
-   - las 2 URLs con barra final y sin ella;
-   - negativos: `/insights/inexistente/`, `/en/insights/el-contexto-es-el-nuevo-sistema-operativo/` (slug español con prefijo inglés), `/insights/context-is-the-new-operating-system/` y `/insights/el-contexto-es-el-nuevo-sistema-operativo//`.
-4. Tipos: un `ArticleId` inexistente se rechaza con `// @ts-expect-error` en `tests/routes.types.ts`.
+- `href(articulo, locale, hash?)` → `/insights/<slug.es>/` o `/en/insights/<slug.en>/` (más el fragmento).
+- `alternates(articulo)` → las dos URLs absolutas, con x-default = es.
+- **`pageFromPath` no resuelve artículos.** Solo conoce las 20 páginas fijas y devuelve `null` en cualquier ruta
+  `/insights/<algo>/`, porque los slugs no se conocen sin consultar el CMS.
+- **Header, footer y selector de idioma** reciben el `PageRef` de la página desde `Base` (prop `page`) en lugar de
+  derivarlo del pathname. Así, el selector de un artículo apunta a la traducción y el header marca Insights activo
+  (`data-active`) sin `pageFromPath`. `aria-current` solo va en `/insights/`.
+- **Slugs:** cumplen `^[a-z0-9]+(?:-[a-z0-9]+)*$`. Uno inválido no se publica (§3.4).
 
-`PAGES` (el enumerador de `routes.ts` del que salen `BY_PATH` y `pageFromPath`) suma los artículos del registro.
+**TDD de S1** (la enmienda cambia el contrato, así que los tests se cambian primero, en rojo):
+
+1. `href` con slugs literales: `{ es: 'sin-contexto-no-hay-inteligencia', en: 'no-context-no-intelligence' }` →
+   `/insights/sin-contexto-no-hay-inteligencia/` y `/en/insights/no-context-no-intelligence/`, con y sin fragmento.
+2. `alternates` de ese mismo ref.
+3. `pageFromPath`: `null` en esas dos URLs, con barra y sin ella. Siguen los negativos anteriores.
+4. Se elimina el registro `ARTICLE_SLUGS` y su test de tipos. El tipo nuevo exige `slug.es` y `slug.en`: un ref sin
+   `en` no compila (`// @ts-expect-error` en `tests/routes.types.ts`).
 
 **Páginas:** `src/pages/insights/[slug].astro` y `src/pages/en/insights/[slug].astro`. Su `getStaticPaths()` llama a
-`getArticles()` (§3.4), toma el slug del registro para su idioma y pasa la entrada localizada como prop.
-Las colecciones de Astro no generan rutas solas, y el `id` de la entrada nunca se usa como slug.
-
-En el header, «Insights» queda activo (`data-active`) en los artículos. `aria-current` solo va en `/insights/`.
+`getArticles()` (§3.4) y genera una ruta por artículo publicado con el slug de su idioma.
 
 ### 3.3 Industrias
 
 ```ts
 interface Industry {
   label: string; short: string; blurb: string;            // ya existen (nav, tabs, metadatos)
-  hero: { kicker: string; h1: string; lead: string };
-  photo: Photo;                                           // ver §3.5
+  hero: { h1: string; lead: string };    // el kicker es «Industrias · {label}»
+  whyFor: string;     // complemento en minúscula: el título sale de la plantilla «Por qué Nocti para {whyFor}.» / «Why Nocti for {whyFor}.»
   processes: [Item, Item, Item, Item];                    // Item = { title: string; text: string }
   questions: [Question, Question, Question, Question];    // Question = { q: string; area: string }
   agents: [Item, Item, Item, Item];
@@ -115,44 +117,70 @@ interface Industry {
 }
 ```
 
+- **Fotos:** van aparte, en `industryPhotos: Record<IndustryId, Photo>`, porque no dependen del idioma; el `alt` sí.
 - **Retail:** copy literal del diseño (Inv §3), con `draft: false`.
 - **Las otras cuatro:** copy redactado por mí con `draft: true`, anotado en `docs/pendientes.md` (§9).
 
-### 3.4 Colección de artículos
+### 3.4 Artículos desde Sanity
 
-`src/content.config.ts`:
+**Fuente:** el tipo `post` del proyecto `q164hlpj` (dataset `production`, lectura pública, API `v2025-02-19`). Los
+campos existentes se mantienen:
 
-```ts
-const insights = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/insights',
-                 generateId: ({ entry }) => entry }),   // path relativo completo: un id por archivo, sin normalizar
-  schema: z.object({
-    articleId: z.enum(ARTICLE_IDS), lang: z.enum(['es', 'en']),
-    title: z.string().min(1), category: z.enum(CATEGORY_IDS), excerpt: z.string().min(1),
-    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)    // fecha editorial, sin hora ni zona…
-      .refine((d) => new Date(`${d}T00:00:00Z`).toISOString().slice(0, 10) === d),   // …y de calendario válida
-    minutes: z.number().int().positive(),
-  }),
-});
-```
+- `title`, `excerpt` y `body`: localizados `en`/`es`;
+- `slug`: el inglés;
+- `publishedAt`: fecha `YYYY-MM-DD`;
+- `listed`;
+- `category`: texto localizado;
+- `readingTime`.
 
-- **Archivos:** `src/content/insights/<articleId>.<lang>.md`.
-- **Slug:** el de la URL sale **del registro**, no del frontmatter, así que no pueden divergir.
-- **Categorías:** `CATEGORY_IDS` son estables e independientes del idioma: `tesis`, `contexto`, `ia-operativa`, `agentes` y `transformacion`. Sus labels por idioma van en `ui.ts`.
-- **Validación en el build:** `src/lib/insights.ts` → `getArticles()` agrupa las entradas por `(articleId, lang)`
-  y falla si:
-  - algún par aparece más de una vez (dos archivos con el mismo artículo e idioma; como el id es el path relativo completo, los dos llegan a la validación);
-  - algún `ArticleId` registrado no tiene exactamente una entrada `es` y una `en`;
-  - algún cuerpo está vacío.
+**Campos que se agregan al schema** (compatibles con la web vieja, que los ignora):
 
-  Que el `articleId` sea uno registrado lo garantiza el esquema.
-- **Fecha:** se formatea con `Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' })` sobre `new Date(date + 'T00:00:00Z')`, así no depende de la zona horaria de la máquina que construye el sitio. Vale para el destacado y para el artículo.
+- `slugEs` (slug, fuente `title.es`): el slug en español;
+- `topic` (string, opciones = `CATEGORY_IDS`): la categoría estable de Insights;
+- `showOnInsights` (boolean): si el post aparece en la web nueva.
 
-  Las páginas de artículo y de Insights usan solo esa función.
-- **Índice «En este artículo»:** se genera con los `headings` de profundidad 2 que devuelve `render(entry)`, con los ids que asigna Astro. No hay TOC escrito a mano.
-- **Estilos del cuerpo:** son globales y van acotados a un wrapper `.prose-article` en `src/styles/article.css`, con los valores de Inv §6.2 (lead, H2, p y blockquote).
-- **Lead:** el primer párrafo del Markdown es el lead y lleva la clase por posición (`.prose-article > p:first-child`).
-- **Cita:** se escribe como `>` en Markdown.
+**Studio:** se mueve a este repo (`studio/`, copiado de `nocti-web-lastest/studio` con el schema extendido), porque la
+web vieja se retira en el lanzamiento. Publicar el Studio con el schema nuevo (`npx sanity deploy`) requiere la
+cuenta del dueño y queda en `docs/pendientes.md`. Mientras tanto rigen los valores por defecto de abajo, así que la
+web funciona sin editar nada en Sanity.
+
+**Carga:** una colección `insights` con un loader propio en `src/content.config.ts`.
+
+- Hace la consulta GROQ en el build (sin token) y deja una entrada por post publicado con `{ slug: {es, en}, date, category, minutes, es: {title, excerpt, body}, en: {…} }`.
+- **Si Sanity no responde, el build falla.** No hay contenido de respaldo.
+- Para rehacer el sitio al publicar en Sanity se usa un webhook → deploy hook de Vercel, en la fase 6.
+
+**Reglas de publicación** (`src/lib/insights.ts` → `getArticles()`). Un post se publica en la web nueva si:
+
+1. `showOnInsights === true`, o `showOnInsights` no está definido y `listed === true`;
+2. tiene `title`, `excerpt` y `body` no vacíos **en los dos idiomas**;
+3. su slug inglés y el español (`slugEs`, o el inglés si falta) son válidos;
+4. no hay otro post publicado con el mismo slug en ese idioma.
+
+Los que no cumplen quedan fuera de la web nueva. El build imprime cuáles y por qué (`[insights] excluido: …`) y no
+falla: que un editor deje un post a medio traducir no puede tirar el sitio.
+
+**Derivados:**
+
+- **Categoría:** `topic`; si falta, se deduce de `category.en` (`Thesis` → `tesis`, `Agents` → `agentes`, `Operational AI` → `ia-operativa`, `Business context` → `contexto`, `Transformation` → `transformacion`). Si no se puede deducir, el artículo se muestra sin categoría.
+- **Minutos:** `readingTime`; si falta, palabras del cuerpo en ese idioma / 220, redondeado hacia arriba (mínimo 1).
+- **Fecha:** `publishedAt` validado como fecha de calendario y formateado en UTC, como antes.
+- **Orden:** por fecha descendente.
+
+**Cuerpo:**
+
+- **Render:** Portable Text a HTML con `@portabletext/to-html`. Es la misma dependencia que usa la web vieja; se justifica porque reescribir el serializador no tiene sentido.
+- **Estilos admitidos:** `normal`, `h2`, `blockquote`, listas y links. Lo desconocido se ignora con un aviso en el build.
+- **Ids de los H2:** se generan del texto (slug, con un sufijo si se repite).
+- **Índice «En este artículo»:** se arma con esos H2.
+- **Lead:** el primer bloque `normal` es el lead (`.prose-article > p:first-child`).
+- **Estilos:** van en `src/styles/article.css`, acotados a `.prose-article`.
+
+**Contenido inicial:** con los datos actuales se publica un solo post, «Sin contexto, no hay inteligencia. Nuestra
+tesis» / «No context, no intelligence. Our thesis» (2026-09-28), que es el único completo en los dos idiomas.
+Reemplaza al artículo de ejemplo del diseño, que tenía la misma tesis. Su slug español, mientras no exista `slugEs`,
+es el inglés; el slug en español queda en `docs/pendientes.md`. Los otros 7 posts no se publican: sus cuerpos están
+solo en inglés y 6 están marcados como no listados.
 
 ### 3.5 Fotos
 
@@ -161,8 +189,10 @@ type Photo = { src: ImageMetadata; alt: Localized<string> } | null;
 ```
 
 - **Componente:** `<Picture>` de `astro:assets` con `formats={['avif', 'webp']}`, `fallbackFormat="jpg"`, `widths={[480, 768, 1080, 1440, 1920]}` y un `sizes` según el ancho real de cada contexto:
-  - foto de industria (dentro de CONT): `(min-width: 1391px) 1108px, (min-width: 1000px) calc(93.4vw), calc(100vw - 32px)`;
-  - visor del home (dentro de CONT y de CARD-BIG, con su padding y borde): `(min-width: 1583px) 1018px, (min-width: 1000px) calc(87.6vw - 2px), calc(100vw - 60px)`;
+  - foto de industria (dentro de CONT, con el tope de 1200 px y su padding `clamp(16.4px,3.3vw,45.9px)`):
+    `(min-width: 1391px) 1109px, (min-width: 1200px) calc(1200px - 6.6vw), (min-width: 1000px) 93.4vw, calc(100vw - 32px)`;
+  - visor del home (dentro de CONT y de CARD-BIG, cuyo padding lateral es `clamp(13.1px,2.9vw,45.9px)`, más 1 px de borde por lado; máximo 1014,4 px):
+    `(min-width: 1583px) 1015px, (min-width: 1391px) calc(1106px - 5.8vw), (min-width: 1200px) calc(1198px - 12.4vw), (min-width: 1000px) calc(87.6vw - 2px), (min-width: 452px) calc(94.2vw - 34px), calc(100vw - 61px)`;
   - `quality={70}`.
 - **Carga según el contexto:**
   - En la página de industria, la foto va inmediatamente después del hero y puede entrar en el primer viewport: `loading="eager"` y `decoding="async"`.
@@ -218,6 +248,7 @@ Cada sección reproduce Inv con sus valores exactos. Acá solo se listan las dec
      - El cambio de preferencia se escucha en vivo. Si pasa a `reduce`, se detiene la alternancia; si el usuario ya había elegido un estado, se respeta, y si no, queda «con».
    - **Sin JS:** el HTML inicial es el estado **«con»** y el control queda `hidden`. Con JS el control siempre se muestra. Sin reduced motion, el script pone «sin» y arranca la alternancia cuando el bloque entra en pantalla. La sección está debajo del pliegue, así que el cambio no se ve.
    - **Nodos a 320 px:** el lienzo es un contenedor (`container-type: inline-size`) y el texto de los nodos escala con `font-size: clamp(9px, 3.4cqw, 13px)` (y el padding en proporción). Así, a 320 px los nodos con `nowrap` no se recortan ni se superponen.
+   - **URL:** Sin/Con es un estado efímero de presentación y no se refleja en la URL. Es una excepción documentada (B13).
    - **Mobile:** el H2 puede ocupar varias líneas; no se porta el `nowrap` (Inv §11.22).
    - **Contraste:** `chipOff` usa texto `#6B6B68` (4,85:1 sobre `#F4F4F2`) en lugar de `#9A9A96`, con el borde punteado `#9A9A96`. Diferencia autorizada.
 
@@ -242,6 +273,7 @@ Cada sección reproduce Inv con sus valores exactos. Acá solo se listan las dec
      - cada panel tiene `role="tabpanel"`, `aria-labelledby` y `tabindex="0"`;
      - flechas izquierda y derecha con vuelta al principio, más Home y End, que solo mueven el foco;
      - Tab desde la tab activa entra al panel.
+   - **Contenido de cada panel:** cada `tabpanel` es completo y contiene la foto de su industria (o el respaldo), el overlay con título, blurb y «Conocer más →» a su página. No se porta el overlay compartido del diseño (L185–191), que dejaba el texto fuera de las capas. Los cuatro paneles inactivos llevan `hidden`, así que quedan fuera del árbol accesible y del recorrido con Tab.
    - **JS:** los roles y atributos ARIA los pone el script al inicializar.
    - **Sin JS:** el control queda `hidden` y se ve solo el panel inicial con su botón. Las demás industrias igual son accesibles desde el header y el footer.
    - **URL:** la selección es estado efímero y no se refleja en la URL. Es una excepción documentada a la regla de URL de las guidelines (B13).
@@ -276,18 +308,18 @@ Anclas `#overview`, `#cerebro`, `#bi`, `#agentes` y `#control`. Las secciones re
 
 ### 4.5 Insights (Inv §5) y Artículo (Inv §6)
 
-- **Publicados:** solo los artículos con cuerpo. En la fase 2 es uno, `contexto-sistema-operativo`, en los dos idiomas (D11).
+- **Publicados:** los que cumplen las reglas de §3.4. Con los datos actuales es uno, el post de la tesis (D11).
 - **Lista:**
   - El destacado es el artículo más reciente.
   - La grilla tiene los demás, por fecha descendente.
   - Si no hay más artículos, la grilla no aparece.
 - **Filtros por categoría: diferidos.** No se renderizan mientras haya menos de dos categorías con artículos. Su especificación (query `?categoria=` / `?category=` con ids estables, normalización de valores inválidos, destacado y grilla según el filtro) se escribe cuando exista ese contenido, en la fase 5.
 - **Artículo:**
-  - Cabecera: «← Insights» como link, categoría (label localizado), H1 y meta (autor «NoctiLabs», fecha según §3.4 y «8 min de lectura» / «8 min read»).
+  - Cabecera: «← Insights» como link, categoría (label localizado, si hay), H1 y meta (autor «NoctiLabs», fecha según §3.4 y «N min de lectura» / «N min read»).
   - **H1 del artículo** (excepción a H1-INT): `clamp(32.8px, 4.4vw, 68.9px)`, peso 500, `line-height: 1`, `letter-spacing: -.05em` (Inv §6.1).
   - Cuerpo `.prose-article`, con el índice generado (§3.4).
   - «Seguir leyendo»: otros artículos publicados; no aparece si no hay.
-- **Fecha y minutos:** los del diseño (18 sep 2026, 8 min) son ilustrativos y quedan en `docs/pendientes.md`.
+- **Fecha y minutos:** salen de Sanity (§3.4). Destacado, tarjetas y cabecera del artículo interpolan el mismo valor con una plantilla localizada («{n} min de lectura» / «{n} min read»). No hay números escritos a mano.
 
 ### 4.6 Hablemos (Inv §7)
 
@@ -416,20 +448,22 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 | # | Criterio | Cómo se verifica |
 |---|---|---|
 | B1 | `npm run build` sin errores ni warnings y `npm test` en verde, con S1 extendida (§3.2). | Salida de los comandos. |
-| B2 | 22 rutas (20 + 2 del artículo) con `lang`, canonical, hreflang, title, descripción y H1 iguales a una tabla de **valores esperados escrita a mano** (`docs/evidence/002/b2-esperados.json`), más la 404. | Comparador como el de A4. |
+| B2 | 22 rutas (20 + 2 del artículo publicado en Sanity) con `lang`, canonical, hreflang, title, descripción y H1 iguales a una tabla de **valores esperados escrita a mano** (`docs/evidence/002/b2-esperados.json`), más la 404. | Comparador como el de A4. |
 | B3 | **Fidelidad:** matriz de secciones (Inv §1–§8) × 1440×900 y 390×844, con capturas lado a lado contra el diseño en las condiciones de A6 (textura «Ninguna», fuentes cargadas, fondo liso). Se captura por estado: antes/después en «sin» y en «con»; tarjetas en reposo y en hover; las cinco industrias del visor; y el formulario en idle, que es lo único que tiene contraparte en el diseño. Los estados nuevos del formulario se capturan como evidencia de B8 y se verifican contra §4.6. Diferencias: solo las de §7, permanentes o temporales. EN y las otras 4 industrias se comparan **estructuralmente** contra ES y Retail: mismas secciones, sin desbordes. | `docs/evidence/002/capturas/` + matriz en el README de la evidencia. |
 | B4 | **Antes/después:** alterna cada 3,6 s solo en pantalla; el primer uso del control la detiene aunque se salga y se vuelva; `aria-pressed`, H2 y pies quedan sincronizados; la región viva anuncia solo cambios manuales; con reduced motion (inicial y en vivo) no alterna, muestra «con» si no hubo una elección manual y conserva la elección manual si la hubo (se verifica en particular elegir «sin» → activar `reduce`); la descripción textual de cada diagrama coincide con el estado; sin JS se ve «con» y no hay control. | Escenario CDP + árbol de accesibilidad (CDP `Accessibility`). |
-| B5 | **Tabs de industria:** roles, nombres, `aria-controls`/`labelledby`, `aria-selected`/`tabindex`; flechas con vuelta y Home/End que solo mueven el foco; Enter, Espacio y click que activan; Tab al panel; «Conocer más» lleva a la industria del panel; con red lenta (CDP `Network.emulateNetworkConditions`) se activa una tab cuya foto no cargó y se ve el fondo del visor, sin una imagen rota; sin JS, el panel inicial y sin control. | Escenario CDP con teclado real. |
+| B5 | **Tabs de industria:** roles, nombres, `aria-controls`/`labelledby`, `aria-selected`/`tabindex`; flechas con vuelta y Home/End que solo mueven el foco; Enter, Espacio y click que activan; Tab al panel; cada panel contiene su foto, título, blurb y link, y los inactivos no están ni en el árbol accesible ni en el orden de Tab; «Conocer más» lleva a la industria del panel; con red lenta (CDP `Network.emulateNetworkConditions`) se activa una tab cuya foto no cargó y se ve el fondo del visor, sin una imagen rota; sin JS, el panel inicial y sin control. | Escenario CDP con teclado real. |
 | B6 | **Tarjetas:** ejemplo visible en reposo, en hover y en táctil, con contraste ≥ 4,5:1 en cada fondo; con reduced motion, sin desplazamiento. | Escenario CDP con media emulada + contraste calculado. |
-| B7 | **Insights y artículo:** sin filtros (una sola categoría); destacado al artículo; el índice navega a las anclas generadas; el selector de idioma lleva al artículo equivalente. Si se borra la traducción de un artículo, el build falla (prueba manual). | Escenario CDP + prueba manual de build. |
+| B7 | **Insights y artículo:** sin filtros (una sola categoría); destacado al artículo; el índice navega a las anclas generadas; el selector de idioma lleva al artículo equivalente; el header marca Insights activo; los minutos y la fecha del destacado coinciden con los de la cabecera del artículo. Reglas de §3.4, probadas a mano con un loader apuntado a datos de prueba locales (sin tocar Sanity): un post sin cuerpo en español queda excluido con su aviso, dos posts con el mismo slug quedan excluidos, y con Sanity inaccesible el build falla. | Escenario CDP + prueba manual de build. |
 | B8 | **Formulario:** sin JS, ni el click ni el Enter envían (sin pedidos de red ni navegación). Con JS: errores en línea con foco al primero, limpieza al editar, «Enviando…» visible (captura) y doble submit ignorado, estado error con el mail y valores conservados; salir con el formulario modificado dispara `beforeunload` (CDP `Page.javascriptDialogOpening`), y vacío no. Labels, `name`, `autocomplete` y tipos según §4.6; contraste de bordes ≥ 3:1. | Escenario CDP + registro de red. |
 | B9 | Cero links internos rotos, anclas incluidas, en las 22 rutas. | Script sobre `dist/`. |
 | B10 | Cero errores de consola en las 22 rutas. | CDP. |
 | B11 | JS de la fase 2 < 8192 bytes gzip por página (mismo método que A10). | Inventario por página. |
 | B12 | **Imágenes de contenido** (fotos de industria): AVIF/WebP con fallback JPG, `width`/`height`, y carga según §3.5. A 1440×900 con DPR 1, con la caché deshabilitada (`Network.setCacheDisabled`), se activa cada uno de los cinco paneles del visor y cada página de industria, se espera la carga y se registra el `currentSrc`. El archivo correspondiente en `dist/` pesa ≤ 300 KB (se mide el tamaño del archivo, no `transferSize`). Los `alt` se revisan a mano y se listan. | CDP + tamaños de `dist/` + lista en la evidencia. |
-| B13 | Revisión con web-design-guidelines sin hallazgos abiertos, salvo las excepciones de la fase 1, la URL efímera de las tabs (§4.1.6) y la transición de colores (§4.7). | Informe en la evidencia. |
+| B13 | Revisión con web-design-guidelines sin hallazgos abiertos, salvo las excepciones de la fase 1, la URL efímera de las tabs de industria (§4.1.6) y del selector Sin/Con (§4.1.2), y la transición de colores (§4.7). | Informe en la evidencia. |
 | B14 | El checklist del header vigente (75 casos al cerrar la fase 1, o el que esté vigente) sigue en verde. | Re-ejecución. |
-| B15 | **Accesibilidad manual:** recorrido completo con teclado en cada página (orden, foco visible y no tapado por el header, sin trampas). **Reflow a 320 CSS px** (WCAG 1.4.10): sin scroll horizontal **y** sin contenido recortado, superpuesto ni perdido (texto completo de nodos, tarjetas, chips y formulario), revisado sobre capturas de página completa. **Zoom 200 %** (WCAG 1.4.4): equivale al zoom del navegador sobre una ventana de 1280×800, emulado con `deviceScaleFactor: 2` y un layout de 640×400 CSS px. Se revisa que el texto quede legible, con un tamaño renderizado de al menos el doble que al 100 %, sin recortes ni superposiciones, y con los controles operables y el foco visible. Va separado del reflow a 320 px. **Árbol de accesibilidad** de cada sección interactiva: nombres, roles y regiones vivas. No hay un lector de pantalla disponible; queda declarado como límite. | Escenario CDP + capturas a 320 px y al 200 %. |
+| B15 | **Accesibilidad manual:** recorrido completo con teclado en cada página (orden, foco visible y no tapado por el header, sin trampas). **Reflow a 320 CSS px** (WCAG 1.4.10): sin scroll horizontal **y** sin contenido recortado, superpuesto ni perdido (texto completo de nodos, tarjetas, chips y formulario), revisado sobre capturas de página completa. **Zoom del navegador** (WCAG 1.4.4), por separado del reflow a 320 px. Se emula sobre una ventana de 1280×800 con `deviceScaleFactor` = zoom y un layout de 1280/zoom CSS px, en los pasos 125 %, 150 %, 175 % y 200 %. En cada paso se revisa:
+  - **Ampliación efectiva:** el texto de cuerpo (16 px) se representa a 16 × zoom px de dispositivo. Los títulos display pueden cambiar de escala al cruzar un breakpoint, que WCAG permite cuando el texto se puede ampliar con otro nivel de zoom, pero nunca quedan por debajo de su tamaño renderizado al 100 %. Al 400 % (layout de 320 px), cada título display se representa al menos al doble de su tamaño al 100 %.
+  - **Layout:** sin recortes, sin superposiciones ni contenido perdido, con los controles operables y el foco visible. **Árbol de accesibilidad** de cada sección interactiva: nombres, roles y regiones vivas. No hay un lector de pantalla disponible; queda declarado como límite. | Escenario CDP: tabla de tamaños renderizados por paso de zoom, más capturas a 320 px y al 200 %. |
 | B16 | gpt-6.1-sol aprueba el spec antes de empezar y la implementación con la evidencia B1–B15 sobre un mismo commit. | Veredicto con hash. |
 
 ## 9. Decisiones y pendientes
@@ -441,7 +475,7 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 - **D8. Industrias sin copy.** Lo redacto yo, con `draft: true`.
 - **D9. Equipo.** Oculto hasta tener datos reales.
 - **D10. Fotos.** Las del cuadro de §3.5. La foto de depósito del diseño pasa a Retail, porque coincide con su placeholder, y Consumo y Servicios usan fotogramas de los clips de stock de Artlist que el dueño ya usó en el video del hero. Diferencia autorizada en §7.
-- **D11. Insights.** Se publica solo el artículo con cuerpo.
+- **D11. Insights.** Desde Sanity (proyecto existente) y solo los posts bilingües completos (§3.4). Hoy es uno: la tesis del 28/9.
 - **D12. Terminología.** «Cerebro operativo» y «organizacional» como en el diseño.
 
 `docs/pendientes.md` es el registro de lo que **la fase 5 tiene que cerrar antes del lanzamiento (fase 6)**. Para cada ítem hay que tener el contenido real entregado o una exclusión final aceptada por el dueño:
@@ -449,8 +483,8 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 - revisión del inglés (D4);
 - aprobación del copy de 4 industrias (D8);
 - equipo (D9);
-- artículos 2–6 o su exclusión (D11);
-- fecha y minutos reales del artículo;
+- deploy del Studio con el schema extendido (`npx sanity deploy` con la cuenta del dueño);
+- slug en español y `topic` del post de la tesis, y la decisión sobre los otros 7 posts del blog viejo (traducir, marcar para Insights o dejarlos afuera) (D11);
 - terminología (D12);
 - licencia de las fotos de stock en web (D10).
 
@@ -458,8 +492,8 @@ El gate técnico no aprueba ese contenido como final.
 
 ## 10. Plan
 
-1. **S1 extendida con TDD** (§3.2), en rebanadas rojo/verde separadas para `href`, `alternates`, `pageFromPath` y tipos. Incluye el registro `ARTICLE_SLUGS` y los artículos en `PAGES`. Se verifica con B1.
-2. **Contenido tipado y primitivas:** `meta.ts`, `content/pages`, `industries.ts` extendido, la colección con su validación y las páginas de artículo. Se verifica con B1 y B2.
+1. **S1 enmendada con TDD** (§3.2): primero los tests en rojo, después el código. Se eliminan `ARTICLE_SLUGS` y los artículos de `PAGES`, y el `page` se pasa a header, footer y selector. Se verifica con B1.
+2. **Contenido tipado y primitivas** (`meta.ts`, `content/pages`, `industries.ts` extendido), **loader de Sanity** con sus reglas, Studio con el schema extendido y páginas de artículo. Se verifica con B1 y B2.
 3. **Home** (sin la isla). Se verifica con B3–B6.
 4. **Producto.** Se verifica con B3.
 5. **Industrias** (plantilla + 5, con fotos). Se verifica con B3 y B12.
