@@ -23,7 +23,7 @@ export interface Industry {
   questions: [Question, Question, Question, Question];
   agents: [Item, Item, Item, Item];
   why: [Why, Why, Why, Why];
-  /** true = copy redactado sin diseño fuente, pendiente de aprobación del dueño (D8, docs/pendientes.md). */
+  /** true = copy redactado sin diseño fuente, pendiente de aprobación del dueño. */
   draft: boolean;
 }
 

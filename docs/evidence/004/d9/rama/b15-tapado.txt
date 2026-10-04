@@ -1,2 +1,0 @@
-1440 /industrias/manufactura/ {"foco":"Retail y distribución →","rect":[348,472,529,512],"capsula":[371,10,1069,66],"scrollY":2418,"enCentro":"el propio link"}
-390 /insights/no-context-no-intelligence/ {"foco":"← Insights","rect":[16,84,125,122],"capsula":[101,10,289,66],"scrollY":18,"enCentro":"el propio link"}

@@ -1,5 +1,5 @@
 // Datos del responsable y textos legales del formulario y de la política (spec 004 §2.2 y §2.4).
-// BORRADOR pendiente de revisión profesional (docs/pendientes.md). Los marcadores los reemplaza el dueño.
+// BORRADOR pendiente de revisión profesional. Los marcadores los reemplaza el dueño.
 import type { Localized } from './types';
 import { CONTACT_EMAIL } from './pages/hablemos';
 

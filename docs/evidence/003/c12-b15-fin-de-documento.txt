@@ -1,3 +1,0 @@
-http://127.0.0.1:4981 (tal cual) · último: BUTTON Pausar fondo → Tab → body
-http://127.0.0.1:4983 (tal cual) · último: A EN → Tab → A Saltar al contenido
-http://127.0.0.1:4983 btn · último: BUTTON prueba → Tab → body

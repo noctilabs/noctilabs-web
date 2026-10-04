@@ -1,7 +1,0 @@
-OK    320 /insights/: scrollWidth 320; con el identificador largo: ["p.f-excerpt right=271"]
-OK    320 /en/insights/: scrollWidth 320; con el identificador largo: ["p.f-excerpt right=271"]
-OK    320 /insights/gate-cuerpo/: scrollWidth 320; con el identificador largo: ["p.lead right=287","h2 right=287","blockquote right=287","p right=259"]
-OK    320 /en/insights/gate-cuerpo/: scrollWidth 320; con el identificador largo: ["p.lead right=287","h2 right=287","blockquote right=287","p right=259"]
-OK    control negativo: el recorte por ancestro se detecta — ["recortado por ancestro div «Controlnegativoconunapalabramu»: span «Controlnegativoconunapalabramu»"]
-consola: []
-fallas: 0

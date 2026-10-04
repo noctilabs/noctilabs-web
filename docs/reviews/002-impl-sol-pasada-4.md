@@ -1,9 +1,0 @@
-GATE: SÍ
-
-1. **MENOR — `src/lib/insights.ts:40`, `:83`. La normalización conserva niveles de lista inválidos y pierde la semántica sin aviso.** Reproduje en memoria un bloque `style: "normal", listItem: "bullet", level: "2"` con un span válido. Se publica como `<p class="lead">Hola.</p>`, sin viñeta ni estructura de lista. También ocurre con `level` objeto. F8–F10 no cubren este campo. **Arreglo:** normalizar `level` a un entero positivo, usando 1 con aviso cuando sea inválido, y verificar manualmente listas simples y anidadas en ES/EN.
-
-2. **MENOR — `src/lib/insights.ts:101–104`. `safeHref()` admite URLs HTTP que no se pueden resolver.** Reproduje `https://`, `http:` y `http://[`: devuelve esos valores y el renderer genera enlaces, aunque `new URL()` los rechaza. El cierre de P3 conserva los parámetros, pero sigue faltando validar la resolución pedida en P1 #3. **Arreglo:** validar con `new URL(href, base)`, rechazar destinos inválidos y conservar la forma relativa y los parámetros codificados. Agregar estos casos a la comprobación manual de B7.
-
-3. **MENOR — `src/components/sections/home/BeforeAfter.astro:29`; `src/components/sections/home/Industries.astro:25`. Falta la primitiva `Segmented` exigida por §3.6.** Ambos componentes implementan `.seg` por separado; `src/components/ui/` no contiene `Segmented.astro`. **Arreglo:** extraer el envoltorio visual compartido, dejando roles, atributos y comportamiento en sus consumidores, como establece el spec.
-
-Revisión sobre `f78d5ca`, código `95711e2`. No quedan bloqueantes reproducidos de P1–P3. Build: salida 0; B2: 207/207. Vitest bloqueado por `EPERM`, sin contarlo como hallazgo. Verifiqué los fixtures en memoria y la evidencia adjunta; no había navegador conectado para repetir CDP.

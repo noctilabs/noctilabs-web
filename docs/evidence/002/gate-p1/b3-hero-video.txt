@@ -1,4 +1,0 @@
-1440 ref: {"video":true,"src":"hero.webm","t":0,"ready":4,"paused":true,"w":1920,"rect":[0,0,1440,900],"fit":"cover","pos":"50% 50%"}
-1440 new: {"video":true,"src":"hero.webm","t":0,"ready":4,"paused":true,"w":1920,"rect":[0,0,1440,900],"fit":"cover","pos":"50% 50%"}
-390 ref: {"video":true,"src":"hero.webm","t":0,"ready":4,"paused":true,"w":1920,"rect":[0,0,390,844],"fit":"cover","pos":"50% 50%"}
-390 new: {"video":true,"src":"hero.webm","t":0,"ready":4,"paused":true,"w":1920,"rect":[0,0,390,844],"fit":"cover","pos":"50% 50%"}

@@ -1,9 +1,0 @@
-
- RUN  v5.0.3 C:/Users/adria/OneDrive/Escritorio/TOODO/noctilabs-web
-
-
- Test Files  1 passed (1)
-      Tests  82 passed (82)
-   Start at  08:15:08
-   Duration  323ms (transform 50%, import 25%, tests 14%, worker 11%)
-

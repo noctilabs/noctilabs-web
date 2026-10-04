@@ -1,5 +1,0 @@
-OK    dist-fixture/ (prod-prueba): 5 problemas — NO-PUBLICAR.txt y «DATOS DE PRUEBA», sin marcadores. Ej.: en/contact/index.html: texto «DATOS DE PRUEBA» · en/privacy/index.html: texto «DATOS DE PRUEBA» · hablemos/index.html: texto «DATOS DE PRUEBA»
-OK    dist/ (base): 12 problemas, todos marcadores legales. Ej.: en/contact/index.html: marcador legal [RAZÓN SOCIAL] · en/contact/index.html: marcador legal [RUT] · en/contact/index.html: marcador legal [DOMICILIO]
-   páginas con marcadores: en/contact/index.html, en/privacy/index.html, hablemos/index.html, privacidad/index.html
-
-RESULTADO chequeo de artefacto: OK
