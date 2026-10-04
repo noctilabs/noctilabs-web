@@ -9,11 +9,18 @@ export function initTabs(root: HTMLElement): void {
   const tabs = [...list.querySelectorAll<HTMLButtonElement>('[data-tab]')];
   const panels = tabs.map((t) => document.getElementById(t.dataset.tab!)!);
 
-  const select = (i: number) => tabs.forEach((t, j) => {
-    t.setAttribute('aria-selected', String(i === j));
-    t.tabIndex = i === j ? 0 : -1;
-    panels[j]!.hidden = i !== j;
-  });
+  // tabindex itinerante: 0 en la tab con foco mientras el foco está en el tablist, y de vuelta en la seleccionada
+  // al salir, así Tab y Shift+Tab salen del grupo desde cualquier tab y la reentrada cae en la seleccionada.
+  let selected = 0;
+  const rove = (k: number) => tabs.forEach((t, j) => { t.tabIndex = j === k ? 0 : -1; });
+  const select = (i: number) => {
+    selected = i;
+    rove(i);
+    tabs.forEach((t, j) => {
+      t.setAttribute('aria-selected', String(i === j));
+      panels[j]!.hidden = i !== j;
+    });
+  };
 
   list.setAttribute('role', 'tablist');
   tabs.forEach((t, i) => {
@@ -34,7 +41,11 @@ export function initTabs(root: HTMLElement): void {
     const j = moves[e.key];
     if (i < 0 || j === undefined) return;
     e.preventDefault();
+    rove(j);
     tabs[j]!.focus();
+  });
+  list.addEventListener('focusout', (e) => {
+    if (!list.contains(e.relatedTarget as Node | null)) rove(selected);
   });
 
   select(Math.max(0, panels.findIndex((p) => !p.hidden)));
