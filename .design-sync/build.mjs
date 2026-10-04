@@ -30,7 +30,8 @@ w('fonts/fonts.css', `@font-face { font-family: 'Inter Variable'; font-style: no
 w('tokens/tokens.css', readFileSync(r('src/styles/tokens.css'), 'utf8'));
 const base = readFileSync(r('src/styles/global.css'), 'utf8').replace(/^@import[^\n]*\n/m, '');
 w('tokens/base.css', `/* De src/styles/global.css. */\n${base}`);
-w('styles.css', `@import './fonts/fonts.css';\n@import './tokens/tokens.css';\n@import './tokens/base.css';\n`);
+w('tokens/article.css', readFileSync(r('src/styles/article.css'), 'utf8'));
+w('styles.css', `@import './fonts/fonts.css';\n@import './tokens/tokens.css';\n@import './tokens/base.css';\n@import './tokens/article.css';\n`);
 
 // Isotipo.
 w('guidelines/mark.svg', markSvg('#0B0B0C', '#0047FF'));
@@ -54,10 +55,14 @@ w('components/foundations/Colors/Colors.html', card('Foundations', 'Colors',
   `.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px}.sw{height:72px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--line)}.n{font-size:14px;margin-top:8px}`));
 
 w('components/foundations/Typography/Typography.html', card('Foundations', 'Typography', `
-<div class="k">Display · var(--display) · 400 · -.045em · lh 1</div>
+<div class="k">.h1-int · var(--display) · 500 · -.05em (páginas interiores)</div>
+<h1 class="h1-int" style="margin:8px 0 32px">Software a medida</h1>
+<div class="k">Home hero h1 · var(--display) · 400 · -.045em (solo sobre foto)</div>
 <h1 style="margin:8px 0 32px;font-size:var(--display);font-weight:400;line-height:1;letter-spacing:-.045em">Software a medida</h1>
-<div class="k">H2 · var(--h2)</div>
-<h2 style="margin:8px 0 32px;font-size:var(--h2);font-weight:400;line-height:1.05;letter-spacing:-.04em">Lo que construimos</h2>
+<div class="k">.h2 · var(--h2) · 500 · -.045em</div>
+<h2 class="h2" style="margin:8px 0 32px">Lo que construimos</h2>
+<div class="k">.lead-hero · 17 / 1.5 · muted</div>
+<p class="lead-hero" style="margin:8px 0 32px">Bajada bajo el titular de una página interior.</p>
 <div class="k">Body · Inter 16 / 1.55</div>
 <p style="margin:8px 0 32px;max-width:60ch">Diseñamos y desarrollamos producto digital para empresas que necesitan algo más que una plantilla.</p>
 <div class="k">Muted · var(--muted)</div>
@@ -72,13 +77,51 @@ ${['pill', 'capsule', 'card'].map((n) => `<div><div style="width:160px;height:96
 <p class="k" style="margin-top:32px">--edge: gutter lateral (16px móvil, clamp en ≥1000px) · breakpoint único 1000px · footer max-width 1200px</p>`));
 
 w('components/brand/Buttons/Buttons.html', card('Brand', 'Buttons', `
-<div class="k">Sobre claro (header CTA)</div>
-<div style="display:flex;gap:12px;margin:12px 0 32px"><a class="b-nav" href="#">Hablemos</a></div>
-<div class="k">Sobre oscuro / foto (hero)</div>
-<div style="display:flex;gap:12px;margin-top:12px;padding:32px;background:var(--ink-hover);border-radius:var(--radius-card)"><a class="b-solid" href="#">Hablemos</a><a class="b-ghost" href="#">Ver producto</a></div>`,
-  `.b-nav{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.01em;padding:9px 16px;border-radius:var(--radius-pill);background:var(--ink);color:var(--white);text-decoration:none}
-.b-solid,.b-ghost{padding:17px 30px;border-radius:var(--radius-pill);font-size:16px;font-weight:500;text-decoration:none}
-.b-solid{background:var(--white);color:var(--ink)}.b-ghost{box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);color:var(--white)}`));
+<div class="k">Button · dark · md (16×26, 15px) / lg (17×30, 16px)</div>
+<div style="display:flex;gap:12px;align-items:center;margin:12px 0 32px"><a class="btn v-dark s-md" href="#">Hablemos</a><a class="btn v-dark s-lg" href="#">Hablemos</a></div>
+<div class="k">Button · white / ghost-light (sobre oscuro o foto)</div>
+<div style="display:flex;gap:12px;margin:12px 0 32px;padding:32px;background:var(--dark);border-radius:var(--radius-card)"><a class="btn v-white s-lg" href="#">Hablemos</a><a class="btn v-ghost-light s-lg" href="#">Ver producto</a></div>
+<div class="k">CTA del header (mono)</div>
+<div style="display:flex;gap:12px;margin-top:12px"><a class="b-nav" href="#">Hablemos</a></div>`,
+  // Mismas reglas que src/components/ui/Button.astro.
+  `.btn{display:inline-block;border-radius:var(--radius-pill);font-weight:500;white-space:nowrap;text-decoration:none}
+.s-md{padding:16px 26px;font-size:15px}.s-lg{padding:17px 30px;font-size:16px}
+.v-dark{background:var(--ink);color:var(--white)}.v-white{background:var(--white);color:var(--ink)}
+.v-ghost-light{box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);color:var(--white)}
+.b-nav{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.01em;padding:9px 16px;border-radius:var(--radius-pill);background:var(--ink);color:var(--white);text-decoration:none}`));
+
+const PANEL_R = 'clamp(19.7px,2.5vw,29.5px)';
+w('components/brand/Surfaces/Surfaces.html', card('Brand', 'Card big & Dark big', `
+<div class="k">CardBig · blanco, borde --line</div>
+<div style="margin:12px 0 32px;background:var(--white);border:1px solid var(--line);border-radius:${PANEL_R};padding:clamp(32.8px,4.9vw,72.2px) clamp(13.1px,2.9vw,45.9px) clamp(13.1px,2.9vw,45.9px)">
+<h2 class="h2">Un sistema, cinco industrias</h2><p class="lead-hero" style="margin-top:14px">Contenido del panel.</p></div>
+<div class="k">DarkBig · --dark, texto --bg</div>
+<div style="margin-top:12px;background:var(--dark);color:var(--bg);border-radius:${PANEL_R};padding:clamp(32.8px,4.9vw,65.6px) clamp(16.4px,3.3vw,52.5px)">
+<span class="k" style="color:#9FBEFF">Nocti</span><h2 class="h2" style="margin-top:14px">Hablemos de tu operación</h2></div>`));
+
+w('components/brand/Kicker/Kicker.html', card('Brand', 'Kicker', `
+<div style="display:flex;flex-direction:column;gap:16px">
+<span class="kk" style="color:var(--muted)">muted · 12px</span>
+<span class="kk" style="color:var(--blue-link)">link</span>
+<div style="background:var(--dark);padding:20px 24px;border-radius:var(--radius-card);display:flex;gap:24px"><span class="kk" style="color:#7A7A80">dark-muted</span><span class="kk" style="color:#9FBEFF">dark-accent</span></div>
+</div>`, `.kk{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;line-height:1.4}`));
+
+w('components/layout/HeadRow/HeadRow.html', card('Layout', 'Container & HeadRow', `
+<section style="max-width:1200px;margin:0 auto;padding:0 var(--edge)">
+<div style="display:flex;flex-wrap:wrap;gap:20px 64px;align-items:flex-end">
+<div style="flex:2 1 520px;display:flex;flex-direction:column;gap:14px;min-width:0"><span class="k">Producto</span><h2 class="h2">Todo tu negocio en un sistema</h2></div>
+<p style="flex:1 1 320px;margin:0;font-size:16px;color:var(--muted)">La bajada va a la derecha, alineada abajo con el título, y cae debajo en móvil.</p>
+</div></section>
+<p class="k" style="margin-top:40px">Container: max-width 1200 · padding 0 var(--edge) · margen superior clamp(32.8px,4.9vw,72.2px) (home) o clamp(45.9px,5.7vw,85.3px) (interiores)</p>`));
+
+w('components/layout/Article/Article.html', card('Layout', 'Article prose', `
+<div class="prose-article">
+<p class="lead">Lead del artículo: más grande y en tinta.</p>
+<p>Párrafo de cuerpo en --body-2, 16 / 1.65, con un <a href="#">link</a>.</p>
+<h2>Subtítulo del artículo</h2>
+<ul><li>Primer punto</li><li>Segundo punto</li></ul>
+<blockquote><p>Una cita destacada con fondo --bg.</p></blockquote>
+</div>`, `body{background:var(--white)}`));
 
 w('components/brand/Mark/Mark.html', card('Brand', 'Mark', `
 <div style="display:flex;gap:32px;align-items:center">
@@ -96,5 +139,5 @@ w('components/brand/Header/Header.html', card('Brand', 'Glass capsule header', `
 
 // README: convenciones + índice.
 const conventions = readFileSync(r('.design-sync/conventions.md'), 'utf8');
-w('README.md', `${conventions.trim()}\n\n---\n\n## Archivos\n\n- \`styles.css\`: entrada única (fuentes + tokens + base).\n- \`tokens/tokens.css\`: todos los tokens (\`:root\`, con override en \`@media (min-width: 1000px)\`).\n- \`tokens/base.css\`: reset y estilos base de body, links y foco.\n- \`guidelines/mark.svg\`, \`guidelines/mark-inverse.svg\`: isotipo.\n- \`components/foundations/*\`, \`components/brand/*\`: tarjetas de referencia (HTML + CSS, no hay componentes JS).\n`);
+w('README.md', `${conventions.trim()}\n\n---\n\n## Archivos\n\n- \`styles.css\`: entrada única (fuentes + tokens + base).\n- \`tokens/tokens.css\`: todos los tokens (\`:root\`, con override en \`@media (min-width: 1000px)\`).\n- \`tokens/base.css\`: reset, estilos base y clases compartidas (\`.h1-int\`, \`.h2\`, \`.lead-hero\`, \`.sr-only\`).\n- \`tokens/article.css\`: \`.prose-article\` para cuerpo de artículos.\n- \`guidelines/mark.svg\`, \`guidelines/mark-inverse.svg\`: isotipo.\n- \`components/foundations/*\`, \`components/brand/*\`, \`components/layout/*\`: tarjetas de referencia (HTML + CSS, no hay componentes JS).\n`);
 console.log('ds-bundle listo');
