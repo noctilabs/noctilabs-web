@@ -20,7 +20,7 @@ del gate de implementación están en `docs/reviews/001-impl-sol-pasada-*.md`.
 | A7 | **78/78** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, link presionado y sostenido (el caso de Safari), callbacks de foco viejos frente a una apertura nueva, hover que no cancela un cierre por pérdida de foco, click central sostenido sobre links de los dos paneles (sin cerrar, sin navegar la pestaña original y con la pestaña nueva en el destino), tabindex explícito en los 26 links de los paneles, selección de texto dentro del panel, skip link y `aria-current`. | `a7-a8-checklist.txt` |
 | A8 | 0 errores de consola en las 20 rutas. | `a7-a8-checklist.txt` (último caso) |
 | A9 | Revisión con web-design-guidelines: abajo. | — |
-| A10 | Máximo 2016 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
+| A10 | Máximo 1975 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
 
 ## A6 — diferencias con el diseño
 
