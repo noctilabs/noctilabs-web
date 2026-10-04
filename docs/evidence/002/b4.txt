@@ -1,8 +1,8 @@
-# B4 — antes/después, ES (escenario home/b4.mjs)
+# B4 — antes/después, ES (escenario home/b4.mjs, sin cambios desde la primera pasada)
 OK    JS: control visible y estado inicial «sin» (bloque fuera de pantalla) → {"state":"sin","pressed":"sin=true,con=false","live":"","controlHidden":false,"h2":"Cómo operan hoy las empresas.","caps":["SIN NOCTI Fragmentado Información y conocimiento dispersos.","SIN NOCTI Genérico La IA conoce el modelo, no tu empresa.","SIN NOCTI Aislado Personas, aplicaciones y agentes trabajan por separado."],"closeVis":"hidden"}
 OK    fuera de pantalla no alterna (4,2 s) → []
-OK    en pantalla alterna: con → sin → [["con",8396],["sin",11990]]
-OK    período ≈ 3600 ms → [3594]
+OK    en pantalla alterna: con → sin → [["con",8413],["sin",12009]]
+OK    período ≈ 3600 ms → [3596]
 OK    la alternancia automática no escribe en la región viva → ""
 OK    pestaña oculta: no alterna
 OK    pestaña visible otra vez: retoma
@@ -12,7 +12,7 @@ OK    auto: árbol accesible con H2, descripciones y botones de «sin» (nada de
 OK    «sin»: cierre con visibility:hidden y fuera del árbol accesible → "hidden"
 OK    click en «Con»: región viva con el texto de «con» → "Con Nocti: Cómo pueden operar."
 OK    manual: data-state, aria-pressed, H2 y pies en «con» → {"state":"con","pressed":"sin=false,con=true","live":"Con Nocti: Cómo pueden operar.","controlHidden":false,"h2":"Cómo pueden operar.","caps":["CON NOCTI Conectado Tus sistemas y fuentes de conocimiento, conectados en una misma capa.","CON NOCTI Contextualizado La IA entiende cómo funciona tu empresa: procesos, reglas, relaciones y excepciones.","CON NOCTI Coordinado Personas, aplicaciones y agentes trabajan sobre el mismo contexto, con permisos y trazabilidad."],"closeVis":"visible"}
-OK    manual: árbol accesible con H2, descripciones y botones de «con» (nada del otro estado)
+FALLA manual: árbol accesible con H2, descripciones y botones de «con» (nada del otro estado) → ["StaticText:ANTES Y DESPUÉS","heading:Cómo pueden operar.","StaticText:Cómo pueden operar.","group:Antes y después","button:Sin Nocti[pressed=false]","StaticText:Sin ","StaticText:Nocti","button:Con Nocti[pressed=true]","StaticText:Con ","StaticText:Nocti","StaticText:Elegir una vista detiene la animación automática.","StaticText:ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados a una misma capa de conexión de ","StaticText:Nocti","StaticText:.","StaticText:CON ","StaticText:NOCTI","StaticText:Conectado","StaticText:Tus sistemas y fuentes de conocimiento, conectados en una misma capa.","StaticText:ERP, CRM, documentos y personas alimentan un contexto empresarial construido por ","StaticText:Nocti","StaticText:, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.","StaticText:CON ","StaticText:NOCTI","StaticText:Contextualizado","StaticText:La IA entiende cómo funciona tu empresa: procesos, reglas, relaciones y excepciones.","StaticText:Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones conectados a un contexto compartido de ","StaticText:Nocti","StaticText:, con permisos verificados.","StaticText:CON ","StaticText:NOCTI","StaticText:Coordinado","StaticText:Personas, aplicaciones y agentes trabajan sobre el mismo contexto, con permisos y trazabilidad.","StaticText:Tus sistemas siguen siendo tus sistemas.","StaticText:Nocti","StaticText: los conecta, los contextualiza y los vuelve utilizables por personas e IA.","paragraph:[live=polite]","StaticText:Con Nocti: Cómo pueden operar."]
 OK    región viva polite y persistente en el árbol → ["paragraph:[live=polite]"]
 OK    con «con» el cierre vuelve al árbol
 OK    tras el primer uso no alterna más, aunque se salga y se vuelva → []
@@ -30,18 +30,18 @@ OK    antes de reduce: «sin» por la alternancia
 OK    reduce en vivo sin elección: queda «con» → "con"
 OK    reduce en vivo: no alterna más
 OK    elección manual «sin» → reduce en vivo: se conserva «sin» → "sin"
-OK    … y no alterna → [["sin",758]]
+OK    … y no alterna → [["sin",803]]
 OK    sin JS: «con», control oculto y cierre visible → {"state":"con","controlHidden":true,"display":"none","h2":"Cómo pueden operar.","close":"visible"}
-OK    sin JS: árbol sin botones y con las descripciones de «con» → []
+FALLA sin JS: árbol sin botones y con las descripciones de «con» → []
 
 consola: []
-fallas: 0
+fallas: 2
 
 # B4 — EN
-OK    JS: control visible y estado inicial «sin» (bloque fuera de pantalla) → {"state":"sin","pressed":"sin=true,con=false","live":"","controlHidden":false,"h2":"How companies operate today.","caps":["WITHOUT NOCTI Fragmented Scattered information and knowledge.","WITHOUT NOCTI Generic AI knows the model, not your company.","WITHOUT NOCTI Isolated People, applications and agents work separately."],"closeVis":"visible"}
+OK    JS: control visible y estado inicial «sin» (bloque fuera de pantalla) → {"state":"sin","pressed":"sin=true,con=false","live":"","controlHidden":false,"h2":"How companies operate today.","caps":["WITHOUT NOCTI Fragmented Scattered information and knowledge.","WITHOUT NOCTI Generic AI knows the model, not your company.","WITHOUT NOCTI Isolated People, applications and agents work separately."],"closeVis":"hidden"}
 OK    fuera de pantalla no alterna (4,2 s) → []
-OK    en pantalla alterna: con → sin → [["con",8367],["sin",11967]]
-OK    período ≈ 3600 ms → [3600]
+OK    en pantalla alterna: con → sin → [["con",8263],["sin",11856]]
+OK    período ≈ 3600 ms → [3593]
 OK    la alternancia automática no escribe en la región viva → ""
 OK    pestaña oculta: no alterna
 OK    pestaña visible otra vez: retoma
@@ -51,7 +51,7 @@ OK    auto: árbol accesible con H2, descripciones y botones de «sin» (nada de
 OK    «sin»: cierre con visibility:hidden y fuera del árbol accesible → "hidden"
 OK    click en «Con»: región viva con el texto de «con» → "With Nocti: How they could operate."
 OK    manual: data-state, aria-pressed, H2 y pies en «con» → {"state":"con","pressed":"sin=false,con=true","live":"With Nocti: How they could operate.","controlHidden":false,"h2":"How they could operate.","caps":["WITH NOCTI Connected Your systems and knowledge sources, connected in a single layer.","WITH NOCTI Contextualized AI understands how your company works: processes, rules, relationships and exceptions.","WITH NOCTI Coordinated People, applications and agents work on the same context, with permissions and traceability."],"closeVis":"visible"}
-OK    manual: árbol accesible con H2, descripciones y botones de «con» (nada del otro estado)
+FALLA manual: árbol accesible con H2, descripciones y botones de «con» (nada del otro estado) → ["StaticText:BEFORE AND AFTER","heading:How they could operate.","StaticText:How they could operate.","group:Before and after","button:Without Nocti[pressed=false]","StaticText:Without ","StaticText:Nocti","button:With Nocti[pressed=true]","StaticText:With ","StaticText:Nocti","StaticText:Choosing a view stops the automatic animation.","StaticText:ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single ","StaticText:Nocti","StaticText: connection layer.","StaticText:WITH ","StaticText:NOCTI","StaticText:Connected","StaticText:Your systems and knowledge sources, connected in a single layer.","StaticText:ERP, CRM, documents and people feed a business context built by ","StaticText:Nocti","StaticText:, with processes, rules, relationships and exceptions, and that context feeds the AI.","StaticText:WITH ","StaticText:NOCTI","StaticText:Contextualized","StaticText:AI understands how your company works: processes, rules, relationships and exceptions.","StaticText:Sales, Finance, Operations, the sales agent, the collections agent and the applications connected to a shared ","StaticText:Nocti","StaticText: context, with verified permissions.","StaticText:WITH ","StaticText:NOCTI","StaticText:Coordinated","StaticText:People, applications and agents work on the same context, with permissions and traceability.","StaticText:Your systems are still your systems.","StaticText:Nocti","StaticText: connects them, puts them in context and makes them usable by people and AI.","paragraph:[live=polite]","StaticText:With Nocti: How they could operate."]
 OK    región viva polite y persistente en el árbol → ["paragraph:[live=polite]"]
 OK    con «con» el cierre vuelve al árbol
 OK    tras el primer uso no alterna más, aunque se salga y se vuelva → []
@@ -69,9 +69,27 @@ OK    antes de reduce: «sin» por la alternancia
 OK    reduce en vivo sin elección: queda «con» → "con"
 OK    reduce en vivo: no alterna más
 OK    elección manual «sin» → reduce en vivo: se conserva «sin» → "sin"
-OK    … y no alterna → [["sin",758]]
+OK    … y no alterna → [["sin",756]]
 OK    sin JS: «con», control oculto y cierre visible → {"state":"con","controlHidden":true,"display":"none","h2":"How they could operate.","close":"visible"}
-OK    sin JS: árbol sin botones y con las descripciones de «con» → []
+FALLA sin JS: árbol sin botones y con las descripciones de «con» → []
 
 consola: []
+fallas: 2
+
+# B4 — verificación complementaria de las descripciones (home/b4-desc.mjs): texto accesible concatenado por descripción, ES
+OK    con JS, «con»: texto accesible de las 3 descripciones = esperado y ninguna del otro estado → ["ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados a una misma capa de conexión de Nocti.","ERP, CRM, documentos y personas alimentan un contexto empresarial construido por Nocti, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.","Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones conectados a un contexto compartido de Nocti, con permisos verificados."]
+OK    con JS, «sin»: texto accesible de las 3 descripciones = esperado y ninguna del otro estado → ["ERP, CRM, planillas, personas, mails, WhatsApp y documentos dispersos, sin conexión entre sí.","Una IA genérica, sin conexión con el ERP, el CRM, los documentos ni las personas. Procesos, reglas, relaciones y excepciones quedan sueltos.","Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones trabajan por separado, sin conexión entre sí."]
+OK    con JS, «con»: texto accesible de las 3 descripciones = esperado y ninguna del otro estado → ["ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados a una misma capa de conexión de Nocti.","ERP, CRM, documentos y personas alimentan un contexto empresarial construido por Nocti, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.","Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones conectados a un contexto compartido de Nocti, con permisos verificados."]
+OK    sin JS: descripciones de «con» y ningún botón visible → {"got":["ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados a una misma capa de conexión de Nocti.","ERP, CRM, documentos y personas alimentan un contexto empresarial construido por Nocti, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.","Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones conectados a un contexto compartido de Nocti, con permisos verificados."],"buttons":0}
+translate="no" dentro de las descripciones: ["Nocti","Nocti","Nocti"]
+
+fallas: 0
+
+# B4 — verificación complementaria, EN
+OK    con JS, «con»: texto accesible de las 3 descripciones = esperado y ninguna del otro estado → ["ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single Nocti connection layer.","ERP, CRM, documents and people feed a business context built by Nocti, with processes, rules, relationships and exceptions, and that context feeds the AI.","Sales, Finance, Operations, the sales agent, the collections agent and the applications connected to a shared Nocti context, with verified permissions."]
+OK    con JS, «sin»: texto accesible de las 3 descripciones = esperado y ninguna del otro estado → ["ERP, CRM, spreadsheets, people, email, WhatsApp and documents scattered, with no connection between them.","A generic AI with no connection to the ERP, the CRM, documents or people. Processes, rules, relationships and exceptions are left loose.","Sales, Finance, Operations, the sales agent, the collections agent and the applications work separately, with no connection between them."]
+OK    con JS, «con»: texto accesible de las 3 descripciones = esperado y ninguna del otro estado → ["ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single Nocti connection layer.","ERP, CRM, documents and people feed a business context built by Nocti, with processes, rules, relationships and exceptions, and that context feeds the AI.","Sales, Finance, Operations, the sales agent, the collections agent and the applications connected to a shared Nocti context, with verified permissions."]
+OK    sin JS: descripciones de «con» y ningún botón visible → {"got":["ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single Nocti connection layer.","ERP, CRM, documents and people feed a business context built by Nocti, with processes, rules, relationships and exceptions, and that context feeds the AI.","Sales, Finance, Operations, the sales agent, the collections agent and the applications connected to a shared Nocti context, with verified permissions."],"buttons":0}
+translate="no" dentro de las descripciones: ["Nocti","Nocti","Nocti"]
+
 fallas: 0

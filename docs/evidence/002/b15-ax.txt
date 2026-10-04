@@ -80,6 +80,8 @@
   figure
     paragraph
       StaticText «ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados a una misma capa de»
+      StaticText «Nocti»
+      StaticText «.»
     Figcaption
       StaticText «CON»
       StaticText «NOCTI»
@@ -87,7 +89,9 @@
       StaticText «Tus sistemas y fuentes de conocimiento, conectados en una misma capa.»
   figure
     paragraph
-      StaticText «ERP, CRM, documentos y personas alimentan un contexto empresarial construido por Nocti, co»
+      StaticText «ERP, CRM, documentos y personas alimentan un contexto empresarial construido por»
+      StaticText «Nocti»
+      StaticText «, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.»
     Figcaption
       StaticText «CON»
       StaticText «NOCTI»
@@ -96,6 +100,8 @@
   figure
     paragraph
       StaticText «Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicacio»
+      StaticText «Nocti»
+      StaticText «, con permisos verificados.»
     Figcaption
       StaticText «CON»
       StaticText «NOCTI»
@@ -397,7 +403,9 @@
     StaticText «Choosing a view stops the automatic animation.»
   figure
     paragraph
-      StaticText «ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single Nocti »
+      StaticText «ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single»
+      StaticText «Nocti»
+      StaticText «connection layer.»
     Figcaption
       StaticText «WITH»
       StaticText «NOCTI»
@@ -405,7 +413,9 @@
       StaticText «Your systems and knowledge sources, connected in a single layer.»
   figure
     paragraph
-      StaticText «ERP, CRM, documents and people feed a business context built by Nocti, with processes, rul»
+      StaticText «ERP, CRM, documents and people feed a business context built by»
+      StaticText «Nocti»
+      StaticText «, with processes, rules, relationships and exceptions, and that context feeds the AI.»
     Figcaption
       StaticText «WITH»
       StaticText «NOCTI»
@@ -414,6 +424,8 @@
   figure
     paragraph
       StaticText «Sales, Finance, Operations, the sales agent, the collections agent and the applications co»
+      StaticText «Nocti»
+      StaticText «context, with verified permissions.»
     Figcaption
       StaticText «WITH»
       StaticText «NOCTI»

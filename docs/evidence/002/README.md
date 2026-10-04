@@ -1,198 +1,136 @@
 # Evidencia del spec 002 — páginas (fase 2)
 
-**Commit verificado: `58eb398`** (`main`, «fix: imports de Brand tras unificar el componente»). Todo lo de esta carpeta
-se generó sobre ese commit el **2026-10-04** (12:00–13:00 UTC). Ningún archivo de `src/` se modificó; los defectos se
-documentan abajo y no se arreglaron.
+**Commit verificado: `7813449`** (`main`, «fix: defectos de la evidencia de la fase 2 (D1–D9)»). Es la segunda pasada.
+La primera se hizo sobre `58eb398` y está en el historial (`3d39eb0`); sus defectos y su cierre se resumen abajo. Todo lo de
+esta carpeta se regeneró sobre `7813449` el **2026-10-04** (13:36–14:02 UTC). Ningún archivo de `src/` se modificó.
 
 ## Condiciones
 
-- **Build:** `npm run build` (`astro check && astro build`) en el checkout de `main`, con el código de salida como
-  condición. Inicio del build de B1: 2026-10-04T12:01:05Z. Tras las pruebas de B7 se volvió a correr el build normal
-  (12:50:56Z, salida 0) y se repitió B2 sobre ese `dist/`: idéntico.
+- **Build:** `npm run build` (`astro check && astro build`) en el checkout de `main` con HEAD = `7813449`, tomando el
+  código de salida como condición. El build de B1 empezó a las 2026-10-04T13:36:30Z. Después de las pruebas de B7
+  se volvió a correr el build normal (13:59:40Z, salida 0) y se repitieron B2 y B9 sobre ese `dist/`, con el mismo
+  resultado.
 - **Servidor:** `astro preview` del repo en `http://localhost:4932`, que sirve `dist/`.
 - **Navegador:** Chrome 154.0.8037.97 headless por CDP (puerto 9360), con emulación de foco.
-- **Referencia:** `NoctiLabs Web v3.dc.html` servido aparte en `http://localhost:4933`, con la textura en «Ninguna»
-  (valor por defecto del archivo) y fondo liso. Sus fuentes caen al respaldo del sistema (Arial); el video del hero
-  del diseño da 404 en ese servidor, así que el hero de referencia se ve sin video.
-- **Sanity real:** proyecto `q164hlpj`, dataset `production`, API `v2025-02-19`, la misma GROQ del loader,
-  consultada el **2026-10-04T12:01:41Z** (HTTP 200, 8 documentos `post`). Se publica uno solo:
-  **`_id` = `post-no-context-no-intelligence`, `publishedAt` = `2026-09-28`**, sin `slugEs`, `topic` ni `readingTime`
-  (los dos slugs son `no-context-no-intelligence`; la categoría sale de `category.en` = «Thesis»; los minutos se
-  calculan: 220 palabras en ES → 1 min, 320 en EN → 2 min). Resumen y respuesta cruda: `b2-sanity-consulta.txt`,
-  `b2-sanity-respuesta.json`.
-- **Scripts:** los escenarios CDP están en la carpeta de scripts de la sesión
-  (`…/scratchpad/ev002/`, con `home/`, `producto/`, `resto/` reutilizados de los tres agentes de la fase 2 y
-  apuntados a `localhost:4932`). No se copian al repo: `astro check` incluye `**/*` y los `.mjs` de escenarios le suman
-  warnings (se probó y se sacaron). En el repo queda solo el comparador de B2, que pasa `astro check` sin avisos.
+- **Referencia:** `NoctiLabs Web v3.dc.html` servido en `http://localhost:4933`, con la textura en «Ninguna» (valor por
+  defecto) y fondo liso. Sus fuentes caen al respaldo del sistema (Arial). El video del hero del diseño da 404 en ese
+  servidor, así que la referencia muestra el hero sin video.
+- **Sanity real:**
+  - proyecto `q164hlpj`, dataset `production`, API `v2025-02-19`, con la misma GROQ del loader;
+  - consultado el **2026-10-04T13:36:50Z** (HTTP 200, 8 documentos `post`); el `result` es idéntico al de la consulta de la primera pasada (12:01:41Z);
+  - se publica uno solo: **`_id` = `post-no-context-no-intelligence`, `publishedAt` = `2026-09-28`**, sin `slugEs`, `topic` ni `readingTime`;
+  - por eso los dos slugs son `no-context-no-intelligence`, la categoría «Tesis» sale de `category.en` y los minutos se calculan: 220 palabras en ES dan 1 min y 320 en EN dan 2 min.
+  - Resumen y respuesta cruda: `b2-sanity-consulta.txt`, `b2-sanity-respuesta.json`.
+- **Scripts:** los escenarios CDP están en la carpeta de scripts de la sesión (`…/scratchpad/ev002/`). Incluyen
+  `home/`, `producto/` y `resto/`, reutilizados de los tres agentes de la fase 2 y apuntados a `localhost:4932`.
+  No se copian al repo porque `astro check` incluye `**/*` y les sumaría warnings. En el repo queda solo el comparador de B2,
+  que pasa `astro check` sin avisos.
 
 ## Resultado por criterio
 
 | # | Resultado | Detalle | Archivo |
 |---|---|---|---|
-| B1 | **OK** | `astro check`: 80 archivos, 0 errores, 0 warnings, 0 hints. `astro build`: 23 páginas (22 rutas + 404), salida 0. La única línea extra es la prevista por §3.4: `[insights] excluido: post-introducing-noctilabs … el cuerpo en es está vacío`. Vitest: 80/80. | `b1-build.txt`, `b1-tests.txt` |
-| B2 | **OK** | **207/207** contra `b2-esperados.json`, escrito a mano desde el spec, `ui.ts`, `industries.ts` y el post de Sanity. Cubre por ruta `lang`, canonical con `https://noctilabs.io`, hreflang ES/EN/x-default, title, descripción, H1 (texto, único) y destino del selector de idioma; además, que `dist/` tenga exactamente las 22 rutas esperadas. 404: `lang`, title, `noindex`, H1, sin canonical, sin hreflang, sin selector. Control negativo: dos valores alterados a mano dan 205/207 y salida 1. | `b2-esperados.json`, `b2-comparar.mjs`, `b2-comparacion.txt` |
-| B3 | **FALLA** | Hay dos diferencias **no autorizadas** (D1: banda del home angosta en desktop; D3: formato de fecha) y tres que no figuran en §7 aunque las prescribe o las implica otra parte del spec. Matriz abajo. Estructural EN↔ES e industrias↔Retail: 30/30 (mismas secciones y conteos, sin desbordes, a 1440 y 390). | `capturas/b3/`, `b3-estructura.txt` |
-| B4 | **OK** | 68/68 (34 por idioma): alternancia de ≈3600 ms solo en pantalla y con la pestaña visible; se detiene al salir; la primera elección la detiene para siempre; `aria-pressed`, H2 y pies sincronizados; región viva solo con cambios manuales; reduced motion inicial y en vivo (incluido elegir «sin» → `reduce` conserva «sin»); descripciones por estado en el árbol AX; sin JS, «con» y sin control. | `b4.txt` |
-| B5 | **OK** | 60/60 (30 por idioma): roles, nombres, `aria-controls`/`labelledby`, `aria-selected`/`tabindex`; flechas con vuelta y Home/End que solo mueven el foco; Enter, Espacio y click activan; Tab al panel; inactivos fuera del árbol y del orden de Tab; «Conocer más» a su industria; lazy → eager a 600 px; red lenta (1,5 s de latencia, 30 kB/s): fondo del visor sin imagen rota; carga bloqueada: respaldo `role=img`; sin JS, panel inicial y sin control. | `b5.txt`, `capturas/b5-b6/` |
-| B6 | **OK** | 26/26: ejemplo visible en reposo, hover y táctil; contraste mínimo 5,35:1 (Capacidades) y 4,85:1 (Pasos); hover oscuro con `translateY(-4px)`; la 04 vuelve a clara; con reduced motion, sin desplazamiento ni transición. | `b6.txt`, `capturas/b5-b6/` |
-| B7 | **OK** | Sin filtros ni grilla; destacado al artículo; el índice navega a las dos anclas (top 84 px, foco en el H2); selector al artículo equivalente; Insights activo sin `aria-current`; fecha y minutos iguales en destacado y cabecera (ES 1 min, EN 2 min). Builds con `INSIGHTS_FIXTURE`, con el aviso y las rutas de cada caso: cuerpo ES nulo y spans vacíos excluidos; 2026-02-30 excluido; slug ES repetido y slug EN repetido excluyen a los dos posts; minutos por idioma iguales a los calculados aparte desde el fixture (660 palabras → 3 min ES; 320 → 2 min EN; `readingTime` 7 manda); publicar (f5, 27 páginas) → retirar (f6) con la caché conservada: 23 páginas, sin rutas ni ids `fx-*` en el data store ni en el HTML; cero publicados: estado vacío y 21 páginas; Sanity inaccesible, HTTP 500 y JSON inválido: el build falla (salida 1). Al final, build normal de nuevo. | `b7.txt`, `capturas/b7/` |
-| B8 | **OK** | 22/22: sin JS, `fieldset` deshabilitado, `<noscript>`, ni click ni Enter envían (0 pedidos, URL igual). Con JS: labels, `name`, tipo, `autocomplete` y requeridos según §4.6; email sin spellcheck; select con opción vacía + 5 + Otra; 4 errores en línea con foco al primero (solo espacios cuenta como vacío); editar limpia solo ese error; email inválido; «Enviando…» sincrónico, botón deshabilitado y doble submit ignorado; estado error con el mail, valores conservados y región `aria-live=polite`; `beforeunload` con cambios y sin aviso vacío. Borde #767676: 4,54:1 sobre blanco y 4,12:1 sobre #F4F4F2. | `b8.txt`, `capturas/b8/` |
-| B9 | **OK** | 23 HTML (22 rutas + 404): 1177 hrefs internos, 374 con ancla, 0 rotos. Se incluyen los `#ancla` relativos. | `b9-b11.txt` |
-| B10 | **OK** | 0 errores de consola en las 22 rutas, `/404.html` y una URL inexistente, a 1440 y 390, con scroll completo y las imágenes cargadas. En la URL inexistente, el 404 de la propia navegación no se cuenta. | `b10.txt` |
-| B11 | **OK** | Máximo 3141 bytes gzip (home ES y EN); Hablemos 2449; el resto 1594 (solo el header). Umbral 8192. | `b9-b11.txt` |
-| B12 | **OK, con observaciones** | 1440×900, DPR 1, caché deshabilitada; 10 activaciones del visor y 10 páginas de industria: AVIF/WebP + JPG, `width`/`height`, visor lazy → eager, industria eager + async; render 1022,7 px (`sizes` = 1022,5) y 1108,2 px (`sizes` = 1109); `currentSrc` de 35 a 148 KB. Lista de `alt` revisada a mano: describen la foto y coinciden entre ES y EN. Observaciones en «Defectos». | `b12.txt` |
-| B13 | **FALLA** | Hay hallazgos abiertos fuera de las excepciones permitidas: D2, D4–D8 y D9 (abajo). | este README, `b13-translate.txt`, `b13-largo.txt`, `b13-guidelines-command.txt` |
-| B14 | **OK** | `a7.mjs` completo: **78/78**. | `b14-a7.txt` |
-| B15 | **FALLA** | **Teclado:** orden de documento, sin `tabindex` > 0 y sin trampas en las 23 páginas × 2 anchos, y Shift+Tab recorre lo mismo al revés; pero al volver con Shift+Tab el foco queda **tapado del todo** por la cápsula del header en 4 páginas a 1440 y parcialmente en otras (D2). Los campos del formulario no tienen anillo (D8). **Reflow 320:** 25/25 OK (sin scroll horizontal, recortes ni superposiciones, con control negativo del chequeo). **Zoom:** el cuerpo da 16 × zoom px en todos los pasos; al 400 % los display dan ×2,08 a ×2,94; layout sin desbordes, recortes ni superposiciones en 23 páginas × 6 pasos; controles operables. 6 fallas, todas de foco parcialmente tapado al avanzar con Tab (D2). **Árbol AX** de header, hero, antes/después, AppSlot, tabs, menú mobile, Insights, artículo, formulario y Producto en ES y EN. No hubo lector de pantalla: queda como límite. | `b15-teclado.txt`, `b15-tapado.txt`, `b15-reflow.txt`, `b15-zoom.txt`, `b15-ax.txt`, `capturas/b15/` |
+| B1 | **OK** | `astro check`: 80 archivos, 0 errores, 0 warnings, 0 hints. `astro build`: 23 páginas (22 rutas + 404), salida 0. Las líneas extra son los avisos de §3.4: **7** `[insights] excluido: …`, uno por cuerpo ES vacío y seis por «no está marcado para Insights». Vitest: 80/80. | `b1-build.txt`, `b1-tests.txt` |
+| B2 | **OK** | **207/207** contra `b2-esperados.json`, escrito a mano. Por ruta: `lang`, canonical, hreflang ×3, title, descripción, H1 y destino del selector de idioma. Además, `dist/` tiene exactamente las 22 rutas. La 404 no tiene canonical, hreflang ni selector. | `b2-esperados.json`, `b2-comparar.mjs`, `b2-comparacion.txt` |
+| B3 | **FALLA (una diferencia fuera de §7)** | D1 y D3 están cerrados, y 6f autoriza los nodos y el H2 del antes/después. Queda **una** diferencia que §7 no lista: a 390, «Leer →» del destacado de Insights baja a otra línea porque la meta «28 sep 2026 · 1 min de lectura» (plantilla de §4.5) es más larga que «8 min». Hace falta una enmienda en §7 o un ajuste de layout. Matriz abajo. Estructural EN↔ES e industrias↔Retail: 30/30. | `capturas/b3/`, `b3-estructura.txt` |
+| B4 | **OK por la verificación complementaria; el escenario original da 64/68** | `b4.mjs` sin cambios: 32/34 por idioma. Las dos líneas en FALLA por idioma («manual: árbol accesible… de «con»» y «sin JS: árbol… descripciones de «con»») vienen del instrumento, no del comportamiento. Con D5, «Nocti» va en un `<span translate="no">` dentro de las descripciones, y el árbol AX parte cada descripción en varios StaticText; la comparación de `b4.mjs` busca el texto entero dentro de la lista unida con « \| » y ya no lo encuentra. No se tocó `b4.mjs`. Se agregó `home/b4-desc.mjs`, que concatena el texto accesible de cada descripción: **8/8**, con las 3 descripciones exactas en «con», «sin» y «con» otra vez, sin JS en «con», nunca las del otro estado y ningún botón sin JS. El resto de B4 (alternancia, detención, `aria-pressed`, región viva y reduced motion) sigue 32/32 por idioma. | `b4.txt` |
+| B5 | **OK** | 60/60: tabs APG, foco con flechas/Home/End, activación manual, Tab al panel, inactivos fuera del árbol, «Conocer más» a su industria, red lenta sin imagen rota, respaldo y sin JS. | `b5.txt`, `capturas/b5-b6/` |
+| B6 | **OK** | 26/26. Contraste mínimo 5,35:1 (Capacidades) y 4,85:1 (Pasos); reposo, hover, táctil y reduced motion. | `b6.txt`, `capturas/b5-b6/` |
+| B7 | **OK** | Sin filtros; destacado al artículo; el índice navega a las anclas (top 84 px, ahora por `scroll-padding-top`); selector al artículo equivalente; Insights activo; fecha y minutos iguales en destacado y cabecera («28 sep 2026 · 1 min de lectura», «Sep 28, 2026 · 2 min read»). Fixtures: cuerpo ES nulo y spans vacíos, fecha imposible, slug ES repetido, slug EN repetido, minutos por idioma iguales a los calculados aparte, publicar → retirar con la caché conservada sin residuos, cero publicados y Sanity inaccesible/500/JSON inválido (el build falla). Cada build lista los 7 avisos de los posts reales más los del caso. | `b7.txt`, `capturas/b7/` |
+| B8 | **OK** | 22/22 (sin JS y con JS, estados, `beforeunload`, labels/`name`/`autocomplete`/tipos y bordes de 4,54:1). | `b8.txt`, `capturas/b8/` |
+| B9 | **OK** | 1177 hrefs internos (374 con ancla), 0 rotos. | `b9-b11.txt` |
+| B10 | **OK** | 0 errores de consola en las 22 rutas, la 404 y una URL inexistente, a 1440 y 390. | `b10.txt` |
+| B11 | **OK** | Máximo 3141 bytes gzip (home). | `b9-b11.txt` |
+| B12 | **OK, con observaciones** | 20/20. `currentSrc` de 35 a 148 KB; render igual a `sizes` (1022,7/1022,5 y 1108,2/1109). Las 10 páginas de industria llevan `loading=eager`, `decoding=async` y `fetchpriority=high`. Observaciones abajo. | `b12.txt` |
+| B13 | **FALLA** | D2, D5 y D7 cerrados. Quedan abiertos o parciales: **D4** («Enviar otro mensaje» con un hover prácticamente imperceptible), **D6** (la tarjeta de «Seguir leyendo» desborda con una palabra larga) y **D8** (queda `:focus` en lugar de `:focus-visible`, menor). Hallazgo nuevo **N1**: nombres de meses escritos a mano en `formatDate`. | este README, `b13-*.txt` |
+| B14 | **OK** | `a7.mjs`: **78/78**. | `b14-a7.txt` |
+| B15 | **OK** | **Teclado:** 46/46 (23 páginas × 1440/390). Sin trampas y en orden de documento; Shift+Tab recorre lo mismo al revés; foco visible en todo, incluidos los campos (anillo de 2 px); **ningún foco tapado** por la cápsula, ni total ni parcial. **Reflow 320:** 25/25. **Zoom** 125–400 %: 138/138. El cuerpo da 16 × zoom px en todos los pasos y los display ×2,08–×2,94 al 400 %; sin desbordes, recortes ni superposiciones; controles operables; sin foco tapado. Desde 175 % el viewport mide ≤ 480 px de alto y el header deja de ser sticky. **Árbol AX** de las secciones interactivas en ES y EN. No hubo lector de pantalla: queda como límite. | `b15-*.txt`, `capturas/b15/` |
+
+## Defectos de la primera pasada y su cierre
+
+| Defecto (sobre `58eb398`) | Cambio en `7813449` | Verificación en esta pasada | Estado |
+|---|---|---|---|
+| **D1** · banda «Hablemos.» del home angosta (974 px a 1440) | `HablemosBand.astro:19`: `width: 100%` | `capturas/b3/home-band-1440-*`: la banda mide 1200 px como en el diseño y en las otras páginas. | **Cerrado** |
+| **D2** · el header sticky tapa el foco (Shift+Tab; total en 4 páginas) | `global.css`: `html { scroll-padding-top: 84px }` (8 px con alto ≤ 480 px), sin `scroll-margin`; `Header.astro`: no sticky con alto ≤ 480 px | `b15-teclado.txt` 46/46 sin foco tapado; `b15-zoom.txt` 138/138; `b15-tapado.txt`: el mismo recorrido deja el chip en top 472 px y «← Insights» en top 84 px, y en el centro de los dos está el propio link; las anclas del índice siguen en top 84 px (B7); B14 78/78. | **Cerrado** |
+| **D3** · fecha «28 set. 2026» contra «18 sep 2026» del diseño | `insights.ts:176-181`: formato «28 sep 2026» | B7 y `capturas/b3/insights-*`, `articulo-*`. | **Cerrado** (ver N1) |
+| **D4** · botones sin hover | `.seg button:hover { color: var(--ink) }` en Sin/Con e Industrias; `.again:hover { background: var(--surface-2) }` | Sin/Con y tabs: de `--muted` a `--ink`, visible. `.again`: pasa de `--surface` (#E6E6E2) a `--surface-2` (#E9E9E5), una diferencia de 1,03:1 que va **hacia** el blanco de la tarjeta. Prácticamente imperceptible, y la guideline pide que hover/active sean más prominentes que el reposo. | **Parcial** (`.again`, `Hablemos.astro:206`; inalcanzable en la fase 2) |
+| **D5** · `translate="no"` faltante | `Txt` en las descripciones (`BeforeAfter.astro:60`) y en el kicker de Nosotros; `insights.ts:96-97` envuelve «Nocti»/«NoctiLabs» en el HTML del CMS | `b13-translate.txt`: **0** textos con la marca sin `translate="no"` en las 23 páginas (el artículo ES tiene 3 `span translate="no"`). | **Cerrado** (provoca la nota de B4) |
+| **D6** · títulos del CMS sin `overflow-wrap` | `overflow-wrap` en `.f-title`, `ArticleCard .title`, el H1 del artículo, `.toc` (con `min-width: 0`) y `.r-card` | `b13-largo.txt`, a 320 px: destacado, H1 e índice sin desborde (`scrollWidth` 320). `b13-largo-f5.txt`, con el build de 3 artículos: la tarjeta de la grilla tampoco desborda; **la de «Seguir leyendo» sí**, con `scrollWidth` 448 px y el texto hasta 415 px. El `overflow-wrap` está en `.r-card` (flex), pero el título es un `<span>` hijo flex con `min-width: auto`, así que su mínimo sigue siendo la palabra entera. | **Parcial** (`Articulo.astro:55` y `:129-147`; solo con ≥ 2 artículos y una palabra muy larga) |
+| **D7** · foto de industria sin prioridad | `fetchpriority="high"` (`IndustryPhoto.astro:24`) | `b12.txt`: 10/10 páginas con `fetchpriority high`. | **Cerrado** |
+| **D8** · campos sin anillo de foco | Sin `outline: none`; `input:focus, select:focus, textarea:focus { … outline: 2px solid var(--blue-link); outline-offset: 2px }` | `b15-teclado.txt`: los 6 campos con anillo en ES y EN. Queda `:focus` en lugar de `:focus-visible` (`Hablemos.astro:162`): en el `<select>`, un click del mouse también muestra el anillo. | **Cerrado** para B15; **menor** abierto para B13 |
+| **D9** · posts no marcados excluidos sin aviso | `insights.ts:123-126` | `b1-build.txt` y cada build de `b7.txt`: 7 avisos con los posts reales. | **Cerrado** |
+
+## Hallazgos nuevos o que siguen abiertos
+
+- **N1 (B13, nuevo) · fecha con meses escritos a mano.** `src/lib/insights.ts:176-181` arma la fecha ES con
+  `MESES = ['ene', …]`. La guideline marca «Hardcoded date/number formats (use Intl.*)» como anti-patrón. Es el precio de
+  igualar el diseño: `Intl` en `es` da «sept» y con `es-UY` da «set.». Hay que llevarlo como excepción documentada en el spec
+  (B13), o volver a `Intl` y aceptar la diferencia en §7.
+- **D4 parcial, D6 parcial y D8 menor:** ver la tabla anterior.
+- **B3 · «Leer →» a 390:** diferencia fuera de §7, descrita en la tabla de resultados.
+- **Observaciones de B12 (no fallan el criterio):**
+  - el JPG de respaldo de 1920w de Servicios (`servicios.D2oHaJz5_Z1m0Yzd.jpg`, `src` del `<img>`) pesa **319 KB**. Supera los 300 KB, aunque no es el `currentSrc` en Chrome;
+  - `retail.png` y `salud.png` miden 1024 px y se muestran a 1108 px.
+- **Observación del artículo:** `.prose-article h2` no fija `line-height` y hereda 1,65; un H2 de dos líneas queda con un
+  interlineado amplio. El diseño no tiene H2 de dos líneas para comparar.
 
 ## B3 — matriz de fidelidad
 
-Capturas en `capturas/b3/` con el nombre `<sección>-<ancho>-ref|nuevo|nuevo-en.webp`. Las secciones de Home, Producto e
-Industria se capturan por sección y estado; las de Nosotros, Insights, Artículo y Hablemos, como página completa. Las otras
+Capturas en `capturas/b3/` con el nombre `<sección>-<ancho>-ref|nuevo|nuevo-en.webp`, todas regeneradas sobre `7813449`. Las otras
 cuatro industrias y Producto/Industria en EN están como `pagina-<x>-<ancho>-nuevo.webp`, y se comparan estructuralmente en
 `b3-estructura.txt`.
 
 Diferencias comunes a todas las filas: §7.7 (Inter) y la textura ausente (temporal, fase 3).
 
-| Página · sección (Inv) | 1440×900 | 390×844 | Diferencias observadas → ítem de §7 |
+| Página · sección (Inv) | 1440×900 | 390×844 | Diferencias → ítem de §7 |
 |---|---|---|---|
-| Home · hero (§1.1) | `home-hero-1440-*` | `home-hero-390-*` | Botón de pausa (§7.8, fase 1). |
-| Home · antes/después «sin» (§1.2) | `home-ba-sin-1440-*` | `home-ba-sin-390-*` | Sin «Comparar · Opción 1/2» (§7.1). Chip apagado con texto #6B6B68 (§7.2). A 390, el H2 tiene dos líneas (§7.6) y además es **más grande**: 32 px contra ≈21 px, porque no se portó `min(var(--h2), 5.4vw)`. El cambio de tamaño no figura en §7: lo implica 7.6. A 390, el texto de los nodos baja a ≈11 px (13 px en el diseño) por el `3.4cqw` de §4.1.2. Está prescrito en el spec, pero **no figura en §7**. |
-| Home · antes/después «con» (§1.2) | `home-ba-con-1440-*` | `home-ba-con-390-*` | Las mismas. |
-| Home · Toda la empresa puede preguntar (§1.3) | `home-roles-1440-*` | `home-roles-390-*` | AppSlot placeholder, sin tabs de rol (temporal, fase 3). |
-| Home · Capacidades, reposo y hover (§1.4) | `home-caps[-hover]-1440-*` | `home-caps[-hover]-390-*` | Ejemplo siempre visible; el título sube en la tarjeta (§7.3). |
-| Home · Pasos, reposo y hover (§1.5) | `home-steps[-hover]-1440-*` | `home-steps[-hover]-390-*` | Igual que Capacidades (§7.3). |
-| Home · Industrias ×5 (§1.6) | `home-ind-0…4-1440-*` | `home-ind-0…4-390-*` | Fotos de Retail, Consumo y Servicios (§7.6d). «Conocer más» va a la industria del panel (§7.4, no visible en la captura). |
-| Home · banda «Hablemos.» (§8) | `home-band-1440-*` | `home-band-390-*` | **1440: NO AUTORIZADA (D1).** La banda mide 974 px contra 1200 px del diseño y del resto de las páginas. 390: sin diferencias. |
-| Producto · hero (§2.1) | `producto-00-1440-*` | `producto-00-390-*` | — |
-| Producto · demo general, Cerebro, BI, Agentes (§2.2, §2.4) | `producto-01/03/04/05-*` | ídem | AppSlot placeholder y sin captions (temporal, fase 3). |
-| Producto · Overview (§2.3) | `producto-02-overview-1440-*` | `producto-02-overview-390-*` | A 390, un solo conector centrado (§7.5). |
-| Producto · Control (§2.5) | `producto-06-control-1440-*` | `producto-06-control-390-*` | A 390, capas en una columna (§7.5); placeholder (temporal). |
-| Producto · banda (§8) | `producto-07-*` | ídem | — |
-| Industria Retail · hero, procesos, preguntas, agentes, por qué y otras, banda (§3.1, §3.3–3.6, §8) | `industria-retail-00,02…06-1440-*` | ídem 390 | — |
-| Industria Retail · foto (§3.2) | `industria-retail-01-1440-*` | `industria-retail-01-390-*` | Foto de depósito (§7.6d). |
-| Nosotros (§4) | `nosotros-1440-*` | `nosotros-390-*` | Sin Equipo (temporal, fase 5). |
-| Insights (§5) | `insights-1440-*` | `insights-390-*` | Sin filtros ni grilla (temporal, fase 5). Destacado con el post de Sanity (§7.6e). **Fecha «28 set. 2026» contra «18 sep 2026»: NO AUTORIZADA (D3).** La meta «… · 1 min de lectura» sale de la plantilla de §4.5 y es más larga que «8 min». A 390, eso hace que «Leer →» baje a otra línea, cuando en el diseño queda en la misma. No figura en §7: lo implican §4.5 y §7.6e. |
-| Artículo (§6) | `articulo-1440-*` | `articulo-390-*` | Contenido, metadatos e índice del post (§7.6e). Sin «Seguir leyendo» (temporal). Fecha «28 SET. 2026» (D3). Observación: los H2 del post ocupan dos líneas y heredan un interlineado de 1,65, porque `.prose-article h2` no fija `line-height`. El diseño solo tiene H2 de una línea, así que no hay contra qué comparar. |
-| Hablemos, formulario en idle (§7) | `hablemos-1440-*` | `hablemos-390-*` | Borde #767676 (§7.6b). Placeholders y opción vacía «Elegí una…» (§7.6c). Selector de idioma en el footer (§7.8). |
-| Header y footer (fase 1) | en todas las capturas de página | ídem | Chevrons y selector de idioma (§7.8). |
-
-## Defectos y hallazgos
-
-Cada uno con archivo:línea y cómo reproducirlo. Ninguno se arregló.
-
-- **D1 · banda «Hablemos.» del home angosta en desktop (B3, no autorizada).**
-  - **Dónde:**
-    - `src/components/HablemosBand.astro:19` define `.band-wrap { max-width: 1200px; margin: … auto 0; … }`, sin `width`.
-    - En el home, la banda es hija de `.home { display: flex; flex-direction: column }` (`src/components/sections/home/Home.astro:42`). Los márgenes `auto` de un ítem flex en columna lo encogen a su contenido.
-  - **Cómo se reproduce:** a 1440×900, `/` da `.band-wrap` en 233..1207 px (974 px). `/producto/` y `/nosotros/` dan 120..1320 px (1200 px), igual que el diseño en el home. Captura: `capturas/b3/home-band-1440-*`.
-- **D2 · el header tapa el foco del teclado (B15, B13: «Sticky headers… must not cover the focused element»; WCAG 2.4.11).**
-  - **Causa:** el header es sticky (`src/components/Header.astro:138`), y el único margen de scroll es `main [id] { scroll-margin-top: 84px }` (`src/styles/global.css:30`). No hay `scroll-padding-top`. Al enfocar un elemento sin `id` que queda arriba, el navegador lo deja debajo de la cápsula.
-  - **Cómo se reproduce:**
-    1. Abrir `/industrias/manufactura/` a 1440×900.
-    2. Tab hasta el final de la página.
-    3. Shift+Tab hasta «Retail y distribución →».
-    4. El foco queda en top 6 px, debajo de la cápsula (10..66 px). «Alimentos y bienes de consumo →» y «Salud y actividad física →» quedan 100 % tapados. Captura: `capturas/b15/b15-foco-tapado-1440-manufactura.webp`.
-  - **Tapado total (Shift+Tab, 1440):**
-    - `/industrias/manufactura/`;
-    - `/industrias/retail-distribucion/`;
-    - `/industrias/salud-fitness/`;
-    - `/en/industries/manufacturing/`.
-  - **Tapado parcial:**
-    - otras industrias y el destacado de Insights, a 1440 y 390;
-    - el CTA del hero del home;
-    - «← Insights» del artículo, a 390;
-    - avanzando con Tab al 175 %, 200 % y 400 % de zoom: destacado de Insights y CTA ancho de Capacidades.
-
-  Detalle en `b15-teclado.txt` y `b15-zoom.txt`.
-- **D3 · formato de fecha distinto del diseño (B3, no autorizada).** `src/lib/insights.ts:172` usa
-  `Intl.DateTimeFormat('es-UY', { dateStyle: 'medium' })` y produce «28 set. 2026» (y «28 SET. 2026» en la cabecera), cuando el
-  diseño muestra «18 sep 2026». EN: «Sep 28, 2026». §3.4 dice «formateado en UTC, como antes» sin fijar el formato,
-  y §7 no lo autoriza.
-- **D4 · botones sin estado hover (B13: «Buttons/links need hover: state»).** Los botones Sin/Con
-  (`src/components/sections/home/BeforeAfter.astro:102-116`), las tabs de industria
-  (`src/components/sections/home/Industries.astro:94-110`) y «Enviar otro mensaje» (`.again`,
-  `src/components/sections/hablemos/Hablemos.astro:196-206`, inalcanzable en la fase 2) no tienen `:hover`.
-- **D5 · `translate="no"` faltante en la marca (B13, i18n; spec §4.7).**
-  - **Dónde:**
-    - las descripciones textuales de los diagramas, en `BeforeAfter.astro:60` (`{d.desc[s]}` sin `Brand`): 3 por idioma;
-    - el kicker «Por qué construimos Nocti» / «Why we build Nocti», en `src/components/sections/nosotros/Nosotros.astro:31` (`{b.kicker}`);
-    - el cuerpo del artículo que llega de Sanity (`src/lib/insights.ts`, render del Portable Text), con «NoctiLabs» en 3 párrafos ES y 4 EN.
-  - **Cómo se reproduce:** `b13-translate.txt`, que recorre todos los nodos de texto de las 23 páginas.
-- **D6 · títulos del CMS sin manejo de palabras largas (B13, «Content handling»).** `.f-title`
-  (`src/components/sections/insights/Insights.astro:121`), `.title` (`ArticleCard.astro:39`, `Articulo.astro:93`) y
-  `.toc a` (`Articulo.astro:117`) no tienen `overflow-wrap`.
-  - **Cómo se reproduce:** a 320 px, con un título de una sola palabra de 43 letras inyectado por CDP:
-    - el artículo pasa a `scrollWidth` 669 px (scroll horizontal);
-    - en el destacado de Insights, el título queda recortado (467 px de contenido en 210 px).
-
-  `b13-largo.txt`. Con el contenido actual no ocurre.
-- **D7 · foto de industria sin prioridad de carga (B13, «Above-fold critical images: fetchpriority=high»).**
-  `src/components/sections/industria/IndustryPhoto.astro:15-25` usa `loading="eager"` y `decoding="async"` como pide §3.5, pero la foto entra
-  en el primer viewport (top ≈ 570 px a 1440×900) y no lleva `fetchpriority="high"`.
-- **D8 · foco de los campos del formulario (B13 y B15).** `Hablemos.astro:159` pone `outline: none`, y `:163` marca el foco con
-  `:focus` (no `:focus-visible`), con borde azul de 1 px y fondo blanco. El foco se ve (WCAG 2.4.7), pero no hay anillo como
-  en el resto del sitio ni como piden las guidelines. `b15-teclado.txt` lo marca como «sin foco visible» con el
-  chequeo estricto (outline o sombra).
-- **D9 · exclusiones silenciosas (spec §3.4).** `src/lib/insights.ts:120` excluye sin aviso los posts no marcados para Insights
-  («fuera sin aviso»). §3.4 dice «Los que no cumplen quedan fuera… El build imprime cuáles y por qué». Con los datos
-  actuales, 6 de los 7 posts excluidos no aparecen en el log del build.
-- **Observaciones de B12 (no fallan el criterio):**
-  - el JPG de respaldo de 1920w de Servicios (`servicios.D2oHaJz5_Z1m0Yzd.jpg`, `src` del `<img>`) pesa **319 KB**. Supera 300 KB, aunque no es el `currentSrc` en Chrome;
-  - `retail.png` y `salud.png` miden 1024 px y se muestran a 1108 px en las páginas de industria, así que se ven ampliadas.
+| Home · hero (§1.1) | `home-hero-1440-*` | `home-hero-390-*` | Botón de pausa (§7.8). |
+| Home · antes/después «sin» y «con» (§1.2) | `home-ba-sin/con-1440-*` | `home-ba-sin/con-390-*` | Sin comparador (§7.1); chip apagado #6B6B68 (§7.2); H2 sin `nowrap` (§7.6); a 390, nodos de ≈11 px y H2 con `var(--h2)` (§7.6f). |
+| Home · Toda la empresa puede preguntar (§1.3) | `home-roles-1440-*` | `home-roles-390-*` | AppSlot placeholder sin tabs de rol (temporal, fase 3). |
+| Home · Capacidades y Pasos, en reposo y en hover (§1.4–1.5) | `home-caps*`, `home-steps*` | ídem | Ejemplos siempre visibles (§7.3). |
+| Home · Industrias ×5 (§1.6) | `home-ind-0…4-1440-*` | `home-ind-0…4-390-*` | Fotos (§7.6d); «Conocer más» a su industria (§7.4). |
+| Home · banda (§8) | `home-band-1440-*` | `home-band-390-*` | — (D1 cerrado). |
+| Producto · hero, demo, Overview, Cerebro, BI, Agentes, Control y banda (§2) | `producto-00…07-1440-*` | ídem 390 | Placeholders y sin captions (temporal); a 390, un conector y Control en una columna (§7.5). |
+| Industria Retail · las 7 secciones (§3, §8) | `industria-retail-00…06-1440-*` | ídem 390 | Foto (§7.6d). |
+| Nosotros (§4) | `nosotros-1440-*` | `nosotros-390-*` | Sin Equipo (temporal). |
+| Insights (§5) | `insights-1440-*` | `insights-390-*` | Sin filtros ni grilla (temporal); contenido del post (§7.6e); fecha «28 sep 2026», mismo formato que el diseño. **A 390, «Leer →» en otra línea: fuera de §7.** |
+| Artículo (§6) | `articulo-1440-*` | `articulo-390-*` | Contenido, metadatos e índice del post (§7.6e); sin «Seguir leyendo» (temporal). |
+| Hablemos, formulario en idle (§7) | `hablemos-1440-*` | `hablemos-390-*` | Borde #767676 (§7.6b); placeholders y opción vacía (§7.6c); selector de idioma (§7.8). |
+| Header y footer (fase 1) | en todas las capturas | ídem | Chevrons y selector (§7.8). |
 
 ## B13 — revisión con web-design-guidelines
 
-Las reglas se bajaron de `vercel-labs/web-interface-guidelines/command.md` el 2026-10-04T12:46Z (copia en
-`b13-guidelines-command.txt`). Se revisaron:
+Reglas de `vercel-labs/web-interface-guidelines/command.md` (copia en `b13-guidelines-command.txt`, bajada el 2026-10-04).
+
+**Alcance:**
 
 - `src/components/sections/**` (20 archivos);
 - `src/scripts/before-after.ts`, `tabs.ts` y `contact-form.ts`;
-- `src/styles/article.css`.
+- `src/styles/article.css`;
+- y, por el arreglo de D2, `src/components/Header.astro` y `src/styles/global.css`.
 
-Hallazgos abiertos: D2, D4, D5, D6, D7 y D8 (arriba).
+Se revisó el diff `58eb398..7813449` completo y se repitieron los chequeos automáticos (`b13-translate.txt`, `b13-largo.txt`,
+`b13-largo-f5.txt`).
+
+Abiertos: N1, D4 parcial (`.again`), D6 parcial (`.r-card`) y D8 menor (`:focus`).
 
 **Excepciones permitidas, que no cuentan como hallazgo:**
 
 - las de la fase 1;
-- la URL efímera de las tabs de industria y del selector Sin/Con;
-- la transición de colores en hover. Se verificó que ninguna transición use `all`: las propiedades son `transform`, `opacity`, `visibility` y colores.
+- la URL efímera de las tabs y de Sin/Con;
+- la transición de colores.
 
-**Sin hallazgos en:**
+**Sin hallazgos en el resto:** lo mismo que en la primera pasada, más:
 
-- **Accesibilidad:**
-  - botones nativos con nombre;
-  - `aria-hidden` en lienzos, viñetas e íconos;
-  - jerarquía de headings en cada página;
-  - región viva `polite` para el estado del antes/después y del formulario;
-  - errores en línea con `aria-describedby` y foco al primero;
-  - labels con `for`.
-- **Formulario:**
-  - `autocomplete`, `name` y tipos;
-  - `spellcheck=false` en el email;
-  - placeholders con «…»;
-  - «Enviando…»;
-  - `beforeunload`;
-  - el pegado no se bloquea.
-- **Movimiento:**
-  - `prefers-reduced-motion` en el antes/después y en las tarjetas;
-  - la alternancia automática se detiene con el control.
-- **Imágenes y fechas:**
-  - `width`/`height` en todas;
-  - lazy en el visor;
-  - `Intl.DateTimeFormat`.
-- **Tipografía:** `text-wrap: balance` en h1 y h2.
-- **Selects:** `background-color` y `color` explícitos.
-- **Destructivas:** ninguna acción destructiva.
-
-**Contenido del CMS (fuera del alcance del código):** el inglés del post usa comillas rectas («That's», «isn't»). Queda para la revisión de copy de la fase 5.
+- el header deja de ser sticky con alto ≤ 480 px, sin efectos en B14;
+- el envoltorio de marca en el HTML del CMS solo toca el texto entre etiquetas y no cambia los ids ni el índice (B7 y B9 en verde).
 
 ## Límites conocidos
 
-- Toda la interacción se verificó en Chrome headless. No hubo Safari ni un lector de pantalla: B15 se apoya en el
-  árbol de accesibilidad de CDP.
-- «Pestaña oculta» en B4 se simula redefiniendo `document.hidden` y disparando `visibilitychange`.
-- La captura de «Enviando…» (B8) se toma con `requestAnimationFrame` congelado para fijar el estado. El orden real se verifica igual: estado sincrónico y doble submit ignorado.
-- El zoom se emula con `deviceScaleFactor` = zoom sobre 1280×800, con un layout de 1280/zoom px, como pide el spec.
-- En `capturas/b15/zoom-200-home.webp` el skip link aparece visible, porque el foco quedó en él al terminar el
-  recorrido con Tab.
+- Toda la interacción se verificó en Chrome headless; no hubo Safari ni un lector de pantalla (árbol AX de CDP).
+- «Pestaña oculta» en B4 se simula con `document.hidden` y `visibilitychange`.
+- La captura de «Enviando…» (B8) se toma con `requestAnimationFrame` congelado.
+- El zoom se emula con `deviceScaleFactor` = zoom sobre 1280×800, con un layout de 1280/zoom px.
+- En `capturas/b15/zoom-200-home.webp` el skip link aparece visible, porque el foco quedó en él al terminar el recorrido
+  con Tab.
+- `capturas/b15/b15-foco-tapado-*.webp` conservan el nombre de la primera pasada y ahora muestran el foco **sin** tapar.

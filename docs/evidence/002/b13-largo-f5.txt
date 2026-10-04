@@ -1,0 +1,2 @@
+Insights, tarjeta de la grilla .title {"sw":320,"right":281,"scrollW":242,"clientW":242}
+Artículo, «Seguir leyendo» .r-card span {"sw":448,"spanRight":415,"cardRight":304}

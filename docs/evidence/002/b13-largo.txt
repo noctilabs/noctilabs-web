@@ -1,2 +1,2 @@
-Insights .f-title {"sw":320,"right":265,"scrollW":467,"clientW":210}
-Artículo h1 y .toc a {"sw":669,"h1Right":304,"tocRight":359}
+Insights .f-title {"sw":320,"right":265,"scrollW":210,"clientW":210}
+Artículo h1 y .toc a {"sw":320,"h1Right":304,"tocRight":286}

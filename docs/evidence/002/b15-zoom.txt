@@ -76,8 +76,7 @@ OK    175% (layout 731) /en/industries/health-fitness/ · tamaños de dispositiv
 OK    175% (layout 731) /en/industries/manufacturing/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 23 paradas de Tab
 OK    175% (layout 731) /en/industries/professional-services/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 23 paradas de Tab
 OK    175% (layout 731) /en/industries/retail-distribution/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 23 paradas de Tab
-FALLA 175% (layout 731) /en/insights/ · tamaños de dispositivo {"h1":80.5,"h2":40.3,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 19 paradas de Tab
-      foco tapado por la cápsula: ["a «Featured · ThesisNo context,» 3%"]
+OK    175% (layout 731) /en/insights/ · tamaños de dispositivo {"h1":80.5,"h2":40.3,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 19 paradas de Tab
 OK    175% (layout 731) /en/insights/no-context-no-intelligence/ · tamaños de dispositivo {"cuerpo":28,"h1":57.4,"h2":94.7,"banda «Hablemos.»":94.7} · h2 ×1.00 (achica al cruzar el corte de 1000 px); banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 21 paradas de Tab
 OK    175% (layout 731) /en/product/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 19 paradas de Tab
 OK    175% (layout 731) /hablemos/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5} · 25 paradas de Tab · formulario operable (4 errores, foco en Nombre)
@@ -86,8 +85,7 @@ OK    175% (layout 731) /industrias/manufactura/ · tamaños de dispositivo {"cu
 OK    175% (layout 731) /industrias/retail-distribucion/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 23 paradas de Tab
 OK    175% (layout 731) /industrias/salud-fitness/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 23 paradas de Tab
 OK    175% (layout 731) /industrias/servicios/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 23 paradas de Tab
-FALLA 175% (layout 731) /insights/ · tamaños de dispositivo {"h1":80.5,"h2":40.3,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 19 paradas de Tab
-      foco tapado por la cápsula: ["a «Destacado · TesisSin context» 4%"]
+OK    175% (layout 731) /insights/ · tamaños de dispositivo {"h1":80.5,"h2":40.3,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 19 paradas de Tab
 OK    175% (layout 731) /insights/no-context-no-intelligence/ · tamaños de dispositivo {"cuerpo":28,"h1":57.4,"h2":94.7,"banda «Hablemos.»":94.7} · h2 ×1.00 (achica al cruzar el corte de 1000 px); banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 21 paradas de Tab
 OK    175% (layout 731) /nosotros/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":94.7,"banda «Hablemos.»":94.7} · h2 ×1.00 (achica al cruzar el corte de 1000 px); banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 18 paradas de Tab
 OK    175% (layout 731) /producto/ · tamaños de dispositivo {"cuerpo":28,"h1":80.5,"h2":56,"banda «Hablemos.»":94.7} · banda «Hablemos.» ×1.00 (achica al cruzar el corte de 1000 px) · 19 paradas de Tab
@@ -101,8 +99,7 @@ OK    200% (layout 640) /en/industries/health-fitness/ · tamaños de dispositiv
 OK    200% (layout 640) /en/industries/manufacturing/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 23 paradas de Tab
 OK    200% (layout 640) /en/industries/professional-services/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 23 paradas de Tab
 OK    200% (layout 640) /en/industries/retail-distribution/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 23 paradas de Tab
-FALLA 200% (layout 640) /en/insights/ · tamaños de dispositivo {"h1":92,"h2":46,"banda «Hablemos.»":98.4} · 19 paradas de Tab
-      foco tapado por la cápsula: ["a «Featured · ThesisNo context,» 11%"]
+OK    200% (layout 640) /en/insights/ · tamaños de dispositivo {"h1":92,"h2":46,"banda «Hablemos.»":98.4} · 19 paradas de Tab
 OK    200% (layout 640) /en/insights/no-context-no-intelligence/ · tamaños de dispositivo {"cuerpo":32,"h1":65.6,"h2":98.4,"banda «Hablemos.»":98.4} · 21 paradas de Tab
 OK    200% (layout 640) /en/product/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 19 paradas de Tab
 OK    200% (layout 640) /hablemos/ · tamaños de dispositivo {"cuerpo":32,"h1":92} · 25 paradas de Tab · formulario operable (4 errores, foco en Nombre)
@@ -111,16 +108,13 @@ OK    200% (layout 640) /industrias/manufactura/ · tamaños de dispositivo {"cu
 OK    200% (layout 640) /industrias/retail-distribucion/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 23 paradas de Tab
 OK    200% (layout 640) /industrias/salud-fitness/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 23 paradas de Tab
 OK    200% (layout 640) /industrias/servicios/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 23 paradas de Tab
-FALLA 200% (layout 640) /insights/ · tamaños de dispositivo {"h1":92,"h2":46,"banda «Hablemos.»":98.4} · 19 paradas de Tab
-      foco tapado por la cápsula: ["a «Destacado · TesisSin context» 11%"]
+OK    200% (layout 640) /insights/ · tamaños de dispositivo {"h1":92,"h2":46,"banda «Hablemos.»":98.4} · 19 paradas de Tab
 OK    200% (layout 640) /insights/no-context-no-intelligence/ · tamaños de dispositivo {"cuerpo":32,"h1":65.6,"h2":98.4,"banda «Hablemos.»":98.4} · 21 paradas de Tab
 OK    200% (layout 640) /nosotros/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":98.4,"banda «Hablemos.»":98.4} · 18 paradas de Tab
 OK    200% (layout 640) /producto/ · tamaños de dispositivo {"cuerpo":32,"h1":92,"h2":64,"banda «Hablemos.»":98.4} · 19 paradas de Tab
 OK    200% (layout 640) /404.html · tamaños de dispositivo {"cuerpo":32,"h1":64,"h2":64} · 18 paradas de Tab
-FALLA 400% (layout 320) / · tamaños de dispositivo {"cuerpo":64,"h1":184,"h2":128,"banda «Hablemos.»":196.8} · 27 paradas de Tab · controles operables
-      foco tapado por la cápsula: ["a «Creá tus propios agentes, in» 14%"]
-FALLA 400% (layout 320) /en/ · tamaños de dispositivo {"cuerpo":64,"h1":184,"h2":128,"banda «Hablemos.»":196.8} · 27 paradas de Tab · controles operables
-      foco tapado por la cápsula: ["a «Create your own agents, inte» 14%"]
+OK    400% (layout 320) / · tamaños de dispositivo {"cuerpo":64,"h1":184,"h2":128,"banda «Hablemos.»":196.8} · 27 paradas de Tab · controles operables
+OK    400% (layout 320) /en/ · tamaños de dispositivo {"cuerpo":64,"h1":184,"h2":128,"banda «Hablemos.»":196.8} · 27 paradas de Tab · controles operables
 OK    400% (layout 320) /en/about/ · tamaños de dispositivo {"cuerpo":64,"h1":184,"h2":196.8,"banda «Hablemos.»":196.8} · 18 paradas de Tab
 OK    400% (layout 320) /en/contact/ · tamaños de dispositivo {"cuerpo":64,"h1":184} · 25 paradas de Tab · formulario operable (4 errores, foco en Nombre)
 OK    400% (layout 320) /en/industries/food-consumer-goods/ · tamaños de dispositivo {"cuerpo":64,"h1":184,"h2":128,"banda «Hablemos.»":196.8} · 23 paradas de Tab
@@ -174,4 +168,4 @@ Tabla de tamaños renderizados (px de dispositivo; entre paréntesis, relación 
     h1                      75.5 (×1.00)    75.5 (×1.00)      69 (×0.91)    80.5 (×1.07)      92 (×1.22)     184 (×2.44)
 
 consola: []
-fallas: 6
+fallas: 0
