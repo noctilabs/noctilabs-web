@@ -1,6 +1,6 @@
 # Spec 002 — Páginas
 
-Estado: borrador, pasada 5 de revisión · 2026-10-04 · enmienda: Insights desde Sanity (decisión del dueño) · hallazgos de las pasadas 4 y 5 aplicados
+Estado: APROBADO · GATE SÍ de gpt-6.1-sol en la pasada 6 (2026-10-04), con sus dos observaciones menores aplicadas · enmienda: Insights desde Sanity (decisión del dueño)
 
 ## 1. Contexto
 
@@ -177,7 +177,7 @@ falla: que un editor deje un post a medio traducir no puede tirar el sitio.
 - **Estilos admitidos:** `normal`, `h2`, `blockquote`, listas y links. Lo desconocido se ignora con un aviso en el build.
 - **Ids de los H2:** se generan del texto (slug, con un sufijo si se repite).
 - **Índice «En este artículo»:** se arma con esos H2.
-- **Lead:** el primer bloque `normal` es el lead (`.prose-article > p:first-child`).
+- **Lead:** el render le asigna `class="lead"` al primer bloque `normal`, aunque el cuerpo empiece con un H2 o una cita, y el estilo de lead se aplica a `.prose-article .lead`.
 - **Estilos:** van en `src/styles/article.css`, acotados a `.prose-article`.
 
 **Contenido inicial:** con los datos actuales se publica un solo post, «Sin contexto, no hay inteligencia. Nuestra
@@ -471,8 +471,8 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
   - con cero publicados aparece el estado vacío;
   - con Sanity inaccesible, el build falla. | Escenario CDP + prueba manual de build. |
 | B8 | **Formulario:** sin JS, ni el click ni el Enter envían (sin pedidos de red ni navegación). Con JS: errores en línea con foco al primero, limpieza al editar, «Enviando…» visible (captura) y doble submit ignorado, estado error con el mail y valores conservados; salir con el formulario modificado dispara `beforeunload` (CDP `Page.javascriptDialogOpening`), y vacío no. Labels, `name`, `autocomplete` y tipos según §4.6; contraste de bordes ≥ 3:1. | Escenario CDP + registro de red. |
-| B9 | Cero links internos rotos, anclas incluidas, en las 22 rutas. | Script sobre `dist/`. |
-| B10 | Cero errores de consola en las 22 rutas. | CDP. |
+| B9 | Cero links internos rotos, anclas incluidas, en todas las rutas generadas (22 para el contenido inicial identificado en B2). | Script sobre `dist/`. |
+| B10 | Cero errores de consola en todas las rutas generadas (22 para el contenido inicial identificado en B2). | CDP. |
 | B11 | JS de la fase 2 < 8192 bytes gzip por página (mismo método que A10). | Inventario por página. |
 | B12 | **Imágenes de contenido** (fotos de industria): AVIF/WebP con fallback JPG, `width`/`height`, y carga según §3.5. A 1440×900 con DPR 1, con la caché deshabilitada (`Network.setCacheDisabled`), se activa cada uno de los cinco paneles del visor y cada página de industria, se espera la carga y se registran el `currentSrc` y el ancho renderizado de la imagen en CSS px, que se contrasta con el `sizes` de §3.5. El archivo correspondiente en `dist/` pesa ≤ 300 KB (se mide el tamaño del archivo, no `transferSize`). Los `alt` se revisan a mano y se listan. | CDP + tamaños de `dist/` + lista en la evidencia. |
 | B13 | Revisión con web-design-guidelines sin hallazgos abiertos, salvo las excepciones de la fase 1, la URL efímera de las tabs de industria (§4.1.6) y del selector Sin/Con (§4.1.2), y la transición de colores (§4.7). | Informe en la evidencia. |

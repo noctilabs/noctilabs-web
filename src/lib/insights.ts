@@ -44,6 +44,7 @@ function slugify(text: string): string {
 function renderBody(body: Block[], warn: (m: string) => void): { html: string; headings: Heading[] } {
   const headings: Heading[] = [];
   const used = new Map<string, number>();
+  let leadDone = false;
   const kept = body.filter((b) => {
     if (isRenderable(b)) return true;
     warn(`bloque no admitido ignorado (${b._type}${b.style ? `/${b.style}` : ''})`);
@@ -62,6 +63,12 @@ function renderBody(body: Block[], warn: (m: string) => void): { html: string; h
           return `<h2 id="${id}" tabindex="-1">${children}</h2>`;
         },
         blockquote: ({ children }) => `<blockquote><p>${children}</p></blockquote>`,
+        // El primer bloque normal es el lead (spec 002 §3.4), aunque el cuerpo empiece con un H2 o una cita.
+        normal: ({ children }) => {
+          const cls = leadDone ? '' : ' class="lead"';
+          leadDone = true;
+          return `<p${cls}>${children}</p>`;
+        },
       },
       marks: {
         link: ({ children, value }) => {
