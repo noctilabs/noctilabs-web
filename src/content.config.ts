@@ -1,11 +1,13 @@
-import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 
 // Spec 002 §3.4: Insights desde Sanity (proyecto q164hlpj, dataset production, lectura pública).
 const SANITY = { projectId: 'q164hlpj', dataset: 'production', apiVersion: 'v2025-02-19' };
 const QUERY = `*[_type == "post"]{
-  _id, "slug": slug.current, "slugEs": slugEs.current, publishedAt, listed, showOnInsights, topic,
+  _id, _rev, "slug": slug.current, "slugEs": slugEs.current, publishedAt, listed, showOnInsights, topic,
   category, readingTime, title, excerpt, body
 }`;
 
@@ -14,6 +16,7 @@ const localized = <T extends z.ZodType>(t: T) => z.object({ es: t.nullish(), en:
 /** Datos crudos de cada documento: las reglas de publicación se aplican en src/lib/insights.ts. */
 export const rawPost = z.object({
   _id: z.string(),
+  _rev: z.string().nullish(),
   slug: z.string().nullish(),
   slugEs: z.string().nullish(),
   publishedAt: z.string().nullish(),
@@ -27,15 +30,34 @@ export const rawPost = z.object({
   body: localized(z.array(z.any())),
 });
 
+/**
+ * Snapshot efectivo de Sanity (spec 004 §2.9): origen, hora, hash de la respuesta y los `_id`/`_rev` que entraron al
+ * build. Lo lee scripts/check-redirects.mjs para el manifiesto de publicación.
+ */
+async function recordSnapshot(source: string, raw: string, docs: unknown[]): Promise<void> {
+  const dir = join(process.cwd(), '.astro');
+  await mkdir(dir, { recursive: true });
+  const ids = (docs as { _id?: unknown; _rev?: unknown }[]).map((d) => ({ _id: d?._id ?? null, _rev: d?._rev ?? null }));
+  const record = { source, readAt: new Date().toISOString(), sha256: createHash('sha256').update(raw).digest('hex'), docs: ids };
+  await writeFile(join(dir, 'insights-snapshot.json'), `${JSON.stringify(record, null, 1)}\n`);
+}
+
 async function fetchPosts(): Promise<unknown[]> {
   const fixture = process.env.INSIGHTS_FIXTURE;
-  if (fixture) return JSON.parse(await readFile(fixture, 'utf8')).result;
+  if (fixture) {
+    const raw = await readFile(fixture, 'utf8');
+    const result = JSON.parse(raw).result;
+    await recordSnapshot(`fixture:${fixture}`, raw, result);
+    return result;
+  }
   const url = `https://${SANITY.projectId}.api.sanity.io/${SANITY.apiVersion}/data/query/${SANITY.dataset}`
     + `?perspective=published&query=${encodeURIComponent(QUERY)}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Sanity respondió ${res.status}: ${await res.text()}`);
-  const json = await res.json();
+  const raw = await res.text();
+  const json = JSON.parse(raw);
   if (!Array.isArray(json?.result)) throw new Error('Sanity devolvió una respuesta sin `result`');
+  await recordSnapshot(url, raw, json.result);
   return json.result;
 }
 

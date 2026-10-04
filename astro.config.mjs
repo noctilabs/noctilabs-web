@@ -15,4 +15,23 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   integrations: [publishGuard()],
+  // Spec 004 §2.8: CSP de carga en el <meta>, con los hashes que Astro genera por página.
+  security: {
+    csp: {
+      algorithm: 'SHA-256',
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "media-src 'self'",
+        "font-src 'self'",
+        "connect-src 'self' https://api.web3forms.com https://*.vercel-insights.com",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+      scriptDirective: { resources: ["'self'"] },
+      // Atributos `style` con valores calculados (nodos, Container, Kicker, islas): solo style-src-attr.
+      styleDirective: { resources: ["'self'", { resource: "'unsafe-inline'", kind: 'attribute' }] },
+    },
+  },
 });
