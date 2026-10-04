@@ -54,6 +54,7 @@ const es = {
     hablemos: 'Hablemos',
     langName: { es: 'Español', en: 'English' },
   },
+  band: { title: 'Hablemos.', cta: 'Agendar una conversación →' },
   notFound: { title: 'Página no encontrada', body: 'La página que buscás no existe o cambió de dirección.', home: 'Ir al inicio' },
 };
 
@@ -114,6 +115,7 @@ const en: Dict = {
     hablemos: "Let’s talk",
     langName: { es: 'Español', en: 'English' },
   },
+  band: { title: 'Let’s talk.', cta: 'Book a conversation →' },
   notFound: { title: 'Page not found', body: 'The page you are looking for does not exist or has moved.', home: 'Go to home' },
 };
 

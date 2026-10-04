@@ -1,0 +1,23 @@
+---
+// CONT (Inv §0.2): max-width 1200, padding lateral var(--edge), margen superior según la página.
+interface Props {
+  /** 'L' = GAP-L (home), 'P' = GAP-P (producto, industria, nosotros), 'none' o un valor CSS. */
+  gap?: 'L' | 'P' | 'none' | string;
+  as?: 'section' | 'div';
+  id?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+const { gap = 'L', as: Tag = 'section', class: cls, ...rest } = Astro.props;
+const top = gap === 'L' ? 'clamp(32.8px,4.9vw,72.2px)' : gap === 'P' ? 'clamp(45.9px,5.7vw,85.3px)' : gap === 'none' ? '0' : gap;
+---
+<Tag class:list={['cont', cls]} style={`--cont-top:${top}`} {...rest}><slot /></Tag>
+
+<style>
+  .cont {
+    max-width: 1200px;
+    width: 100%;
+    margin: var(--cont-top) auto 0;
+    padding: 0 var(--edge);
+  }
+</style>

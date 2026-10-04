@@ -1,0 +1,26 @@
+---
+// KICKER (Inv §0.2): mono 12px, .04em, mayúsculas. Variantes de tamaño y color.
+interface Props {
+  size?: 11 | 12 | 13;
+  tone?: 'muted' | 'dark-muted' | 'dark-accent' | 'link';
+  as?: 'span' | 'p' | 'h2' | 'h3';
+  class?: string;
+}
+const { size = 12, tone = 'muted', as: Tag = 'span', class: cls } = Astro.props;
+---
+<Tag class:list={['kicker', `t-${tone}`, cls]} style={`font-size:${size}px`}><slot /></Tag>
+
+<style>
+  .kicker {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .t-muted { color: var(--muted); }
+  .t-dark-muted { color: #7A7A80; }
+  .t-dark-accent { color: #9FBEFF; }
+  .t-link { color: var(--blue-link); }
+</style>

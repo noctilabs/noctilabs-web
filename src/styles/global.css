@@ -28,3 +28,31 @@ a:hover { color: var(--ink); }
 }
 
 main [id] { scroll-margin-top: 84px; }
+
+/* Tipografía compartida de las páginas (Inv §0.2). */
+.h1-int {
+  margin: 0;
+  font-size: var(--display);
+  font-weight: 500;
+  line-height: .96;
+  letter-spacing: -.05em;
+}
+.h2 {
+  margin: 0;
+  font-size: var(--h2);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+.lead-hero { margin: 0; font-size: 17px; line-height: 1.5; color: var(--muted); max-width: 40ch; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

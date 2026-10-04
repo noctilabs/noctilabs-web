@@ -1,0 +1,15 @@
+---
+// DARK-BIG (Inv §0.2): panel negro grande.
+interface Props { class?: string; [key: string]: unknown }
+const { class: cls, ...rest } = Astro.props;
+---
+<div class:list={['dark-big', cls]} {...rest}><slot /></div>
+
+<style>
+  .dark-big {
+    background: var(--dark);
+    color: var(--bg);
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    padding: clamp(32.8px, 4.9vw, 65.6px) clamp(16.4px, 3.3vw, 52.5px);
+  }
+</style>

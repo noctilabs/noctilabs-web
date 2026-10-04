@@ -1,0 +1,14 @@
+---
+// HEAD-ROW (Inv §0.2): título (flex 2 1 520px) + bajada (flex 1 1 320px), alineados abajo.
+interface Props { class?: string }
+---
+<div class:list={['head-row', Astro.props.class]}>
+  <div class="head"><slot /></div>
+  <p class="lead"><slot name="lead" /></p>
+</div>
+
+<style>
+  .head-row { display: flex; flex-wrap: wrap; gap: 20px 64px; align-items: flex-end; }
+  .head { flex: 2 1 520px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .lead { flex: 1 1 320px; margin: 0; font-size: 16px; color: var(--muted); }
+</style>

@@ -1,0 +1,49 @@
+---
+// Banda «Hablemos.» (Inv §8): CTA de cierre en todas las páginas salvo Hablemos.
+import Button from './ui/Button.astro';
+import { href, type Locale } from '../i18n/routes';
+import { ui } from '../i18n/ui';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = ui[locale].band;
+---
+<section class="band-wrap" aria-labelledby="band-title">
+  <div class="band">
+    <h2 id="band-title" class="word">{t.title}</h2>
+    <Button href={href({ id: 'hablemos' }, locale)} variant="white" class="band-cta">{t.cta}</Button>
+  </div>
+</section>
+
+<style>
+  .band-wrap { max-width: 1200px; margin: clamp(19.7px, 3.3vw, 45.9px) auto 0; padding: 0 var(--edge); }
+  .band {
+    position: relative;
+    background: var(--dark);
+    color: var(--bg);
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    padding: clamp(39.4px, 5.7vw, 85.3px) clamp(19.7px, 3.3vw, 52.5px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-end;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 85% 20%, rgba(61, 123, 255, .22), rgba(61, 123, 255, 0) 45%);
+    pointer-events: none;
+  }
+  .word {
+    position: relative;
+    margin: 0;
+    font-size: clamp(49.2px, 7.4vw, 123px);
+    font-weight: 500;
+    letter-spacing: -.055em;
+    line-height: .9;
+  }
+  .band :global(.band-cta) { position: relative; }
+</style>

@@ -1,0 +1,21 @@
+---
+// CARD-BIG (Inv §0.2): panel blanco grande. variant 'p' usa el primer padding de Producto (65.6).
+interface Props {
+  variant?: 'l' | 'p' | 'sym';
+  class?: string;
+  [key: string]: unknown;
+}
+const { variant = 'l', class: cls, ...rest } = Astro.props;
+---
+<div class:list={['card-big', `v-${variant}`, cls]} {...rest}><slot /></div>
+
+<style>
+  .card-big {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    padding: clamp(32.8px, 4.9vw, 72.2px) clamp(13.1px, 2.9vw, 45.9px) clamp(13.1px, 2.9vw, 45.9px);
+  }
+  .v-p { padding-top: clamp(32.8px, 4.9vw, 65.6px); }
+  .v-sym { padding: clamp(32.8px, 4.9vw, 65.6px) clamp(13.1px, 2.9vw, 45.9px); border: 0; }
+</style>

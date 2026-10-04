@@ -1,0 +1,31 @@
+---
+// BTN-DARK / BTN-WHITE / ghost (Inv §0.2). Navega: siempre <a>.
+interface Props {
+  href: string;
+  variant?: 'dark' | 'white' | 'ghost-light';
+  size?: 'md' | 'lg';
+  class?: string;
+  [key: string]: unknown;
+}
+const { href, variant = 'dark', size = 'md', class: cls, ...rest } = Astro.props;
+---
+<a href={href} class:list={['btn', `v-${variant}`, `s-${size}`, cls]} {...rest}><slot /></a>
+
+<style>
+  .btn {
+    display: inline-block;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color .15s ease;
+  }
+  .s-md { padding: 16px 26px; font-size: 15px; }
+  .s-lg { padding: 17px 30px; font-size: 16px; }
+  .v-dark { background: var(--ink); color: var(--white); }
+  .v-dark:hover { background: var(--ink-hover); color: var(--white); }
+  .v-white { background: var(--white); color: var(--ink); }
+  .v-white:hover { background: var(--surface-3); color: var(--ink); }
+  .v-ghost-light { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7); color: var(--white); }
+  .v-ghost-light:hover { background: rgba(255, 255, 255, .12); color: var(--white); }
+</style>
