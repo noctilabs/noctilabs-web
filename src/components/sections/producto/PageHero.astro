@@ -2,7 +2,7 @@
 // Hero de páginas internas con CTA (Inv §2.1 y §3.1): kicker + H1-INT a la izquierda, lead + botón a la derecha.
 import Kicker from '../../ui/Kicker.astro';
 import Button from '../../ui/Button.astro';
-import Brand from './Brand.astro';
+import Brand from '../../Brand.astro';
 
 interface Props { kicker: string; title: string; lead: string; cta: { label: string; href: string } }
 const { kicker, title, lead, cta } = Astro.props;
