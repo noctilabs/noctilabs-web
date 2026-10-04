@@ -1,5 +1,5 @@
 ---
-// CONT (Inv §0.2): max-width 1200, padding lateral var(--edge), margen superior según la página.
+// CONT (Inv §0.2): max-width 1320 (1200 + 10 %), padding lateral var(--edge), margen superior según la página.
 interface Props {
   /** 'L' = GAP-L (home), 'P' = GAP-P (producto, industria, nosotros), 'none' o un valor CSS. */
   gap?: 'L' | 'P' | 'none' | string;
@@ -15,7 +15,7 @@ const top = gap === 'L' ? 'clamp(32.8px,4.9vw,72.2px)' : gap === 'P' ? 'clamp(45
 
 <style>
   .cont {
-    max-width: 1200px;
+    max-width: 1320px;
     width: 100%;
     margin: var(--cont-top) auto 0;
     padding: 0 var(--edge);

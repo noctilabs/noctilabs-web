@@ -1,54 +1,42 @@
-// Antes y después del home (spec 002 §4.1.2). Los textos de cada estado los muestra el CSS según data-state.
+// Antes y después del home (spec 002 §4.1.2, enmienda 2026-10-04). Los textos de cada estado los muestra el CSS según data-state.
+// El scroll manda: «con» cuando el borde superior de los diagramas pasó la mitad del viewport, «sin» si no.
+// Una elección manual lo deja fijo hasta que la sección sale del viewport. Con reduced motion el cambio es igual,
+// pero el CSS lo deja sin transiciones.
 type State = 'sin' | 'con';
 type Origin = 'usuario' | 'auto';
-
-const PERIOD = 3600;
 
 export function initBeforeAfter(root: HTMLElement): void {
   const control = root.querySelector<HTMLElement>('[data-ba-control]')!;
   const buttons = [...control.querySelectorAll<HTMLButtonElement>('[data-ba-set]')];
   const live = root.querySelector<HTMLElement>('[data-ba-live]')!;
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let state: State = 'con';
+  const trigger = root.querySelector<HTMLElement>('[data-ba-trigger]')!;
   let chosen = false;
-  let visible = false;
-  let timer: number | undefined;
 
   function setState(next: State, origin: Origin): void {
-    state = next;
     root.dataset.state = next;
     for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.baSet === next));
     if (origin === 'usuario') live.textContent = next === 'sin' ? live.dataset.liveSin! : live.dataset.liveCon!;
   }
 
-  // La alternancia corre sólo si nadie eligió, sin reduced motion, con el bloque en pantalla y la pestaña visible.
-  function sync(): void {
-    const run = !chosen && !reduce.matches && visible && !document.hidden;
-    if (run && timer === undefined) {
-      timer = window.setInterval(() => setState(state === 'sin' ? 'con' : 'sin', 'auto'), PERIOD);
-    } else if (!run && timer !== undefined) {
-      clearInterval(timer);
-      timer = undefined;
-    }
+  // Se lee la geometría actual en lugar de la del entry: así un salto de scroll que no cruza el umbral no deja un estado viejo.
+  function follow(): void {
+    if (!chosen) setState(trigger.getBoundingClientRect().top < innerHeight / 2 ? 'con' : 'sin', 'auto');
   }
 
   for (const b of buttons) {
     b.addEventListener('click', () => {
       chosen = true;
       setState(b.dataset.baSet as State, 'usuario');
-      sync();
     });
   }
-  reduce.addEventListener('change', () => {
-    if (reduce.matches && !chosen) setState('con', 'auto');
-    sync();
-  });
-  document.addEventListener('visibilitychange', sync);
+  // Raíz = mitad superior del viewport: el callback corre cuando el borde superior de los diagramas cruza la mitad.
+  new IntersectionObserver(follow, { rootMargin: '0px 0px -50% 0px' }).observe(trigger);
+  // La elección manual se libera cuando la sección entera sale del viewport. Al entrar también se recalcula: un salto
+  // (Inicio, Fin, un ancla) puede cruzar la sección en un solo frame sin que el borde de los diagramas dispare el otro observer.
   new IntersectionObserver(([entry]) => {
-    visible = entry!.isIntersecting;
-    sync();
-  }, { threshold: 0 }).observe(root.querySelector('[data-ba-watch]')!);
+    if (!entry!.isIntersecting) chosen = false;
+    follow();
+  }).observe(root);
 
   control.hidden = false;
-  if (!reduce.matches) setState('sin', 'auto');
 }

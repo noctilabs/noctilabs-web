@@ -11,11 +11,11 @@ export interface BaDiagram {
   desc: ByState;
 }
 
-/** Etiquetas de los nodos de los diagramas (Inv §9.11). La geometría vive en sections/home/diagrams.ts. */
+/** Etiquetas de los nodos de los diagramas de la Opción 1 (Inv §9.12). La geometría vive en sections/home/diagrams.ts. */
 export interface DiagramLabels {
-  capa: string; erp: string; crm: string; planillas: string; personas: string; mails: string; whatsapp: string; documentos: string;
-  contexto: string; procesos: string; reglas: string; relaciones: string; excepciones: string; ia: string; construido: string;
-  compartido: string; ventas: string; finanzas: string; operaciones: string; agComercial: string; agCobranzas: string; aplicaciones: string;
+  erp: string; crm: string; planillas: string; whatsapp: string; mails: string; documentos: string; personas: string; empresa: string;
+  procesos: string; reglas: string; clientes: string; precios: string; excepciones: string; iaGenerica: string; iaNocti: string;
+  ventas: string; finanzas: string; operaciones: string; agComercial: string; agCobranzas: string; compartido: string;
 }
 
 interface Card { n: string; t: string; d: string; ex: string }
@@ -24,6 +24,8 @@ interface Step extends Card { who: string }
 export interface HomeCopy {
   before: {
     kicker: string;
+    /** Nombre accesible del grupo Sin/Con (el kicker ya no describe la comparación). */
+    control: string;
     title: ByState;
     /** Primera palabra de cada botón y del kicker de los pies; la segunda es «Nocti». */
     word: ByState;
@@ -31,7 +33,6 @@ export interface HomeCopy {
     live: ByState;
     diagrams: [BaDiagram, BaDiagram, BaDiagram];
     labels: DiagramLabels;
-    close: [string, string];
   };
   roles: { h2: string; lead: string; note: string };
   capabilities: { kicker: string; h2: string; items: [Card, Card, Card, Card]; cta: string };
@@ -43,44 +44,43 @@ export interface HomeCopy {
 export const home: Localized<HomeCopy> = {
   es: {
     before: {
-      kicker: 'Antes y después',
+      kicker: 'Por qué Nocti',
+      control: 'Antes y después',
       title: { sin: 'Cómo operan hoy las empresas.', con: 'Cómo pueden operar.' },
       word: { sin: 'Sin', con: 'Con' },
-      hint: 'Elegir una vista detiene la animación automática.',
+      hint: 'La vista cambia al desplazarte; elegir una la mantiene mientras esta sección siga en pantalla.',
       live: { sin: 'Sin Nocti: Cómo operan hoy las empresas.', con: 'Con Nocti: Cómo pueden operar.' },
       diagrams: [
         {
           title: { sin: 'Fragmentado', con: 'Conectado' },
-          text: { sin: 'Información y conocimiento dispersos.', con: 'Tus sistemas y fuentes de conocimiento, conectados en una misma capa.' },
+          text: { sin: 'Información y conocimiento dispersos.', con: 'Sistemas y conocimiento sobre una misma base.' },
           desc: {
-            sin: 'ERP, CRM, planillas, personas, mails, WhatsApp y documentos dispersos, sin conexión entre sí.',
-            con: 'ERP, CRM, planillas, personas, mails, WhatsApp y documentos conectados a una misma capa de conexión de Nocti.',
+            sin: 'ERP, CRM, planillas, WhatsApp, mails, documentos y personas dispersos, sin conexión entre sí.',
+            con: 'ERP, CRM, planillas, WhatsApp, mails, documentos y personas en un anillo, todos conectados a tu empresa, en el centro.',
           },
         },
         {
           title: { sin: 'Genérico', con: 'Contextualizado' },
-          text: { sin: 'La IA conoce el modelo, no tu empresa.', con: 'La IA entiende cómo funciona tu empresa: procesos, reglas, relaciones y excepciones.' },
+          text: { sin: 'La IA conoce el modelo, no tu empresa.', con: 'La IA entiende procesos, reglas y realidad operativa.' },
           desc: {
-            sin: 'Una IA genérica, sin conexión con el ERP, el CRM, los documentos ni las personas. Procesos, reglas, relaciones y excepciones quedan sueltos.',
-            con: 'ERP, CRM, documentos y personas alimentan un contexto empresarial construido por Nocti, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.',
+            sin: 'Una IA genérica y, sueltos y apagados, sin conexión con ella: procesos, reglas, clientes, precios y excepciones.',
+            con: 'IA + Nocti conectada a una columna ordenada de procesos, reglas, clientes, precios y excepciones.',
           },
         },
         {
           title: { sin: 'Aislado', con: 'Coordinado' },
-          text: { sin: 'Personas, aplicaciones y agentes trabajan por separado.', con: 'Personas, aplicaciones y agentes trabajan sobre el mismo contexto, con permisos y trazabilidad.' },
+          text: { sin: 'Personas, sistemas y agentes trabajan por separado.', con: 'Personas y agentes trabajan sobre el mismo contexto.' },
           desc: {
-            sin: 'Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones trabajan por separado, sin conexión entre sí.',
-            con: 'Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicaciones conectados a un contexto compartido de Nocti, con permisos verificados.',
+            sin: 'Ventas, Finanzas, Operaciones, el agente comercial y el agente de cobranzas, dispersos y sin conexión entre sí.',
+            con: 'Ventas, Finanzas y Operaciones en una fila y, debajo, el agente comercial y el agente de cobranzas, todos conectados a un contexto compartido de Nocti.',
           },
         },
       ],
       labels: {
-        capa: 'Nocti · capa de conexión', erp: 'ERP', crm: 'CRM', planillas: 'Planillas', personas: 'Personas', mails: 'Mails', whatsapp: 'WhatsApp', documentos: 'Documentos',
-        contexto: 'Contexto empresarial', procesos: 'Procesos', reglas: 'Reglas', relaciones: 'Relaciones', excepciones: 'Excepciones', ia: 'IA', construido: 'construido por Nocti',
-        compartido: 'Contexto compartido · Nocti', ventas: 'Ventas', finanzas: 'Finanzas', operaciones: 'Operaciones',
-        agComercial: 'Agente comercial', agCobranzas: 'Agente de cobranzas', aplicaciones: 'Aplicaciones',
+        erp: 'ERP', crm: 'CRM', planillas: 'Planillas', whatsapp: 'WhatsApp', mails: 'Mails', documentos: 'Documentos', personas: 'Personas', empresa: 'Tu empresa',
+        procesos: 'Procesos', reglas: 'Reglas', clientes: 'Clientes', precios: 'Precios', excepciones: 'Excepciones', iaGenerica: 'IA genérica', iaNocti: 'IA + Nocti',
+        ventas: 'Ventas', finanzas: 'Finanzas', operaciones: 'Operaciones', agComercial: 'Agente comercial', agCobranzas: 'Agente de cobranzas', compartido: 'Contexto compartido · Nocti',
       },
-      close: ['Tus sistemas siguen siendo tus sistemas.', 'Nocti los conecta, los contextualiza y los vuelve utilizables por personas e IA.'],
     },
     roles: {
       h2: 'Toda la empresa puede preguntar. Cada uno ve lo que le corresponde.',
@@ -118,44 +118,44 @@ export const home: Localized<HomeCopy> = {
   },
   en: {
     before: {
-      kicker: 'Before and after',
+      kicker: 'Why Nocti',
+      control: 'Before and after',
       title: { sin: 'How companies operate today.', con: 'How they could operate.' },
       word: { sin: 'Without', con: 'With' },
-      hint: 'Choosing a view stops the automatic animation.',
+      hint: 'The view changes as you scroll; choosing one keeps it while this section stays on screen.',
       live: { sin: 'Without Nocti: How companies operate today.', con: 'With Nocti: How they could operate.' },
       diagrams: [
         {
           title: { sin: 'Fragmented', con: 'Connected' },
-          text: { sin: 'Scattered information and knowledge.', con: 'Your systems and knowledge sources, connected in a single layer.' },
+          // Opción 1 (2026-10-04): los textos y etiquetas nuevos son traducción provisoria (D4).
+          text: { sin: 'Scattered information and knowledge.', con: 'Systems and knowledge on a single foundation.' },
           desc: {
-            sin: 'ERP, CRM, spreadsheets, people, email, WhatsApp and documents scattered, with no connection between them.',
-            con: 'ERP, CRM, spreadsheets, people, email, WhatsApp and documents connected to a single Nocti connection layer.',
+            sin: 'ERP, CRM, spreadsheets, WhatsApp, email, documents and people scattered, with no connection between them.',
+            con: 'ERP, CRM, spreadsheets, WhatsApp, email, documents and people in a ring, all connected to your company at the center.',
           },
         },
         {
           title: { sin: 'Generic', con: 'Contextualized' },
-          text: { sin: 'AI knows the model, not your company.', con: 'AI understands how your company works: processes, rules, relationships and exceptions.' },
+          text: { sin: 'AI knows the model, not your company.', con: 'AI understands processes, rules and operational reality.' },
           desc: {
-            sin: 'A generic AI with no connection to the ERP, the CRM, documents or people. Processes, rules, relationships and exceptions are left loose.',
-            con: 'ERP, CRM, documents and people feed a business context built by Nocti, with processes, rules, relationships and exceptions, and that context feeds the AI.',
+            sin: 'A generic AI and, loose and faded, with no connection to it: processes, rules, customers, prices and exceptions.',
+            con: 'AI + Nocti connected to an ordered column of processes, rules, customers, prices and exceptions.',
           },
         },
         {
           title: { sin: 'Isolated', con: 'Coordinated' },
-          text: { sin: 'People, applications and agents work separately.', con: 'People, applications and agents work on the same context, with permissions and traceability.' },
+          text: { sin: 'People, systems and agents work separately.', con: 'People and agents work on the same context.' },
           desc: {
-            sin: 'Sales, Finance, Operations, the sales agent, the collections agent and the applications work separately, with no connection between them.',
-            con: 'Sales, Finance, Operations, the sales agent, the collections agent and the applications connected to a shared Nocti context, with verified permissions.',
+            sin: 'Sales, Finance, Operations, the sales agent and the collections agent, scattered and with no connection between them.',
+            con: 'Sales, Finance and Operations in a row and, below them, the sales agent and the collections agent, all connected to a shared Nocti context.',
           },
         },
       ],
       labels: {
-        capa: 'Nocti · connection layer', erp: 'ERP', crm: 'CRM', planillas: 'Spreadsheets', personas: 'People', mails: 'Email', whatsapp: 'WhatsApp', documentos: 'Documents',
-        contexto: 'Business context', procesos: 'Processes', reglas: 'Rules', relaciones: 'Relationships', excepciones: 'Exceptions', ia: 'AI', construido: 'built by Nocti',
-        compartido: 'Shared context · Nocti', ventas: 'Sales', finanzas: 'Finance', operaciones: 'Operations',
-        agComercial: 'Sales agent', agCobranzas: 'Collections agent', aplicaciones: 'Applications',
+        erp: 'ERP', crm: 'CRM', planillas: 'Spreadsheets', whatsapp: 'WhatsApp', mails: 'Email', documentos: 'Documents', personas: 'People', empresa: 'Your company',
+        procesos: 'Processes', reglas: 'Rules', clientes: 'Customers', precios: 'Prices', excepciones: 'Exceptions', iaGenerica: 'Generic AI', iaNocti: 'AI + Nocti',
+        ventas: 'Sales', finanzas: 'Finance', operaciones: 'Operations', agComercial: 'Sales agent', agCobranzas: 'Collections agent', compartido: 'Shared context · Nocti',
       },
-      close: ['Your systems are still your systems.', 'Nocti connects them, puts them in context and makes them usable by people and AI.'],
     },
     roles: {
       h2: 'The whole company can ask. Everyone sees what’s theirs to see.',

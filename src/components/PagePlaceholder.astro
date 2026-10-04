@@ -23,8 +23,6 @@ const h1 = page.id === 'industria' ? industry(page.industry, locale).hero.h1 : t
       lead={ui[locale].pages.home.lead}
       primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
       secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
-      pauseLabel={t.hero.pause}
-      playLabel={t.hero.play}
     />
   ) : (
     <section class="intro">
@@ -42,7 +40,7 @@ const h1 = page.id === 'industria' ? industry(page.industry, locale).hero.h1 : t
 
 <style>
   .intro, .anchor {
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
     padding: clamp(32.8px, 4.9vw, 72.2px) var(--edge);
   }

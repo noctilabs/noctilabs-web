@@ -27,6 +27,8 @@
   --edge: 16px;
   --display: 46px;
   --h2: 32px;
+  /* Dueño 2026-10-04: h1 del hero 80/82 px en escritorio (5rem, línea 1.025); escala 5.556vw (80/1440) hasta ese tope. */
+  --hero-h1: clamp(42.6px, 5.556vw, 5rem);
 
   --radius-pill: 999px;
   --radius-capsule: 28px;
@@ -36,7 +38,8 @@
 @media (min-width: 1000px) {
   :root {
     --edge: clamp(16.4px, 3.3vw, 45.9px);
-    --display: clamp(42.6px, 5.9vw, 95.1px);
+    /* Dueño 2026-10-04: los títulos internos bajan en la misma proporción que el del hero (tope 5rem en 1440). */
+    --display: clamp(42.6px, 5.556vw, 5rem);
     --h2: clamp(27.9px, 3.4vw, 52.5px);
   }
 }

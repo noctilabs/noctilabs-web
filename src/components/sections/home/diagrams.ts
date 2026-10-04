@@ -1,59 +1,71 @@
-// Geometría de los diagramas de la Opción 2 (Inv §9.10–9.11, `diagrams(con)` L571–600). Posiciones en % del lienzo.
-import type { DiagramLabels } from '../../../content/pages/home';
+// Geometría de los diagramas de la Opción 1 (Inv §9.10 y §9.12, `diagramsOld(con)` L601–628; dueño, 2026-10-04).
+// Posiciones en % del lienzo. A diferencia de la Opción 2, acá los nodos se desplazan y rotan entre «sin» y «con».
+import type { BaState, DiagramLabels } from '../../../content/pages/home';
 
-export type NodeKind = 'src' | 'srcSm' | 'chip' | 'dark' | 'agent' | 'layer' | 'block' | 'tag' | 'badge';
+/** `core` = OLD_CORE. */
+export type NodeKind = 'src' | 'agent' | 'dark' | 'core';
+
+/** Lugar del nodo en un estado: `[x, y, rotación en grados, escala, opacidad]`. */
+export type Place = [x: number, y: number, r?: number, s?: number, o?: number];
 
 export interface DiagramNode {
-  /** Clave de la etiqueta en DiagramLabels; null = «✓». */
-  label: keyof DiagramLabels | null;
-  x: number;
-  y: number;
+  label: keyof DiagramLabels;
+  /** Etiqueta distinta en «sin» (el nodo de la IA del diagrama 2). */
+  labelSin?: keyof DiagramLabels;
   kind: NodeKind;
-  /** Escala con «sin» para los nodos que aparecen con «con» (`show(con, sc)`); ausente = siempre visible. */
-  off?: number;
-  wd?: string;
-  ht?: string;
+  /** Estilo en «sin» cuando cambia: `faded` = OLD_FADED, `dark` = el nodo «IA genérica». */
+  sinKind?: 'faded' | 'dark';
+  at: Record<BaState, Place>;
+  wd?: Partial<Record<BaState, string>>;
 }
 
 export type Segment = [x1: number, y1: number, x2: number, y2: number];
 
 export interface DiagramGeometry { nodes: DiagramNode[]; lines: Segment[] }
 
-const n = (label: DiagramNode['label'], x: number, y: number, kind: NodeKind, extra: Partial<DiagramNode> = {}): DiagramNode =>
-  ({ label, x, y, kind, ...extra });
+type Key = keyof DiagramLabels;
 
-const top: [keyof DiagramLabels, number, number][] = [['erp', 18, 16], ['crm', 50, 13], ['planillas', 82, 16], ['personas', 34, 33]];
-const bot: [keyof DiagramLabels, number, number][] = [['mails', 18, 84], ['whatsapp', 50, 87], ['documentos', 82, 84]];
-const srcs: [keyof DiagramLabels, number][] = [['erp', 15], ['crm', 37], ['documentos', 61], ['personas', 85]];
+// Diagrama 1: siete fuentes que pasan de dispersas a un anillo de radio 33 alrededor de «Tu empresa».
+const src: Key[] = ['erp', 'crm', 'planillas', 'whatsapp', 'mails', 'documentos', 'personas'];
+const scat: Place[] = [[24, 18, -6], [72, 14, 5], [80, 42, 9], [24, 50, -4], [66, 82, -8], [24, 84, 6], [54, 48, 3]];
+const ring: Place[] = src.map((_, i) => {
+  const a = (i / 7) * Math.PI * 2 - Math.PI / 2;
+  return [50 + 33 * Math.cos(a), 50 + 33 * Math.sin(a)];
+});
+
+// Diagrama 2: conocimiento suelto y apagado → columna bajo «IA + Nocti».
+const kn: Key[] = ['procesos', 'reglas', 'clientes', 'precios', 'excepciones'];
+const knScat: Place[] = [[20, 64, -5], [52, 76, 4], [80, 60, 7], [28, 90, 3], [74, 90, -4]];
+
+// Diagrama 3: personas y agentes dispersos → filas sobre el contexto compartido.
+const ppl: Key[] = ['ventas', 'finanzas', 'operaciones'];
+const ag: Key[] = ['agComercial', 'agCobranzas'];
+const pScat: Place[] = [[22, 18, -4], [78, 22, 5], [24, 70, 3]];
+const pRow: [number, number][] = [[19, 22], [50, 22], [81, 22]];
+const aScat: Place[] = [[72, 78, -6], [56, 46, 4]];
+const aRow: [number, number][] = [[30, 48], [70, 48]];
 
 export const DIAGRAMS: [DiagramGeometry, DiagramGeometry, DiagramGeometry] = [
   {
     nodes: [
-      n('capa', 50, 58, 'layer', { wd: '88%', ht: '12%', off: 0.92 }),
-      ...[...top, ...bot].map(([l, x, y]) => n(l, x, y, 'src')),
+      ...src.map((label, i): DiagramNode => ({ label, kind: 'src', at: { sin: scat[i]!, con: ring[i]! } })),
+      { label: 'empresa', kind: 'core', at: { sin: [50, 50, 0, 0.4, 0], con: [50, 50] } },
     ],
-    lines: [
-      ...top.map(([, x, y]): Segment => [x, y + 4.5, x, 52]),
-      ...bot.map(([, x, y]): Segment => [x, y - 4.5, x, 64]),
-    ],
+    lines: ring.map(([x, y]): Segment => [50, 50, x, y]),
   },
   {
     nodes: [
-      n('contexto', 50, 52, 'block', { wd: '84%', ht: '38%', off: 0.96 }),
-      n('procesos', 31, 50, 'chip'), n('reglas', 69, 50, 'chip'), n('relaciones', 31, 61, 'chip'), n('excepciones', 69, 61, 'chip'),
-      ...srcs.map(([l, x]) => n(l, x, 87, 'srcSm')),
-      n('ia', 50, 14, 'dark'),
-      n('construido', 70, 71, 'tag', { off: 0.8 }),
+      ...kn.map((label, i): DiagramNode => ({ label, kind: 'src', sinKind: 'faded', at: { sin: knScat[i]!, con: [50, 40 + i * 11] }, wd: { con: '52%' } })),
+      { label: 'iaNocti', labelSin: 'iaGenerica', kind: 'core', sinKind: 'dark', at: { sin: [50, 18], con: [50, 18] }, wd: { con: '52%' } },
     ],
-    lines: [...srcs.map(([, x]): Segment => [x, 83, x, 71]), [50, 18.5, 50, 33]],
+    lines: [[50, 18, 50, 84]],
   },
   {
     nodes: [
-      n('compartido', 50, 84, 'layer', { wd: '88%', ht: '12%', off: 0.92 }),
-      n('ventas', 19, 16, 'src'), n('finanzas', 50, 16, 'src'), n('operaciones', 81, 16, 'src'),
-      n('agComercial', 27, 42, 'agent'), n('agCobranzas', 72, 42, 'agent'), n('aplicaciones', 50, 60, 'src'),
-      n(null, 19, 50, 'badge', { off: 0.5 }), n(null, 72, 63, 'badge', { off: 0.5 }), n(null, 50, 71, 'badge', { off: 0.5 }),
+      ...ppl.map((label, i): DiagramNode => ({ label, kind: 'src', at: { sin: pScat[i]!, con: pRow[i]! } })),
+      ...ag.map((label, i): DiagramNode => ({ label, kind: 'agent', at: { sin: aScat[i]!, con: aRow[i]! } })),
+      { label: 'compartido', kind: 'core', at: { sin: [50, 80, 0, 0.6, 0], con: [50, 80] }, wd: { sin: '86%', con: '86%' } },
     ],
-    lines: [[19, 20.5, 19, 78], [50, 20.5, 50, 55.5], [81, 20.5, 81, 78], [27, 46.5, 27, 78], [72, 46.5, 72, 78], [50, 64.5, 50, 78]],
+    lines: [...pRow, ...aRow].map(([x, y]): Segment => [x, y, x, 80]),
   },
 ];

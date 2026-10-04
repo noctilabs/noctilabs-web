@@ -36,7 +36,7 @@ const es = {
       description: 'Cómo trata NoctiLabs los datos que nos enviás por el formulario de contacto y qué derechos tenés sobre ellos.',
     },
   },
-  hero: { primary: 'Hablemos', secondary: 'Ver el producto', pause: 'Pausar video', play: 'Reproducir video' },
+  hero: { primary: 'Hablemos', secondary: 'Ver el producto' },
   productSections: {
     overview: { label: 'Overview', desc: 'Sistemas, conocimiento y operaciones conectados en una sola capa de contexto.' },
     cerebro: { label: 'Cerebro', desc: 'Preguntá a tu empresa y recibí respuestas con fuentes, según los permisos de tu rol.' },
@@ -103,7 +103,7 @@ const en: Dict = {
       description: 'How NoctiLabs handles the data you send us through the contact form and the rights you have over it.',
     },
   },
-  hero: { primary: 'Let’s talk', secondary: 'See the product', pause: 'Pause video', play: 'Play video' },
+  hero: { primary: 'Let’s talk', secondary: 'See the product' },
   productSections: {
     overview: { label: 'Overview', desc: 'Systems, knowledge and operations connected in a single context layer.' },
     cerebro: { label: 'Brain', desc: 'Ask your company and get sourced answers, within the permissions of your role.' },

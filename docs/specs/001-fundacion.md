@@ -344,12 +344,12 @@ del header y el footer. Los ids son iguales en los dos idiomas.
 **Enmienda 2026-10-03 (pedido del dueño): hero provisorio del home.** En lugar del placeholder liso,
 el home lleva `HomeHero.astro`:
 
-- **Video:** el de `public/media/hero.webm` / `hero.mp4`, con poster `hero-poster.jpg`, a sangre y con alto
+- **Video:** `public/media/hero-av1.mp4` (AV1 10 bits, 2,9 MB) con respaldo `hero-h264.mp4` (H.264, 4,9 MB), ambos 1080p, con poster `hero-poster.webp`, a sangre y con alto
   `max(680px, 100vh)`. Atributos `autoplay muted loop playsinline` y `aria-hidden`. Con
   `prefers-reduced-motion: reduce` se pausa.
 - **Velo encima:** `linear-gradient(#00000026 0%, #0000001a 13.1179% 60%, #0000004d 100%)`.
 - **Texto:** el H1, el lead y los dos CTA del diseño (L73–88), como links.
-- **Peso:** el video pesa ~10 MB en 1080p. Optimizarlo queda para la fase 4.
+- **Peso:** 1080p optimizado (AV1 ≈ 2,9 MB; H.264 ≈ 4,9 MB; antes ≈ 7,5–10 MB); `preload="metadata"`.
 - **Alcance:** la composición final del hero se especifica en la fase 2.
 
 Retail usa la frase del diseño (L304). Las otras cuatro industrias usan su label como placeholder hasta la fase 2.

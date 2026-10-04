@@ -259,6 +259,18 @@ Cada sección reproduce Inv con sus valores exactos. Acá solo se listan las dec
    - **URL:** Sin/Con es un estado efímero de presentación y no se refleja en la URL. Es una excepción documentada (B13).
    - **Mobile:** el H2 puede ocupar varias líneas; no se porta el `nowrap` (Inv §11.22).
    - **Contraste:** `chipOff` usa texto `#6B6B68` (4,85:1 sobre `#F4F4F2`) en lugar de `#9A9A96`, con el borde punteado `#9A9A96`. Diferencia autorizada.
+   - **Enmienda 2026-10-04 (decisión del dueño): Opción 1 y kicker.** El dueño eligió la **Opción 1** (`diagramsOld(con)`, Inv §9.12) en lugar de la Opción 2; el comparador «Comparar · Opción 1 / Opción 2» sigue sin portarse (D6, §7 ítem 1).
+     - El kicker pasa de «Antes y después» / «Before and after» a **«Por qué Nocti» / «Why Nocti»** (con «Nocti» en `translate="no"`). El grupo Sin/Con conserva «Antes y después» / «Before and after» como `aria-label`, porque el kicker ya no describe la comparación.
+     - Los nodos se **desplazan y rotan** entre estados: cada uno lleva su lugar «sin» y «con» como variables CSS y se transicionan `left`, `top`, `transform`, opacidad y colores, como en `oldNode`. Las líneas son las de `oldLines`: sin círculos, trazo 1,5 y un solo delay de 0,55 s.
+     - Como en el diseño (`showClose2: opt !== 1`), la Opción 1 **no lleva el cierre**, así que deja de aplicar el punto de accesibilidad sobre él. El H2 (`morphTitle`) no depende de la opción y cambia igual.
+     - `OLD_FADED` usa el mismo criterio de contraste que `chipOff` (texto `#6B6B68`, borde punteado `#9A9A96`).
+     - Las descripciones textuales, los pies y las etiquetas son los de la Opción 1; el inglés nuevo es traducción provisoria (D4).
+   - **Enmienda 2026-10-04 (decisión del dueño): el scroll reemplaza a la alternancia automática.** Deja sin efecto «Alternancia automática», la parte de «Reduced motion» y de «Sin JS» que habla de alternar, y lo equivalente en B4. Ya no hay temporizador:
+     - Un `IntersectionObserver` sobre la grilla de diagramas, con `rootMargin: 0px 0px -50% 0px`, pone «con» cuando su borde superior pasa la mitad del viewport y «sin» si vuelve a quedar por debajo. Es reversible y no se escucha `scroll`.
+     - El selector Sin/Con sigue: una elección manual manda mientras alguna parte de la sección esté en pantalla, y se libera cuando la sección entera sale del viewport (otro observer, threshold 0). Al liberarse, y también al volver a entrar (por si un salto de Inicio o Fin cruzó la sección en un solo frame), el estado se recalcula según la posición de la grilla.
+     - Con reduced motion, el cambio por scroll ocurre igual, con transiciones de 0 ms. `reduce` pide quitar el movimiento, no el contenido: un reemplazo instantáneo, provocado por el propio scroll, no es animación, y congelar «con» les escondería la mitad «sin» de la comparación.
+     - `aria-pressed` refleja siempre el estado y la región viva anuncia solo los cambios manuales. El texto de `aria-describedby` pasa a «La vista cambia al desplazarte; elegir una la mantiene mientras esta sección siga en pantalla.» / «The view changes as you scroll; choosing one keeps it while this section stays on screen.».
+     - Sin JS, igual que antes: «con» y sin control.
 
 3. **Toda la empresa puede preguntar** (Inv §1.3):
    - Head-row, nota al pie y el `AppSlot` de la demo por rol (`variant="role-demo"`, §4.8).
@@ -427,8 +439,8 @@ TypeScript sin dependencias, incluido solo en la página que lo usa.
 
 ## 7. Diferencias autorizadas respecto del diseño
 
-1. Sin el comparador Opción 1/2; solo la Opción 2.
-2. `chipOff` con texto `#6B6B68`.
+1. Sin el comparador Opción 1/2; solo la Opción 2. **Enmienda 2026-10-04:** el dueño eligió la Opción 1 (§4.1.2); el comparador sigue sin portarse.
+2. `chipOff` con texto `#6B6B68` (desde el 2026-10-04, el mismo criterio en `OLD_FADED` de la Opción 1).
 3. Ejemplos de Capacidades y Pasos siempre visibles, con colores según el fondo.
 4. «Conocer más» lleva a la industria del panel.
 5. Conectores de Overview y grilla de Control adaptados a mobile.
@@ -488,7 +500,7 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 
 - **D1. Tipografía.** Cerrada: Inter. Cambiarla requiere una nueva decisión explícita del dueño; no es un pendiente de la fase 5.
 - **D4. Inglés.** Lo traduzco yo; pendiente de revisión del dueño.
-- **D6. Diagramas.** Solo la Opción 2.
+- **D6. Diagramas.** Solo la Opción 2. **Enmienda 2026-10-04:** el dueño eligió la Opción 1 (§4.1.2).
 - **D7. Industria inicial del home.** Manufactura, como en el diseño.
 - **D8. Industrias sin copy.** Lo redacto yo, con `draft: true`.
 - **D9. Equipo.** Oculto hasta tener datos reales.

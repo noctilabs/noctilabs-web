@@ -1,12 +1,13 @@
 ---
-// Antes y después, sólo Opción 2 (spec 002 §4.1.2, Inv §1.2 y §9.10–9.11).
+// Antes y después, sólo Opción 1 (spec 002 §4.1.2, enmienda 2026-10-04; Inv §1.2, §9.10 y §9.12).
 // El HTML sale en estado «con» y sin control (sin JS). Los textos de cada estado se apilan en la misma celda
 // de grid y el inactivo queda con visibility:hidden: fuera del árbol accesible y sin saltos de alto al alternar.
+// Como en el diseño, la Opción 1 no lleva el cierre («Tus sistemas siguen siendo tus sistemas…»).
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
 import Kicker from '../../ui/Kicker.astro';
 import Txt from '../../Brand.astro';
-import { DIAGRAMS, type DiagramNode } from './diagrams';
+import { DIAGRAMS, type DiagramNode, type Place } from './diagrams';
 import { home, type BaState } from '../../../content/pages/home';
 import type { Locale } from '../../../i18n/routes';
 
@@ -15,18 +16,21 @@ const { locale } = Astro.props;
 const t = home[locale].before;
 const STATES: BaState[] = ['sin', 'con'];
 
+// Cada nodo lleva su lugar en los dos estados como variables (0 = «sin», 1 = «con»); el CSS elige según data-state.
+const placeVars = ([x, y, r = 0, s = 1, o = 1]: Place, k: 0 | 1) =>
+  [`--x${k}:${+x.toFixed(2)}%`, `--y${k}:${+y.toFixed(2)}%`, r && `--r${k}:${r}deg`, s !== 1 && `--s${k}:${s}`, o !== 1 && `--o${k}:${o}`];
 const nodeStyle = (n: DiagramNode) =>
-  [`left:${n.x}%`, `top:${n.y}%`, n.wd && `width:${n.wd}`, n.ht && `height:${n.ht}`, n.off && `--s:${n.off}`].filter(Boolean).join(';');
+  [...placeVars(n.at.sin, 0), ...placeVars(n.at.con, 1), n.wd?.sin && `--w0:${n.wd.sin}`, n.wd?.con && `--w1:${n.wd.con}`].filter(Boolean).join(';');
 ---
 <Container gap="L">
   <CardBig>
     <div class="ba" data-ba data-state="con">
-      <Kicker>{t.kicker}</Kicker>
-      <div class="watch" data-ba-watch>
+      <Kicker><Txt text={t.kicker} /></Kicker>
+      <div class="watch">
         <h2 class="h2 title m">
           {STATES.map((s) => <span class={`s-${s}`}>{t.title[s]}</span>)}
         </h2>
-        <div class="seg" role="group" aria-label={t.kicker} data-ba-control hidden>
+        <div class="seg" role="group" aria-label={t.control} data-ba-control hidden>
           {STATES.map((s) => (
             <button type="button" aria-pressed={s === 'con' ? 'true' : 'false'} aria-describedby="ba-hint" data-ba-set={s}>
               {t.word[s]} <span translate="no">Nocti</span>
@@ -35,24 +39,20 @@ const nodeStyle = (n: DiagramNode) =>
         </div>
         <p id="ba-hint" class="sr-only">{t.hint}</p>
       </div>
-      <div class="grid">
+      <div class="grid" data-ba-trigger>
         {DIAGRAMS.map((g, i) => {
           const d = t.diagrams[i]!;
           return (
             <figure class="item">
               <div class="canvas" aria-hidden="true">
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                  {g.lines.map(([x1, y1, x2, y2], j) => (
-                    <g style={`--i:${j}`}>
-                      <line x1={x1} y1={y1} x2={x2} y2={y2} />
-                      <circle cx={x1} cy={y1} r=".9" />
-                      <circle cx={x2} cy={y2} r=".9" />
-                    </g>
-                  ))}
+                  {g.lines.map(([x1, y1, x2, y2]) => <line x1={x1} y1={y1} x2={x2} y2={y2} />)}
                 </svg>
                 {g.nodes.map((n) => (
-                  <div class:list={['node', `k-${n.kind}`, { tog: n.off }]} style={nodeStyle(n)}>
-                    <span>{n.label ? <Txt text={t.labels[n.label]} /> : '✓'}</span>
+                  <div class:list={['node', `k-${n.kind}`, n.sinKind && `sin-${n.sinKind}`]} style={nodeStyle(n)}>
+                    {n.labelSin
+                      ? <><span class="l-sin"><Txt text={t.labels[n.labelSin]} /></span><span class="l-con"><Txt text={t.labels[n.label]} /></span></>
+                      : <span><Txt text={t.labels[n.label]} /></span>}
                   </div>
                 ))}
               </div>
@@ -69,10 +69,6 @@ const nodeStyle = (n: DiagramNode) =>
             </figure>
           );
         })}
-      </div>
-      <div class="close">
-        <p class="c1">{t.close[0]}</p>
-        <p class="c2"><Txt text={t.close[1]} /></p>
       </div>
       <p class="sr-only" aria-live="polite" data-ba-live data-live-sin={t.live.sin} data-live-con={t.live.con}></p>
     </div>
@@ -136,14 +132,18 @@ const nodeStyle = (n: DiagramNode) =>
     --u: clamp(9px, 3.4cqw, 13px);
   }
   svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  line { stroke: var(--blue-light); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
-  circle { fill: var(--blue); }
-  g { transition: opacity .5s calc(.35s + var(--i) * .05s); }
-  [data-state='sin'] g { opacity: 0; transition-delay: 0s; }
+  /* oldLines: sin círculos, todas con el mismo delay. */
+  line { stroke: var(--blue-light); stroke-width: 1.5; vector-effect: non-scaling-stroke; transition: opacity .5s .55s; }
+  [data-state='sin'] line { opacity: 0; transition-delay: 0s; }
 
+  /* oldNode: el nodo se desplaza, rota y escala entre los lugares de cada estado (--x0…--o0 «sin», --x1…--o1 «con»). */
   .node {
     position: absolute;
-    transform: translate(-50%, -50%);
+    left: var(--x1);
+    top: var(--y1);
+    width: var(--w1, auto);
+    opacity: var(--o1, 1);
+    transform: translate(-50%, -50%) rotate(var(--r1, 0deg)) scale(var(--s1, 1));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,34 +157,22 @@ const nodeStyle = (n: DiagramNode) =>
     line-height: 1.2;
     white-space: nowrap;
     text-align: center;
-    transition: transform .9s cubic-bezier(.7, 0, .2, 1), opacity .6s, background-color .6s, color .6s;
+    transition: left .9s cubic-bezier(.7, 0, .2, 1), top .9s cubic-bezier(.7, 0, .2, 1), transform .9s cubic-bezier(.7, 0, .2, 1),
+      opacity .6s, background-color .6s, color .6s;
   }
-  .k-srcSm, .k-chip { padding: calc(var(--u) * 5 / 13) calc(var(--u) * 9 / 13); font-size: calc(var(--u) * 12 / 13); }
-  .k-chip { padding-inline: calc(var(--u) * 10 / 13); background: var(--bg); border-color: var(--line); }
-  /* chipOff (§4.1.2): texto #6B6B68 (4,85:1) y borde punteado #9A9A96. */
-  [data-state='sin'] .k-chip { background: transparent; color: var(--muted); border: 1px dashed #9A9A96; }
-  .k-dark { padding-inline: calc(var(--u) * 18 / 13); background: var(--ink); color: var(--white); border-color: var(--ink); }
-  .k-agent, .k-layer { background: #EEF3FF; color: var(--blue-link); border-color: #A9C4FF; }
-  .k-layer, .k-block, .k-tag { font-family: var(--font-mono); letter-spacing: .04em; }
-  .k-layer, .k-block, .k-badge { font-size: calc(var(--u) * 11 / 13); }
-  .k-layer { border-radius: 14px; padding: 0 calc(var(--u) * 12 / 13); }
-  .k-block { align-items: flex-start; border-radius: 18px; border-color: #A9C4FF; padding: calc(var(--u) * 9 / 13) calc(var(--u) * 12 / 13); }
-  .k-tag {
-    padding: calc(var(--u) * 3 / 13) calc(var(--u) * 8 / 13);
-    background: var(--blue);
-    color: var(--white);
-    border-color: var(--blue);
-    font-size: calc(var(--u) * 10 / 13);
-    letter-spacing: .03em;
+  [data-state='sin'] .node {
+    left: var(--x0);
+    top: var(--y0);
+    width: var(--w0, auto);
+    opacity: var(--o0, 1);
+    transform: translate(-50%, -50%) rotate(var(--r0, 0deg)) scale(var(--s0, 1));
   }
-  .k-badge {
-    width: calc(var(--u) * 20 / 13);
-    height: calc(var(--u) * 20 / 13);
-    padding: 0;
-    color: var(--blue-link);
-    border-color: #A9C4FF;
-  }
-  [data-state='sin'] .tog { opacity: 0; transform: translate(-50%, -50%) scale(var(--s)); }
+  .k-agent { background: #EEF3FF; color: var(--blue-link); border-color: #A9C4FF; }
+  .k-dark, [data-state='sin'] .sin-dark { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .k-core { background: var(--blue); color: var(--white); border-color: var(--blue); }
+  /* OLD_FADED con el contraste de chipOff (§4.1.2): texto #6B6B68 (4,85:1) y borde punteado #9A9A96. */
+  [data-state='sin'] .sin-faded { background: transparent; color: #6B6B68; border: 1px dashed #9A9A96; }
+  [data-state='sin'] .l-con, [data-state='con'] .l-sin { display: none; }
 
   .cap { display: flex; flex-direction: column; gap: 6px; padding: 0 6px 4px; min-height: 120px; }
   .cap-k {
@@ -198,23 +186,7 @@ const nodeStyle = (n: DiagramNode) =>
   .cap-t { font-size: 26px; font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
   .cap-x { font-size: 16px; color: var(--muted); }
 
-  .close {
-    width: 100%;
-    border-top: 1px solid var(--line);
-    margin-top: 8px;
-    padding-top: clamp(24px, 3vw, 40px);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: opacity .6s, transform .6s, visibility 0s;
-  }
-  /* Con «sin», el cierre sale del árbol accesible cuando termina de desvanecerse. */
-  [data-state='sin'] .close { opacity: 0; transform: translateY(8px); visibility: hidden; transition: opacity .6s, transform .6s, visibility 0s .6s; }
-  .c1, .c2 { margin: 0; font-weight: 500; }
-  .c1 { font-size: clamp(26px, 3.2vw, 44px); letter-spacing: -.045em; line-height: 1.05; }
-  .c2 { font-size: clamp(20px, 2.2vw, 30px); letter-spacing: -.035em; line-height: 1.2; color: var(--muted); max-width: 36ch; }
-
   @media (prefers-reduced-motion: reduce) {
-    g, .node, .close, [data-state='sin'] g, [data-state='sin'] .close { transition: none; }
+    line, .node, [data-state='sin'] line { transition: none; }
   }
 </style>
