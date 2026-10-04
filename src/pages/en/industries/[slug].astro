@@ -1,0 +1,14 @@
+---
+import type { GetStaticPaths } from 'astro';
+import PagePlaceholder from '../../../components/PagePlaceholder.astro';
+import { INDUSTRY_SLUGS, type IndustryId } from '../../../i18n/routes';
+
+export const getStaticPaths = (() =>
+  (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({
+    params: { slug: INDUSTRY_SLUGS[industry].en },
+    props: { industry },
+  }))) satisfies GetStaticPaths;
+
+const { industry } = Astro.props;
+---
+<PagePlaceholder locale="en" page={{ id: 'industria', industry }} />

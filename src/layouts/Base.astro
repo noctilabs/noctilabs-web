@@ -1,0 +1,39 @@
+---
+import '@fontsource/geist-mono/400.css';
+import '@fontsource/geist-mono/500.css';
+import '../styles/global.css';
+import geistMono400 from '@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url';
+import { alternates, type Locale, type PageRef } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description?: string;
+  /** null en la 404: sin canonical ni hreflang (spec 001 §3.7). */
+  page: PageRef | null;
+}
+const { locale, title, description, page } = Astro.props;
+const alt = page ? alternates(page) : null;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {alt && <link rel="canonical" href={alt[locale]} />}
+    {alt && <link rel="alternate" hreflang="es" href={alt.es} />}
+    {alt && <link rel="alternate" hreflang="en" href={alt.en} />}
+    {alt && <link rel="alternate" hreflang="x-default" href={alt['x-default']} />}
+    {!page && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#F4F4F2" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+  </body>
+</html>

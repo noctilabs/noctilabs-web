@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import HomeHero from './HomeHero.astro';
+import { href, type Locale, type PageRef } from '../i18n/routes';
+import { PRODUCT_SECTION_IDS, pageKey, pageTitle, ui } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  page: PageRef;
+}
+const { locale, page } = Astro.props;
+const t = ui[locale];
+const copy = t.pages[pageKey(page)];
+---
+<Base locale={locale} page={page} title={pageTitle(page, locale)} description={copy.description}>
+  {page.id === 'home' ? (
+    <HomeHero
+      title={copy.h1}
+      lead={copy.description}
+      primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
+      secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
+    />
+  ) : (
+    <section class="intro">
+      <h1>{copy.h1}</h1>
+      <p data-placeholder>{t.placeholder}</p>
+    </section>
+  )}
+  {page.id === 'producto' && PRODUCT_SECTION_IDS.map((id) => (
+    <section class="anchor" id={id} tabindex="-1">
+      <h2>{t.productSections[id].label}</h2>
+      <p data-placeholder>{t.placeholder}</p>
+    </section>
+  ))}
+</Base>
+
+<style>
+  .intro, .anchor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(32.8px, 4.9vw, 72.2px) var(--edge);
+  }
+  .intro { padding-top: calc(76px + clamp(32.8px, 4.9vw, 72.2px)); }
+  h1 {
+    margin: 0;
+    font-size: var(--display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -.045em;
+    max-width: 16ch;
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--h2);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+  }
+  p { margin: 16px 0 0; color: var(--muted); }
+  .anchor { border-top: 1px solid var(--line); }
+</style>
