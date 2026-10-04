@@ -46,7 +46,7 @@ export function Agentes(p: AgentesProps) {
                 </dl>
                 <span className="na-small na-muted">{a.list.foot[s]}</span>
                 <button type="button" className="na-acard-open" data-focus={'agent-' + k} disabled={!mounted} onClick={() => { focusOnOpen.current = true; p.onOpen(k); }}>
-                  {t.see}<span className="na-sr">: {a.name}</span><span aria-hidden="true"> →</span>
+                  {t.see}<span className="sr-only">: {a.name}</span><span aria-hidden="true"> →</span>
                 </button>
               </li>
             );

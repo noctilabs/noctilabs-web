@@ -80,7 +80,7 @@ export function Conexiones({ mode, onMode }: { mode: ConexMode; onMode: (m: Cone
               </div>
             </div>
           </ScrollRegion>
-          <p className="na-sr">{desc}</p>
+          <p className="sr-only">{desc}</p>
         </>
       )}
     </>

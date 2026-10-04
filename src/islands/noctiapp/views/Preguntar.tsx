@@ -22,8 +22,8 @@ export function PermsPanel({ ans, className }: { ans: RoleAnswer; className?: st
     <div className={'na-perms' + (className ? ' ' + className : '')}>
       <div className="na-perms-a">
         <Kicker as="h4">{copy.ask.permsTitle}</Kicker>
-        <p className="na-perm"><span className="na-perm-i is-ok" aria-hidden="true">✓</span><span><span className="na-sr">{copy.ask.sees}: </span>{ans.sees}</span></p>
-        <p className="na-perm is-no"><span className="na-perm-i" aria-hidden="true">✕</span><span><span className="na-sr">{copy.ask.hidden}: </span>{ans.hidden}</span></p>
+        <p className="na-perm"><span className="na-perm-i is-ok" aria-hidden="true">✓</span><span><span className="sr-only">{copy.ask.sees}: </span>{ans.sees}</span></p>
+        <p className="na-perm is-no"><span className="na-perm-i" aria-hidden="true">✕</span><span><span className="sr-only">{copy.ask.hidden}: </span>{ans.hidden}</span></p>
       </div>
       <div className="na-perms-b">
         <Kicker as="h4">{copy.ask.ctxTitle}</Kicker>

@@ -36,12 +36,14 @@ export function ScrollRegion({ label, className, children }: { label: string; cl
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const check = () => setOver(el.scrollWidth > el.clientWidth + 1);
+    // Si el wrapper tiene el foco, no se le quita el tabindex (perdería el foco); se vuelve a medir al salir.
+    const check = () => { const o = el.scrollWidth > el.clientWidth + 1; if (o || document.activeElement !== el) setOver(o); };
     const ro = new ResizeObserver(check);
     ro.observe(el);
     if (el.firstElementChild) ro.observe(el.firstElementChild);
+    el.addEventListener('focusout', check);
     check();
-    return () => ro.disconnect();
+    return () => { ro.disconnect(); el.removeEventListener('focusout', check); };
   }, []);
   return (
     <div ref={ref} className={'na-scroll' + (className ? ' ' + className : '')} {...(over ? { role: 'region', 'aria-label': label, tabIndex: 0 } : {})}>

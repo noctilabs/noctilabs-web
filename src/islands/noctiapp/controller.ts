@@ -50,6 +50,8 @@ export interface StartOptions {
   completeIfPaused?: boolean;
 }
 
+const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
+
 export class ChatController {
   private gen = 0;
   private steps: Step[] = [];
@@ -123,7 +125,7 @@ export class ChatController {
       if (this.timer) {
         clearTimeout(this.timer);
         this.timer = null;
-        this.remaining = Math.max(0, this.remaining - (Date.now() - this.startedAt));
+        this.remaining = Math.max(0, this.remaining - (now() - this.startedAt));
       }
       if (this.pulseTimer) { clearInterval(this.pulseTimer); this.pulseTimer = null; }
       return;
@@ -134,15 +136,17 @@ export class ChatController {
 
   private schedule() {
     const gen = this.gen;
-    this.startedAt = Date.now();
+    this.startedAt = now();
+    const due = this.startedAt + this.remaining;
     this.timer = setTimeout(() => {
       if (gen !== this.gen) return;
       this.timer = null;
-      this.advance();
+      // El atraso de este temporizador se descuenta del siguiente: los tiempos no se acumulan (App L530–538).
+      this.advance(Math.max(0, now() - due));
     }, this.remaining);
   }
 
-  private advance() {
+  private advance(late = 0) {
     const step = this.steps[this.idx];
     if (!step) return;
     this.idx++;
@@ -158,7 +162,7 @@ export class ChatController {
     if (step.foot) this.flushAnnounce();
     const next = this.steps[this.idx];
     if (!next) return;
-    this.remaining = next.delay;
+    this.remaining = Math.max(0, next.delay - late);
     if (this.canRun()) this.schedule();
   }
 

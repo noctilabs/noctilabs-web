@@ -27,11 +27,13 @@ export function Inteligencia({ drill, onDrill }: { drill: boolean; onDrill: () =
             ))}
           </div>
           <div className="na-bars-x" aria-hidden="true">{BARS.map(([w]) => <span key={w}>{w}</span>)}</div>
-          <table className="na-sr">
+          <div className="sr-only">
+          <table>
             <caption>{t.chartTable.caption}. {t.chartTable.highlight}</caption>
             <thead><tr><th scope="col">{t.chartTable.week}</th><th scope="col">{t.chartTable.margin}</th></tr></thead>
             <tbody>{BARS.map(([w, v]) => <tr key={w}><th scope="row">{w}</th><td>{fmt.pct(v, 1)}</td></tr>)}</tbody>
           </table>
+          </div>
         </div>
         <div className="na-colstack na-gap8">
           <p className="na-lead">{t.lead}</p>

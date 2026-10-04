@@ -208,8 +208,8 @@ export default function NoctiApp(props: NoctiAppProps) {
             </div>
           </div>
         ) : app}
-        <div className="na-sr" aria-live="polite" aria-atomic="true">{live}</div>
-        <div className="na-sr" role="status" aria-atomic="true">{status}</div>
+        <div className="sr-only" aria-live="polite" aria-atomic="true">{live}</div>
+        <div className="sr-only" role="status" aria-atomic="true">{status}</div>
       </section>
     </Ctx.Provider>
   );

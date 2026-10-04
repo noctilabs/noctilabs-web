@@ -26,10 +26,6 @@
 :where(.nocti-root) :is(ul, ol) { list-style: none; margin: 0; padding: 0; }
 :where(.nocti-root) :is(p, h3, h4, dl, dd) { margin: 0; }
 .nocti-root :focus-visible { outline: 2px solid var(--na-link); outline-offset: 2px; }
-.na-sr {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-}
 .na-muted { color: var(--na-n700); }
 .na-small { font-size: 12px; }
 .na-xs { font-size: 11px; color: var(--na-n700); }
@@ -237,7 +233,6 @@
 .na-hero-h { font-size: clamp(28px, 3.2vw, 40px); font-weight: 500; letter-spacing: -.045em; line-height: 1.05; }
 .na-hero-sub { font-size: 15px; color: var(--na-n700); }
 .na-log { display: flex; flex-direction: column; gap: 14px; }
-.na-log:empty { display: none; }
 .na-q { align-self: flex-end; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-width: 88%; }
 .na-q-who { display: flex; align-items: center; gap: 8px; }
 .na-q-name { font-size: 13px; font-weight: 500; }
@@ -258,7 +253,7 @@
   display: flex; flex-direction: column; gap: 14px; transition: border-color .2s;
 }
 .na-composer.is-typing { border-color: var(--na-blue); }
-.na-comp-text { font-size: 14px; min-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--na-n700); }
+.na-comp-text { font-size: 14px; min-height: 20px; overflow-wrap: anywhere; color: var(--na-n700); }
 .na-composer.is-typing .na-comp-text { color: var(--na-text); }
 .na-caret { display: inline-block; width: 1.5px; height: 15px; margin-left: 1px; vertical-align: -2px; background: var(--na-blue); opacity: 0; }
 .na-composer.is-typing .na-caret { opacity: 1; }
