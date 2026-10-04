@@ -19,7 +19,10 @@ const insights = defineCollection({
     excerpt: z.string().min(1),
     date: z.string()
       .regex(/^\d{4}-\d{2}-\d{2}$/)
-      .refine((d) => new Date(`${d}T00:00:00Z`).toISOString().slice(0, 10) === d, 'fecha de calendario inválida'),
+      .refine((d) => {
+        const t = new Date(`${d}T00:00:00Z`);
+        return !Number.isNaN(t.getTime()) && t.toISOString().slice(0, 10) === d;
+      }, 'fecha de calendario inválida'),
     minutes: z.number().int().positive(),
   }),
 });
