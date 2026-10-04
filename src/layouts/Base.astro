@@ -1,4 +1,5 @@
 ---
+import { createHash } from 'node:crypto';
 import '@fontsource-variable/inter';
 import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
@@ -23,7 +24,11 @@ interface Props {
 const { locale, title, description, page, article } = Astro.props;
 const alt = page ? alternates(page) : null;
 const other: Locale = locale === 'es' ? 'en' : 'es';
-const ld = page ? structuredData(page, locale, article) : [];
+// JSON-LD serializado una sola vez: el mismo texto se hashea para la CSP (spec 004 §2.5) y se renderiza.
+const ld = (page ? structuredData(page, locale, article) : []).map(jsonLdText);
+for (const text of ld) {
+  Astro.csp?.insertScriptHash(`sha256-${createHash('sha256').update(text).digest('base64')}`);
+}
 // Spec 004 §2.1: las previews de Vercel (VERCEL_ENV definido y distinto de production) no se indexan.
 const vercelEnv = process.env.VERCEL_ENV;
 const noindex = !page || (vercelEnv !== undefined && vercelEnv !== 'production');
@@ -57,7 +62,7 @@ const analytics = page !== null && vercelEnv === 'production';
         <meta name="twitter:card" content="summary_large_image" />
       </>
     )}
-    {ld.map((d) => <script type="application/ld+json" set:html={jsonLdText(d)} />)}
+    {ld.map((text) => <script type="application/ld+json" set:html={text} />)}
     <meta name="theme-color" content="#F4F4F2" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
