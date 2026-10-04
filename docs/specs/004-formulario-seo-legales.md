@@ -1,6 +1,6 @@
 # Spec 004 — Formulario, SEO, analítica y legales
 
-Estado: borrador, pasada 4 de revisión · 2026-10-04
+Estado: GATE SÍ en la pasada 4, con los hallazgos importantes aplicados · 2026-10-04
 
 ## 1. Contexto
 
@@ -54,7 +54,7 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 
 **Fixture legal para las pruebas locales:** con `LEGAL_FIXTURE=1`, el build reemplaza los marcadores por datos sintéticos visiblemente falsos («Empresa de Prueba S.A. — DATOS DE PRUEBA, NO PUBLICAR»), escribe `NO-PUBLICAR.txt` y usa un directorio de salida **separado** (`dist-fixture/`, con `outDir` según la variable), nunca `dist/`. Así se pueden construir y verificar localmente las variantes de producción sin desactivar el bloqueo.
 
-**Perfil de publicación:** el deploy usa `npm run build:publish` (el `buildCommand` de `vercel.json`), que define `PUBLISH=1`. Con `PUBLISH=1`, el build **falla** si hay marcadores legales, si está definido `LEGAL_FIXTURE` o `INSIGHTS_FIXTURE`, o si el artefacto contiene `NO-PUBLICAR.txt` o el texto «DATOS DE PRUEBA». Esto vale **independientemente** de las variables del sistema de Vercel (`VERCEL`, `VERCEL_ENV`), que el proyecto podría no exponer. En la fase 6 se verifica que esas variables estén expuestas y se inspecciona el artefacto final.
+**Perfil de publicación:** el deploy usa `npm run build:publish` (el `buildCommand` de `vercel.json`), que define `PUBLISH=1`. Con `PUBLISH=1`, el build **falla** si hay marcadores legales, si está definido `LEGAL_FIXTURE` o `INSIGHTS_FIXTURE`, o si el artefacto contiene `NO-PUBLICAR.txt` o el texto «DATOS DE PRUEBA», y también si un redirect apunta a un destino inexistente (§2.9). Esto vale **independientemente** de las variables del sistema de Vercel (`VERCEL`, `VERCEL_ENV`), que el proyecto podría no exponer. En la fase 6 se verifica que esas variables estén expuestas y se inspecciona el artefacto final.
 
 ### 2.3 Envío del formulario
 
@@ -161,7 +161,7 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 
 ### 2.9 Redirects desde la web vieja (`vercel.json` en la raíz)
 
-Las URLs viejas son un conjunto **finito y congelado**: la web vieja se retira y los posts nuevos de Sanity solo tienen URLs de `/insights`. Por eso los redirects son reglas estáticas, sin generarlas en el build. Son permanentes (`"permanent": true`, 308), las específicas van antes que el comodín, y cada destino ya trae la barra final que exige `trailingSlash`.
+Las URLs viejas son un conjunto **finito y congelado**: la web vieja se retira y los posts nuevos de Sanity solo tienen URLs de `/insights`. Por eso los redirects son reglas estáticas, sin generarlas en el build. Son permanentes (`"permanent": true`, 308) y cada destino ya trae la barra final que exige `trailingSlash`. **Solo se redirige lo que tiene equivalente** (una página o un índice que lo reemplaza): las bajas sin reemplazo y los paths desconocidos dan **404** con la página 404 del sitio, para no producir *soft 404* (guía de migraciones de Google).
 
 | Origen (y variantes) | Destino |
 |---|---|
@@ -169,14 +169,19 @@ Las URLs viejas son un conjunto **finito y congelado**: la web vieja se retira y
 | `/book-a-call`, `/book-a-call.html` | `/en/contact/` |
 | `/blog`, `/blog.html` | `/en/insights/` |
 | `/blog/no-context-no-intelligence` (y `.html`) | `/en/insights/no-context-no-intelligence/` |
-| `/blog/introducing-noctilabs`, `/blog/production-gap`, `/blog/opportunity-audit`, `/blog/model-agnostic`, `/blog/legacy-stacks`, `/blog/agent-reconciliation`, `/blog/platform-engineering` (y `.html`) | `/en/insights/` (sin equivalente publicado) |
-| `/blog/:slug*` (comodín, al final) | `/en/insights/` |
-| `/blog-post-introducing-noctilabs`, `/blog-post-production-gap`, `/blog-post-opportunity-audit`, `/blog-post-model-agnostic`, `/blog-post-legacy-stacks`, `/blog-post-agent-reconciliation`, `/blog-post-platform-engineering` | `/en/insights/` |
+| `/blog/introducing-noctilabs`, `/blog/production-gap`, `/blog/opportunity-audit`, `/blog/model-agnostic`, `/blog/legacy-stacks`, `/blog/agent-reconciliation`, `/blog/platform-engineering` (y `.html`), sus aliases `/blog-post-*` y cualquier otro `/blog/…` | **sin regla: 404** (sin equivalente publicado; no hay comodín) |
 | `/services`, `/es`, `/index.html` | `/` |
 
 **Por qué inglés:** la web vieja era primero en inglés.
 
-**Barra final:** con `trailingSlash: true`, Vercel redirige `/company` a `/company/` **antes** de evaluar los redirects, y las fuentes se comparan de forma estricta. Por eso **cada origen se declara en las dos formas**, sin barra y con barra (`/company` y `/company/`), y las variantes `.html` sin barra. Lo mismo vale para los slugs de `/blog/…` y los aliases `/blog-post-*`. Las reglas específicas van antes del comodín `/blog/:slug*`. **Bajas:** cuando un post viejo se publique en Insights, su regla se actualiza a mano; queda anotado en `docs/pendientes.md` como parte de la decisión sobre los 7 posts.
+**Barra final:** con `trailingSlash: true`, Vercel redirige `/company` a `/company/` **antes** de evaluar los redirects, y las fuentes se comparan de forma estricta. Por eso **cada origen se declara en las dos formas**, sin barra y con barra (`/company` y `/company/`), y las variantes `.html` sin barra. Lo mismo vale para el slug de la tesis en `/blog/…`.
+
+**Mantenimiento de la matriz:** las reglas viven en `vercel.json` y se actualizan a mano en tres casos, que quedan anotados en `docs/pendientes.md`:
+- **un post viejo se publica en Insights:** se agrega su 308 (con sus aliases `/blog-post-*`);
+- **cambia el slug inglés de un artículo con redirect:** se actualiza el destino;
+- **se retira ese artículo:** se quita la regla, y la URL vieja pasa a 404.
+
+**Comprobación en el build publicable:** `build:publish` termina con `scripts/check-redirects.mjs`, que lee `vercel.json` y **falla** si el destino de alguna regla no existe en el `dist/` recién generado (por ejemplo, porque la tesis dejó de publicarse en Sanity o cambió su slug). El script escribe además `dist-manifest.json` fuera del artefacto publicado, con el commit, el lockfile, los ids y `_rev` de Sanity del snapshot efectivo y la lista de redirects comprobados.
 
 ## 3. Fuera de alcance
 
@@ -210,12 +215,12 @@ D7 y D9 corren sobre la variante base, con la implementación de la fase 3 ident
 
 | # | Criterio | Cómo se verifica |
 |---|---|---|
-| D1 | Build sin errores ni warnings de tipos; diagnósticos del build: solo los avisos editoriales `[insights] excluido: …` esperados para el snapshot, listados en la evidencia. S1 en verde con el origen `www` y privacidad. Conteo de HTML: 22 + 2N + 1, con **N = artículos que devuelve `getArticles()`** para el snapshot (no los documentos crudos). Diagnósticos: cero errores de tipos y **cero diagnósticos inesperados**; los avisos editoriales esperados de cada fixture se enumeran en la evidencia. | Salida (código de salida). |
-| D2 | **Formulario contra Web3Forms**, con la API interceptada por CDP `Fetch` (sin mandar mails):<br>- payload con los campos, metadatos, `botcheck: false` y consentimiento de §2.2–2.3;<br>- **un** request por envío válido;<br>- honeypot marcado: cero requests y estado enviado;<br>- casos de error: 2xx + `success: true` → enviado con foco en el título; 2xx + `success: false`, JSON inválido, `success` de otro tipo, 4xx/5xx, error de red, timeout en los headers y timeout en la lectura del cuerpo → error con el mail y valores conservados;<br>- sin consentimiento: error en línea y foco en el checkbox;<br>- segundo envío antes de 30 s: aviso de espera.<br>**Un envío real** de prueba a la cuenta del dueño, solo con su ok explícito en el momento, confirmando que el mail llegó. | Escenario CDP + registro de red. |
+| D1 | Build sin errores ni warnings de tipos. S1 en verde con el origen `www` y privacidad. Conteo de HTML: 22 + 2N + 1, con **N = artículos que devuelve `getArticles()`** para el snapshot (no los documentos crudos). Diagnósticos: cero errores de tipos y **cero diagnósticos inesperados**; todos los avisos editoriales esperados (`[insights] excluido: …`, `[insights] <id>: bloque no admitido …`) se enumeran por variante en la evidencia. | Salida (código de salida). |
+| D2 | **Formulario contra Web3Forms**, con la API interceptada por CDP `Fetch` (sin mandar mails):<br>- payload con los campos, metadatos, `botcheck: false` y consentimiento de §2.2–2.3;<br>- **un** request por envío válido;<br>- honeypot marcado: cero requests y estado enviado;<br>- casos de error: 2xx + `success: true` → enviado con foco en el título; 2xx + `success: false`, JSON inválido, `success` de otro tipo, 4xx/5xx, error de red, timeout en los headers y timeout en la lectura del cuerpo → error con el mail y valores conservados;<br>- sin consentimiento: error en línea y foco en el checkbox;<br>- segundo envío antes de 30 s: aviso de espera;<br>- **bloqueo durante el envío**, con la respuesta demorada: intentar editar campos y desmarcar el consentimiento falla (fieldset deshabilitado); tras un error los controles vuelven a habilitarse con los valores intactos, y tras «Enviar otro mensaje» el formulario queda vacío y habilitado.<br>**Un envío real** de prueba a la cuenta del dueño, solo con su ok explícito en el momento, confirmando que el mail llegó. | Escenario CDP + registro de red. |
 | D3 | **Aviso y política:** aviso de §2.2 completo antes del botón, con `aria-describedby`; link a la política en pestaña nueva con su aviso; checkbox accesible. Revisado en ES/EN con teclado, contraste sobre el fondo efectivo, zoom 200 % y reflow a 320 px. Política con canonical, hreflang y footer. Con `VERCEL_ENV=production` y marcadores presentes, el build falla. | CDP + comparador como A4 + build de prueba. |
 | D4 | **OG, Twitter y JSON-LD** en una página de cada tipo y en los dos idiomas: URLs absolutas con `www`; JSON-LD parseable, con `@context` y `@type`, y `headline`, `datePublished`, `inLanguage` y `url` iguales a los del artículo renderizado. Prueba manual con un post de fixture cuyo título tiene comillas y `</script>`: el HTML no se rompe y el JSON-LD parsea. La 404 queda sin `og:url`. | Extracción de `dist/` + build con fixture. |
 | D5 | **Sitemap:** todas las URLs indexables, ninguna inexistente, alternates recíprocos (cada `xhtml:link` apunta a una URL que también está en el sitemap y vuelve). `robots.txt` igual al de §2.6. | Script sobre `dist/`. |
-| D6 | **`vercel.json` de la raíz:** las reglas se compilan con `@vercel/routing-utils` (el mecanismo de Vercel, instalado solo en el scratchpad de verificación) y se ejecuta la matriz completa de §2.9: cada origen sin barra, con barra y `.html`, con query (`?utm=x`). Para cada caso se registra la regla que matchea, el destino, que la query se conserva y que el destino existe en `dist/`. Se revisan también las cabeceras de §2.8 y la regla `noindex` de previews. Las respuestas HTTP reales del dominio se verifican en la fase 6. | Script con routing-utils + `dist/`. |
+| D6 | **`vercel.json` de la raíz:** las reglas se compilan con `@vercel/routing-utils` (el mecanismo de Vercel, instalado solo en el scratchpad de verificación) y se ejecuta la matriz completa de §2.9: cada origen sin barra, con barra y `.html`, con query (`?utm=x`). Para cada caso se registra la regla que matchea, el destino, que la query se conserva y que el destino existe en `dist/`. Las bajas sin reemplazo (los 7 slugs con y sin barra y con `.html`, sus aliases `/blog-post-*` y un `/blog/desconocido`) **no matchean ninguna regla** y no existen en `dist/`, así que dan 404. Además, `check-redirects.mjs` falla con un destino roto inyectado (una copia de `vercel.json` con un slug inexistente) y pasa con el real. Se revisan también las cabeceras de §2.8 y la regla `noindex` de previews. Las respuestas HTTP reales del dominio se verifican en la fase 6. | Script con routing-utils + `dist/`. |
 | D7 | **Cabeceras y CSP aplicadas juntas:** el build base se sirve con un servidor local (`scratchpad`) que aplica las cabeceras de `vercel.json`, y el `<meta>` de Astro queda activo. Se registran las respuestas HTTP y cero violaciones CSP (`securitypolicyviolation`, desde la navegación inicial) recorriendo todas las rutas con hidratación de islas, video, textura, formulario (interceptado) e Insights, más una revisión visual de los diagramas y los nodos posicionados por `style`. Un iframe a una página del sitio no carga (`frame-ancestors`). Un link `javascript:` en un fixture de Sanity no se renderiza. | CDP + servidor local. |
 | D8 | **Analítica:** sin `VERCEL_ENV=production` no se inyecta en ninguna página. Con `VERCEL_ENV=production` (y `LEGAL_FIXTURE=1`, build local no publicable) se inyecta en las 22 + 2N páginas con `PageRef` y **no** en la 404 ni en una ruta desconocida; la carga de `/_vercel/insights/*` se intercepta y se registra. Con el stub del consumidor (§2.7), el `beforeSend` recibe eventos sintéticos y devuelve URLs sin query ni fragmento. En la 404 no hay cola. Consola y CSP, sin violaciones, también en esta variante. El pageview real se verifica en la fase 6. | Builds variantes + CDP. |
 | D9 | **Regresión:** A7, B4, B5, B8, B9, B10, B15 y C3, C5 y C8 de la fase 3. | Re-ejecución. |
@@ -235,7 +240,7 @@ D7 y D9 corren sobre la variante base, con la implementación de la fase 3 ident
 - **conservación operativa**:
   - Web3Forms: si la cuenta permite deshabilitar el almacenamiento de envíos o borrarlos, quién lo hace y con qué frecuencia; su política declara hasta 3 años si no se borran;
   - el proveedor del correo (buzón de hola@noctilabs.io) y sus transferencias;
-  - el procedimiento para responder pedidos de acceso, rectificación y supresión, con un plazo;
+  - el procedimiento para responder pedidos de **acceso** (dentro de 5 días hábiles, art. 14) y de **rectificación, actualización, inclusión o supresión** (dentro de 5 días hábiles, con respuesta fundada si no corresponde, art. 15 de la Ley 18.331): responsable, verificación de identidad, búsqueda en el buzón y en el proveedor (Web3Forms) y registro de la respuesta. Antes del lanzamiento se comprueba que la operación del proveedor permite cumplir esos plazos (localizar y borrar un envío);
 - plan y cuota de Web3Forms, quién monitorea los envíos, y la restricción de dominio (PRO) o la aceptación del riesgo.
 
 ## 7. Plan
