@@ -1,30 +1,58 @@
+import { readFile } from 'node:fs/promises';
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { ARTICLE_SLUGS, type ArticleId } from './i18n/routes';
-import { CATEGORY_IDS } from './content/categories';
 
-const ARTICLE_IDS = Object.keys(ARTICLE_SLUGS) as [ArticleId, ...ArticleId[]];
+// Spec 002 §3.4: Insights desde Sanity (proyecto q164hlpj, dataset production, lectura pública).
+const SANITY = { projectId: 'q164hlpj', dataset: 'production', apiVersion: 'v2025-02-19' };
+const QUERY = `*[_type == "post"]{
+  _id, "slug": slug.current, "slugEs": slugEs.current, publishedAt, listed, showOnInsights, topic,
+  category, readingTime, title, excerpt, body
+}`;
 
-// Spec 002 §3.4: un Markdown por artículo e idioma. El id de la entrada es el path relativo completo
-// (sin normalizar, así dos archivos nunca colisionan); la unicidad de (articleId, lang) y la presencia
-// de las dos traducciones las valida getArticles().
+const localized = <T extends z.ZodType>(t: T) => z.object({ es: t.nullish(), en: t.nullish() }).partial().nullish();
+
+/** Datos crudos de cada documento: las reglas de publicación se aplican en src/lib/insights.ts. */
+export const rawPost = z.object({
+  _id: z.string(),
+  slug: z.string().nullish(),
+  slugEs: z.string().nullish(),
+  publishedAt: z.string().nullish(),
+  listed: z.boolean().nullish(),
+  showOnInsights: z.boolean().nullish(),
+  topic: z.string().nullish(),
+  category: localized(z.string()),
+  readingTime: z.number().nullish(),
+  title: localized(z.string()),
+  excerpt: localized(z.string()),
+  body: localized(z.array(z.any())),
+});
+
+async function fetchPosts(): Promise<unknown[]> {
+  const fixture = process.env.INSIGHTS_FIXTURE;
+  if (fixture) return JSON.parse(await readFile(fixture, 'utf8')).result;
+  const url = `https://${SANITY.projectId}.api.sanity.io/${SANITY.apiVersion}/data/query/${SANITY.dataset}`
+    + `?perspective=published&query=${encodeURIComponent(QUERY)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Sanity respondió ${res.status}: ${await res.text()}`);
+  const json = await res.json();
+  if (!Array.isArray(json?.result)) throw new Error('Sanity devolvió una respuesta sin `result`');
+  return json.result;
+}
+
 const insights = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/insights', generateId: ({ entry }) => entry }),
-  schema: z.object({
-    articleId: z.enum(ARTICLE_IDS),
-    lang: z.enum(['es', 'en']),
-    title: z.string().min(1),
-    category: z.enum(CATEGORY_IDS),
-    excerpt: z.string().min(1),
-    date: z.string()
-      .regex(/^\d{4}-\d{2}-\d{2}$/)
-      .refine((d) => {
-        const t = new Date(`${d}T00:00:00Z`);
-        return !Number.isNaN(t.getTime()) && t.toISOString().slice(0, 10) === d;
-      }, 'fecha de calendario inválida'),
-    minutes: z.number().int().positive(),
-  }),
+  loader: {
+    name: 'sanity-insights',
+    // Sincronización completa: con una respuesta válida se vacía el store y se guarda un documento por `_id`
+    // (sin entradas residuales de posts retirados; dos posts con el mismo slug llegan los dos a getArticles()).
+    load: async ({ store, parseData }) => {
+      const docs = await fetchPosts();
+      store.clear();
+      for (const doc of docs as { _id: string }[]) {
+        store.set({ id: doc._id, data: await parseData({ id: doc._id, data: doc as Record<string, unknown> }) });
+      }
+    },
+  },
+  schema: rawPost,
 });
 
 export const collections = { insights };

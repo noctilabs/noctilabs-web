@@ -12,16 +12,13 @@ export const INDUSTRY_SLUGS = {
 
 export type IndustryId = keyof typeof INDUSTRY_SLUGS;
 
-export const ARTICLE_SLUGS = {
-  'contexto-sistema-operativo': { es: 'el-contexto-es-el-nuevo-sistema-operativo', en: 'context-is-the-new-operating-system' },
-} as const satisfies Record<string, Record<Locale, string>>;
-
-export type ArticleId = keyof typeof ARTICLE_SLUGS;
+/** Artículo de Insights: los slugs vienen de Sanity, ya validados (spec 002 §3.2 y §3.4). */
+export type ArticleRef = { id: 'articulo'; slug: Record<Locale, string> };
 
 export type PageRef =
   | { id: SimpleId }
   | { id: 'industria'; industry: IndustryId }
-  | { id: 'articulo'; article: ArticleId };
+  | ArticleRef;
 
 const PATHS: Record<SimpleId, Record<Locale, string>> = {
   home: { es: '/', en: '/en/' },
@@ -39,7 +36,7 @@ function pathOf(page: PageRef, locale: Locale): string {
     return `${INDUSTRY_BASE[locale]}${INDUSTRY_SLUGS[page.industry][locale]}/`;
   }
   if (page.id === 'articulo') {
-    return `${ARTICLE_BASE[locale]}${ARTICLE_SLUGS[page.article][locale]}/`;
+    return `${ARTICLE_BASE[locale]}${page.slug[locale]}/`;
   }
   return PATHS[page.id][locale];
 }
@@ -49,10 +46,10 @@ export function href(page: PageRef, locale: Locale, hash = ''): string {
   return fragment ? `${pathOf(page, locale)}#${fragment}` : pathOf(page, locale);
 }
 
+/** Las 20 páginas fijas. Los artículos no están: sus slugs sólo se conocen consultando el CMS. */
 export const PAGES: PageRef[] = [
   ...(Object.keys(PATHS) as SimpleId[]).map((id) => ({ id })),
   ...(Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({ id: 'industria' as const, industry })),
-  ...(Object.keys(ARTICLE_SLUGS) as ArticleId[]).map((article) => ({ id: 'articulo' as const, article })),
 ];
 
 const BY_PATH = new Map<string, { page: PageRef; locale: Locale }>(

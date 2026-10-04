@@ -1,17 +1,18 @@
 ---
 import LangSwitch from './LangSwitch.astro';
-import { href, INDUSTRY_SLUGS, pageFromPath, type IndustryId, type Locale } from '../i18n/routes';
+import { href, INDUSTRY_SLUGS, type IndustryId, type Locale, type PageRef } from '../i18n/routes';
 import { PRODUCT_SECTION_IDS, ui } from '../i18n/ui';
 import { industries } from '../content/industries';
 
 interface Props {
   locale: Locale;
+  /** La página actual (spec 002 §3.2): null en la 404. Los artículos no se pueden deducir del pathname. */
+  page: PageRef | null;
 }
-const { locale } = Astro.props;
+const { locale, page } = Astro.props;
 const t = ui[locale];
-const current = pageFromPath(Astro.url.pathname);
-const currentPath = current ? href(current.page, current.locale) : null;
-const section = current?.page.id;
+const currentPath = page ? href(page, locale) : null;
+const section = page?.id;
 
 const productItems = PRODUCT_SECTION_IDS.map((id) => ({
   label: t.productSections[id].label,
@@ -29,7 +30,7 @@ const nav: { label: string; href: string; active: boolean; panel?: Panel }[] = [
   { label: t.nav.producto, href: href({ id: 'producto' }, locale), active: section === 'producto', panel: 'producto' },
   { label: t.nav.industrias, href: href({ id: 'industria', industry: 'retail' }, locale), active: section === 'industria', panel: 'industrias' },
   { label: t.nav.nosotros, href: href({ id: 'nosotros' }, locale), active: section === 'nosotros' },
-  { label: t.nav.insights, href: href({ id: 'insights' }, locale), active: section === 'insights' },
+  { label: t.nav.insights, href: href({ id: 'insights' }, locale), active: section === 'insights' || section === 'articulo' },
 ];
 const panels: { id: Panel; kicker: string; items: typeof productItems }[] = [
   { id: 'producto', kicker: t.nav.producto, items: productItems },
@@ -96,7 +97,7 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
         </div>
       ))}
       <a class="mcta" href={href({ id: 'hablemos' }, locale)} tabindex="0">{t.nav.cta}</a>
-      <div class="mlang"><LangSwitch /></div>
+      <div class="mlang"><LangSwitch page={page} locale={locale} /></div>
     </div>
   </div>
   {panels.map((panel) => (
