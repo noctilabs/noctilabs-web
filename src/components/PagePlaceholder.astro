@@ -2,20 +2,24 @@
 import Base from '../layouts/Base.astro';
 import HomeHero from './HomeHero.astro';
 import { href, type Locale, type PageRef } from '../i18n/routes';
-import { PRODUCT_SECTION_IDS, pageKey, pageTitle, ui } from '../i18n/ui';
+import { PRODUCT_SECTION_IDS, ui } from '../i18n/ui';
+import { industry } from '../content/industries';
+import { pageMeta } from '../lib/meta';
 
+type SimplePage = Exclude<PageRef, { id: 'industria' } | { id: 'articulo' }>;
 interface Props {
   locale: Locale;
-  page: PageRef;
+  page: SimplePage | Extract<PageRef, { id: 'industria' }>;
 }
 const { locale, page } = Astro.props;
 const t = ui[locale];
-const copy = t.pages[pageKey(page)];
+const meta = pageMeta(page, locale);
+const h1 = page.id === 'industria' ? industry(page.industry, locale).hero.h1 : t.pages[page.id].h1;
 ---
-<Base locale={locale} page={page} title={pageTitle(page, locale)} description={copy.description}>
+<Base locale={locale} page={page} title={meta.title} description={meta.description}>
   {page.id === 'home' ? (
     <HomeHero
-      title={copy.h1}
+      title={h1}
       lead={ui[locale].pages.home.lead}
       primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
       secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
@@ -24,7 +28,7 @@ const copy = t.pages[pageKey(page)];
     />
   ) : (
     <section class="intro">
-      <h1>{copy.h1}</h1>
+      <h1>{h1}</h1>
       <p data-placeholder>{t.placeholder}</p>
     </section>
   )}

@@ -1,10 +1,4 @@
-import type { IndustryId, Locale, PageRef } from './routes';
-
-type PageKey = Exclude<PageRef['id'], 'industria'> | IndustryId;
-
-export function pageKey(page: PageRef): PageKey {
-  return page.id === 'industria' ? page.industry : page.id;
-}
+import type { Locale } from './routes';
 
 const es = {
   tagline: 'El cerebro operativo de tu empresa.',
@@ -35,31 +29,6 @@ const es = {
       title: 'Hablemos',
       h1: 'Hablemos.',
       description: 'Contanos cómo opera tu empresa y te mostramos cómo Nocti se conecta con lo que ya tenés.',
-    },
-    retail: {
-      title: 'Retail y distribución',
-      h1: 'Cada cliente, pedido y proveedor en un mismo contexto.',
-      description: 'Pedidos, stock, cobranzas y proveedores sobre un mismo contexto, con prioridades claras cada día.',
-    },
-    manufactura: {
-      title: 'Manufactura',
-      h1: 'Manufactura',
-      description: 'Producción, compras y calidad conectadas con los sistemas que la planta ya usa.',
-    },
-    consumo: {
-      title: 'Alimentos y bienes de consumo',
-      h1: 'Alimentos y bienes de consumo',
-      description: 'Lotes, vencimientos, canales y márgenes en una sola vista operativa.',
-    },
-    salud: {
-      title: 'Salud y actividad física',
-      h1: 'Salud y actividad física',
-      description: 'Socios, sedes, agenda y cobranzas, con permisos claros por rol.',
-    },
-    servicios: {
-      title: 'Servicios profesionales y empresariales',
-      h1: 'Servicios profesionales y empresariales',
-      description: 'Clientes, proyectos, horas y facturación conectados en un mismo contexto.',
     },
   },
   hero: { primary: 'Hablemos', secondary: 'Ver el producto', pause: 'Pausar video', play: 'Reproducir video' },
@@ -121,31 +90,6 @@ const en: Dict = {
       h1: "Let’s talk.",
       description: 'Tell us how your company operates and we will show you how Nocti connects with what you already have.',
     },
-    retail: {
-      title: 'Retail and distribution',
-      h1: 'Every customer, order and supplier in one context.',
-      description: 'Orders, stock, collections and suppliers on a shared context, with clear priorities every day.',
-    },
-    manufactura: {
-      title: 'Manufacturing',
-      h1: 'Manufacturing',
-      description: 'Production, purchasing and quality connected to the systems your plant already uses.',
-    },
-    consumo: {
-      title: 'Food and consumer goods',
-      h1: 'Food and consumer goods',
-      description: 'Batches, expiry dates, channels and margins in a single operational view.',
-    },
-    salud: {
-      title: 'Health and fitness',
-      h1: 'Health and fitness',
-      description: 'Members, locations, schedules and collections, with clear permissions by role.',
-    },
-    servicios: {
-      title: 'Professional and business services',
-      h1: 'Professional and business services',
-      description: 'Clients, projects, hours and billing connected in a single context.',
-    },
   },
   hero: { primary: 'Let’s talk', secondary: 'See the product', pause: 'Pause video', play: 'Play video' },
   productSections: {
@@ -176,8 +120,3 @@ const en: Dict = {
 export const ui: Record<Locale, Dict> = { es, en };
 
 export const PRODUCT_SECTION_IDS = ['overview', 'cerebro', 'bi', 'agentes', 'control'] as const;
-
-export function pageTitle(page: PageRef, locale: Locale): string {
-  const { title } = ui[locale].pages[pageKey(page)];
-  return page.id === 'home' ? title : `${title} — NoctiLabs`;
-}

@@ -5,3 +5,8 @@ export function industriaInexistenteNoCompila() {
   // @ts-expect-error: 'mineria' no es un IndustryId
   href({ id: 'industria', industry: 'mineria' }, 'es');
 }
+
+export function articuloInexistenteNoCompila() {
+  // @ts-expect-error: 'otro-articulo' no es un ArticleId
+  href({ id: 'articulo', article: 'otro-articulo' }, 'es');
+}

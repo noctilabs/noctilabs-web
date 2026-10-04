@@ -107,3 +107,38 @@ describe('pageFromPath', () => {
     expect(pageFromPath(path)).toBeNull();
   });
 });
+
+describe('artículos (spec 002 §3.2)', () => {
+  test('href del artículo en los dos idiomas, con y sin fragmento', () => {
+    const page = { id: 'articulo', article: 'contexto-sistema-operativo' } as const;
+    expect(href(page, 'es')).toBe('/insights/el-contexto-es-el-nuevo-sistema-operativo/');
+    expect(href(page, 'en')).toBe('/en/insights/context-is-the-new-operating-system/');
+    expect(href(page, 'es', '#el-problema-no-es-la-ia')).toBe('/insights/el-contexto-es-el-nuevo-sistema-operativo/#el-problema-no-es-la-ia');
+  });
+
+  test('alternates del artículo: absolutas y x-default = es', () => {
+    expect(alternates({ id: 'articulo', article: 'contexto-sistema-operativo' })).toEqual({
+      es: 'https://noctilabs.io/insights/el-contexto-es-el-nuevo-sistema-operativo/',
+      en: 'https://noctilabs.io/en/insights/context-is-the-new-operating-system/',
+      'x-default': 'https://noctilabs.io/insights/el-contexto-es-el-nuevo-sistema-operativo/',
+    });
+  });
+
+  test.each([
+    ['/insights/el-contexto-es-el-nuevo-sistema-operativo/', 'es'],
+    ['/insights/el-contexto-es-el-nuevo-sistema-operativo', 'es'],
+    ['/en/insights/context-is-the-new-operating-system/', 'en'],
+    ['/en/insights/context-is-the-new-operating-system', 'en'],
+  ] as const)('pageFromPath %s', (path, locale) => {
+    expect(pageFromPath(path)).toEqual({ page: { id: 'articulo', article: 'contexto-sistema-operativo' }, locale });
+  });
+
+  test.each([
+    '/insights/inexistente/',
+    '/en/insights/el-contexto-es-el-nuevo-sistema-operativo/',
+    '/insights/context-is-the-new-operating-system/',
+    '/insights/el-contexto-es-el-nuevo-sistema-operativo//',
+  ])('pageFromPath %s → null', (path) => {
+    expect(pageFromPath(path)).toBeNull();
+  });
+});
