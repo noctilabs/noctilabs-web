@@ -134,3 +134,15 @@ Abiertos: N1, D4 parcial (`.again`), D6 parcial (`.r-card`) y D8 menor (`:focus`
 - En `capturas/b15/zoom-200-home.webp` el skip link aparece visible, porque el foco quedó en él al terminar el recorrido
   con Tab.
 - `capturas/b15/b15-foco-tapado-*.webp` conservan el nombre de la primera pasada y ahora muestran el foco **sin** tapar.
+
+## Cierre posterior a la segunda pasada (commit `962a1fe`)
+
+Lo que quedaba abierto en B3 y B13 sobre `7813449` se cerró en `962a1fe`. Los cambios son solo de CSS y del spec, y no tocan la lógica que verificaron B1–B15:
+
+- **B3:** «Leer →» que baja de línea a 390 px queda autorizado como diferencia en el spec 002 §7, ítem 6g.
+- **D4:** el hover de «Enviar otro mensaje» pasa a `#DCDCD7`, la convención del diseño para los botones `#E6E6E2`.
+- **D6:** el título de «Seguir leyendo» lleva `min-width: 0` y `overflow-wrap: anywhere` (clase `.rel-title`).
+- **D8:** el anillo de foco de los campos usa `:focus-visible`; el borde azul se mantiene con `:focus`.
+- **N1:** el formato de fecha en español con abreviaturas propias («18 sep 2026», como el diseño) queda documentado como excepción de B13.
+
+El build de `962a1fe` da salida 0, con 0 errores, warnings y hints, y Vitest 80/80.
