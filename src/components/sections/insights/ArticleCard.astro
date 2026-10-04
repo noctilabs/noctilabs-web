@@ -1,0 +1,41 @@
+---
+// Tarjeta de la grilla de Insights (Inv §5.2): categoría, título y «{fecha} · {minutos}», todo como link.
+import { href, type Locale } from '../../../i18n/routes';
+import { categoryLabels } from '../../../content/categories';
+import { insights } from '../../../content/pages/insights';
+import { formatDate, type Article } from '../../../lib/insights';
+
+interface Props { article: Article; locale: Locale }
+const { article: a, locale } = Astro.props;
+const t = insights[locale];
+---
+<li>
+  <a class="card" href={href(a.ref, locale)}>
+    {a.category && <span class="cat">{categoryLabels[a.category][locale]}</span>}
+    <h3 class="title">{a[locale].title}</h3>
+    <span class="meta">{formatDate(a.date, locale)} · {t.minutes(a[locale].minutes)}</span>
+  </a>
+</li>
+
+<style>
+  li { display: flex; }
+  .card {
+    flex: 1;
+    min-width: 0;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 22px;
+    min-height: 189px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color .15s ease;
+  }
+  .card:hover { border-color: #B9B9B4; color: var(--ink); }
+  .cat { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--blue-link); }
+  .title { margin: 0; font-size: 21px; font-weight: 500; letter-spacing: -.035em; line-height: 1.12; text-wrap: pretty; }
+  .meta { margin-top: auto; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+</style>

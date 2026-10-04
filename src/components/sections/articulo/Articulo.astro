@@ -1,0 +1,147 @@
+---
+// Página de artículo (spec 002 §4.5, Inv §6): cabecera, cuerpo con índice, «Seguir leyendo» y banda.
+// Contenido editorial desde Sanity (§3.4, diferencia 6e).
+import '../../../styles/article.css';
+import Base from '../../../layouts/Base.astro';
+import HablemosBand from '../../HablemosBand.astro';
+import Kicker from '../../ui/Kicker.astro';
+import { href, type Locale } from '../../../i18n/routes';
+import { pageMeta } from '../../../lib/meta';
+import { formatDate, getArticles, type Article } from '../../../lib/insights';
+import { categoryLabels } from '../../../content/categories';
+import { insights } from '../../../content/pages/insights';
+import { articulo } from '../../../content/pages/articulo';
+
+interface Props { article: Article; locale: Locale }
+const { article, locale } = Astro.props;
+const a = article[locale];
+const t = articulo[locale];
+const meta = pageMeta(article.ref, locale, a);
+const related = (await getArticles()).filter((x) => x.key !== article.key).slice(0, 2);
+---
+<Base locale={locale} page={article.ref} title={meta.title} description={meta.description}>
+  <div class="page">
+    <div class="wrap">
+      <a class="back" href={href({ id: 'insights' }, locale)}><span aria-hidden="true">← </span>{t.back}</a>
+      <article aria-labelledby="art-title">
+        <header class="head">
+          {article.category && <Kicker size={13} tone="link" as="p">{categoryLabels[article.category][locale]}</Kicker>}
+          <h1 id="art-title" class="title">{a.title}</h1>
+          <p class="meta">
+            <span translate="no">{t.author}</span>
+            <time datetime={article.date}>{formatDate(article.date, locale)}</time>
+            <span>{insights[locale].minutes(a.minutes)}</span>
+          </p>
+        </header>
+        <div class="body">
+          {a.headings.length > 0 && (
+            <nav class="toc" aria-labelledby="toc-title">
+              <span id="toc-title" class="toc-title">{t.toc}</span>
+              <ul>
+                {a.headings.map((h) => <li><a href={href(article.ref, locale, h.id)}>{h.text}</a></li>)}
+              </ul>
+            </nav>
+          )}
+          <div class="prose-article" set:html={a.html} />
+        </div>
+      </article>
+      {related.length > 0 && (
+        <section class="related" aria-labelledby="related-title">
+          <Kicker as="h2"><span id="related-title">{t.related}</span></Kicker>
+          <ul class="r-grid">
+            {related.map((r) => (
+              <li>
+                <a class="r-card" href={href(r.ref, locale)}>
+                  <span>{r[locale].title}</span><span aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </div>
+  <HablemosBand locale={locale} />
+</Base>
+
+<style>
+  /* Inv §6: <main> con padding inferior de 24px; la banda va después (Inv §8). */
+  .page { padding-bottom: 24px; }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(26.2px, 4.1vw, 59px) var(--edge) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  article { display: flex; flex-direction: column; gap: 32px; }
+  .back {
+    align-self: flex-start;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background-color .15s ease;
+  }
+  .back:hover { background: #DCDCD7; color: var(--ink); }
+  .head { display: flex; flex-direction: column; gap: 20px; max-width: 1000px; }
+  /* Excepción a H1-INT (spec 002 §4.5, Inv §6.1). */
+  .title { margin: 0; font-size: clamp(32.8px, 4.4vw, 68.9px); font-weight: 500; line-height: 1; letter-spacing: -.05em; }
+  .meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .03em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .body {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    padding: clamp(23px, 4.1vw, 59px) clamp(16.4px, 3.3vw, 52.5px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 64px;
+  }
+  .toc { flex: 1 1 200px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--muted); }
+  .toc-title { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+  .toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .toc a { color: var(--muted); text-decoration: none; }
+  .toc a:hover { color: var(--ink); text-decoration: underline; }
+  .related { display: flex; flex-direction: column; gap: 12px; }
+  .r-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 12px;
+  }
+  .r-grid li { display: flex; }
+  .r-card {
+    flex: 1;
+    min-width: 0;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 22px 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -.03em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color .15s ease;
+  }
+  .r-card:hover { border-color: #B9B9B4; color: var(--ink); }
+</style>

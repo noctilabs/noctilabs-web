@@ -1,0 +1,68 @@
+---
+// Equipo (Inv §4.4). No se renderiza mientras la lista esté vacía (D9, spec 002 §4.4).
+import { Picture } from 'astro:assets';
+import Container from '../../ui/Container.astro';
+import Kicker from '../../ui/Kicker.astro';
+import type { Locale } from '../../../i18n/routes';
+import type { TeamMember } from '../../../content/pages/nosotros';
+
+interface Props { locale: Locale; kicker: string; h2: string; members: TeamMember[] }
+const { locale, kicker, h2, members } = Astro.props;
+---
+{members.length > 0 && (
+  <Container gap="P" class="team" aria-labelledby="team-title">
+    <div class="head">
+      <Kicker>{kicker}</Kicker>
+      <h2 id="team-title" class="h2">{h2}</h2>
+    </div>
+    <ul class="grid">
+      {members.map((m) => (
+        <li class="card">
+          <div class="photo">
+            {m.photo && (
+              <Picture
+                src={m.photo.src}
+                alt={m.photo.alt[locale]}
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                widths={[320, 480, 640]}
+                sizes="(min-width: 1000px) 280px, (min-width: 520px) 50vw, 100vw"
+                quality={70}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+          </div>
+          <span class="name">{m.name}</span>
+          <span class="role">{m.role}</span>
+        </li>
+      ))}
+    </ul>
+  </Container>
+)}
+
+<style>
+  .team { display: flex; flex-direction: column; gap: 24px; }
+  .head { display: flex; flex-direction: column; gap: 14px; }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 10px 10px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .photo { aspect-ratio: 4 / 5; border-radius: 20px; overflow: hidden; background: var(--surface); }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .name { font-weight: 500; font-size: 16px; letter-spacing: -.02em; padding: 0 8px; }
+  .role { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding: 0 8px; }
+</style>
