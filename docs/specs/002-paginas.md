@@ -1,6 +1,6 @@
 # Spec 002 — Páginas
 
-Estado: borrador, pasada 5 de revisión · 2026-10-04 · enmienda: Insights desde Sanity (decisión del dueño) · hallazgos de la pasada 4 aplicados
+Estado: borrador, pasada 5 de revisión · 2026-10-04 · enmienda: Insights desde Sanity (decisión del dueño) · hallazgos de las pasadas 4 y 5 aplicados
 
 ## 1. Contexto
 
@@ -146,16 +146,20 @@ web funciona sin editar nada en Sanity.
 
 **Carga:** una colección `insights` con un loader propio en `src/content.config.ts`.
 
-- Hace la consulta GROQ en el build (sin token) y deja una entrada por post publicado con `{ slug: {es, en}, date, category, minutes, es: {title, excerpt, body}, en: {…} }`.
-- **Si Sanity no responde, el build falla.** No hay contenido de respaldo.
+- Hace la consulta GROQ en el build (sin token) por **todos** los documentos `post`.
+- **Sincronización completa:** con una respuesta exitosa, vacía el store (`store.clear()`) y guarda una entrada por documento, con el `_id` de Sanity como id. Así nunca hay entradas residuales de posts retirados y dos documentos con el mismo slug llegan los dos a `getArticles()`.
+- La entrada guarda los datos crudos que usan las reglas: slugs, `publishedAt`, `listed`, `showOnInsights`, `topic`, `category`, `readingTime`, y `title`/`excerpt`/`body` por idioma.
+- **Datos de prueba:** con la variable `INSIGHTS_FIXTURE=<ruta a un JSON con la misma forma que la respuesta de Sanity>`, el loader lee ese archivo en lugar de consultar Sanity. Solo se usa en las comprobaciones manuales de B7; el build de producción no la define.
+- **Si Sanity no responde o devuelve un error HTTP o un JSON inválido, el build falla.** No hay contenido de respaldo. Es la única condición que aborta el build; los datos editoriales inválidos solo excluyen el post (abajo).
 - Para rehacer el sitio al publicar en Sanity se usa un webhook → deploy hook de Vercel, en la fase 6.
 
 **Reglas de publicación** (`src/lib/insights.ts` → `getArticles()`). Un post se publica en la web nueva si:
 
 1. `showOnInsights === true`, o `showOnInsights` no está definido y `listed === true`;
-2. tiene `title`, `excerpt` y `body` no vacíos **en los dos idiomas**;
-3. su slug inglés y el español (`slugEs`, o el inglés si falta) son válidos;
-4. no hay otro post publicado con el mismo slug en ese idioma.
+2. en **los dos idiomas** tiene `title` y `excerpt` con texto después de `trim()`, y un `body` con texto renderizable: al menos un bloque de un tipo admitido cuyo texto, sin espacios, no esté vacío;
+3. `publishedAt` existe y es una fecha de calendario válida `YYYY-MM-DD`;
+4. su slug inglés y el español (`slugEs`, o el inglés si falta) son válidos;
+5. ningún otro candidato que cumpla 1–4 tiene el mismo slug **en ese idioma**. Las colisiones se detectan entre todos los candidatos antes de elegir nada, y se excluyen todos los posts del choque, en ES y en EN por separado.
 
 Los que no cumplen quedan fuera de la web nueva. El build imprime cuáles y por qué (`[insights] excluido: …`) y no
 falla: que un editor deje un post a medio traducir no puede tirar el sitio.
@@ -163,7 +167,7 @@ falla: que un editor deje un post a medio traducir no puede tirar el sitio.
 **Derivados:**
 
 - **Categoría:** `topic`; si falta, se deduce de `category.en` (`Thesis` → `tesis`, `Agents` → `agentes`, `Operational AI` → `ia-operativa`, `Business context` → `contexto`, `Transformation` → `transformacion`). Si no se puede deducir, el artículo se muestra sin categoría.
-- **Minutos:** `readingTime`; si falta, palabras del cuerpo en ese idioma / 220, redondeado hacia arriba (mínimo 1).
+- **Minutos, por idioma** (`minutes: Record<Locale, number>`): si `readingTime` es un entero ≥ 1, se usa para los dos idiomas. Si falta, o vale 0, es negativo o tiene decimales, se calcula por idioma con las palabras del cuerpo / 220, redondeado hacia arriba (mínimo 1).
 - **Fecha:** `publishedAt` validado como fecha de calendario y formateado en UTC, como antes.
 - **Orden:** por fecha descendente.
 
@@ -178,9 +182,13 @@ falla: que un editor deje un post a medio traducir no puede tirar el sitio.
 
 **Contenido inicial:** con los datos actuales se publica un solo post, «Sin contexto, no hay inteligencia. Nuestra
 tesis» / «No context, no intelligence. Our thesis» (2026-09-28), que es el único completo en los dos idiomas.
-Reemplaza al artículo de ejemplo del diseño, que tenía la misma tesis. Su slug español, mientras no exista `slugEs`,
-es el inglés; el slug en español queda en `docs/pendientes.md`. Los otros 7 posts no se publican: sus cuerpos están
-solo en inglés y 6 están marcados como no listados.
+Reemplaza al artículo de ejemplo del diseño, que tenía la misma tesis (§7, 6e). Mientras no exista `slugEs`, los dos
+slugs son `no-context-no-intelligence`; el slug en español queda en `docs/pendientes.md`. Los otros 7 posts no se
+publican: sus cuerpos están solo en inglés y 6 están marcados como no listados.
+
+**Cero artículos publicados:** Insights muestra el hero y un estado vacío localizado («Todavía no hay artículos
+publicados.» / «No articles published yet.»), sin destacado y sin links a artículos, y no se generan rutas de
+artículo.
 
 ### 3.5 Fotos
 
@@ -428,6 +436,7 @@ TypeScript sin dependencias, incluido solo en la página que lo usa.
 6b. Campos del formulario con borde `#767676` (4,5:1 sobre el blanco de la tarjeta) en lugar de `#E2E2DE`, para cumplir el 3:1 de identificación de controles (WCAG 1.4.11). Los bordes decorativos de tarjetas y paneles no cambian.
 6c. Formulario con placeholders, opción vacía en Industria, errores en línea, «Enviando…», mensaje de error de envío y aviso sin JS. Son funcionales y el diseño no los tiene; se verifican contra §4.6 y no contra el diseño.
 6d. Foto de depósito en Retail, y fotogramas de stock en Consumo y Servicios (D10).
+6e. **Contenido editorial de Insights desde Sanity** (§3.4): título, resumen, categoría, fecha, minutos, cuerpo e índice del destacado, las tarjetas y el artículo son los del post publicado, no los del ejemplo del diseño. En B3 se compara la **estructura y los estilos** contra el diseño, y el **contenido, los metadatos y el índice** contra el post (los datos de la evidencia).
 7. Inter en lugar de Neue Haas Unica.
 8. Las diferencias de la fase 1.
 
@@ -448,21 +457,28 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 | # | Criterio | Cómo se verifica |
 |---|---|---|
 | B1 | `npm run build` sin errores ni warnings y `npm test` en verde, con S1 extendida (§3.2). | Salida de los comandos. |
-| B2 | 22 rutas (20 + 2 del artículo publicado en Sanity) con `lang`, canonical, hreflang, title, descripción y H1 iguales a una tabla de **valores esperados escrita a mano** (`docs/evidence/002/b2-esperados.json`), más la 404. | Comparador como el de A4. |
+| B2 | Rutas: 20 + 2 × (artículos publicados). Para el contenido inicial, identificado en la evidencia con el `_id` y la fecha de la consulta, son 22 con `lang`, canonical, hreflang, title, descripción y H1 iguales a una tabla de **valores esperados escrita a mano** (`docs/evidence/002/b2-esperados.json`), más la 404. | Comparador como el de A4. |
 | B3 | **Fidelidad:** matriz de secciones (Inv §1–§8) × 1440×900 y 390×844, con capturas lado a lado contra el diseño en las condiciones de A6 (textura «Ninguna», fuentes cargadas, fondo liso). Se captura por estado: antes/después en «sin» y en «con»; tarjetas en reposo y en hover; las cinco industrias del visor; y el formulario en idle, que es lo único que tiene contraparte en el diseño. Los estados nuevos del formulario se capturan como evidencia de B8 y se verifican contra §4.6. Diferencias: solo las de §7, permanentes o temporales. EN y las otras 4 industrias se comparan **estructuralmente** contra ES y Retail: mismas secciones, sin desbordes. | `docs/evidence/002/capturas/` + matriz en el README de la evidencia. |
 | B4 | **Antes/después:** alterna cada 3,6 s solo en pantalla; el primer uso del control la detiene aunque se salga y se vuelva; `aria-pressed`, H2 y pies quedan sincronizados; la región viva anuncia solo cambios manuales; con reduced motion (inicial y en vivo) no alterna, muestra «con» si no hubo una elección manual y conserva la elección manual si la hubo (se verifica en particular elegir «sin» → activar `reduce`); la descripción textual de cada diagrama coincide con el estado; sin JS se ve «con» y no hay control. | Escenario CDP + árbol de accesibilidad (CDP `Accessibility`). |
 | B5 | **Tabs de industria:** roles, nombres, `aria-controls`/`labelledby`, `aria-selected`/`tabindex`; flechas con vuelta y Home/End que solo mueven el foco; Enter, Espacio y click que activan; Tab al panel; cada panel contiene su foto, título, blurb y link, y los inactivos no están ni en el árbol accesible ni en el orden de Tab; «Conocer más» lleva a la industria del panel; con red lenta (CDP `Network.emulateNetworkConditions`) se activa una tab cuya foto no cargó y se ve el fondo del visor, sin una imagen rota; sin JS, el panel inicial y sin control. | Escenario CDP con teclado real. |
 | B6 | **Tarjetas:** ejemplo visible en reposo, en hover y en táctil, con contraste ≥ 4,5:1 en cada fondo; con reduced motion, sin desplazamiento. | Escenario CDP con media emulada + contraste calculado. |
-| B7 | **Insights y artículo:** sin filtros (una sola categoría); destacado al artículo; el índice navega a las anclas generadas; el selector de idioma lleva al artículo equivalente; el header marca Insights activo; los minutos y la fecha del destacado coinciden con los de la cabecera del artículo. Reglas de §3.4, probadas a mano con un loader apuntado a datos de prueba locales (sin tocar Sanity): un post sin cuerpo en español queda excluido con su aviso, dos posts con el mismo slug quedan excluidos, y con Sanity inaccesible el build falla. | Escenario CDP + prueba manual de build. |
+| B7 | **Insights y artículo:** sin filtros (una sola categoría); destacado al artículo; el índice navega a las anclas generadas; el selector de idioma lleva al artículo equivalente; el header marca Insights activo; los minutos y la fecha del destacado coinciden con los de la cabecera del artículo. Reglas de §3.4, probadas a mano con `INSIGHTS_FIXTURE` (sin tocar Sanity), anotando el aviso del build y las rutas generadas en cada caso:
+  - un post sin cuerpo en español, o con un cuerpo de spans vacíos, queda excluido;
+  - un post con una fecha imposible queda excluido;
+  - dos posts con el mismo slug en español (y, por separado, en inglés) quedan excluidos;
+  - sin `readingTime`, los minutos se calculan por idioma y coinciden entre el listado y la cabecera en los dos idiomas;
+  - publicar → retirar el post del fixture → reconstruir con la caché conservada no deja ni entrada ni ruta residual;
+  - con cero publicados aparece el estado vacío;
+  - con Sanity inaccesible, el build falla. | Escenario CDP + prueba manual de build. |
 | B8 | **Formulario:** sin JS, ni el click ni el Enter envían (sin pedidos de red ni navegación). Con JS: errores en línea con foco al primero, limpieza al editar, «Enviando…» visible (captura) y doble submit ignorado, estado error con el mail y valores conservados; salir con el formulario modificado dispara `beforeunload` (CDP `Page.javascriptDialogOpening`), y vacío no. Labels, `name`, `autocomplete` y tipos según §4.6; contraste de bordes ≥ 3:1. | Escenario CDP + registro de red. |
 | B9 | Cero links internos rotos, anclas incluidas, en las 22 rutas. | Script sobre `dist/`. |
 | B10 | Cero errores de consola en las 22 rutas. | CDP. |
 | B11 | JS de la fase 2 < 8192 bytes gzip por página (mismo método que A10). | Inventario por página. |
-| B12 | **Imágenes de contenido** (fotos de industria): AVIF/WebP con fallback JPG, `width`/`height`, y carga según §3.5. A 1440×900 con DPR 1, con la caché deshabilitada (`Network.setCacheDisabled`), se activa cada uno de los cinco paneles del visor y cada página de industria, se espera la carga y se registra el `currentSrc`. El archivo correspondiente en `dist/` pesa ≤ 300 KB (se mide el tamaño del archivo, no `transferSize`). Los `alt` se revisan a mano y se listan. | CDP + tamaños de `dist/` + lista en la evidencia. |
+| B12 | **Imágenes de contenido** (fotos de industria): AVIF/WebP con fallback JPG, `width`/`height`, y carga según §3.5. A 1440×900 con DPR 1, con la caché deshabilitada (`Network.setCacheDisabled`), se activa cada uno de los cinco paneles del visor y cada página de industria, se espera la carga y se registran el `currentSrc` y el ancho renderizado de la imagen en CSS px, que se contrasta con el `sizes` de §3.5. El archivo correspondiente en `dist/` pesa ≤ 300 KB (se mide el tamaño del archivo, no `transferSize`). Los `alt` se revisan a mano y se listan. | CDP + tamaños de `dist/` + lista en la evidencia. |
 | B13 | Revisión con web-design-guidelines sin hallazgos abiertos, salvo las excepciones de la fase 1, la URL efímera de las tabs de industria (§4.1.6) y del selector Sin/Con (§4.1.2), y la transición de colores (§4.7). | Informe en la evidencia. |
 | B14 | El checklist del header vigente (75 casos al cerrar la fase 1, o el que esté vigente) sigue en verde. | Re-ejecución. |
-| B15 | **Accesibilidad manual:** recorrido completo con teclado en cada página (orden, foco visible y no tapado por el header, sin trampas). **Reflow a 320 CSS px** (WCAG 1.4.10): sin scroll horizontal **y** sin contenido recortado, superpuesto ni perdido (texto completo de nodos, tarjetas, chips y formulario), revisado sobre capturas de página completa. **Zoom del navegador** (WCAG 1.4.4), por separado del reflow a 320 px. Se emula sobre una ventana de 1280×800 con `deviceScaleFactor` = zoom y un layout de 1280/zoom CSS px, en los pasos 125 %, 150 %, 175 % y 200 %. En cada paso se revisa:
-  - **Ampliación efectiva:** el texto de cuerpo (16 px) se representa a 16 × zoom px de dispositivo. Los títulos display pueden cambiar de escala al cruzar un breakpoint, que WCAG permite cuando el texto se puede ampliar con otro nivel de zoom, pero nunca quedan por debajo de su tamaño renderizado al 100 %. Al 400 % (layout de 320 px), cada título display se representa al menos al doble de su tamaño al 100 %.
+| B15 | **Accesibilidad manual:** recorrido completo con teclado en cada página (orden, foco visible y no tapado por el header, sin trampas). **Reflow a 320 CSS px** (WCAG 1.4.10): sin scroll horizontal **y** sin contenido recortado, superpuesto ni perdido (texto completo de nodos, tarjetas, chips y formulario), revisado sobre capturas de página completa. **Zoom del navegador** (WCAG 1.4.4), por separado del reflow a 320 px. Se emula sobre una ventana de 1280×800 con `deviceScaleFactor` = zoom y un layout de 1280/zoom CSS px, en los pasos 125 %, 150 %, 175 %, 200 % y 400 %. En cada paso se revisa:
+  - **Ampliación efectiva:** el texto de cuerpo (16 px) se representa a 16 × zoom px de dispositivo en cada paso. Los títulos display pueden achicarse en un paso intermedio al cruzar el breakpoint de 1000 px, algo que WCAG 1.4.4 admite si el texto se puede ampliar con otro nivel de zoom. Al **400 %** (layout de 320 px, que se suma a la tabla de pasos), cada título display se representa al menos al doble de su tamaño al 100 %.
   - **Layout:** sin recortes, sin superposiciones ni contenido perdido, con los controles operables y el foco visible. **Árbol de accesibilidad** de cada sección interactiva: nombres, roles y regiones vivas. No hay un lector de pantalla disponible; queda declarado como límite. | Escenario CDP: tabla de tamaños renderizados por paso de zoom, más capturas a 320 px y al 200 %. |
 | B16 | gpt-6.1-sol aprueba el spec antes de empezar y la implementación con la evidencia B1–B15 sobre un mismo commit. | Veredicto con hash. |
 
