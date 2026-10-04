@@ -46,4 +46,8 @@ const t = ui[locale].band;
     line-height: .9;
   }
   .band :global(.band-cta) { position: relative; }
+  /* A 320 px el botón no entra en una línea: se permite el salto en vez de recortarlo. */
+  @media (max-width: 399.98px) {
+    .band :global(.band-cta) { white-space: normal; text-align: center; }
+  }
 </style>
