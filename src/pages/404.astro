@@ -6,7 +6,7 @@ import { ui } from '../i18n/ui';
 // Excepción del spec 001 §3.7: una sola página bilingüe, sin canonical, hreflang ni selector.
 const { es, en } = ui;
 ---
-<Base locale="es" page={null} title={`${es.notFound.title} · ${en.notFound.title} — NoctiLabs`}>
+<Base locale="es" page={null} title={`${es.notFound.title} · ${en.notFound.title} — NoctiLabs`} description={`${es.notFound.body} ${en.notFound.body}`}>
   <section class="nf">
     <div>
       <h1>{es.notFound.title}</h1>
