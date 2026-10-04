@@ -1,0 +1,56 @@
+---
+// Foto de industria (Inv §3.2, spec 002 §3.5): <Picture> eager; sin foto, panel oscuro con isotipo y label.
+import { Picture } from 'astro:assets';
+import Container from '../../ui/Container.astro';
+import Mark from '../../Mark.astro';
+import type { Photo } from '../../../content/types';
+import type { Locale } from '../../../i18n/routes';
+
+interface Props { photo: Photo; label: string; locale: Locale }
+const { photo, label, locale } = Astro.props;
+---
+<Container gap="clamp(26.2px,3.3vw,45.9px)" as="div">
+  {photo ? (
+    <div class="box">
+      <Picture
+        src={photo.src}
+        alt={photo.alt[locale]}
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[480, 768, 1080, 1440, 1920]}
+        sizes="(min-width: 1391px) 1109px, (min-width: 1200px) calc(1200px - 6.6vw), (min-width: 1000px) 93.4vw, calc(100vw - 32px)"
+        quality={70}
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  ) : (
+    <div class="box empty" role="img" aria-label={label}>
+      <Mark fg="#F4F4F2" core="#3D7BFF" size={40} />
+      <span aria-hidden="true">{label}</span>
+    </div>
+  )}
+</Container>
+
+<style>
+  .box {
+    position: relative;
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    overflow: hidden;
+    background: #3A3A3C;
+    height: clamp(262.4px, 29.5vw, 426.4px);
+  }
+  .box :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+</style>
