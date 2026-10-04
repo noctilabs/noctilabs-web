@@ -88,7 +88,7 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d={MENU_OPEN} data-burger-icon /></svg>
       </button>
     </div>
-    <div class="mpanel" id="menu-mobile" hidden data-mpanel>
+    <div class="mpanel" id="menu-mobile" hidden data-mpanel tabindex="-1">
       {mobileGroups.map((group) => (
         <div class="mgroup">
           <a class="mlabel" href={group.href} tabindex="0">{group.label}</a>
@@ -100,7 +100,7 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
     </div>
   </div>
   {panels.map((panel) => (
-    <div class="mega" id={`mega-${panel.id}`} hidden data-panel={panel.id}>
+    <div class="mega" id={`mega-${panel.id}`} hidden data-panel={panel.id} tabindex="-1">
       <div class="surface">
         <span class="kicker">{panel.kicker}</span>
         <div class="grid">

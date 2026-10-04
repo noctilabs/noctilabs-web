@@ -10,16 +10,13 @@ function focusQuietly(el: HTMLElement): void {
 }
 
 // Foco al presionar (Safari no enfoca botones al presionarlos, ni links sin tabindex explícito):
-// - los links de los paneles llevan tabindex="0" explícito (Header.astro), así que reciben el foco con
-//   cualquier botón del mouse y el foco nunca sale del conjunto;
-// - los botones y las zonas vacías del panel no mueven el foco con el botón principal: el click del
-//   botón lo enfoca explícitamente, y un click en una zona vacía no cierra el panel.
-// El resto de las acciones nativas (selección, arrastre, click central/secundario en links) se conservan.
-function holdFocusOnPress(el: HTMLElement, emptyAreasOnly = false): void {
+// - los links de los paneles llevan tabindex="0" y los paneles tabindex="-1" (Header.astro): presionar
+//   cualquier punto del panel, con cualquier botón, deja el foco dentro del conjunto, sin cancelar acciones
+//   nativas (selección de texto, arrastre, click central);
+// - los botones no mueven el foco con el botón principal; su click lo enfoca explícitamente.
+function holdFocusOnPress(el: HTMLElement): void {
   el.addEventListener('mousedown', (e) => {
-    if (e.button !== 0) return;
-    if (emptyAreasOnly && (e.target as Element).closest('a, button, input, select, textarea')) return;
-    e.preventDefault();
+    if (e.button === 0) e.preventDefault();
   });
 }
 
@@ -84,7 +81,6 @@ export function initHeader(): void {
 
   for (const g of groups) {
     holdFocusOnPress(g.button);
-    holdFocusOnPress(g.panel, true);
     g.button.addEventListener('click', () => {
       focusQuietly(g.button);
       if (!open || open.group !== g) show(g, 'fijo');
@@ -167,7 +163,6 @@ export function initHeader(): void {
   const inMobile = (el: EventTarget | null) => el instanceof Node && (burger.contains(el) || mpanel.contains(el));
 
   holdFocusOnPress(burger);
-  holdFocusOnPress(mpanel, true);
   burger.addEventListener('click', () => {
     focusQuietly(burger);
     setMobile(!mobileOpen());
