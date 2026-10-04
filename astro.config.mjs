@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
+import { ORIGIN } from './src/site.mjs';
 
 export default defineConfig({
-  site: 'https://noctilabs.io',
+  site: ORIGIN,
   output: 'static',
   trailingSlash: 'always',
   build: { format: 'directory' },

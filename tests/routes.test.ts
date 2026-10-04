@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { alternates, href, pageFromPath, type Locale, type PageRef } from '../src/i18n/routes';
+import { alternates, href, pageFromPath, PAGES, type Locale, type PageRef } from '../src/i18n/routes';
 
-// Los valores esperados son literales copiados del contrato de URLs del spec 001 (§3.2).
+// Los valores esperados son literales copiados del contrato de URLs del spec 001 (§3.2), con el origen `www` y las
+// rutas de privacidad del spec 004 (§2.1 y §2.4).
 
 describe('href', () => {
   test('home en español e inglés', () => {
@@ -18,6 +19,7 @@ describe('href', () => {
     ['nosotros', '/nosotros/', '/en/about/'],
     ['insights', '/insights/', '/en/insights/'],
     ['hablemos', '/hablemos/', '/en/contact/'],
+    ['privacidad', '/privacidad/', '/en/privacy/'],
   ] as const)('%s en los dos idiomas', (id, es, en) => {
     expect(href({ id }, 'es')).toBe(es);
     expect(href({ id }, 'en')).toBe(en);
@@ -50,7 +52,7 @@ describe('href', () => {
 });
 
 describe('alternates', () => {
-  const O = 'https://noctilabs.io';
+  const O = 'https://www.noctilabs.io';
   test.each<[string, PageRef, string, string]>([
     ['home', { id: 'home' }, `${O}/`, `${O}/en/`],
     ['producto', { id: 'producto' }, `${O}/producto/`, `${O}/en/product/`],
@@ -62,6 +64,7 @@ describe('alternates', () => {
     ['nosotros', { id: 'nosotros' }, `${O}/nosotros/`, `${O}/en/about/`],
     ['insights', { id: 'insights' }, `${O}/insights/`, `${O}/en/insights/`],
     ['hablemos', { id: 'hablemos' }, `${O}/hablemos/`, `${O}/en/contact/`],
+    ['privacidad', { id: 'privacidad' }, `${O}/privacidad/`, `${O}/en/privacy/`],
   ])('%s: es, en y x-default = es, absolutas', (_, page, es, en) => {
     expect(alternates(page)).toEqual({ es, en, 'x-default': es });
   });
@@ -79,6 +82,7 @@ describe('pageFromPath', () => {
     ['/nosotros/', { id: 'nosotros' }, 'es'],
     ['/insights/', { id: 'insights' }, 'es'],
     ['/hablemos/', { id: 'hablemos' }, 'es'],
+    ['/privacidad/', { id: 'privacidad' }, 'es'],
     ['/en/', { id: 'home' }, 'en'],
     ['/en/product/', { id: 'producto' }, 'en'],
     ['/en/industries/retail-distribution/', { id: 'industria', industry: 'retail' }, 'en'],
@@ -89,6 +93,7 @@ describe('pageFromPath', () => {
     ['/en/about/', { id: 'nosotros' }, 'en'],
     ['/en/insights/', { id: 'insights' }, 'en'],
     ['/en/contact/', { id: 'hablemos' }, 'en'],
+    ['/en/privacy/', { id: 'privacidad' }, 'en'],
   ];
 
   test.each(CONTRATO)('%s', (path, page, locale) => {
@@ -102,9 +107,19 @@ describe('pageFromPath', () => {
   test.each([
     '/nada/', '/en/nada/', '/en/producto/', '/industrias/inexistente/', '/404.html',
     '/es/', '/es/producto/', '/producto/extra/', '/en/industries/manufactura/',
-    '/producto//', '/en/product//',
+    '/producto//', '/en/product//', '/en/privacidad/', '/privacy/',
   ])('%s → null', (path) => {
     expect(pageFromPath(path)).toBeNull();
+  });
+});
+
+describe('PAGES (spec 004 §2.4)', () => {
+  test('11 referencias fijas, 22 URLs distintas', () => {
+    expect(PAGES).toHaveLength(11);
+    const urls = PAGES.flatMap((p) => [href(p, 'es'), href(p, 'en')]);
+    expect(new Set(urls).size).toBe(22);
+    expect(urls).toContain('/privacidad/');
+    expect(urls).toContain('/en/privacy/');
   });
 });
 
@@ -119,9 +134,9 @@ describe('artículos (spec 002 §3.2, enmienda Sanity)', () => {
 
   test('alternates del artículo: absolutas y x-default = es', () => {
     expect(alternates(page)).toEqual({
-      es: 'https://noctilabs.io/insights/sin-contexto-no-hay-inteligencia/',
-      en: 'https://noctilabs.io/en/insights/no-context-no-intelligence/',
-      'x-default': 'https://noctilabs.io/insights/sin-contexto-no-hay-inteligencia/',
+      es: 'https://www.noctilabs.io/insights/sin-contexto-no-hay-inteligencia/',
+      en: 'https://www.noctilabs.io/en/insights/no-context-no-intelligence/',
+      'x-default': 'https://www.noctilabs.io/insights/sin-contexto-no-hay-inteligencia/',
     });
   });
 
