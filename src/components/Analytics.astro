@@ -1,0 +1,9 @@
+---
+// Vercel Web Analytics (spec 004 §2.7). Base.astro lo renderiza solo con VERCEL_ENV=production y en páginas con
+// PageRef; la 404 no lo lleva. Script procesado: queda cubierto por su hash en la CSP.
+---
+<script>
+  import { inject } from '@vercel/analytics';
+  import { beforeSend } from '../lib/analytics';
+  inject({ mode: 'production', beforeSend });
+</script>

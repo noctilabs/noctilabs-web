@@ -7,6 +7,7 @@ import geistMono400 from '@fontsource/geist-mono/files/geist-mono-latin-400-norm
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 import { alternates, type Locale, type PageRef } from '../i18n/routes';
 import { jsonLdText, OG_LOCALE, ogImage, structuredData, type ArticleLd } from '../lib/seo';
 
@@ -26,6 +27,8 @@ const ld = page ? structuredData(page, locale, article) : [];
 // Spec 004 §2.1: las previews de Vercel (VERCEL_ENV definido y distinto de production) no se indexan.
 const vercelEnv = process.env.VERCEL_ENV;
 const noindex = !page || (vercelEnv !== undefined && vercelEnv !== 'production');
+// Spec 004 §2.7: analítica solo en producción y solo en páginas con PageRef (nunca en la 404).
+const analytics = page !== null && vercelEnv === 'production';
 ---
 <!doctype html>
 <html lang={locale}>
@@ -66,5 +69,6 @@ const noindex = !page || (vercelEnv !== undefined && vercelEnv !== 'production')
       <slot />
     </main>
     <Footer locale={locale} page={page} />
+    {analytics && <Analytics />}
   </body>
 </html>
