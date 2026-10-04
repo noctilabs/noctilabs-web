@@ -1,0 +1,43 @@
+---
+// Página Home (spec 002 §4.1): hero de la fase 1 + secciones + banda «Hablemos.».
+import Base from '../../../layouts/Base.astro';
+import HomeHero from '../../HomeHero.astro';
+import HablemosBand from '../../HablemosBand.astro';
+import BeforeAfter from './BeforeAfter.astro';
+import Roles from './Roles.astro';
+import Capabilities from './Capabilities.astro';
+import Steps from './Steps.astro';
+import Industries from './Industries.astro';
+import { href, type Locale } from '../../../i18n/routes';
+import { ui } from '../../../i18n/ui';
+import { pageMeta } from '../../../lib/meta';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const page = { id: 'home' } as const;
+const meta = pageMeta(page, locale);
+const t = ui[locale];
+---
+<Base locale={locale} page={page} title={meta.title} description={meta.description}>
+  <div class="home">
+    <HomeHero
+      title={t.pages.home.h1}
+      lead={t.pages.home.lead}
+      primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
+      secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
+      pauseLabel={t.hero.pause}
+      playLabel={t.hero.play}
+    />
+    <BeforeAfter locale={locale} />
+    <Roles locale={locale} />
+    <Capabilities locale={locale} />
+    <Steps locale={locale} />
+    <Industries locale={locale} />
+    <HablemosBand locale={locale} />
+  </div>
+</Base>
+
+<style>
+  /* Inv §1: <main> con padding inferior de 24px. */
+  .home { display: flex; flex-direction: column; padding-bottom: 24px; }
+</style>
