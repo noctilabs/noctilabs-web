@@ -18,6 +18,7 @@ const LOCALES: Locale[] = ['es', 'en'];
         ) : (
           <a
             href={href(current.page, locale)}
+            tabindex="0"
             hreflang={locale}
             lang={locale}
             aria-label={ui[current.locale].nav.langName[locale]}

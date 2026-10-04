@@ -91,11 +91,11 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
     <div class="mpanel" id="menu-mobile" hidden data-mpanel>
       {mobileGroups.map((group) => (
         <div class="mgroup">
-          <a class="mlabel" href={group.href}>{group.label}</a>
-          {group.items.map((item) => <a class="mitem" href={item.href}>{item.label}</a>)}
+          <a class="mlabel" href={group.href} tabindex="0">{group.label}</a>
+          {group.items.map((item) => <a class="mitem" href={item.href} tabindex="0">{item.label}</a>)}
         </div>
       ))}
-      <a class="mcta" href={href({ id: 'hablemos' }, locale)}>{t.nav.cta}</a>
+      <a class="mcta" href={href({ id: 'hablemos' }, locale)} tabindex="0">{t.nav.cta}</a>
       <div class="mlang"><LangSwitch /></div>
     </div>
   </div>
@@ -105,7 +105,7 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
         <span class="kicker">{panel.kicker}</span>
         <div class="grid">
           {panel.items.map((item) => (
-            <a class="mega-item" href={item.href}><span class="mega-label">{item.label}</span><span class="mega-desc">{item.desc}</span></a>
+            <a class="mega-item" href={item.href} tabindex="0"><span class="mega-label">{item.label}</span><span class="mega-desc">{item.desc}</span></a>
           ))}
         </div>
       </div>
