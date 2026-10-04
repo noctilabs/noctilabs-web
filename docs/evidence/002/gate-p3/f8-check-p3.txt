@@ -1,0 +1,16 @@
+OK  H1 gate-nulo publicado (ES)
+OK  H1 gate-minutos excluido
+OK  H2 es ids únicos en la página — 13 ids
+OK  H2 es cada link del índice apunta a su propio H2 — h2=sec-contexto,sec-contexto-2,sec-contexto-2-2,sec-toc-title,sec-identificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificado toc=sec-contexto,sec-contexto-2,sec-contexto-2-2,sec-toc-title,sec-identificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificado
+OK  H3 es relativos conservados — ../otro-articulo/ | otro-articulo/ | ./?x=1 | /hablemos/ | /producto/#overview | /producto/#cerebro | /producto/#bi | /producto/#agentes | /producto/#control | /industrias/retail-distribucion/ | /industrias/manufactura/ | /industrias/alimentos-consumo/ | /industrias/salud-fitness/ | /industrias/servicios/ | /nosotros/ | /insights/ | /hablemos/ | /en/insights/gate-cuerpo/
+OK  H3 es protocolos peligrosos descartados
+OK  H4 es sin lista con h3 ni lista check
+OK  H4 es lista válida renderizada
+OK  H10 es WhatsApp con translate=no en el cuerpo
+OK  H2 en ids únicos en la página — 13 ids
+OK  H2 en cada link del índice apunta a su propio H2 — h2=sec-contexto,sec-contexto-2,sec-contexto-2-2,sec-toc-title,sec-identificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificado toc=sec-contexto,sec-contexto-2,sec-contexto-2-2,sec-toc-title,sec-identificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificadorlargoidentificado
+OK  H3 en relativos conservados — ../otro-articulo/ | otro-articulo/ | ./?x=1 | /en/contact/ | /en/product/#overview | /en/product/#cerebro | /en/product/#bi | /en/product/#agentes | /en/product/#control | /en/industries/retail-distribution/ | /en/industries/manufacturing/ | /en/industries/food-consumer-goods/ | /en/industries/health-fitness/ | /en/industries/professional-services/ | /en/about/ | /en/insights/ | /en/contact/ | /insights/gate-cuerpo/
+OK  H3 en protocolos peligrosos descartados
+OK  H4 en sin lista con h3 ni lista check
+OK  H4 en lista válida renderizada
+OK  H10 en WhatsApp con translate=no en el cuerpo

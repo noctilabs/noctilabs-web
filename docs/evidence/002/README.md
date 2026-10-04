@@ -181,3 +181,16 @@ La pasada 2 (`docs/reviews/002-impl-sol-pasada-2.md`) dio GATE NO, con 1 bloquea
 | 5 | B8 medía `btn.disabled` | B8 v2 usa `:disabled` sobre el botón y todos los campos, e intenta escribir en el mensaje mientras se envía. | El botón y los campos quedan `:disabled` mientras envía. Escribir no cambia el valor. Después del error vuelven a estar habilitados, con los valores intactos. También el doble submit y `beforeunload`. 24/24. | OK (`b8-v2.txt`) |
 
 Builds: F9 y normal, los dos con código 0. `astro check`: 0 errores. Después de las pruebas con F9 se volvió a correr el build normal (`build-final-p2.txt`).
+
+
+## Cierre del gate de implementación, pasada 3 (código `95711e2`)
+
+La pasada 3 (`docs/reviews/002-impl-sol-pasada-3.md`) dio GATE NO, con 1 bloqueante y 2 importantes. La evidencia está en `gate-p3/`.
+
+| # | Hallazgo | Arreglo | Verificación (fixture F10, ES y EN) | Resultado |
+|---|---|---|---|---|
+| 1 | Un `style` objeto con `toString` tiraba el build desde el diagnóstico | `isRenderable` exige que `style` y `listItem` sean texto. Los diagnósticos se arman con `label()`, que nunca convierte objetos a texto. La normalización de cada documento va dentro de un `try`, y si falla excluye solo ese documento. | La tesis, con un bloque `style: { toString }` agregado en ES y EN, se publica sin ese bloque. Aviso: `bloque no admitido ignorado (block/<object>)`. El build termina con código 0. | OK |
+| 2 | Marcas y definiciones inválidas ocultaban texto que igual se contaba | `cleanBody` conserva solo las definiciones `link` bien formadas, y como marcas, solo `strong`, `em` y las claves de esas definiciones. Lo demás se ignora con aviso. Publicar, renderizar y contar usan esa misma representación. | Un span de 500 palabras con `marks: [42]` se muestra entero junto con «Hola.» y marca 3 min, coherente con lo visible. Con `markDefs: [{}, link válido]` y una marca `zz`, el texto se ve completo y el link válido funciona. | OK |
+| 3 | `safeHref` borraba los espacios internos | Se quitan solo los controles C0 y DEL, que los navegadores ignoran dentro de una URL, y los espacios de los extremos. Los espacios internos se codifican (`%20`). | `/buscar/?q=dos palabras` → `/buscar/?q=dos%20palabras`. `mailto:…?subject=Hola Nocti` → `subject=Hola%20Nocti`. `java<TAB>script:alert(1)` se descarta. | OK |
+
+Regresiones: F8 16/16 y F9 7/7 sobre el código nuevo. Builds de F8, F9, F10 y normal: los cuatro con código 0. `astro check`: 0 errores (`check-f10.txt`, `f8-check-p3.txt`, `f9-check-p3.txt`, `build-final-p3.txt`).
