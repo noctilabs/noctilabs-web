@@ -18,8 +18,8 @@
   --glass: rgba(190, 190, 188, .62);
   --glass-filter: blur(18px) saturate(1.15);
 
-  /* D1 pendiente: Neue Haas Unica Pro es comercial y no se carga. */
-  --font-sans: 'Neue Haas Unica Pro', 'Neue Haas Unica', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* D1 (dueño, 2026-10-03): Inter auto-hospedada mientras no haya licencia de Neue Haas Unica (Adobe Fonts). */
+  --font-sans: 'Inter Variable', 'Neue Haas Unica Pro', 'Neue Haas Unica', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   /* Mobile primero; el diseño corta en 1000px. */

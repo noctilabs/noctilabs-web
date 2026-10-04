@@ -4,17 +4,16 @@ const CLOSE_DELAY = 120;
 
 type Mode = 'hover' | 'fijo';
 
-// El foco no se pierde al apretar en una zona no enfocable del panel ni al apretar un botón
-// (Safari no enfoca botones al hacer click): el handler de click enfoca explícitamente.
 function focusQuietly(el: HTMLElement): void {
   // Sin anillo de foco cuando la activación vino del puntero (guidelines: :focus-visible, no en click).
   if (document.activeElement !== el) el.focus({ focusVisible: false } as FocusOptions);
 }
 
-function holdFocusOnPress(el: HTMLElement, always = false): void {
-  el.addEventListener('mousedown', (e) => {
-    if (always || !(e.target as Element).closest('a, button')) e.preventDefault();
-  });
+// Un mousedown dentro de botones y paneles no mueve el foco: Safari no enfoca botones ni links al
+// presionarlos, y ese foco perdido cerraría el panel antes del click. El click y la navegación nativa
+// (incluidos modificadores y click central) no dependen del mousedown.
+function holdFocusOnPress(el: HTMLElement): void {
+  el.addEventListener('mousedown', (e) => e.preventDefault());
 }
 
 export function initHeader(): void {
@@ -38,6 +37,7 @@ export function initHeader(): void {
 
   let open: { group: Group; mode: Mode } | null = null;
   let timer: number | undefined;
+  let focusTimer: number | undefined;
   let token = 0;
   let hovered: Group | null = null;
   let suppressed: Group | null = null;
@@ -45,9 +45,11 @@ export function initHeader(): void {
   const within = (g: Group, el: EventTarget | null) => el instanceof Node && (g.item.contains(el) || g.panel.contains(el));
   const inFocusSet = (g: Group, el: EventTarget | null) => el instanceof Node && (g.button.contains(el) || g.panel.contains(el));
   const focusIn = (g: Group) => inFocusSet(g, document.activeElement);
+  // Toda apertura o cierre invalida los callbacks pendientes (hover y foco): spec 001 §3.5 paso 9.
   const cancelTimer = () => {
     clearTimeout(timer);
-    timer = undefined;
+    clearTimeout(focusTimer);
+    timer = focusTimer = undefined;
     token++;
   };
 
@@ -67,7 +69,7 @@ export function initHeader(): void {
   }
 
   for (const g of groups) {
-    holdFocusOnPress(g.button, true);
+    holdFocusOnPress(g.button);
     holdFocusOnPress(g.panel);
     g.button.addEventListener('click', () => {
       focusQuietly(g.button);
@@ -102,8 +104,10 @@ export function initHeader(): void {
         if (open?.group !== g || inFocusSet(g, e.relatedTarget)) return;
         if (e.relatedTarget !== null) return hide(g);
         // Sin destino (blur, foco a body): se decide con el foco efectivo después de la transición.
-        setTimeout(() => {
-          if (open?.group === g && !focusIn(g)) hide(g);
+        clearTimeout(focusTimer);
+        const mine = token;
+        focusTimer = window.setTimeout(() => {
+          if (mine === token && open?.group === g && !focusIn(g)) hide(g);
         });
       });
     }
@@ -135,7 +139,11 @@ export function initHeader(): void {
   const ICON_OPEN = 'M4 8h16M4 16h16';
   const ICON_CLOSE = 'M6 6l12 12M18 6L6 18';
 
+  let mobileGen = 0;
+  let mobileFocusTimer: number | undefined;
   function setMobile(isOpen: boolean) {
+    mobileGen++;
+    clearTimeout(mobileFocusTimer);
     mpanel.hidden = !isOpen;
     burger.setAttribute('aria-expanded', String(isOpen));
     burger.setAttribute('aria-label', (isOpen ? burger.dataset.labelClose : burger.dataset.labelOpen)!);
@@ -144,7 +152,7 @@ export function initHeader(): void {
   const mobileOpen = () => !mpanel.hidden;
   const inMobile = (el: EventTarget | null) => el instanceof Node && (burger.contains(el) || mpanel.contains(el));
 
-  holdFocusOnPress(burger, true);
+  holdFocusOnPress(burger);
   holdFocusOnPress(mpanel);
   burger.addEventListener('click', () => {
     focusQuietly(burger);
@@ -154,8 +162,10 @@ export function initHeader(): void {
     el.addEventListener('focusout', (e) => {
       if (!mobileOpen() || inMobile(e.relatedTarget)) return;
       if (e.relatedTarget !== null) return setMobile(false);
-      setTimeout(() => {
-        if (mobileOpen() && !inMobile(document.activeElement)) setMobile(false);
+      clearTimeout(mobileFocusTimer);
+      const mine = mobileGen;
+      mobileFocusTimer = window.setTimeout(() => {
+        if (mine === mobileGen && mobileOpen() && !inMobile(document.activeElement)) setMobile(false);
       });
     });
   }

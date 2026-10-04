@@ -1,8 +1,10 @@
 ---
+import '@fontsource-variable/inter';
 import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
 import '../styles/global.css';
 import geistMono400 from '@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { alternates, type Locale, type PageRef } from '../i18n/routes';
@@ -31,6 +33,7 @@ const alt = page ? alternates(page) : null;
     {!page && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#F4F4F2" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
