@@ -1,0 +1,27 @@
+B9: 23 páginas HTML (22 rutas + 404), 1179 hrefs internos (374 con ancla), 0 rotos
+   externos (no se siguen): mailto:hola@noctilabs.io ×6
+
+B11: máximo 6185 bytes gzip por página (umbral 8192) → OK
+   /404.html 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/about/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/contact/ 3456 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 2
+   /en/ 6185 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 6
+   /en/industries/food-consumer-goods/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/industries/health-fitness/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/industries/manufacturing/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/industries/professional-services/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/industries/retail-distribution/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/insights/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/insights/no-context-no-intelligence/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /en/product/ 4638 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 3
+   /hablemos/ 3456 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 2
+   / 6185 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 6
+   /industrias/alimentos-consumo/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /industrias/manufactura/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /industrias/retail-distribucion/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /industrias/salud-fitness/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /industrias/servicios/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /insights/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /insights/no-context-no-intelligence/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /nosotros/ 2601 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 1
+   /producto/ 4638 B ["/_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js"] inline: 3

@@ -1,6 +1,6 @@
 ---
-// Lugar reservado para la isla de Nocti App v2 (spec 002 §4.8). La fase 3 reemplaza el interior con los mismos props.
-import Mark from '../Mark.astro';
+// Embed de Nocti App v2 (spec 002 §4.8): los mismos props; el interior es la isla React (spec 003 §3.3).
+import NoctiApp from '../../islands/noctiapp/NoctiApp.tsx';
 import type { Locale } from '../../i18n/routes';
 
 export interface AppSlotProps {
@@ -12,39 +12,13 @@ export interface AppSlotProps {
 }
 interface Props extends AppSlotProps {}
 const { view, locale, contactHref, frame, variant } = Astro.props;
-const label = locale === 'es' ? 'Demo interactiva' : 'Interactive demo';
 ---
 <div class:list={['slot', `f-${frame}`]}>
-  <div
-    class="placeholder"
-    data-placeholder
-    data-app-view={view}
-    data-app-locale={locale}
-    data-app-contact={contactHref}
-    data-app-frame={frame}
-    data-app-variant={variant}
-  >
-    <Mark size={36} />
-    <span>{label}</span>
-  </div>
+  <NoctiApp client:visible view={view} locale={locale} contactHref={contactHref} variant={variant} />
 </div>
 
 <style>
+  .slot { min-width: 0; }
   .f-app { background: var(--surface-2); border-radius: clamp(19.7px, 2.5vw, 29.5px); padding: clamp(8.2px, 1.3vw, 18px); }
   .f-control { background: var(--surface-2); border-radius: 28px; padding: clamp(8.2px, 1.3vw, 14.8px); }
-  .placeholder {
-    min-height: 560px;
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    background: #F6F6F4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: .02em;
-    color: var(--muted);
-  }
 </style>

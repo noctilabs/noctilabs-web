@@ -33,6 +33,8 @@ const columns = [
   },
 ];
 const year = new Date().getFullYear();
+// Control de la textura (spec 003 §3.4): lo muestra el script al inicializar, salvo con reduced motion.
+const texture = locale === 'es' ? { pause: 'Pausar fondo', play: 'Animar fondo' } : { pause: 'Pause background', play: 'Animate background' };
 ---
 <footer class="site-footer">
   <div class="main">
@@ -53,6 +55,7 @@ const year = new Date().getFullYear();
       <a href={href({ id: 'privacidad' }, locale)}>{t.nav.privacy}</a>
     </span>
     <LangSwitch page={page} locale={locale} />
+    <button type="button" class="tex" data-texture-toggle data-pause={texture.pause} data-play={texture.play} hidden>{texture.pause}</button>
     <span translate="no">noctilabs.io</span>
   </div>
 </footer>
@@ -88,6 +91,18 @@ const year = new Date().getFullYear();
   }
   .col a { font-size: 15px; color: inherit; text-decoration: none; }
   .col a:hover { color: var(--blue-link); }
+  .tex {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .tex:hover { color: var(--ink); }
+  .tex[hidden] { display: none; }
   .bottom {
     display: flex;
     flex-wrap: wrap;

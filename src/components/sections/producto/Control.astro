@@ -1,6 +1,6 @@
 ---
 // Control y gobernanza (Inv §2.5): capas, barra y la demo de aprobación.
-// Capas en 1 columna por debajo de 600 px (spec 002 §4.2.5); sin caption mientras sea placeholder (§4.2.6).
+// Capas en 1 columna por debajo de 600 px (spec 002 §4.2.5); caption de la demo (Inv §2.5, spec 003 §3.3).
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
 import HeadRow from '../../ui/HeadRow.astro';
@@ -27,11 +27,13 @@ const { t, locale, contactHref } = Astro.props;
       </div>
     </div>
     <AppSlot view="control" locale={locale} contactHref={contactHref} frame="control" />
+    <p class="caption">{t.caption}</p>
   </CardBig>
 </Container>
 
 <style>
   .ctl { display: flex; flex-direction: column; gap: 28px; }
+  .caption { margin: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; color: var(--muted); }
   .layers { display: flex; flex-direction: column; gap: 8px; }
   .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
   @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

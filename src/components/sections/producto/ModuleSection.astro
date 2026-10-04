@@ -1,6 +1,6 @@
 ---
 // Cerebro / BI / Agentes (Inv §2.4): head-row, chips y la demo de su vista.
-// Sin caption mientras el slot sea un placeholder (spec 002 §4.2.6).
+// Caption debajo de la demo (Inv §2.4), restituido con la isla (spec 003 §3.3).
 import Container from '../../ui/Container.astro';
 import HeadRow from '../../ui/HeadRow.astro';
 import Kicker from '../../ui/Kicker.astro';
@@ -20,11 +20,13 @@ const { s, locale, contactHref } = Astro.props;
   </HeadRow>
   <ul class="chips">{s.chips.map((c) => <li>{c}</li>)}</ul>
   <AppSlot view={s.view} locale={locale} contactHref={contactHref} frame="app" />
+  <p class="caption">{s.caption}</p>
 </Container>
 
 <style>
   .mod { display: flex; flex-direction: column; gap: 24px; }
   .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .caption { margin: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; color: var(--muted); padding-left: 8px; }
   .chips li {
     padding: 9px 16px;
     border-radius: var(--radius-pill);

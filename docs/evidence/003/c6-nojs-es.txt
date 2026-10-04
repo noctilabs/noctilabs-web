@@ -1,0 +1,24 @@
+OK    sin JS 1440 · Producto embed 1: vista inicial «Hola, Laura.» legible, 27 botones todos deshabilitados — {"head":"Hola, Laura.","buttons":27,"enabled":[],"chars":719,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 1440 · Producto embed 2: vista inicial «Hola, Laura.» legible, 32 botones todos deshabilitados — {"head":"Hola, Laura.","buttons":32,"enabled":[],"chars":727,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 1440 · Producto embed 3: vista inicial «Inteligencia» legible, 28 botones todos deshabilitados — {"head":"Inteligencia","buttons":28,"enabled":[],"chars":853,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 1440 · Producto embed 4: vista inicial «Agentes» legible, 30 botones todos deshabilitados — {"head":"Agentes","buttons":30,"enabled":[],"chars":918,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 1440 · Producto embed 5: vista inicial «Operaciones» legible, 29 botones todos deshabilitados — {"head":"Operaciones","buttons":29,"enabled":[],"chars":746,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 1440: «Pausar fondo» no aparece
+OK    sin JS 1440 · Home (role-demo): vista inicial legible y controles deshabilitados — {"head":"Hola, Laura.","buttons":32,"enabled":[],"chars":361,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 1440: «Crear / Integrar» lleva a /hablemos/ — /hablemos/ → /hablemos/
+OK    sin JS 390 · Producto embed 1: vista inicial «Hola, Laura.» legible, 27 botones todos deshabilitados — {"head":"Hola, Laura.","buttons":27,"enabled":[],"chars":719,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 390 · Producto embed 2: vista inicial «Hola, Laura.» legible, 32 botones todos deshabilitados — {"head":"Hola, Laura.","buttons":32,"enabled":[],"chars":403,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 390 · Producto embed 3: vista inicial «Inteligencia» legible, 28 botones todos deshabilitados — {"head":"Inteligencia","buttons":28,"enabled":[],"chars":853,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 390 · Producto embed 4: vista inicial «Agentes» legible, 30 botones todos deshabilitados — {"head":"Agentes","buttons":30,"enabled":[],"chars":918,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 390 · Producto embed 5: vista inicial «Operaciones» legible, 29 botones todos deshabilitados — {"head":"Operaciones","buttons":29,"enabled":[],"chars":746,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 390: «Pausar fondo» no aparece
+OK    sin JS 390 · Home (role-demo): vista inicial legible y controles deshabilitados — {"head":"Hola, Laura.","buttons":32,"enabled":[],"chars":361,"label":"Demo interactiva de Nocti, con datos ilustrativos"}
+OK    sin JS 390: «Crear / Integrar» lleva a /hablemos/ — /hablemos/ → /hablemos/
+OK    sin JS 320: la región de trazabilidad (SSR) lleva tabindex=0 y se recorre con flechas a ambos extremos — {"tab":"0","max":307,"focused":true,"right":307,"left":0}
+OK    sin JS 320: regiones presentes en las vistas SSR iniciales — ["Tabla de trazabilidad"]
+OK    red lenta: antes de hidratar se ve la vista inicial con los controles deshabilitados — {"head":"Hola, Laura.","enabled":0,"total":27}
+OK    red lenta: hidrata (≈3 s) y todos los controles quedan habilitados — {"enabled":27,"total":27}
+OK    red lenta: después de hidratar la navegación funciona — Operaciones
+
+21 OK, 0 FALLA
+errores de consola: []

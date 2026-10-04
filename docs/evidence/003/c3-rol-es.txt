@@ -1,0 +1,17 @@
+OK    selector: grupo con aria-label y 4 botones; chips internos ocultos — {"role":"group","label":"Ver como","n":4,"chipsInternos":0}
+OK    selector inicial: exactamente un aria-pressed=true (CEO)
+OK    rotación: tras la secuencia de CEO pasa a Comercial — ["false","true","false","false"] · Jorge Rodríguez · Comercial
+OK    rotación: sigue a Operaciones — ["false","false","true","false"]
+OK    rotación: ninguna escritura en la región viva
+OK    panel de permisos a la derecha en una columna de 240 px dentro de la sección — {"rd":1108,"app":852,"panel":[1034,1274,240],"sec":[166,1274],"derecha":true}
+OK    elección manual: aria-pressed solo en Agentes — ["false","false","false","true"]
+OK    elección manual: al terminar la secuencia no rota — ["false","false","false","true"]
+OK    pausar y reanudar no reactiva la rotación — ["false","false","false","true"]
+OK    elección manual: un solo anuncio completo — [[6783,"Pregunta: ¿Qué facturas vencidas tengo q"]]
+OK    conversación de Operaciones: selector externo con exactamente un aria-pressed (Operaciones) — ["false","false","true","false"]
+OK    conversación: un anuncio
+OK    fuera de Preguntar no se muestra el panel lateral
+OK    390: panel debajo del marco, alineado a la derecha, dentro del viewport — {"appBottom":922,"top":934,"right":374,"appRight":374,"w":240,"vw":390}
+
+14 OK, 0 FALLA
+errores de consola: []
