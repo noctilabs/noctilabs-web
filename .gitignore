@@ -7,6 +7,7 @@ studio/node_modules/
 studio/dist/
 dist-fixture/
 dist-manifest.json
+ds-bundle/
 
 # Documentación interna (specs, revisiones, evidencia, planes): vive fuera del repo.
 docs/
