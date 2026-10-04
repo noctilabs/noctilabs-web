@@ -1,0 +1,44 @@
+/* Cuerpo de los artículos de Insights (spec 002 §3.4, Inv §6.2). HTML generado desde Portable Text. */
+.prose-article {
+  flex: 3 1 520px;
+  min-width: 0;
+  max-width: 68ch;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.prose-article > * { margin: 0; }
+.prose-article p,
+.prose-article ul,
+.prose-article ol { color: var(--body-2); }
+.prose-article .lead {
+  color: var(--ink);
+  font-size: clamp(17.2px, 1.6vw, 20.5px);
+  line-height: 1.45;
+  letter-spacing: -.015em;
+}
+.prose-article h2 {
+  margin: 16px 0 0;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+.prose-article blockquote {
+  margin: 16px 0;
+  padding: 26px 28px;
+  border-radius: 24px;
+  background: var(--bg);
+  font-size: clamp(19.7px, 2vw, 26.2px);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: 1.15;
+}
+.prose-article blockquote p { margin: 0; color: inherit; }
+/* El peso de los H2 es el del diseño (500), aunque el editor los marque en negrita. */
+.prose-article h2 strong { font-weight: inherit; }
+.prose-article ul,
+.prose-article ol { padding-left: 1.4em; display: flex; flex-direction: column; gap: 8px; }
+.prose-article a { overflow-wrap: anywhere; }
+.prose-article > p:empty { display: none; }

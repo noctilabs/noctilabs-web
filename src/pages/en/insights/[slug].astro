@@ -1,0 +1,11 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Articulo from '../../../components/sections/articulo/Articulo.astro';
+import { getArticles } from '../../../lib/insights';
+
+export const getStaticPaths = (async () =>
+  (await getArticles()).map((article) => ({ params: { slug: article.ref.slug.en }, props: { article } }))) satisfies GetStaticPaths;
+
+const { article } = Astro.props;
+---
+<Articulo article={article} locale="en" />

@@ -1,0 +1,94 @@
+---
+// Página Nosotros (spec 002 §4.4, Inv §4): hero, «Quiénes somos / Por qué», «Qué creemos», equipo y banda.
+import Base from '../../../layouts/Base.astro';
+import HablemosBand from '../../HablemosBand.astro';
+import Container from '../../ui/Container.astro';
+import DarkBig from '../../ui/DarkBig.astro';
+import Kicker from '../../ui/Kicker.astro';
+import Team from './Team.astro';
+import Txt from './Txt.astro';
+import type { Locale } from '../../../i18n/routes';
+import { ui } from '../../../i18n/ui';
+import { pageMeta } from '../../../lib/meta';
+import { nosotros } from '../../../content/pages/nosotros';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const page = { id: 'nosotros' } as const;
+const meta = pageMeta(page, locale);
+const t = nosotros[locale];
+---
+<Base locale={locale} page={page} title={meta.title} description={meta.description}>
+  <div class="page">
+    <section class="hero">
+      <Kicker size={13}>{t.kicker}</Kicker>
+      <h1 class="h1-int">{ui[locale].pages.nosotros.h1}</h1>
+    </section>
+
+    <Container gap="clamp(39.4px,4.9vw,72.2px)" class="blocks">
+      {t.blocks.map((b) => (
+        <div class="block">
+          <Kicker as="h2">{b.kicker}</Kicker>
+          <p class="b-title">{b.title}</p>
+          <p class="b-text"><Txt text={b.text} /></p>
+        </div>
+      ))}
+    </Container>
+
+    <Container gap="12px">
+      <DarkBig class="beliefs">
+        <Kicker as="h2" tone="dark-muted">{t.beliefs.kicker}</Kicker>
+        <ol>
+          {t.beliefs.items.map((text, i) => (
+            <li><span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><span class="b">{text}</span></li>
+          ))}
+        </ol>
+      </DarkBig>
+    </Container>
+
+    <Team locale={locale} {...t.team} />
+  </div>
+  <HablemosBand locale={locale} />
+</Base>
+
+<style>
+  /* Inv §4: <main> flex column con padding inferior de 24px; la banda va después (Inv §8). */
+  .page { display: flex; flex-direction: column; padding-bottom: 24px; }
+  .hero {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(39.4px, 5.7vw, 85.3px) var(--edge) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .hero h1 { max-width: 14ch; }
+  .page :global(.blocks) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 12px;
+  }
+  .block {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: clamp(19.7px, 2.5vw, 32.8px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .b-title { margin: 0; font-size: clamp(21.3px, 2.1vw, 29.5px); font-weight: 500; letter-spacing: -.04em; line-height: 1.08; }
+  .b-text { margin: 0; font-size: 15px; color: var(--muted); }
+  .page :global(.beliefs) { display: flex; flex-direction: column; gap: 24px; }
+  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 24px; }
+  li {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px 0;
+    border-top: 1px solid #2A2A2E;
+  }
+  .n { font-family: var(--font-mono); font-size: 13px; color: #7A7A80; padding-top: 8px; }
+  .b { font-size: clamp(19.7px, 2.5vw, 36.1px); font-weight: 500; letter-spacing: -.04em; line-height: 1.08; }
+</style>
