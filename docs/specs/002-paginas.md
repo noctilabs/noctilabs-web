@@ -256,9 +256,13 @@ Todo en TypeScript sin dependencias. Cada script se incluye solo en la página q
 - **D7. Industria inicial del Home.** Retail, el primero de la lista, en lugar de Manufactura.
 - **D8. Industrias sin copy.** Lo redacto yo como borrador. *Alternativa:* publicar solo Retail y sacar las otras 4 de la navegación hasta tener el texto.
 - **D9. Equipo.** Oculto hasta tener nombres, roles y fotos reales.
-- **D10. Fotos faltantes.**
-  - Retail sale de un fotograma del video del hero (stock con licencia del dueño).
-  - Servicios queda en un panel oscuro con el isotipo y el label hasta tener foto.
+- **D10. Fotos faltantes.** Salen de fotogramas de los clips de stock de Artlist que el dueño ya usó para el
+  video del hero:
+  - Retail: «Stocktaking Warehouse Worker Inventory Check» (depósito con estanterías, coincide con el placeholder
+    del diseño).
+  - Servicios: «Floor Business Window Office» (oficina).
+
+  El panel oscuro con isotipo queda solo como respaldo si falta una foto.
 - **D11. Insights.**
   - Se publica solo el artículo con cuerpo.
   - Los otros 5 títulos del diseño no se publican sin texto.

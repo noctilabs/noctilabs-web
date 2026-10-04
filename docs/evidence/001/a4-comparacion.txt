@@ -11,7 +11,7 @@ OK    / selector: idioma actual con aria-current: esperado "ES"
 OK    / head viewport: esperado "width=device-width, initial-scale=1"
 OK    / head favicon: esperado "/favicon.svg"
 OK    / head theme-color: esperado "#F4F4F2"
-OK    / head preload fuente: esperado true
+OK    / head preload de fuentes: esperado ["inter-latin-wght-normal","geist-mono-latin-400-normal"]
 OK    /en/ lang: esperado "en"
 OK    /en/ canonical: esperado "https://noctilabs.io/en/"
 OK    /en/ hreflang es: esperado "https://noctilabs.io/"
@@ -25,7 +25,7 @@ OK    /en/ selector: idioma actual con aria-current: esperado "EN"
 OK    /en/ head viewport: esperado "width=device-width, initial-scale=1"
 OK    /en/ head favicon: esperado "/favicon.svg"
 OK    /en/ head theme-color: esperado "#F4F4F2"
-OK    /en/ head preload fuente: esperado true
+OK    /en/ head preload de fuentes: esperado ["inter-latin-wght-normal","geist-mono-latin-400-normal"]
 OK    /producto/ lang: esperado "es"
 OK    /producto/ canonical: esperado "https://noctilabs.io/producto/"
 OK    /producto/ hreflang es: esperado "https://noctilabs.io/producto/"

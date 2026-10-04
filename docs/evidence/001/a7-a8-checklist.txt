@@ -47,23 +47,29 @@ OK    Mob3 URL con #agentes
 OK    Mob3 Ctrl+click no cierra el panel ni intercepta
 OK    Mob4 click fuera de la cápsula cierra
 OK    Mob5 focusout fuera cierra
-OK    Mob6 a desktop: cierra y foco al logo
+OK    Mob6 a desktop con foco en un link del panel mobile: cierra y foco al logo → {"m":{"open":false,"exp":"false","label":"Abrir menú","d":"M4 8h16M4 16h16"},"f":"A.logo \"NoctiLabs\""}
 OK    M9 cerrar y reabrir antes de 120 ms: el temporizador viejo no cierra
 OK    M5 blur() sin destino con el puntero encima: cierra
 OK    M5 click en zona vacía del panel: sigue abierto y con foco
 OK    Mob5 blur() sin destino: cierra
-OK    Mob3 es #overview: cierra, foco, visible bajo el header, URL
-OK    Mob3 es #cerebro: cierra, foco, visible bajo el header, URL
-OK    Mob3 es #bi: cierra, foco, visible bajo el header, URL
-OK    Mob3 es #agentes: cierra, foco, visible bajo el header, URL
-OK    Mob3 es #control: cierra, foco, visible bajo el header, URL
-OK    Mob3 en #overview: cierra, foco, visible bajo el header, URL
-OK    Mob3 en #cerebro: cierra, foco, visible bajo el header, URL
-OK    Mob3 en #bi: cierra, foco, visible bajo el header, URL
-OK    Mob3 en #agentes: cierra, foco, visible bajo el header, URL
-OK    Mob3 en #control: cierra, foco, visible bajo el header, URL
-OK    Mob3 fragmento ya en la URL: enfoca y scrollea igual
+OK    Mob3 es #overview: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"overview","top":84,"hash":"#overview","path":"/producto/"}
+OK    Mob3 es #cerebro: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"cerebro","top":84,"hash":"#cerebro","path":"/producto/"}
+OK    Mob3 es #bi: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"bi","top":84,"hash":"#bi","path":"/producto/"}
+OK    Mob3 es #agentes: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"agentes","top":84,"hash":"#agentes","path":"/producto/"}
+OK    Mob3 es #control: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"control","top":84,"hash":"#control","path":"/producto/"}
+OK    Mob3 en #overview: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"overview","top":84,"hash":"#overview","path":"/en/product/"}
+OK    Mob3 en #cerebro: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"cerebro","top":84,"hash":"#cerebro","path":"/en/product/"}
+OK    Mob3 en #bi: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"bi","top":84,"hash":"#bi","path":"/en/product/"}
+OK    Mob3 en #agentes: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"agentes","top":84,"hash":"#agentes","path":"/en/product/"}
+OK    Mob3 en #control: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"control","top":84,"hash":"#control","path":"/en/product/"}
+OK    Mob3 fragmento ya en la URL: enfoca y scrollea igual → {"focus":"bi","top":84,"hash":"#bi"}
 OK    Mob6 a desktop con foco en el botón: foco al logo
+OK    M5 link del panel presionado 300 ms: el panel sigue abierto y el foco no se pierde → {"s":{"prod":true,"ind":false,"ep":"true","ei":"false"},"f":"BUTTON.chev \"Abrir menú de Producto\""}
+OK    M5 al soltar navega al destino → "/producto/#cerebro"
+OK    Mob5 link del panel mobile presionado 300 ms: el panel sigue abierto → true
+OK    Mob5 al soltar navega al destino → "/insights/"
+OK    M9 blur → Esc → salir y volver: el callback de foco viejo no cierra la apertura nueva → {"prod":true,"ind":false,"ep":"true","ei":"false"}
+OK    Mob5 blur → cerrar → reabrir: el callback viejo no cierra el panel nuevo → true
 OK    A8 cero errores de consola en las 20 rutas
 
-67/67 OK
+73/73 OK

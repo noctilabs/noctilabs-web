@@ -44,7 +44,8 @@ for (const p of exp.paginas) {
       cmp(path, 'head viewport', exp.head.viewport, one(html, /<meta name="viewport" content="([^"]+)"/));
       cmp(path, 'head favicon', exp.head.favicon, one(html, /<link rel="icon"[^>]*href="([^"]+)"/));
       cmp(path, 'head theme-color', exp.head.themeColor, one(html, /<meta name="theme-color" content="([^"]+)"/));
-      cmp(path, 'head preload fuente', true, (one(html, /<link rel="preload" href="([^"]+)" as="font"/) || '').includes(exp.head.preload));
+      const preloads = [...html.matchAll(/<link rel="preload" href="([^"]+)" as="font"/g)].map((m) => m[1]);
+      cmp(path, 'head preload de fuentes', exp.head.preload, exp.head.preload.filter((f) => preloads.some((u) => u.includes(f))));
     }
   }
 }

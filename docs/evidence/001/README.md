@@ -1,13 +1,13 @@
 # Evidencia del spec 001 — fundación
 
-Commit verificado: `1bac7c2` (arreglos del gate pasada 1 sobre `0f7730f`). Verificación local:
+Commit verificado: `59c0c62` (arreglos de las pasadas 1 y 2 del gate sobre `0f7730f`, más Inter como sans por decisión del dueño). Verificación local:
 
 - `astro preview` en `localhost:4932`;
 - Chrome headless por CDP con emulación de foco;
 - referencia del diseño servida aparte, con la textura en «Ninguna».
 
-Vercel quedó diferido por decisión del dueño (enmienda al spec), así que A11 pasa al lanzamiento. La primera
-pasada del gate de implementación está en `docs/reviews/001-impl-sol-pasada-1.md`.
+Vercel quedó diferido por decisión del dueño (enmienda al spec), así que A11 pasa al lanzamiento. Las pasadas
+del gate de implementación están en `docs/reviews/001-impl-sol-pasada-*.md`.
 
 | # | Resultado | Archivo |
 |---|---|---|
@@ -15,12 +15,12 @@ pasada del gate de implementación está en `docs/reviews/001-impl-sol-pasada-1.
 | A2 | Vitest: 72 tests en verde (S1). `tests/routes.types.ts` pasa en A1. Control negativo hecho a mano: con un `IndustryId` válido, `astro check` falla con «Unused '@ts-expect-error'». | `a2-tests.txt` |
 | A3 | 20 rutas + `/404.html`. | `a3-dist.txt` |
 | A4 | **226/226** comprobaciones de los **valores esperados** (`a4-esperados.json`, escritos a mano desde §3.2, §3.7 y la tabla de copy) contra el HTML de `dist/` (`a4-comparar.mjs`). Cubre por página: `lang`, canonical, los tres hreflang, title, descripción, H1, destino del selector (footer y menú mobile), idioma actual con `aria-current` y, en Producto, las 5 anclas con `tabindex`, H2 y `data-placeholder`. El head (viewport, favicon, theme-color, preload) se revisa en una página por idioma. En la 404: title, `noindex`, sin canonical, sin hreflang, sin selector, bloque en inglés y links a los dos homes. | `a4-esperados.json`, `a4-comparar.mjs`, `a4-comparacion.txt` |
-| A5 | **Links:** 1033 hrefs internos en `dist/`, 0 rotos (anclas incluidas). **Sin JS:** los paneles no abren, y los labels Producto e Industrias navegan a `/producto/` y a Retail. **Recorridos con JS** (en el checklist de A7): las 5 anclas del menú mobile en los dos idiomas (URL final, foco en el destino, destino visible bajo el header en top 76–92 px), el fragmento que ya estaba en la URL y el Ctrl+click sin interceptar. | `a5-a10.txt`, `a5-sin-js.txt`, `a7-a8-checklist.txt` |
+| A5 | **Links:** 1054 hrefs internos en `dist/`, 0 rotos (anclas incluidas). **Sin JS:** los paneles no abren, y los labels Producto e Industrias navegan a `/producto/` y a Retail. **Recorridos con JS** (en el checklist de A7): las 5 anclas del menú mobile en los dos idiomas (URL final, foco en el destino, destino visible bajo el header en top 76–92 px), el fragmento que ya estaba en la URL el Ctrl+click sin interceptar y presionar y sostener un link de los paneles (desktop y mobile) antes de soltar. Las filas registran los valores finales. | `a5-a10.txt`, `a5-sin-js.txt`, `a7-a8-checklist.txt` |
 | A6 | Capturas lado a lado: header, megamenú Producto, megamenú Industrias y footer en 1440; header, menú y footer en 390. Todas sobre fondo liso: la referencia mobile se toma en la página Producto del diseño, no sobre el video. Diferencias abajo. | `capturas/ref-*` vs `capturas/nuevo-*` |
-| A7 | **67/67** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, skip link y `aria-current`. | `a7-a8-checklist.txt` |
+| A7 | **73/73** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, link presionado y sostenido (el caso de Safari), callbacks de foco viejos frente a una apertura nueva, skip link y `aria-current`. | `a7-a8-checklist.txt` |
 | A8 | 0 errores de consola en las 20 rutas. | `a7-a8-checklist.txt` (último caso) |
 | A9 | Revisión con web-design-guidelines: abajo. | — |
-| A10 | Máximo 1940 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
+| A10 | Máximo 1961 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
 
 ## A6 — diferencias con el diseño
 
@@ -35,6 +35,8 @@ pasada del gate de implementación está en `docs/reviews/001-impl-sol-pasada-1.
 1. **Cruz del menú mobile alineada a la derecha.** En el diseño queda pegada al logo cuando el panel abierto
    ensancha la cápsula (la fila es `max-content`).
 2. **Botón de pausa del video del hero.** Lo exigen las guidelines y WCAG 2.2.2.
+
+**Tipografía (D1, decisión del dueño):** Inter reemplaza a Neue Haas Unica, que no tiene licencia; la referencia se ve con el respaldo del sistema (Arial en Windows). Cambian levemente los anchos de texto; la estructura y las medidas de los contenedores son las del diseño.
 
 **Corregida en `1bac7c2`:** el desenfoque del glass. Lightning CSS borraba el `backdrop-filter` estándar si iba
 antes del prefijado; ahora las capturas muestran el mismo desenfoque que la referencia.
@@ -76,6 +78,7 @@ Reglas bajadas de `vercel-labs/web-interface-guidelines/command.md` (2026-10-03)
 
 ## Límites conocidos de la verificación
 
-- Toda la verificación de interacción corre en Chrome. El foco en Safari, que no enfoca botones al hacer click,
-  se cubre por código: `mousedown` con `preventDefault` en los botones y foco explícito en el click. No hubo un
-  Safari disponible para probarlo.
+- Toda la verificación de interacción corre en Chrome. El foco en Safari, que no enfoca botones ni links al
+  presionarlos, se cubre por código: `mousedown` con `preventDefault` en botones y paneles, y foco explícito en el
+  click de los botones. En Chrome se verificó que, con ese `preventDefault`, presionar y sostener un link deja el
+  panel abierto y la navegación ocurre al soltar. No hubo un Safari disponible para probarlo.

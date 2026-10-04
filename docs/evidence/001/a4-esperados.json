@@ -44,6 +44,6 @@
       "title": ["Hablemos — NoctiLabs", "Contact — NoctiLabs"],
       "desc": ["Contanos cómo opera tu empresa y te mostramos cómo Nocti se conecta con lo que ya tenés.", "Tell us how your company operates and we will show you how Nocti connects with what you already have."] }
   ],
-  "head": { "viewport": "width=device-width, initial-scale=1", "favicon": "/favicon.svg", "themeColor": "#F4F4F2", "preload": "geist-mono-latin-400-normal" },
+  "head": { "viewport": "width=device-width, initial-scale=1", "favicon": "/favicon.svg", "themeColor": "#F4F4F2", "preload": ["inter-latin-wght-normal", "geist-mono-latin-400-normal"] },
   "p404": { "title": "Página no encontrada · Page not found — NoctiLabs", "robots": "noindex", "lang": "es", "bloqueEn": "Page not found", "homes": ["/", "/en/"] }
 }
