@@ -1,6 +1,6 @@
 # Spec 003 — Islas interactivas: Nocti App y textura de fondo
 
-Estado: borrador, pasada 2 de revisión · 2026-10-04
+Estado: borrador, pasada 3 de revisión · 2026-10-04
 
 ## 1. Contexto
 
@@ -83,7 +83,9 @@ src/islands/noctiapp/
   - dimensiones cacheadas con `ResizeObserver`, sin leer el layout dentro del bucle;
   - el `requestAnimationFrame` se **cancela** cuando la animación no corre.
 - **Cuándo anima:** solo si se cumplen las tres condiciones: sin pausa manual, pestaña visible (`!document.hidden`) y sin `prefers-reduced-motion: reduce`. En cualquier otro caso queda dibujado el último frame, que con reduced motion es uno solo, estático. El cambio de preferencia y de visibilidad se escucha en vivo, y reanudar nunca pisa la pausa manual ni la preferencia del sistema.
-- **Pausa manual:** un `<button aria-pressed>` «Pausar fondo» / «Animar fondo» en la fila inferior del footer.
+- **Contraste del sitio con la textura:** el punto más oscuro de la trama es `#0B0B0C` al 15 % sobre `#F4F4F2`, o sea ≈ `#D1D1D0`. El texto gris del sitio (`--muted`) pasa de `#6B6B68` a **`#595956`** (4,60:1 sobre `#D1D1D0` y 6,38:1 sobre `#F4F4F2`). El resto de los textos sobre el fondo (`--ink`, `--body-2`, `--blue-link`) ya superan 4,5:1 sobre `#D1D1D0`. Diferencia autorizada en §6, que se verifica en C5 sobre todo el sitio, con la textura activa y pausada.
+- **Resize en pausa:** si el canvas cambia de tamaño o de DPR mientras la animación no corre (pausa, pestaña oculta o reduced motion), se actualiza el bitmap y se **redibuja una vez** con la fase congelada, sin reactivar el bucle.
+- **Pausa manual:** un botón de acción con nombre dinámico, «Pausar fondo» / «Animar fondo», sin `aria-pressed`, en la fila inferior del footer. Arranca `hidden` y lo muestra el script al inicializar. Con reduced motion no se muestra, porque no hay nada que pausar.
   - **Persistencia:** la preferencia se guarda en `localStorage`. El acceso, la lectura y la escritura van en `try/catch`; si el almacenamiento falla, la preferencia vive solo en memoria y el control funciona igual.
 
 ## 4. Comportamiento
@@ -93,7 +95,8 @@ src/islands/noctiapp/
 **Contenedores:**
 - `.nocti-app-cq`: el wrapper de la isla, con `container-type: inline-size` y `container-name: app`. Mide el ancho del marco donde vive la app.
 - `.nocti-app`: el shell, que es descendiente de ese wrapper y se adapta con `@container app (…)`.
-- En `role-demo`, la sección que agrupa app y permisos es otro contenedor (`container-name: roledemo`).
+- En `role-demo`, la sección que agrupa app y permisos es otro contenedor (`container-type: inline-size; container-name: roledemo`).
+- El área del flujo en el detalle de agente es su propio contenedor (`container-type: inline-size; container-name: flow`), y se mide su ancho **disponible**, descontando el sidebar y el padding.
 
 **Cortes:**
 
@@ -102,7 +105,7 @@ src/islands/noctiapp/
 | `app` | 720 px | Sidebar de 216 px por encima; barra compacta por debajo |
 | `app` | 860 px | Panel de permisos en línea en Preguntar (sin `role-demo`) |
 | `roledemo` | 1100 px | Panel de permisos al costado (§4.4) |
-| `app` | 520 y 800 px | Lienzo de flujos (§4.5) |
+| `flow` | 520 y 800 px | Lienzo de flujos (§4.5), según el ancho disponible del área del flujo |
 
 **Ancho:** sidebar con navegación por vistas (`aria-current="page"`), conversaciones fijadas y recientes, y tarjeta de usuario (App L16–42).
 
@@ -139,19 +142,21 @@ La vista inicial es la prop `view`.
 | Evento | Efecto |
 |---|---|
 | Entrar a Preguntar o cambiar de rol | Limpia `convo`, cancela la secuencia anterior y arranca una nueva cuando el disparador de visibilidad lo permite |
-| Abrir una conversación del sidebar | Cancela la secuencia y muestra esa conversación completa, estática |
+| Abrir una conversación del sidebar | Cancela la secuencia y muestra esa conversación completa, estática, actualizando rol, persona y permisos a los de la conversación |
 | Salir de Preguntar | Cancela la secuencia, el repetido y la rotación |
 | Pausar demo | Congela la etapa actual y el tiempo restante; no corre ningún temporizador |
 | Reanudar demo | Continúa desde la etapa y el tiempo congelados |
 | Fin de secuencia | `role-demo`: pasa al rol siguiente, si la rotación sigue activa. Resto: repite, si no está en pausa |
 | Elección manual de rol | Desactiva la rotación para siempre en esa carga, aunque después se pause y reanude |
 
-**Disparador de visibilidad:** se observa un **bloque acotado**, la cabecera de la vista Preguntar (el saludo y el compositor), con `IntersectionObserver` y threshold 0. Entrar en pantalla arranca o reanuda la secuencia automática; salir la pausa (es una pausa automática, distinta de la manual). No se observa la isla entera, que puede ser más alta que el viewport.
+**Disparador de visibilidad:** se observa la **fila de controles** de Preguntar, una franja persistente anterior a la conversación que contiene «Pausar demo», con `IntersectionObserver` y threshold 0. Es el mismo nodo durante toda la secuencia, así que mostrar la pregunta o cada ítem no la mueve fuera de pantalla. No se observa la isla entera ni el saludo, que desaparece.
+
+**Condición única para avanzar:** la secuencia avanza solo si (a) la fila está visible, (b) no hay **pausa manual** y (c) no hay reduced motion. Si una deja de cumplirse, la secuencia se congela; cuando las tres vuelven a cumplirse, continúa. La pausa manual se conserva al salir y volver a pantalla, al cambiar de rol y al abrir conversaciones. Si se elige un rol estando en pausa, se muestra su respuesta completa y estática. Al salir de reduced motion vale la misma condición.
 
 **Accesibilidad:**
 - **Animación automática:** la región de la conversación es `role="log"` con `aria-live="off"`, así que no se anuncian caracteres, pulsos ni fuentes.
-- **Anuncios manuales:** hay además una región `aria-live="polite"` persistente, visualmente oculta. Cuando la secuencia fue disparada por una **acción del usuario** (elegir un rol o abrir una conversación), anuncia **una vez** la respuesta completa al terminar.
-- **«Pausar demo» / «Reanudar demo»:** un botón con `aria-pressed` en la cabecera de Preguntar (WCAG 2.2.2).
+- **Anuncios manuales:** hay además una región `aria-live="polite"` persistente, visualmente oculta. Cuando la secuencia fue disparada por una **acción del usuario** (elegir un rol o abrir una conversación), anuncia **una vez** la respuesta completa al terminar. Si la secuencia se reemplaza antes, su anuncio pendiente se descarta (token de generación).
+- **«Pausar demo» / «Reanudar demo»:** un botón de acción con nombre dinámico, sin `aria-pressed`, en la **fila de controles** de Preguntar (WCAG 2.2.2).
 - **Reduced motion** (inicial y en vivo): sin tipeo, sin aparición escalonada, sin pulso, sin rotación y sin repetido. La conversación aparece completa y estática.
 
 ### 4.4 Demo por rol (home, `variant="role-demo"`)
@@ -164,17 +169,27 @@ La vista inicial es la prop `view`.
   - nunca fuera del ancho de la sección: el diseño medía `window` y podía salirse (Inv §11.25).
 - **Chips internos «Ver como»:** ocultos.
 
+### 4.4b Alcance de «Ver como»
+
+El rol simulado («Ver como» y el selector de `role-demo`) solo cambia la vista **Preguntar**: respuesta, fuentes y panel de permisos. Las otras vistas muestran **un ejemplo fijo de un rol**, rotulado en su cabecera:
+
+- «Inteligencia · vista de Finanzas»;
+- «Operaciones / Control · vista de Carla Ruiz (Finanzas)»: las acciones se registran a su nombre en la trazabilidad;
+- «Agentes · vista de administración».
+
+La nota de la sección del home (Web L136) pasa a «En Preguntar, cada persona y cada agente ven únicamente lo que sus permisos permiten.» / «In Ask, each person and each agent sees only what their permissions allow.».
+
 ### 4.5 Agentes: detalle con flujo
 
 **Lienzo:** 800×430, con 5 columnas, 10 tarjetas con logo o ícono y curvas SVG punteadas. Según el ancho del contenedor `app`:
 
-| Ancho del contenedor `app` | Presentación |
+| Ancho del contenedor `flow` | Presentación |
 |---|---|
 | ≥ 800 px | Lienzo a tamaño natural |
 | 520–799 px | Lienzo a tamaño natural dentro de una región con scroll horizontal (`tabindex="0"`, `role="region"`, `aria-label` «Flujo del agente»), sin escalar el texto |
 | < 520 px | Lista vertical de las 10 tarjetas en orden de columna, con el mismo contenido |
 
-**Curvas** (`stroke-dashoffset`): `repeatCount="3"` (menos de 5 s) y después quedan quietas. Con reduced motion, sin animación.
+**Curvas** (`stroke-dashoffset`): `repeatCount="3"` (menos de 5 s) y después quedan quietas. Con reduced motion, sin animación. El SVG lleva `aria-hidden`, y el lienzo tiene una **descripción textual** localizada: la lista de pasos en orden de columna, con lo que depende de cada uno («Priorizar y proponer acción usa facturas, historial y respuestas; de ahí salen…») y cuál espera aprobación. Es la misma lista de la presentación angosta, visualmente oculta en las otras dos.
 
 **Aprobar / desaprobar:** cambia las tarjetas, el pill y el botón como en el diseño. En el agente de compras, actúa sobre el estado único de la OC-4471 (§4.8).
 
@@ -203,25 +218,35 @@ Las correcciones siguientes aplican a ES y EN y a **todas** las apariciones de c
 | # | Dato | Valor coherente |
 |---|---|---|
 | 1 | Saludo | «Hola, {nombre}.» / «Hi, {name}.» en Inicio y Preguntar. Con el rol agentes: «Hola.» / «Hi.» |
-| 2 | Umbral de aprobación de compras | $15.000.000 en Control, Permisos y el flujo de Compras. La OC-4471 ($18,4 M) lo supera |
-| 3 | Aprobaciones | Control es la cola de **aprobaciones de compras**. KPI de Inicio con el label «Compras por aprobar» = 1; badge de Control = 1; Control dice «1 aprobación pendiente». Las aprobaciones de los agentes (planes de pago de Cobranzas, cotizaciones de Comercial) son **lotes del agente** y se muestran en Agentes («Esperando aprobación»); no suman en el KPI de compras |
-| 4 | Recordatorios | La corrida de **hoy** del agente de cobranzas prepara 38 y espera aprobación (flujo). La actividad reciente se refiere a la corrida de **ayer**: «Ayer: Agente de cobranzas envió 35 recordatorios.» |
-| 5 | Facturas vencidas | Total $48,2 M = $9,8 M a menos de 30 días + $38,4 M a más de 30 días. La respuesta del CEO dice «$38,4 M vencidos a más de 30 días» en lugar de $41,2 M |
-| 6 | Pedidos retenidos | 12 en total: 8 por stock y 4 por crédito. Cualquier mención que los atribuya solo a stock se corrige |
+| 2 | Umbral de aprobación de compras | $15.000.000 en Control, Permisos y el flujo de Compras |
+| 3 | Aprobaciones | KPI de Inicio «Compras por aprobar» = 1 (derivado de la OC, §4.8), y lo mismo el badge y el encabezado de Control. Los lotes de los agentes van aparte (§4.8): Cobranzas «Aprobaciones pendientes: 1» (no 2) y Comercial 1. «Agentes activos: 2» (Cobranzas y Comercial; Compras pausado) |
+| 4 | Recordatorios | Corrida de **hoy**: prepara 38 y espera aprobación. Actividad reciente, rotulada como corrida de **ayer**: «Ayer: Agente de cobranzas envió 35 recordatorios.» |
+| 5 | Antigüedad de deuda (intervalos disjuntos y exhaustivos) | Total vencido $48.200.000 en 312 facturas: **1–30 días** $9.840.000 (38 clientes, recordatorio); **31–90 días** $21.300.000 (12 clientes, plan de pago); **más de 90 días** $17.060.000 (7 clientes, pasan a comercial). Más de 30 días = $38.360.000, que se redondea a «$38,4 M». El CEO dice «$38,4 M vencidos a más de 30 días». La regla del flujo: «31 a 90 días → plan de pago; más de 90 → comercial». Los montos se calculan con los valores exactos y se muestran en millones con un decimal |
+| 6 | Pedidos retenidos | 12: 8 por falta de stock del SKU 4410 y 4 por crédito (clientes con deuda de más de 90 días). La respuesta de Operaciones dice «12 pedidos retenidos: 8 por falta de stock del SKU 4410 y 4 por crédito» |
 | 7 | Supermercados Delta | −28 % en todas las apariciones |
-| 8 | Conteos de las respuestas | «dos temas» con tres ítems → «tres temas»; «cuatro clientes» con tres ítems → «tres clientes» |
-| 9 | Conexiones | Una sola tabla de fuentes con sus registros: la de la vista Lista, con las 8 fuentes. **Centro** muestra el subconjunto de **sistemas** (las fuentes de tipo sistema de esa tabla), rotulado «{n} sistemas · ver todas las fuentes en Lista». Usa los mismos nombres y registros (WhatsApp: 31.950), sin «Entrevistas», que no está en Lista. El badge de Conexiones cuenta las 8 fuentes |
+| 8 | Conteos de las respuestas | CEO: «tres temas» (no «dos»); la conversación de L478: «tres clientes» (no «cuatro») |
+| 9 | Catálogo de fuentes | Una sola tabla, con id, nombre, tipo y registros; de ella se derivan Lista, Centro, el badge (8), los pies de fuentes y el «Contexto consultado»:<br>`erp` SAP · ERP (incluye el módulo de depósito/WMS), sistema, 2,4 M<br>`crm` HubSpot · CRM, sistema, 86.120<br>`drive` Google Drive, sistema, 12.408<br>`planillas` Google Sheets, sistema, 214<br>`whatsapp` WhatsApp Business, sistema, 31.950<br>`correo` Correo (Gmail), sistema, 58.300<br>`documentos` Contratos y políticas, documental, 1.120<br>`conocimiento` Conocimiento interno (procesos, reglas y entrevistas), documental, 342<br>**Centro** = los 6 sistemas, rotulado «6 sistemas · las 8 fuentes en Lista». Las menciones de «WMS» pasan a «ERP · Depósito». El «Contexto consultado» de cada rol y los pies de fuentes salen de las fuentes de su respuesta o corrida, por ejemplo Cobranzas: SAP · HubSpot · WhatsApp |
 
-### 4.8 OC-4471: un estado por isla
+### 4.8 OC-4471 y aprobaciones: un estado por isla
 
-La OC-4471 tiene **un solo estado** en cada isla (`pending | approved | rejected`) y de él se derivan:
+La OC-4471 tiene **un solo estado** en cada isla (`pending | approved | rejected`). De ese estado se derivan **todas** sus representaciones: la tarjeta y la trazabilidad de Control; el contador de Control y el KPI «Compras por aprobar» de Inicio; el ítem de Inicio en «Requiere tu atención»; y, en el agente de compras, su tarjeta de lista (estado y «Excepciones pendientes»), el pill, la tarjeta «OC-4471 a Plastar S.A.», el resultado «$18,4 M / …» y la nota.
 
-- la tarjeta y la trazabilidad de Control;
-- la tarjeta «OC-4471 a Plastar S.A.» y el pill del flujo de Compras;
-- el ítem de Inicio en «Requiere tu atención»;
-- el contador de Control.
+| Desde | Acción | Estado resultante |
+|---|---|---|
+| Control | Aprobar | `approved` |
+| Control | Rechazar | `rejected` |
+| Control | Deshacer | `pending` |
+| Flujo de Compras | Aprobar (con `pending`) | `approved` |
+| Flujo de Compras | Deshacer (con `approved`) | `pending` |
+| Flujo de Compras con `rejected` | — | La tarjeta muestra «Rechazada en Control» y el botón queda deshabilitado con ese texto. Se vuelve a `pending` solo con «Deshacer» en Control |
 
-Aprobar, rechazar o deshacer desde Control, o aprobar o desaprobar desde el flujo de Compras, cambia ese estado. El foco queda en el botón de la acción opuesta («Deshacer» o «Aprobar»). Las conversaciones son registros históricos y no cambian. Las seis instancias de la app no comparten estado.
+El foco queda en el botón de la acción siguiente («Deshacer» o «Aprobar»).
+
+**Lotes de los agentes:** Cobranzas (planes de pago a 12 clientes) y Comercial (cotizaciones de 9 reposiciones) tienen **un lote pendiente cada uno**, con su propio estado (`pending | approved`) y su botón «Aprobar …» / «Deshacer». De ese estado derivan su tarjeta de lista («Aprobaciones pendientes: 1 → 0»), su pill y su flujo.
+
+**Conversaciones:** son registros históricos y llevan una fecha visible («2 oct», «1 oct»…), así que su texto no cambia con el estado.
+
+Las seis instancias de la app no comparten estado.
 
 ### 4.9 Accesibilidad de la isla
 
@@ -240,6 +265,11 @@ Aprobar, rechazar o deshacer desde Control, o aprobar o desaprobar desde el fluj
 
   Cualquier otro par por debajo del umbral que aparezca en la medición se corrige igual y se suma a la tabla de la evidencia.
 - **Árbol de accesibilidad:** curvas, íconos decorativos y el canvas de la textura con `aria-hidden`.
+- **Alternativas textuales:**
+  - el flujo de Agentes (§4.5);
+  - la vista Centro (texto que enumera los sistemas, el contexto y los usos que alimenta);
+  - el gráfico de Inteligencia: una tabla visualmente oculta con semana → porcentaje (S1–S8) y la variación destacada.
+- **Foco al navegar:** abrir el detalle de un agente lleva el foco a su título; «← Agentes» vuelve a la lista con el foco en la tarjeta de ese agente.
 
 ## 5. Fuera de alcance
 
@@ -261,6 +291,10 @@ Aprobar, rechazar o deshacer desde Control, o aprobar o desaprobar desde el fluj
 10. Controles deshabilitados hasta hidratar (§3.3).
 11. Sin la variante «malla» de Conexiones.
 12. Inter, como en las fases anteriores.
+13. `--muted` del sitio oscurecido a `#595956` por el contraste sobre la textura (§3.4).
+14. Alcance de «Ver como» limitado a Preguntar, con las demás vistas rotuladas como ejemplos de un rol y la nota del home ajustada (§4.4b).
+15. Alternativas textuales del flujo, de Centro y del gráfico (§4.9).
+16. Lotes de los agentes con estado propio y conversaciones con fecha visible (§4.8).
 
 ### 4.10 (anexo) Avatares
 
@@ -275,16 +309,16 @@ TDD solo en S1, que esta fase no toca. Se verifica a mano con Chrome headless po
 | # | Criterio | Cómo se verifica |
 |---|---|---|
 | C1 | Build sin errores ni warnings y `npm test` en verde. | Salida (código de salida). |
-| C2 | **Fidelidad por matriz:** 7 vistas, más los estados (conversación abierta, transacciones abiertas, detalle de los 3 agentes pendiente y aprobado, OC aprobada, rechazada y deshecha, Lista y Centro, usuario abierto) × variantes (`role-demo` y normal) × anchos del contenedor `app` (360, 520, 720, 860 y 1100 px, más el ancho real de cada marco a 1440 y 390) × ES y EN. Capturas lado a lado contra la app del diseño en ES, y EN de forma estructural. Diferencias: solo las de §6. | Matriz en el README de la evidencia + capturas. |
-| C3 | **Interacciones**, con teclado y mouse, en ancho y en angosto: navegación de vistas y conversaciones (también desde el disclosure angosto); secuencia del chat con sus tiempos; cada transición de la tabla de §4.3 (rol, abrir conversación, salir de Preguntar, pausar y reanudar conservando la etapa, rotación detenida por elección manual aunque se pause y reanude); Ver/Ocultar transacciones; aprobar y desaprobar en los 3 agentes; OC-4471 aprobada, rechazada y deshecha desde Control y desde Compras, reflejada en Inicio y en el contador; Lista/Centro; usuario (Esc y click fuera); «Crear / Integrar» como link. Con viewport bajo (1280×400) y zoom 200 %, el chat arranca al entrar la cabecera y se pausa al salir. | Escenario CDP. |
+| C2 | **Fidelidad por matriz:** 7 vistas, más los estados (conversación abierta, transacciones abiertas, detalle de los 3 agentes pendiente y aprobado, OC aprobada, rechazada y deshecha, Lista y Centro, usuario abierto) × los 4 roles en Preguntar × variantes (`role-demo` y normal) × anchos a los dos lados de cada corte (`app` 719/720 y 859/860, `flow` 519/520 y 799/800, `roledemo` 1099/1100, más 360 y el ancho real de cada marco a 1440 y 390) × ES y EN. Capturas lado a lado contra la app del diseño en ES, y EN de forma estructural. Diferencias: solo las de §6. | Matriz en el README de la evidencia + capturas. |
+| C3 | **Interacciones** (con el contrato de §4.8 para la OC: rechazo solo desde Control, reflejado en Compras), con teclado y mouse, en ancho y en angosto: navegación de vistas y conversaciones (también desde el disclosure angosto); secuencia del chat con sus tiempos; cada transición de la tabla de §4.3 (rol, abrir conversación, salir de Preguntar, pausar y reanudar conservando la etapa, rotación detenida por elección manual aunque se pause y reanude); Ver/Ocultar transacciones; aprobar y desaprobar en los 3 agentes; OC-4471 aprobada, rechazada y deshecha desde Control y desde Compras, reflejada en Inicio y en el contador; Lista/Centro; usuario (Esc y click fuera); «Crear / Integrar» como link. Con viewport bajo (1280×400) y zoom 200 %, el chat arranca al entrar la cabecera y se pausa al salir. | Escenario CDP. |
 | C4 | **Reduced motion** (inicial y en vivo): chat completo y estático, sin rotación ni curvas animadas (Agentes y Centro); la textura queda en un frame. | Escenario CDP con media emulada. |
-| C5 | **Accesibilidad:** sin controles muertos en el orden de Tab; nombres y roles (árbol de accesibilidad); foco visible y foco final de cada acción (§4.8); anuncio único de la respuesta en las interacciones manuales y silencio en la animación automática (lectura de las regiones vivas); contraste medido sobre colores efectivos (tabla completa); reflow a 320 px del embed y zoom 200 % sin pérdida de contenido. | CDP + cálculo de contraste. |
+| C5 | **Accesibilidad:** sin controles muertos en el orden de Tab; nombres y roles (árbol de accesibilidad); foco visible y foco final de cada acción (§4.8 y el detalle de agente de §4.9); alternativas textuales del flujo, de Centro y del gráfico; contraste ≥ 4,5:1 de los textos del sitio sobre la textura (peor caso `#D1D1D0`), con la textura activa y pausada; anuncio único de la respuesta en las interacciones manuales y silencio en la animación automática. Se registra **cuándo** se escribe cada región viva (MutationObserver) en estos recorridos: reproducción automática, elección manual, la misma conversación abierta dos veces y una secuencia cancelada antes del anuncio. Si hay un lector de pantalla disponible en la máquina, se hace además el recorrido con él; si no, queda declarado como límite; contraste medido sobre colores efectivos (tabla completa); reflow a 320 px del embed y zoom 200 % sin pérdida de contenido. | CDP + cálculo de contraste. |
 | C6 | **Sin JS y carga lenta:** sin JS, cada embed muestra su vista inicial estática, legible y con los controles deshabilitados, y «Crear / Integrar» funciona. Con la red lenta (CDP) se ve lo mismo hasta hidratar, y después todo queda operable. | CDP con scripts deshabilitados y con red emulada. |
 | C7 | Cero errores de consola en todas las rutas. | CDP. |
-| C8 | **Peso de JS:** en las páginas con isla, React y la app pesan ≤ 110 KB gzip, con los módulos compartidos contados una vez. Solo los 6 paths de simple-icons llegan al bundle (búsqueda en `dist/`). La textura pesa ≤ 3 KB gzip. | Inventario por página con el método de A10. |
-| C9 | **Textura:** detrás del contenido, sin taparlo; ≤ 16 fps; pausa con la pestaña oculta, el control del footer y reduced motion, con la precedencia de §3.4; preferencia persistente y control funcional con `localStorage` bloqueado. **Rendimiento:** con CDP `Performance`/`Tracing` durante 10 s en 1440×900, a DPR 1 y DPR 2, se registran scripting, rendering/painting y tareas largas, comparados con la textura pausada. Umbral: scripting más rendering de la textura < 15 % del hilo principal y sin tareas largas (> 50 ms) atribuibles. | CDP. |
+| C8 | **Peso de JS por página** (método de A10, con imports dinámicos e inline): sin isla, ≤ 8192 B de la fase 2 + ≤ 3 KB de la textura, y **sin React**; con isla, eso más ≤ 110 KB de React, la app y el runtime de hidratación de Astro, con los módulos compartidos contados una vez. Solo los 6 paths de simple-icons llegan al bundle (búsqueda en `dist/`). | Inventario por página. |
+| C9 | **Textura:** detrás del contenido, sin taparlo; ≤ 16 fps; pausa con la pestaña oculta, el control del footer y reduced motion, con la precedencia de §3.4; preferencia persistente y control funcional con `localStorage` bloqueado. **Rendimiento:** escenario de referencia registrado en la evidencia: CPU, GPU, RAM y SO de la máquina; versión de Chrome; sin throttling; página `/nosotros/`, sin video ni otras animaciones; 1440×900. Se toman trazas CDP (`Tracing`, categorías de scripting, rendering, painting y composición) de 10 s con la textura activa y otras de 10 s con la textura pausada, a DPR 1 y DPR 2. Umbral: la diferencia activa − pausada de scripting + rendering + painting + composición es < 15 % del tiempo del hilo principal, sin tareas largas (> 50 ms) atribuibles a la textura y con ≤ 16 fps del canvas. | CDP. |
 | C10 | **EN:** 7 vistas, chat de los 4 roles, las 5 conversaciones, los 3 flujos y los mensajes de aprobación en inglés en `/en/`. | Capturas + recorrido. |
-| C11 | Las 9 correcciones de §4.7 y el estado único de §4.8 se cumplen en todas sus apariciones. Tabla dato → apariciones → valor observado. | Recorrido + búsqueda en los datos. |
+| C11 | Las 9 correcciones de §4.7 y los estados de §4.8 (OC y los dos lotes, con todas sus representaciones derivadas) se cumplen en todas sus apariciones, en ES y EN. Tabla dato → apariciones → valor observado. | Recorrido + búsqueda en los datos. |
 | C12 | **Regresión** de las fases anteriores: checklist del header (A7, 78 casos), B4, B5, B9, B10, B11 (actualizado al presupuesto C8) y B15 de la fase 2. | Re-ejecución. |
 | C13 | gpt-6.1-sol aprueba el spec antes de empezar y la implementación con la evidencia C1–C12 sobre un mismo commit. | Veredicto con hash. |
 
