@@ -1,0 +1,110 @@
+{
+ "variant": "adversarial",
+ "generatedAt": "2026-10-04T16:10:25.937Z",
+ "commit": "cbfa9bc0ce43c122a24268712d12085e402d9b7d",
+ "cleanTree": true,
+ "lockfileSha256": "1dd83d121d5f1b97520b1c4cc3ad86ac760dce6a4c2443c611fde7fb849b3763",
+ "vercelJsonSha256": "39eee7bf487eeec9336f287849c985f1dd697c37db2cd2981ed680d9ad264d89",
+ "env": {
+  "INSIGHTS_FIXTURE": "C:\\Users\\adria\\AppData\\Local\\Temp\\claude\\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\\scratchpad\\ev004\\snapshot\\adversarial.json",
+  "PUBLIC_WEB3FORMS_KEY": "clave-de-prueba-local"
+ },
+ "fixtures": {
+  "INSIGHTS_FIXTURE": {
+   "path": "C:\\Users\\adria\\AppData\\Local\\Temp\\claude\\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\\scratchpad\\ev004\\snapshot\\adversarial.json",
+   "sha256": "aa894d240785f8d81c2cd0f9fab8688fddbd90de72e121748c0b6b42c6a3ad76",
+   "consulta": "consulta 2026-10-04T15:04:43.098Z HTTP 200 docs 8",
+   "docs": [
+    {
+     "_id": "post-agent-reconciliation",
+     "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+    },
+    {
+     "_id": "post-introducing-noctilabs",
+     "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+    },
+    {
+     "_id": "post-legacy-stacks",
+     "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+    },
+    {
+     "_id": "post-model-agnostic",
+     "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+    },
+    {
+     "_id": "post-no-context-no-intelligence",
+     "_rev": "6hiKrYJiMBmDerMeziBqkp"
+    },
+    {
+     "_id": "post-opportunity-audit",
+     "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+    },
+    {
+     "_id": "post-platform-engineering",
+     "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+    },
+    {
+     "_id": "post-production-gap",
+     "_rev": "iIEha4Lf0bd08jwW6rib3T"
+    }
+   ]
+  }
+ },
+ "exitCode": 0,
+ "log": {
+  "path": "C:\\Users\\adria\\AppData\\Local\\Temp\\claude\\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\\scratchpad\\ev004\\builds\\adversarial.log",
+  "sha256": "b9a6b615d10c1c84bbdf198d4fea9a004100336d31591570ba6039a83e185389"
+ },
+ "diagnostics": [
+  "[insights] excluido: post-agent-reconciliation (agent-reconciliation) — no está marcado para Insights (showOnInsights=vacío, listed=false)",
+  "[insights] excluido: post-introducing-noctilabs (introducing-noctilabs) — el cuerpo en es está vacío",
+  "[insights] excluido: post-legacy-stacks (legacy-stacks) — no está marcado para Insights (showOnInsights=vacío, listed=false)",
+  "[insights] excluido: post-model-agnostic (model-agnostic) — no está marcado para Insights (showOnInsights=vacío, listed=false)",
+  "[insights] excluido: post-opportunity-audit (opportunity-audit) — no está marcado para Insights (showOnInsights=vacío, listed=false)",
+  "[insights] excluido: post-platform-engineering (platform-engineering) — no está marcado para Insights (showOnInsights=vacío, listed=false)",
+  "[insights] excluido: post-production-gap (production-gap) — no está marcado para Insights (showOnInsights=vacío, listed=false)"
+ ],
+ "outDir": "C:\\Users\\adria\\AppData\\Local\\Temp\\claude\\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\\scratchpad\\ev004\\dist-adversarial",
+ "htmlCount": 25,
+ "artifactsSha256": "ef0051da8703df67d054f53d9640360caac9b4ecc264940c8393b915841150fe",
+ "artifacts": {
+  "404.html": "3938fd19835c5862eecdc736865c018efe390afd81857c8c6746975372553837",
+  "en/about/index.html": "80e99cf74927b14309cae3c5ea55e906f72d77af5eb8c49ce11479586d8e775e",
+  "en/contact/index.html": "9df052ebbcc967a0b38543ed036a8857df60c84148a01b62a812b60cf49f665f",
+  "en/index.html": "fbf61e96d5efaa6027e42d752977b5977fd2ce2f1971e9dd02fbec5874a30ba7",
+  "en/industries/food-consumer-goods/index.html": "61935275f5e7be9902b0f4ac460ef3cfa9190fead31622ef9712a1d00f5eaddb",
+  "en/industries/health-fitness/index.html": "44ab195a8f9c4f48fb3b132f8c4310e8967f7c670fb59cd2d4709d687c8e23de",
+  "en/industries/manufacturing/index.html": "a9cfb18382b465236eccc9cc86060156a6ad11a134fdeaaf76cecc1fe70c79c1",
+  "en/industries/professional-services/index.html": "a6d84fa6674116376ced157059cbfc081d755037b081c2945da0c6e0898e9cc1",
+  "en/industries/retail-distribution/index.html": "09b5b1d64722347a681ca5536f7a5523f1d21fb050e0526ab90309df146a8bad",
+  "en/insights/index.html": "9dce3df7e30f421468b057b5a5f04b6e2eb73b4e3f3ba8f8eaa38b247759ee41",
+  "en/insights/no-context-no-intelligence/index.html": "685a5df7769b508832f3854166a9f281a39bf9d6a1840d62f521194e07722372",
+  "en/privacy/index.html": "cb333834f3d3d3912e3b229e899a0270fe911818a57d2f0d2cea7c8c44ff74a8",
+  "en/product/index.html": "04f6719b1fa944a7a8ef4c2b87c4b920d59d1c9ed11ac0ef209f4da3757dee40",
+  "hablemos/index.html": "0ecb26095ee930b3bcbfaa073e59dcc3bc95c7160fc7e41cf0092b9d7ad20ca1",
+  "index.html": "67ae2e1ac68ce417db6defa29b0f17351336086ea3808055771fda153d76c911",
+  "industrias/alimentos-consumo/index.html": "dc1227a8f2dcc9750d6e9df0b7cd4c7d91b57ac64c9dac0885147dbec1c0a29a",
+  "industrias/manufactura/index.html": "6adec118cbb9988fcb870ece4fca3e2819c6e3068a1baf7f0702dbd33089c74b",
+  "industrias/retail-distribucion/index.html": "bbb4cfadd510961374595eaa504703c117f1312ebdc47dff3e2489f58b9d9bb7",
+  "industrias/salud-fitness/index.html": "3a711e3a2d2ab589d4b90e5a5ebba8aa4c695ef1d11a571238aa093eb5b98275",
+  "industrias/servicios/index.html": "ce2e7ca90bbdd05d2ab450e3fb55671158deb37031d359ff9814f2e9e8db09cb",
+  "insights/index.html": "f375d49c4c81e12d12e5c61380f0f9d469f74306d662c035d44377cae59efbca",
+  "insights/no-context-no-intelligence/index.html": "35242326f4fd28a5ee16225b0da3afecee18eac3ea87a3328189b17a367a3b12",
+  "nosotros/index.html": "b7e9d759d8a95992fcf30aad1295d64fc1cf73805ba39f56efc703910343b759",
+  "privacidad/index.html": "c8a6d7eea1b5d039f5d7755d19ae099f74838ae118be493b11058170622fde52",
+  "producto/index.html": "14d265bc02ee77d9622901cdab5c40ad2e57938fb147f34d756a37351020b935",
+  "robots.txt": "ff017451369a6cb20f5e7e881a0a84bb4cb4a8324b03d801966a5461308fa019",
+  "sitemap.xml": "4e125481108c331ea69bd296d4b039038aef3e514b4aef5e890689d4b48dfed8",
+  "_astro/Base.DYvgkLZG.css": "c7430d35467de079d026db249f6a5f0f3cb5be2d42c4b8276715e152ef00d5fc",
+  "_astro/Hablemos.Den_yakX.css": "052ece4d4204da6b1bfcc06b7f103450584e7de1b92a6cb0a1ea6c0850d4a35b",
+  "_astro/Header.astro_astro_type_script_index_0_lang.BMrr0lOM.js": "31e05fbe0eafe60fa0e706b9456cde54596188776f0d6b39078e8c9ab0fc4959",
+  "_astro/Home.D_CMY9SU.css": "ee5f9cfb2475c4de0d944e898472edcba2919d99d554b998d0fb6b03cb3516fb",
+  "_astro/ProductoPage.B_IGpsrb.css": "5057e7038c4bdf77d5cfaf70e02e714aedc40b04611bb519efcf07f4ef17cd9f"
+ },
+ "versions": {
+  "node": "v22.19.0",
+  "astro": "7.3.5",
+  "vercelAnalytics": "2.0.1",
+  "server": "astro preview (astro 7.3.5) / serve-vercel.mjs (scratchpad, node)"
+ }
+}

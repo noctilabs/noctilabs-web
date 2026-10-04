@@ -1,0 +1,17 @@
+OK    cabecera XML y espacios de nombres
+24 <url> en el sitemap
+OK    las 24 páginas de dist/ tienen canonical propio y ninguna es noindex
+OK    todas las URLs indexables están en el sitemap (24/24)
+OK    ninguna URL del sitemap es inexistente en dist/ (ninguna)
+OK    sin <loc> repetidos (24 únicos)
+OK    la 404 no está
+OK    22 URLs fijas + 2N con N = 1 artículo = 24 (hay 24)
+OK    24/24 con xhtml:link es, en y x-default recíprocos, dentro del sitemap e iguales al hreflang de la página
+OK    slugs distintos bien emparejados: /nosotros/ ↔ /en/about/
+OK    slugs distintos bien emparejados: /hablemos/ ↔ /en/contact/
+OK    slugs distintos bien emparejados: /privacidad/ ↔ /en/privacy/
+OK    slugs distintos bien emparejados: /industrias/alimentos-consumo/ ↔ /en/industries/food-consumer-goods/
+OK    slugs distintos bien emparejados: /insights/no-context-no-intelligence/ ↔ /en/insights/no-context-no-intelligence/
+OK    robots.txt igual al de §2.6 ("User-agent: *\nAllow: /\n\nSitemap: https://www.noctilabs.io/sitemap.xml\n")
+
+RESULTADO D5: OK

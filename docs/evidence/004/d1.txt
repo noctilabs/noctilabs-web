@@ -1,0 +1,94 @@
+
+## base — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 0, 25 HTML, artefactos 85452d832102
+   entorno: INSIGHTS_FIXTURE=<snapshot> PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local
+   esperado: - 0 errors
+   esperado: - 0 warnings
+   esperado: - 0 hints
+   esperado: [insights] excluido: post-agent-reconciliation (agent-reconciliation) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-introducing-noctilabs (introducing-noctilabs) — el cuerpo en es está vacío
+   esperado: [insights] excluido: post-legacy-stacks (legacy-stacks) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-model-agnostic (model-agnostic) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-opportunity-audit (opportunity-audit) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-platform-engineering (platform-engineering) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-production-gap (production-gap) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+OK    base: salida 0, 25 HTML = 22 + 2N + 1 (N = 1), 0 errores/avisos de tipos, 0 diagnósticos inesperados, 7 avisos editoriales esperados
+
+## prod-prueba — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 0, 25 HTML, artefactos f33b5ca0a4d4
+   entorno: VERCEL_ENV=production LEGAL_FIXTURE=1 INSIGHTS_FIXTURE=<snapshot> PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local
+   esperado: - 0 errors
+   esperado: - 0 warnings
+   esperado: - 0 hints
+   esperado: [insights] excluido: post-agent-reconciliation (agent-reconciliation) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-introducing-noctilabs (introducing-noctilabs) — el cuerpo en es está vacío
+   esperado: [insights] excluido: post-legacy-stacks (legacy-stacks) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-model-agnostic (model-agnostic) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-opportunity-audit (opportunity-audit) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-platform-engineering (platform-engineering) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-production-gap (production-gap) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+OK    prod-prueba: salida 0, 25 HTML = 22 + 2N + 1 (N = 1), 0 errores/avisos de tipos, 0 diagnósticos inesperados, 7 avisos editoriales esperados
+
+## adversarial — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 0, 25 HTML, artefactos ef0051da8703
+   entorno: INSIGHTS_FIXTURE=<snapshot> PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local
+   esperado: [insights] excluido: post-agent-reconciliation (agent-reconciliation) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-introducing-noctilabs (introducing-noctilabs) — el cuerpo en es está vacío
+   esperado: [insights] excluido: post-legacy-stacks (legacy-stacks) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-model-agnostic (model-agnostic) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-opportunity-audit (opportunity-audit) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-platform-engineering (platform-engineering) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-production-gap (production-gap) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+OK    adversarial: salida 0, 25 HTML = 22 + 2N + 1 (N = 1), 0 errores/avisos de tipos, 0 diagnósticos inesperados, 7 avisos editoriales esperados
+
+## prod-bloqueada — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 1, 0 HTML, artefactos e3b0c44298fc
+   entorno: VERCEL_ENV=production INSIGHTS_FIXTURE=<snapshot> PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local
+   esperado: - 0 errors
+   esperado: - 0 warnings
+   esperado: - 0 hints
+   esperado: [insights] excluido: post-agent-reconciliation (agent-reconciliation) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-introducing-noctilabs (introducing-noctilabs) — el cuerpo en es está vacío
+   esperado: [insights] excluido: post-legacy-stacks (legacy-stacks) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-model-agnostic (model-agnostic) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-opportunity-audit (opportunity-audit) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-platform-engineering (platform-engineering) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-production-gap (production-gap) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: ├─ /en/contact/index.html13:10:17 [ERROR] Error: [legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: el formulario no se publica con los marcadores (spec 
+   esperado: [ERROR] [build] Caught error rendering /en/contact: Error: [legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: el formulario no se publica con los marcado
+   esperado: [legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: el formulario no se publica con los marcadores (spec 004 §2.2).
+OK    prod-bloqueada: el build falla por el motivo esperado y sin otros diagnósticos
+
+## publish-falla-marcadores — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 1, 0 HTML, artefactos e3b0c44298fc
+   entorno: PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local
+   esperado: - 0 errors
+   esperado: - 0 warnings
+   esperado: - 0 hints
+   esperado: [insights] excluido: post-agent-reconciliation (agent-reconciliation) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-introducing-noctilabs (introducing-noctilabs) — el cuerpo en es está vacío
+   esperado: [insights] excluido: post-legacy-stacks (legacy-stacks) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-model-agnostic (model-agnostic) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-opportunity-audit (opportunity-audit) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-platform-engineering (platform-engineering) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: [insights] excluido: post-production-gap (production-gap) — no está marcado para Insights (showOnInsights=vacío, listed=false)
+   esperado: ├─ /en/contact/index.html13:09:37 [ERROR] Error: [legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: el formulario no se publica con los marcadores (spec 
+   esperado: [ERROR] [build] Caught error rendering /en/contact: Error: [legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: el formulario no se publica con los marcado
+   esperado: [legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: el formulario no se publica con los marcadores (spec 004 §2.2).
+OK    publish-falla-marcadores: el build falla por el motivo esperado y sin otros diagnósticos
+
+## publish-falla-legal-fixture — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 1, 0 HTML, artefactos e3b0c44298fc
+   entorno: PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local LEGAL_FIXTURE=1
+   esperado: [ERROR] [noctilabs:publish-guard] An unhandled error occurred while running the "astro:config:setup" hook
+   esperado: [publicación] PUBLISH=1 no admite LEGAL_FIXTURE definidos.
+OK    publish-falla-legal-fixture: el build falla por el motivo esperado y sin otros diagnósticos
+
+## publish-falla-insights-fixture — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 1, 0 HTML, artefactos e3b0c44298fc
+   entorno: PUBLIC_WEB3FORMS_KEY=clave-de-prueba-local INSIGHTS_FIXTURE=<snapshot>
+   esperado: [ERROR] [noctilabs:publish-guard] An unhandled error occurred while running the "astro:config:setup" hook
+   esperado: [publicación] PUBLISH=1 no admite INSIGHTS_FIXTURE definidos.
+OK    publish-falla-insights-fixture: el build falla por el motivo esperado y sin otros diagnósticos
+
+## publish-falla-sin-clave — commit cbfa9bc (árbol limpio: true), lockfile 1dd83d121d5f, salida 1, 0 HTML, artefactos e3b0c44298fc
+   entorno: (ninguna variable de la matriz)
+   esperado: [ERROR] [noctilabs:publish-guard] An unhandled error occurred while running the "astro:config:setup" hook
+   esperado: [publicación] falta PUBLIC_WEB3FORMS_KEY (clave pública de Web3Forms).
+OK    publish-falla-sin-clave: el build falla por el motivo esperado y sin otros diagnósticos
+OK    S1 (vitest): 89/89 en verde con el origen www y privacidad
+
+RESULTADO D1: OK

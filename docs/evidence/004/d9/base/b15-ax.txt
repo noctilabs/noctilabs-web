@@ -1,0 +1,672 @@
+
+=================== ES ===================
+
+## Header (1440) (.site-header)
+  banner
+    link «NoctiLabs» [url=http://localhost:4958/]
+    navigation «Principal»
+      list
+        listitem [level=1]
+          link «PRODUCTO» [url=http://localhost:4958/producto/]
+          button «Abrir menú de Producto» [invalid=false]
+        listitem [level=1]
+          link «INDUSTRIAS» [url=http://localhost:4958/industrias/retail-distribucion/]
+          button «Abrir menú de Industrias» [invalid=false]
+        listitem [level=1]
+          link «NOSOTROS» [url=http://localhost:4958/nosotros/]
+        listitem [level=1]
+          link «INSIGHTS» [url=http://localhost:4958/insights/]
+    link «HABLEMOS →» [url=http://localhost:4958/hablemos/]
+
+## Hero del home: video y pausa (main section)
+  button «Pausar video» [invalid=false]
+  heading «El cerebro operativo de tu empresa.» [level=1]
+  paragraph
+  link «Hablemos» [url=http://localhost:4958/hablemos/]
+  link «Ver el producto» [url=http://localhost:4958/producto/]
+
+## Antes/después (estado inicial con JS: «sin», sin elección) ([data-ba])
+  StaticText «ANTES Y DESPUÉS»
+  heading «Cómo operan hoy las empresas.» [level=2]
+    StaticText «Cómo operan hoy las empresas.»
+  group «Antes y después»
+    button «Sin Nocti» [pressed=true] [invalid=false] [describedby=ba-hint] (descripción: «Elegir una vista detiene la animación automática.»)
+      StaticText «Sin»
+      StaticText «Nocti»
+    button «Con Nocti» [pressed=false] [invalid=false] [describedby=ba-hint] (descripción: «Elegir una vista detiene la animación automática.»)
+      StaticText «Con»
+      StaticText «Nocti»
+  paragraph
+    StaticText «Elegir una vista detiene la animación automática.»
+  figure
+    paragraph
+      StaticText «ERP, CRM, planillas, personas, mails,»
+      StaticText «WhatsApp»
+      StaticText «y documentos dispersos, sin conexión entre sí.»
+    Figcaption
+      StaticText «SIN»
+      StaticText «NOCTI»
+      StaticText «Fragmentado»
+      StaticText «Información y conocimiento dispersos.»
+  figure
+    paragraph
+      StaticText «Una IA genérica, sin conexión con el ERP, el CRM, los documentos ni las personas. Procesos»
+    Figcaption
+      StaticText «SIN»
+      StaticText «NOCTI»
+      StaticText «Genérico»
+      StaticText «La IA conoce el modelo, no tu empresa.»
+  figure
+    paragraph
+      StaticText «Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicacio»
+    Figcaption
+      StaticText «SIN»
+      StaticText «NOCTI»
+      StaticText «Aislado»
+      StaticText «Personas, aplicaciones y agentes trabajan por separado.»
+  paragraph
+    StaticText «Tus sistemas siguen siendo tus sistemas.»
+  paragraph
+    StaticText «Nocti»
+    StaticText «los conecta, los contextualiza y los vuelve utilizables por personas e IA.»
+  paragraph [live=polite] [relevant=additions text]
+
+## Antes/después tras elegir «Con» (región viva escrita) ([data-ba])
+  StaticText «ANTES Y DESPUÉS»
+  heading «Cómo pueden operar.» [level=2]
+    StaticText «Cómo pueden operar.»
+  group «Antes y después»
+    button «Sin Nocti» [pressed=false] [invalid=false] [describedby=ba-hint] (descripción: «Elegir una vista detiene la animación automática.»)
+      StaticText «Sin»
+      StaticText «Nocti»
+    button «Con Nocti» [pressed=true] [invalid=false] [describedby=ba-hint] (descripción: «Elegir una vista detiene la animación automática.»)
+      StaticText «Con»
+      StaticText «Nocti»
+  paragraph
+    StaticText «Elegir una vista detiene la animación automática.»
+  figure
+    paragraph
+      StaticText «ERP, CRM, planillas, personas, mails,»
+      StaticText «WhatsApp»
+      StaticText «y documentos conectados a una misma capa de conexión de»
+      StaticText «Nocti»
+      StaticText «.»
+    Figcaption
+      StaticText «CON»
+      StaticText «NOCTI»
+      StaticText «Conectado»
+      StaticText «Tus sistemas y fuentes de conocimiento, conectados en una misma capa.»
+  figure
+    paragraph
+      StaticText «ERP, CRM, documentos y personas alimentan un contexto empresarial construido por»
+      StaticText «Nocti»
+      StaticText «, con procesos, reglas, relaciones y excepciones, y ese contexto alimenta a la IA.»
+    Figcaption
+      StaticText «CON»
+      StaticText «NOCTI»
+      StaticText «Contextualizado»
+      StaticText «La IA entiende cómo funciona tu empresa: procesos, reglas, relaciones y excepciones.»
+  figure
+    paragraph
+      StaticText «Ventas, Finanzas, Operaciones, el agente comercial, el agente de cobranzas y las aplicacio»
+      StaticText «Nocti»
+      StaticText «, con permisos verificados.»
+    Figcaption
+      StaticText «CON»
+      StaticText «NOCTI»
+      StaticText «Coordinado»
+      StaticText «Personas, aplicaciones y agentes trabajan sobre el mismo contexto, con permisos y trazabil»
+  paragraph
+    StaticText «Tus sistemas siguen siendo tus sistemas.»
+  paragraph
+    StaticText «Nocti»
+    StaticText «los conecta, los contextualiza y los vuelve utilizables por personas e IA.»
+  paragraph [live=polite] [relevant=additions text]
+    StaticText «Con Nocti: Cómo pueden operar.»
+
+## Toda la empresa puede preguntar (AppSlot) ([data-app-view])
+
+## Tabs de industria ([data-tabs])
+  heading «Pensado para cómo opera tu industria.» [level=2]
+  paragraph
+  tablist «Industrias»
+    tab «Retail» [invalid=false]
+    tab «Manufactura» [selected=true] [invalid=false] [controls=ind-panel-manufactura]
+    tab «Consumo masivo» [invalid=false]
+    tab «Salud y fitness» [invalid=false]
+    tab «Servicios» [invalid=false]
+  tabpanel «Manufactura»
+    image «Dos operarios trabajando en una línea de producción de una planta industrial con luz cálid» [url=http://localhost:4958/_astro/manufactura.Z9EPbfLY_NaKJd.avif]
+    heading «Manufactura» [level=3]
+    paragraph
+    link «Conocer más sobre Manufactura» [url=http://localhost:4958/industrias/manufactura/]
+
+## Header mobile con el menú abierto (390) (.site-header)
+  banner
+    link «NoctiLabs» [url=http://localhost:4958/]
+    button «Cerrar menú» [expanded=true] [invalid=false] [controls=menu-mobile]
+    link «PRODUCTO» [url=http://localhost:4958/producto/]
+    link «Overview» [url=http://localhost:4958/producto/#overview]
+    link «Cerebro» [url=http://localhost:4958/producto/#cerebro]
+    link «Inteligencia / BI» [url=http://localhost:4958/producto/#bi]
+    link «Agentes» [url=http://localhost:4958/producto/#agentes]
+    link «Control» [url=http://localhost:4958/producto/#control]
+    link «INDUSTRIAS» [url=http://localhost:4958/industrias/retail-distribucion/]
+    link «Retail y distribución» [url=http://localhost:4958/industrias/retail-distribucion/]
+    link «Manufactura» [url=http://localhost:4958/industrias/manufactura/]
+    link «Alimentos y bienes de consumo» [url=http://localhost:4958/industrias/alimentos-consumo/]
+    link «Salud y actividad física» [url=http://localhost:4958/industrias/salud-fitness/]
+    link «Servicios profesionales y empresariales» [url=http://localhost:4958/industrias/servicios/]
+    link «NOSOTROS» [url=http://localhost:4958/nosotros/]
+    link «INSIGHTS» [url=http://localhost:4958/insights/]
+    link «HABLEMOS →» [url=http://localhost:4958/hablemos/]
+    link «English» [url=http://localhost:4958/en/]
+
+## Insights: lista (main)
+  main
+    heading «Contexto, IA operativa y agentes.» [level=1]
+    paragraph
+    link «DESTACADO · TESIS Sin contexto, no hay inteligencia. Nuestra tesis Agregar IA a una empres» [url=http://localhost:4958/insights/no-context-no-intelligence/]
+      heading «Sin contexto, no hay inteligencia. Nuestra tesis» [level=2]
+      paragraph
+    region «Hablemos.»
+      heading «Hablemos.» [level=2]
+      link «Agendar una conversación →» [url=http://localhost:4958/hablemos/]
+
+## Artículo: cabecera e índice (main)
+  main
+    link «Insights» [url=http://localhost:4958/insights/]
+    article «Sin contexto, no hay inteligencia. Nuestra tesis»
+      sectionheader
+        paragraph
+        heading «Sin contexto, no hay inteligencia. Nuestra tesis» [level=1]
+        time
+      navigation «EN ESTE ARTÍCULO»
+        list
+          listitem [level=1]
+            link «Sin contexto, no hay inteligencia.» [url=http://localhost:4958/insights/no-context-no-intelligence/#sec-sin-contexto-no-hay-inteligencia]
+          listitem [level=1]
+            link «Estamos construyendo un sistema que entienda la organización.» [url=http://localhost:4958/insights/no-context-no-intelligence/#sec-estamos-construyendo-un-sistema-que-entienda-la-organizacion]
+      paragraph
+      paragraph
+      paragraph
+      paragraph
+      heading «Sin contexto, no hay inteligencia.» [level=2]
+        strong
+      paragraph
+      paragraph
+      paragraph
+      paragraph
+      heading «Estamos construyendo un sistema que entienda la organización.» [level=2]
+        strong
+      paragraph
+      paragraph
+      paragraph
+        strong
+      paragraph
+      paragraph
+        strong
+    region «Hablemos.»
+      heading «Hablemos.» [level=2]
+      link «Agendar una conversación →» [url=http://localhost:4958/hablemos/]
+
+## Formulario en idle (form)
+  form «Formulario de contacto»
+    group [invalid=false]
+      LabelText
+      textbox «NOMBRE» [invalid=false] [required=true]
+      LabelText
+      textbox «EMAIL LABORAL» [invalid=false] [required=true]
+      LabelText
+      textbox «EMPRESA» [invalid=false] [required=true]
+      LabelText
+      textbox «ROL» [invalid=false]
+      LabelText
+      combobox «INDUSTRIA» [invalid=false] [hasPopup=menu]
+        MenuListPopup
+          option «Elegí una…» [selected=true]
+          option «Retail y distribución»
+          option «Manufactura»
+          option «Alimentos y bienes de consumo»
+          option «Salud y actividad física»
+          option «Servicios profesionales y empresariales»
+          option «Otra»
+      LabelText
+      textbox «¿QUÉ TE GUSTARÍA RESOLVER?» [invalid=false] [required=true]
+      button «Enviar →» [invalid=false]
+
+## Formulario con errores (form)
+  form «Formulario de contacto»
+    group [invalid=false]
+      LabelText
+      textbox «NOMBRE» [invalid=true] [required=true] [describedby=cf-name-err] (descripción: «Escribí tu nombre.»)
+      paragraph
+      LabelText
+      textbox «EMAIL LABORAL» [invalid=true] [required=true] [describedby=cf-email-err] (descripción: «Escribí tu email laboral, por ejemplo nombre@empresa.com.»)
+      paragraph
+      LabelText
+      textbox «EMPRESA» [invalid=true] [required=true] [describedby=cf-organization-err] (descripción: «Escribí el nombre de tu empresa.»)
+      paragraph
+      LabelText
+      textbox «ROL» [invalid=false]
+      LabelText
+      combobox «INDUSTRIA» [invalid=false] [hasPopup=menu]
+        MenuListPopup
+          option «Elegí una…» [selected=true]
+          option «Retail y distribución»
+          option «Manufactura»
+          option «Alimentos y bienes de consumo»
+          option «Salud y actividad física»
+          option «Servicios profesionales y empresariales»
+          option «Otra»
+      LabelText
+      textbox «¿QUÉ TE GUSTARÍA RESOLVER?» [invalid=true] [required=true] [describedby=cf-message-err] (descripción: «Contanos qué te gustaría resolver.»)
+      paragraph
+      button «Enviar →» [invalid=false]
+
+## Producto: secciones con ancla (tabindex -1) y AppSlot (main)
+  main
+    paragraph
+    heading «El cerebro organizacional de tu empresa.» [level=1]
+    paragraph
+    link «Hablemos →» [url=http://localhost:4958/hablemos/]
+    region «Una capa que conecta lo que tu empresa ya tiene.»
+      paragraph
+      heading «Una capa que conecta lo que tu empresa ya tiene.» [level=2]
+      heading «LO QUE TU EMPRESA YA TIENE · SE QUEDA DONDE ESTÁ» [level=3]
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+      heading «QUIÉNES LO USAN» [level=3]
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Preguntá. Decidí. Ejecutá.»
+      paragraph
+      heading «Preguntá. Decidí. Ejecutá.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «De la pregunta al dato. Del dato a la acción.»
+      paragraph
+      heading «De la pregunta al dato. Del dato a la acción.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Agentes que trabajan sobre el contexto real de tu empresa.»
+      paragraph
+      heading «Agentes que trabajan sobre el contexto real de tu empresa.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Una capa de control debajo de todo.»
+      paragraph
+      heading «Una capa de control debajo de todo.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Hablemos.»
+      heading «Hablemos.» [level=2]
+      link «Agendar una conversación →» [url=http://localhost:4958/hablemos/]
+
+=================== EN ===================
+
+## Header (1440) (.site-header)
+  banner
+    link «NoctiLabs» [url=http://localhost:4958/en/]
+    navigation «Main»
+      list
+        listitem [level=1]
+          link «PRODUCT» [url=http://localhost:4958/en/product/]
+          button «Open Product menu» [invalid=false]
+        listitem [level=1]
+          link «INDUSTRIES» [url=http://localhost:4958/en/industries/retail-distribution/]
+          button «Open Industries menu» [invalid=false]
+        listitem [level=1]
+          link «ABOUT» [url=http://localhost:4958/en/about/]
+        listitem [level=1]
+          link «INSIGHTS» [url=http://localhost:4958/en/insights/]
+    link «LET’S TALK →» [url=http://localhost:4958/en/contact/]
+
+## Hero del home: video y pausa (main section)
+  button «Pause video» [invalid=false]
+  heading «Your company’s operational brain.» [level=1]
+  paragraph
+  link «Let’s talk» [url=http://localhost:4958/en/contact/]
+  link «See the product» [url=http://localhost:4958/en/product/]
+
+## Antes/después (estado inicial con JS: «sin», sin elección) ([data-ba])
+  StaticText «BEFORE AND AFTER»
+  heading «How companies operate today.» [level=2]
+    StaticText «How companies operate today.»
+  group «Before and after»
+    button «Without Nocti» [pressed=true] [invalid=false] [describedby=ba-hint] (descripción: «Choosing a view stops the automatic animation.»)
+      StaticText «Without»
+      StaticText «Nocti»
+    button «With Nocti» [pressed=false] [invalid=false] [describedby=ba-hint] (descripción: «Choosing a view stops the automatic animation.»)
+      StaticText «With»
+      StaticText «Nocti»
+  paragraph
+    StaticText «Choosing a view stops the automatic animation.»
+  figure
+    paragraph
+      StaticText «ERP, CRM, spreadsheets, people, email,»
+      StaticText «WhatsApp»
+      StaticText «and documents scattered, with no connection between them.»
+    Figcaption
+      StaticText «WITHOUT»
+      StaticText «NOCTI»
+      StaticText «Fragmented»
+      StaticText «Scattered information and knowledge.»
+  figure
+    paragraph
+      StaticText «A generic AI with no connection to the ERP, the CRM, documents or people. Processes, rules»
+    Figcaption
+      StaticText «WITHOUT»
+      StaticText «NOCTI»
+      StaticText «Generic»
+      StaticText «AI knows the model, not your company.»
+  figure
+    paragraph
+      StaticText «Sales, Finance, Operations, the sales agent, the collections agent and the applications wo»
+    Figcaption
+      StaticText «WITHOUT»
+      StaticText «NOCTI»
+      StaticText «Isolated»
+      StaticText «People, applications and agents work separately.»
+  paragraph [live=polite] [relevant=additions text]
+
+## Antes/después tras elegir «Con» (región viva escrita) ([data-ba])
+  StaticText «BEFORE AND AFTER»
+  heading «How they could operate.» [level=2]
+    StaticText «How they could operate.»
+  group «Before and after»
+    button «Without Nocti» [pressed=false] [invalid=false] [describedby=ba-hint] (descripción: «Choosing a view stops the automatic animation.»)
+      StaticText «Without»
+      StaticText «Nocti»
+    button «With Nocti» [pressed=true] [invalid=false] [describedby=ba-hint] (descripción: «Choosing a view stops the automatic animation.»)
+      StaticText «With»
+      StaticText «Nocti»
+  paragraph
+    StaticText «Choosing a view stops the automatic animation.»
+  figure
+    paragraph
+      StaticText «ERP, CRM, spreadsheets, people, email,»
+      StaticText «WhatsApp»
+      StaticText «and documents connected to a single»
+      StaticText «Nocti»
+      StaticText «connection layer.»
+    Figcaption
+      StaticText «WITH»
+      StaticText «NOCTI»
+      StaticText «Connected»
+      StaticText «Your systems and knowledge sources, connected in a single layer.»
+  figure
+    paragraph
+      StaticText «ERP, CRM, documents and people feed a business context built by»
+      StaticText «Nocti»
+      StaticText «, with processes, rules, relationships and exceptions, and that context feeds the AI.»
+    Figcaption
+      StaticText «WITH»
+      StaticText «NOCTI»
+      StaticText «Contextualized»
+      StaticText «AI understands how your company works: processes, rules, relationships and exceptions.»
+  figure
+    paragraph
+      StaticText «Sales, Finance, Operations, the sales agent, the collections agent and the applications co»
+      StaticText «Nocti»
+      StaticText «context, with verified permissions.»
+    Figcaption
+      StaticText «WITH»
+      StaticText «NOCTI»
+      StaticText «Coordinated»
+      StaticText «People, applications and agents work on the same context, with permissions and traceabilit»
+  paragraph
+    StaticText «Your systems are still your systems.»
+  paragraph
+    StaticText «Nocti»
+    StaticText «connects them, puts them in context and makes them usable by people and AI.»
+  paragraph [live=polite] [relevant=additions text]
+    StaticText «With Nocti: How they could operate.»
+
+## Toda la empresa puede preguntar (AppSlot) ([data-app-view])
+
+## Tabs de industria ([data-tabs])
+  heading «Built for how your industry operates.» [level=2]
+  paragraph
+  tablist «Industries»
+    tab «Retail» [invalid=false]
+    tab «Manufacturing» [selected=true] [invalid=false] [controls=ind-panel-manufactura]
+    tab «Consumer goods» [invalid=false]
+    tab «Health & fitness» [invalid=false]
+    tab «Services» [invalid=false]
+  tabpanel «Manufacturing»
+    image «Two workers on a production line in an industrial plant with warm light.» [url=http://localhost:4958/_astro/manufactura.Z9EPbfLY_NaKJd.avif]
+    heading «Manufacturing» [level=3]
+    paragraph
+    link «Learn more about Manufacturing» [url=http://localhost:4958/en/industries/manufacturing/]
+
+## Header mobile con el menú abierto (390) (.site-header)
+  banner
+    link «NoctiLabs» [url=http://localhost:4958/en/]
+    button «Close menu» [expanded=true] [invalid=false] [controls=menu-mobile]
+    link «PRODUCT» [url=http://localhost:4958/en/product/]
+    link «Overview» [url=http://localhost:4958/en/product/#overview]
+    link «Brain» [url=http://localhost:4958/en/product/#cerebro]
+    link «Intelligence / BI» [url=http://localhost:4958/en/product/#bi]
+    link «Agents» [url=http://localhost:4958/en/product/#agentes]
+    link «Control» [url=http://localhost:4958/en/product/#control]
+    link «INDUSTRIES» [url=http://localhost:4958/en/industries/retail-distribution/]
+    link «Retail and distribution» [url=http://localhost:4958/en/industries/retail-distribution/]
+    link «Manufacturing» [url=http://localhost:4958/en/industries/manufacturing/]
+    link «Food and consumer goods» [url=http://localhost:4958/en/industries/food-consumer-goods/]
+    link «Health and fitness» [url=http://localhost:4958/en/industries/health-fitness/]
+    link «Professional and business services» [url=http://localhost:4958/en/industries/professional-services/]
+    link «ABOUT» [url=http://localhost:4958/en/about/]
+    link «INSIGHTS» [url=http://localhost:4958/en/insights/]
+    link «LET’S TALK →» [url=http://localhost:4958/en/contact/]
+    link «Español» [url=http://localhost:4958/]
+
+## Insights: lista (main)
+  main
+    heading «Context, operational AI and agents.» [level=1]
+    paragraph
+    link «FEATURED · THESIS No context, no intelligence. Our thesis Adding AI to a company isn't the» [url=http://localhost:4958/en/insights/no-context-no-intelligence/]
+      heading «No context, no intelligence. Our thesis» [level=2]
+      paragraph
+    region «Let’s talk.»
+      heading «Let’s talk.» [level=2]
+      link «Book a conversation →» [url=http://localhost:4958/en/contact/]
+
+## Artículo: cabecera e índice (main)
+  main
+    link «Insights» [url=http://localhost:4958/en/insights/]
+    article «No context, no intelligence. Our thesis»
+      sectionheader
+        paragraph
+        heading «No context, no intelligence. Our thesis» [level=1]
+        time
+      navigation «IN THIS ARTICLE»
+        list
+          listitem [level=1]
+            link «Without context, there is no intelligence.» [url=http://localhost:4958/en/insights/no-context-no-intelligence/#sec-without-context-there-is-no-intelligence]
+          listitem [level=1]
+            link «We are building a system that understands the organization.» [url=http://localhost:4958/en/insights/no-context-no-intelligence/#sec-we-are-building-a-system-that-understands-the-organization]
+      paragraph
+      paragraph
+      paragraph
+      paragraph
+      heading «Without context, there is no intelligence.» [level=2]
+        strong
+      paragraph
+      paragraph
+      paragraph
+      paragraph
+      heading «We are building a system that understands the organization.» [level=2]
+        strong
+      paragraph
+      paragraph
+      paragraph
+        strong
+      paragraph
+      paragraph
+      paragraph
+      paragraph
+      paragraph
+        strong
+      paragraph
+      paragraph
+      paragraph
+        strong
+      paragraph
+      paragraph
+    region «Let’s talk.»
+      heading «Let’s talk.» [level=2]
+      link «Book a conversation →» [url=http://localhost:4958/en/contact/]
+
+## Formulario en idle (form)
+  form «Contact form»
+    group [invalid=false]
+      LabelText
+      textbox «NAME» [invalid=false] [required=true]
+      LabelText
+      textbox «WORK EMAIL» [invalid=false] [required=true]
+      LabelText
+      textbox «COMPANY» [invalid=false] [required=true]
+      LabelText
+      textbox «ROLE» [invalid=false]
+      LabelText
+      combobox «INDUSTRY» [invalid=false] [hasPopup=menu]
+        MenuListPopup
+          option «Choose one…» [selected=true]
+          option «Retail and distribution»
+          option «Manufacturing»
+          option «Food and consumer goods»
+          option «Health and fitness»
+          option «Professional and business services»
+          option «Other»
+      LabelText
+      textbox «WHAT WOULD YOU LIKE TO SOLVE?» [invalid=false] [required=true]
+      button «Send →» [invalid=false]
+
+## Formulario con errores (form)
+  form «Contact form»
+    group [invalid=false]
+      LabelText
+      textbox «NAME» [invalid=true] [required=true] [describedby=cf-name-err] (descripción: «Enter your name.»)
+      paragraph
+      LabelText
+      textbox «WORK EMAIL» [invalid=true] [required=true] [describedby=cf-email-err] (descripción: «Enter your work email, for example name@company.com.»)
+      paragraph
+      LabelText
+      textbox «COMPANY» [invalid=true] [required=true] [describedby=cf-organization-err] (descripción: «Enter your company’s name.»)
+      paragraph
+      LabelText
+      textbox «ROLE» [invalid=false]
+      LabelText
+      combobox «INDUSTRY» [invalid=false] [hasPopup=menu]
+        MenuListPopup
+          option «Choose one…» [selected=true]
+          option «Retail and distribution»
+          option «Manufacturing»
+          option «Food and consumer goods»
+          option «Health and fitness»
+          option «Professional and business services»
+          option «Other»
+      LabelText
+      textbox «WHAT WOULD YOU LIKE TO SOLVE?» [invalid=true] [required=true] [describedby=cf-message-err] (descripción: «Tell us what you’d like to solve.»)
+      paragraph
+      button «Send →» [invalid=false]
+
+## Producto: secciones con ancla (tabindex -1) y AppSlot (main)
+  main
+    paragraph
+    heading «Your company’s organizational brain.» [level=1]
+    paragraph
+    link «Let’s talk →» [url=http://localhost:4958/en/contact/]
+    region «A layer that connects what your company already has.»
+      paragraph
+      heading «A layer that connects what your company already has.» [level=2]
+      heading «WHAT YOUR COMPANY ALREADY HAS · STAYS WHERE IT IS» [level=3]
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+      heading «WHO USES IT» [level=3]
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Ask. Decide. Execute.»
+      paragraph
+      heading «Ask. Decide. Execute.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «From question to data. From data to action.»
+      paragraph
+      heading «From question to data. From data to action.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Agents that work on your company’s real context.»
+      paragraph
+      heading «Agents that work on your company’s real context.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «A control layer beneath everything.»
+      paragraph
+      heading «A control layer beneath everything.» [level=2]
+      paragraph
+      list
+        listitem [level=1]
+        listitem [level=1]
+        listitem [level=1]
+    region «Let’s talk.»
+      heading «Let’s talk.» [level=2]
+      link «Book a conversation →» [url=http://localhost:4958/en/contact/]
+
+consola: []

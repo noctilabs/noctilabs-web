@@ -1,0 +1,29 @@
+{
+ "variant": "publish-falla-sin-clave",
+ "generatedAt": "2026-10-04T16:09:55.484Z",
+ "commit": "cbfa9bc0ce43c122a24268712d12085e402d9b7d",
+ "cleanTree": true,
+ "lockfileSha256": "1dd83d121d5f1b97520b1c4cc3ad86ac760dce6a4c2443c611fde7fb849b3763",
+ "vercelJsonSha256": "39eee7bf487eeec9336f287849c985f1dd697c37db2cd2981ed680d9ad264d89",
+ "env": {},
+ "fixtures": {},
+ "exitCode": 1,
+ "log": {
+  "path": "C:\\Users\\adria\\AppData\\Local\\Temp\\claude\\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\\scratchpad\\ev004\\builds\\publish-falla-sin-clave.log",
+  "sha256": "814fae4df5c729d9cf480b7ec9ea26fec6de7f5f4a5b7f93f5583cd1fd219295"
+ },
+ "diagnostics": [
+  "13:09:54 [ERROR] [noctilabs:publish-guard] An unhandled error occurred while running the \"astro:config:setup\" hook",
+  "[publicación] falta PUBLIC_WEB3FORMS_KEY (clave pública de Web3Forms)."
+ ],
+ "outDir": null,
+ "htmlCount": 0,
+ "artifactsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+ "artifacts": {},
+ "versions": {
+  "node": "v22.19.0",
+  "astro": "7.3.5",
+  "vercelAnalytics": "2.0.1",
+  "server": "astro preview (astro 7.3.5) / serve-vercel.mjs (scratchpad, node)"
+ }
+}
