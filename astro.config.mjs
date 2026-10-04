@@ -1,13 +1,41 @@
 import { defineConfig } from 'astro/config';
+import { ORIGIN } from './src/site.mjs';
+import { publishGuard } from './scripts/publish-guard.mjs';
 
 export default defineConfig({
-  site: 'https://noctilabs.io',
+  site: ORIGIN,
   output: 'static',
+  // Spec 004 §2.2: el fixture legal nunca escribe en dist/.
+  outDir: process.env.LEGAL_FIXTURE === '1' ? './dist-fixture' : './dist',
   trailingSlash: 'always',
   build: { format: 'directory' },
   i18n: {
     defaultLocale: 'es',
     locales: ['es', 'en'],
     routing: { prefixDefaultLocale: false },
+  },
+  integrations: [publishGuard()],
+  // font-src 'self' (spec 004 §2.8): las fuentes pequeñas de @fontsource no se incrustan como data: en el CSS.
+  vite: { build: { assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined) } },
+  // Sin Markdown en el sitio: sin Shiki, que usa estilos inline incompatibles con la CSP.
+  markdown: { syntaxHighlight: false },
+  // Spec 004 §2.8: CSP de carga en el <meta>, con los hashes que Astro genera por página.
+  security: {
+    csp: {
+      algorithm: 'SHA-256',
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "media-src 'self'",
+        "font-src 'self'",
+        "connect-src 'self' https://api.web3forms.com https://*.vercel-insights.com",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+      // script-src y style-src quedan en 'self' (el valor por defecto de Astro) más los hashes de cada página.
+      // Atributos `style` con valores calculados (nodos, Container, Kicker, islas): 'unsafe-inline' solo en style-src-attr.
+      styleDirective: { resources: [{ resource: "'unsafe-inline'", kind: 'attribute' }] },
+    },
   },
 });

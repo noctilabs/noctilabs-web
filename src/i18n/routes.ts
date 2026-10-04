@@ -1,6 +1,8 @@
+import { ORIGIN } from '../site.mjs';
+
 export type Locale = 'es' | 'en';
 
-type SimpleId = 'home' | 'producto' | 'nosotros' | 'insights' | 'hablemos';
+type SimpleId = 'home' | 'producto' | 'nosotros' | 'insights' | 'hablemos' | 'privacidad';
 
 export const INDUSTRY_SLUGS = {
   retail: { es: 'retail-distribucion', en: 'retail-distribution' },
@@ -26,6 +28,7 @@ const PATHS: Record<SimpleId, Record<Locale, string>> = {
   nosotros: { es: '/nosotros/', en: '/en/about/' },
   insights: { es: '/insights/', en: '/en/insights/' },
   hablemos: { es: '/hablemos/', en: '/en/contact/' },
+  privacidad: { es: '/privacidad/', en: '/en/privacy/' },
 };
 
 const INDUSTRY_BASE: Record<Locale, string> = { es: '/industrias/', en: '/en/industries/' };
@@ -46,7 +49,7 @@ export function href(page: PageRef, locale: Locale, hash = ''): string {
   return fragment ? `${pathOf(page, locale)}#${fragment}` : pathOf(page, locale);
 }
 
-/** Las 20 páginas fijas. Los artículos no están: sus slugs sólo se conocen consultando el CMS. */
+/** Las 11 páginas fijas (22 URLs). Los artículos no están: sus slugs sólo se conocen consultando el CMS. */
 export const PAGES: PageRef[] = [
   ...(Object.keys(PATHS) as SimpleId[]).map((id) => ({ id })),
   ...(Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({ id: 'industria' as const, industry })),
@@ -61,8 +64,6 @@ export function pageFromPath(pathname: string): { page: PageRef; locale: Locale 
   const path = pathname.endsWith('/') ? pathname : `${pathname}/`;
   return BY_PATH.get(path) ?? null;
 }
-
-const ORIGIN = 'https://noctilabs.io';
 
 export function alternates(page: PageRef): { es: string; en: string; 'x-default': string } {
   const es = ORIGIN + pathOf(page, 'es');

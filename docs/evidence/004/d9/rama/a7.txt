@@ -1,0 +1,80 @@
+OK    M4 hover abre Producto
+OK    M4 cierre retardado: sigue abierto a los 60 ms
+OK    M4 cierre retardado: cerrado pasado 120 ms
+OK    M4 puente de 8 px mantiene el panel
+OK    M4 volver antes de 120 ms cancela el cierre
+OK    M9 cambio por hover antes de 120 ms: sólo Industrias
+OK    M3 click abre en fijo y el hover no lo cierra
+OK    M3 segundo click cierra
+OK    M3 foco queda en el botón
+OK    M3 Tab tras cerrar va al siguiente control visible (Industrias)
+OK    M3 Enter abre Producto
+OK    M3 Tab entra al primer link del panel (Overview)
+OK    M4 prioridad del foco: hover en Industrias ignorado
+OK    M3 botón de Industrias cambia de panel
+OK    M3 foco en el botón de Industrias
+OK    M6 Esc dentro del panel cierra
+OK    M6 Esc devuelve foco al botón
+OK    M6 Esc con foco fuera cierra el panel hover
+OK    M6 foco no se mueve
+OK    M6 no reabre sin salir del ítem
+OK    M6 reabre al salir y volver a entrar
+OK    M3 click sobre panel hover lo fija (sigue abierto)
+OK    M4 panel fijo no se cierra al salir
+OK    M4 reentrar conserva fijo: el click siguiente cierra
+OK    M3 Enter sobre panel hover lo fija
+OK    M7 click fuera cierra
+OK    M5 Shift+Tab fuera del conjunto cierra
+OK    Industrias activa sin aria-current en Manufactura
+OK    aria-current=page en Industrias sólo en Retail
+OK    Skip link es el primer enfocable
+OK    Skip link mueve el foco a main
+OK    M7 a mobile con foco en link del nav: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (link del nav)
+OK    M7 a mobile con foco en CTA: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (CTA)
+OK    M7 a mobile con foco en chevron: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (chevron)
+OK    M7 a mobile con foco en link del megamenú: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (link del megamenú)
+OK    Mob1 botón abre, ícono cruz, label Cerrar
+OK    Mob1 foco queda en el botón
+OK    Mob1 Tab entra al panel (Producto)
+OK    Mob2 Esc cierra y devuelve foco al botón
+OK    Mob3 ancla misma página: cierra, enfoca destino
+OK    Mob3 destino visible debajo del header (top≈84)
+OK    Mob3 URL con #agentes
+OK    Mob3 Ctrl+click no cierra el panel ni intercepta
+OK    Mob4 click fuera de la cápsula cierra
+OK    Mob5 focusout fuera cierra
+OK    Mob6 a desktop con foco en un link del panel mobile: cierra y foco al logo → {"m":{"open":false,"exp":"false","label":"Abrir menú","d":"M4 8h16M4 16h16"},"f":"A.logo \"NoctiLabs\""}
+OK    M9 cerrar y reabrir antes de 120 ms: el temporizador viejo no cierra
+OK    M5 blur() sin destino con el puntero encima: cierra
+OK    M5 click en zona vacía del panel: sigue abierto y el foco queda en el panel → {"s":{"prod":true,"ind":false,"ep":"true","ei":"false"},"f":"DIV#mega-producto.mega \"ProductoOverviewSistemas, cono\""}
+OK    M5 se puede seleccionar el texto del panel y sigue abierto → {"texto":"PRODUCTO","abierto":true}
+OK    Mob5 blur() sin destino: cierra
+OK    Mob3 es #overview: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"overview","top":84,"hash":"#overview","path":"/producto/"}
+OK    Mob3 es #cerebro: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"cerebro","top":84,"hash":"#cerebro","path":"/producto/"}
+OK    Mob3 es #bi: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"bi","top":84,"hash":"#bi","path":"/producto/"}
+OK    Mob3 es #agentes: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"agentes","top":84,"hash":"#agentes","path":"/producto/"}
+OK    Mob3 es #control: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"control","top":84,"hash":"#control","path":"/producto/"}
+OK    Mob3 en #overview: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"overview","top":84,"hash":"#overview","path":"/en/product/"}
+OK    Mob3 en #cerebro: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"cerebro","top":84,"hash":"#cerebro","path":"/en/product/"}
+OK    Mob3 en #bi: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"bi","top":84,"hash":"#bi","path":"/en/product/"}
+OK    Mob3 en #agentes: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"agentes","top":84,"hash":"#agentes","path":"/en/product/"}
+OK    Mob3 en #control: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"control","top":84,"hash":"#control","path":"/en/product/"}
+OK    Mob3 fragmento ya en la URL: enfoca y scrollea igual → {"focus":"bi","top":84,"hash":"#bi"}
+OK    Mob6 a desktop con foco en el botón: foco al logo
+OK    M5 link del panel presionado 300 ms: el panel sigue abierto y el foco queda en el conjunto → {"s":{"prod":true,"ind":false,"ep":"true","ei":"false"},"f":"A.mega-item \"CerebroPreguntá a tu empresa y\""}
+OK    M5 al soltar navega al destino → "/producto/#cerebro"
+OK    Mob5 link del panel mobile presionado 300 ms: el panel sigue abierto → true
+OK    Mob5 al soltar navega al destino → "/insights/"
+OK    M9 blur → Esc → salir y volver: el callback de foco viejo no cierra la apertura nueva → {"prod":true,"ind":false,"ep":"true","ei":"false"}
+OK    Mob5 blur → cerrar → reabrir: el callback viejo no cierra el panel nuevo → true
+OK    M5 fijo → blur → hover sobre el panel: el cierre por foco no se cancela → {"s":{"prod":false,"ind":false,"ep":"false","ei":"false"},"f":"body"}
+OK    M5 click central sostenido (1440): panel abierto, foco en el conjunto, la pestaña original no navega y se abre una pestaña nueva con el destino → {"during":{"open":true,"focoEnConjunto":true},"after":{"open":true,"path":"/nosotros/","link":"http://localhost:4952/producto/#bi"},"pestañaNueva":["http://localhost:4952/producto/#bi"]}
+OK    M5 click central sostenido (390): panel abierto, foco en el conjunto, la pestaña original no navega y se abre una pestaña nueva con el destino → {"during":{"open":true,"focoEnConjunto":true},"after":{"open":true,"path":"/nosotros/","link":"http://localhost:4952/insights/"},"pestañaNueva":["http://localhost:4952/insights/"]}
+OK    M5 todos los links de los paneles con tabindex="0" explícito → {"cantidad":26}
+OK    A8 cero errores de consola en las 20 rutas
+
+78/78 OK

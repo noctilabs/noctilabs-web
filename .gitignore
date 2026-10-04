@@ -5,3 +5,5 @@ dist/
 .env*
 studio/node_modules/
 studio/dist/
+dist-fixture/
+dist-manifest.json

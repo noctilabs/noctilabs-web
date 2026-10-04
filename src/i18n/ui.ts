@@ -30,6 +30,11 @@ const es = {
       h1: 'Hablemos.',
       description: 'Contanos cómo opera tu empresa y te mostramos cómo Nocti se conecta con lo que ya tenés.',
     },
+    privacidad: {
+      title: 'Privacidad',
+      h1: 'Política de privacidad',
+      description: 'Cómo trata NoctiLabs los datos que nos enviás por el formulario de contacto y qué derechos tenés sobre ellos.',
+    },
   },
   hero: { primary: 'Hablemos', secondary: 'Ver el producto', pause: 'Pausar video', play: 'Reproducir video' },
   productSections: {
@@ -52,6 +57,7 @@ const es = {
     skip: 'Saltar al contenido',
     company: 'Compañía',
     hablemos: 'Hablemos',
+    privacy: 'Privacidad',
     langName: { es: 'Español', en: 'English' },
   },
   band: { title: 'Hablemos.', cta: 'Agendar una conversación →' },
@@ -91,6 +97,11 @@ const en: Dict = {
       h1: "Let’s talk.",
       description: 'Tell us how your company operates and we will show you how Nocti connects with what you already have.',
     },
+    privacidad: {
+      title: 'Privacy',
+      h1: 'Privacy policy',
+      description: 'How NoctiLabs handles the data you send us through the contact form and the rights you have over it.',
+    },
   },
   hero: { primary: 'Let’s talk', secondary: 'See the product', pause: 'Pause video', play: 'Play video' },
   productSections: {
@@ -113,6 +124,7 @@ const en: Dict = {
     skip: 'Skip to content',
     company: 'Company',
     hablemos: "Let’s talk",
+    privacy: 'Privacy',
     langName: { es: 'Español', en: 'English' },
   },
   band: { title: 'Let’s talk.', cta: 'Book a conversation →' },

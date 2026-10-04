@@ -2,11 +2,12 @@
 // Página Hablemos (spec 002 §4.6, Inv §7): columna de contacto + formulario. Sin banda «Hablemos.».
 import Base from '../../../layouts/Base.astro';
 import Txt from '../../Brand.astro';
-import { INDUSTRY_SLUGS, type IndustryId, type Locale } from '../../../i18n/routes';
+import { alternates, href, INDUSTRY_SLUGS, type IndustryId, type Locale } from '../../../i18n/routes';
 import { ui } from '../../../i18n/ui';
 import { pageMeta } from '../../../lib/meta';
 import { industries } from '../../../content/industries';
 import { CONTACT_EMAIL, hablemos } from '../../../content/pages/hablemos';
+import { CONSENT_VERSION, notice } from '../../../content/legal';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -15,6 +16,9 @@ const meta = pageMeta(page, locale);
 const t = hablemos[locale];
 const f = t.fields;
 const mailto = `mailto:${CONTACT_EMAIL}`;
+const n = notice[locale];
+// Spec 004 §2.3: `page` es la URL canónica de Hablemos en este idioma, nunca location.href.
+const canonical = alternates(page)[locale];
 
 // Tabla de campos de §4.6 (sin Industria ni Mensaje, que van aparte).
 const inputs = [
@@ -39,9 +43,9 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
         <p class="mail">{t.mailPrefix}<a href={mailto}>{CONTACT_EMAIL}</a></p>
       </div>
 
-      <div class="card" data-contact>
+      <div class="card" data-contact data-locale={locale} data-page={canonical} data-consent-version={CONSENT_VERSION}>
         <noscript><p class="noscript">{t.noscript}<a href={mailto}>{CONTACT_EMAIL}</a></p></noscript>
-        <form novalidate aria-label={t.formLabel}>
+        <form novalidate aria-label={t.formLabel} aria-describedby="cf-notice">
           <fieldset disabled>
             <div class="grid">
               {inputs.map((c) => (
@@ -76,11 +80,34 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
               <textarea id="cf-message" name="message" placeholder={f.message.placeholder} required data-required={f.message.required}></textarea>
               <p class="err" id="cf-message-err" hidden></p>
             </div>
+            {/* Honeypot (spec 004 §2.3): fuera de pantalla, fuera del orden de tabulación y del árbol accesible. */}
+            <div class="hp" aria-hidden="true">
+              <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            </div>
+            {/* Aviso previo (spec 004 §2.2, Ley 18.331 art. 13), antes del botón. */}
+            <div class="notice" id="cf-notice">
+              <p class="notice-title">{n.title}</p>
+              <ul>
+                {n.items.map((i) => <li><strong>{i.label}:</strong> {i.text}</li>)}
+              </ul>
+              <p>
+                <a href={href({ id: 'privacidad' }, locale)} target="_blank" rel="noopener">{n.policyLink.text}<span class="sr-only">{n.policyLink.newTab}</span></a>
+              </p>
+            </div>
+            <div class="field">
+              {/* El label envuelve al checkbox: un solo blanco de click, sin zonas muertas (guidelines, Forms). */}
+              <label class="check" for="cf-consent">
+                <input id="cf-consent" name="consent" type="checkbox" aria-required="true" data-required={n.consent.required} />
+                <span>{n.consent.label}</span>
+              </label>
+              <p class="err" id="cf-consent-err" hidden></p>
+            </div>
             <button type="submit" class="submit">{t.submit}</button>
           </fieldset>
         </form>
         <div class="live" aria-live="polite">
           <p class="sr-only" data-sending hidden>{t.sending}</p>
+          <p class="failed" data-wait hidden>{t.wait}</p>
           <p class="failed" data-failed hidden>{t.error[0]}<a href={mailto}>{CONTACT_EMAIL}</a>{t.error[1]}</p>
           <div class="sent" data-sent hidden>
             <span class="dot" aria-hidden="true"></span>
@@ -162,6 +189,35 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
   input:focus, select:focus, textarea:focus { border-color: var(--blue); background-color: var(--white); }
   input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; }
   textarea { min-height: 130px; resize: vertical; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .notice { font-size: 14px; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
+  .notice p, .notice ul { margin: 0; }
+  .notice ul { padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; margin: 6px 0 8px; }
+  .notice-title { color: var(--ink); font-weight: 500; }
+  .notice strong { color: var(--body-2); font-weight: 500; }
+  .notice a { color: var(--blue-link); }
+  label.check {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.45;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .check input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 2px 0 0;
+    padding: 0;
+    accent-color: var(--ink);
+    cursor: pointer;
+  }
+
   [aria-invalid='true'] { border-color: #B42318; }
   .err { margin: 0; font-size: 14px; line-height: 1.4; color: #B42318; }
   .submit {

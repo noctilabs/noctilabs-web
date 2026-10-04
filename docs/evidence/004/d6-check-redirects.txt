@@ -1,0 +1,42 @@
+### check-redirects con el vercel.json real (dist/ de la base)
+ok    /company -> /en/about/
+ok    /company/ -> /en/about/
+ok    /company.html -> /en/about/
+ok    /book-a-call -> /en/contact/
+ok    /book-a-call/ -> /en/contact/
+ok    /book-a-call.html -> /en/contact/
+ok    /blog -> /en/insights/
+ok    /blog/ -> /en/insights/
+ok    /blog.html -> /en/insights/
+ok    /blog/no-context-no-intelligence -> /en/insights/no-context-no-intelligence/
+ok    /blog/no-context-no-intelligence/ -> /en/insights/no-context-no-intelligence/
+ok    /blog/no-context-no-intelligence.html -> /en/insights/no-context-no-intelligence/
+ok    /services -> /
+ok    /services/ -> /
+ok    /es -> /
+ok    /es/ -> /
+ok    /index.html -> /
+[redirects] 17/17 destinos presentes en dist; manifiesto en C:\Users\adria\AppData\Local\Temp\claude\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\scratchpad\ev004\final\d6-manifest-real.json
+salida 0
+
+### check-redirects con vercel-roto.json (copia con un slug inexistente; sha256 71fe9b4ac8deb6e284643b7c9655bad71232e4c936861b5aa1c0232fbd9c696b)
+ok    /company -> /en/about/
+ok    /company/ -> /en/about/
+ok    /company.html -> /en/about/
+ok    /book-a-call -> /en/contact/
+ok    /book-a-call/ -> /en/contact/
+ok    /book-a-call.html -> /en/contact/
+ok    /blog -> /en/insights/
+ok    /blog/ -> /en/insights/
+ok    /blog.html -> /en/insights/
+FALLA /blog/no-context-no-intelligence -> /en/insights/slug-inexistente/ (no existe dist\en\insights\slug-inexistente\index.html)
+FALLA /blog/no-context-no-intelligence/ -> /en/insights/slug-inexistente/ (no existe dist\en\insights\slug-inexistente\index.html)
+FALLA /blog/no-context-no-intelligence.html -> /en/insights/slug-inexistente/ (no existe dist\en\insights\slug-inexistente\index.html)
+ok    /services -> /
+ok    /services/ -> /
+ok    /es -> /
+ok    /es/ -> /
+ok    /index.html -> /
+[redirects] 14/17 destinos presentes en dist; manifiesto en C:\Users\adria\AppData\Local\Temp\claude\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\scratchpad\ev004\final\d6-manifest-roto.json
+[redirects] 3 redirect(s) con destino roto: el build no es publicable.
+salida 1

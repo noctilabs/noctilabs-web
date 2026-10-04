@@ -1,0 +1,48 @@
+## Recorrido de 26 URLs a 1440×900 (CSP del <meta> + cabeceras del servidor)
+OK    / → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 54 aplicados (0 sin aplicar)
+OK    /en/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 54 aplicados (0 sin aplicar)
+OK    /en/about/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 6 aplicados (0 sin aplicar)
+OK    /en/contact/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 0 aplicados (0 sin aplicar)
+OK    /en/industries/food-consumer-goods/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /en/industries/health-fitness/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /en/industries/manufacturing/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /en/industries/professional-services/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /en/industries/retail-distribution/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /en/insights/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 2 aplicados (0 sin aplicar)
+OK    /en/insights/no-context-no-intelligence/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 1 aplicados (0 sin aplicar)
+OK    /en/privacy/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 0 aplicados (0 sin aplicar)
+OK    /en/product/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 13 aplicados (0 sin aplicar)
+OK    /hablemos/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 0 aplicados (0 sin aplicar)
+OK    /industrias/alimentos-consumo/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /industrias/manufactura/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /industrias/retail-distribucion/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /industrias/salud-fitness/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /industrias/servicios/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 10 aplicados (0 sin aplicar)
+OK    /insights/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 2 aplicados (0 sin aplicar)
+OK    /insights/no-context-no-intelligence/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 1 aplicados (0 sin aplicar)
+OK    /nosotros/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 6 aplicados (0 sin aplicar)
+OK    /privacidad/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 0 aplicados (0 sin aplicar)
+OK    /producto/ → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 13 aplicados (0 sin aplicar)
+OK    /ruta/desconocida/ → 404; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 0 aplicados (0 sin aplicar)
+OK    /hablemos/?email=persona@example.com → 200; cabeceras OK; <meta> CSP sí; violaciones 0; consola 0; style= 0 aplicados (0 sin aplicar)
+
+## Interacciones con la CSP activa
+OK    home: video reproduciendo, el botón lo pausa, 7 controles de antes/después e industrias accionados, 0 violaciones
+OK    home: 29 nodos del diagrama posicionados por style, todos en posiciones distintas ([[229,1421,"left:50%;top:58%;width:88%;height:12%;--s:0.92"],[245,1288,"left:18%;top:16%"],[349,1278,"left:50%;top:13%"]])
+OK    producto: 0 violaciones
+OK    formulario: envío interceptado → enviado; 0 violaciones (connect-src permite api.web3forms.com)
+OK    /insights/: navegación por Insights sin violaciones
+OK    /en/insights/no-context-no-intelligence/: navegación por Insights sin violaciones
+
+## frame-ancestors: un iframe desde otro origen no carga el sitio
+OK    iframe a http://127.0.0.1:4953/ bloqueado: frame chrome-error://chromewebdata/; consola: Framing 'http://127.0.0.1:4953/' violates the following Content Security Policy directive: "frame-ancestors 'none'". The request has been blocked.
+ 
+
+## Link javascript: de un fixture de Sanity (build adversarial)
+OK    insights/no-context-no-intelligence/index.html: sin «javascript:» en el HTML; el texto del link queda sin <a>; el link https de control sí se renderiza
+OK    en/insights/no-context-no-intelligence/index.html: sin «javascript:» en el HTML; el texto del link queda sin <a>; el link https de control sí se renderiza
+OK    adversarial servido: 0 links javascript:, 0 violaciones CSP
+
+Violaciones CSP en el recorrido: 0. Errores de consola totales: 2 (los del iframe bloqueado son esperados).
+
+RESULTADO D7: OK

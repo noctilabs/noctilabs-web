@@ -1,0 +1,1815 @@
+{
+ "query": "*[_type == \"post\"]{\n  _id, _rev, \"slug\": slug.current, \"slugEs\": slugEs.current, publishedAt, listed, showOnInsights, topic,\n  category, readingTime, title, excerpt, body\n}",
+ "result": [
+  {
+   "_id": "post-agent-reconciliation",
+   "_rev": "tiu5awf4YZpMiGxzJBl1PD",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k007a",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007b",
+        "_type": "span",
+        "marks": [],
+        "text": "Reconciliation is one of the clearest cases we see for agent deployment: high frequency, clear rules, and a real cost when it's slow. Most finance teams still spend days each month matching transactions across systems by hand, chasing down the handful of exceptions that don't line up."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k007c",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007d",
+        "_type": "span",
+        "marks": [],
+        "text": "Where the time actually goes"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k007e",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007f",
+        "_type": "span",
+        "marks": [],
+        "text": "It's rarely the matching itself that's slow. It's the exceptions: a transaction that's split across two records, a currency conversion that doesn't quite line up, a vendor name that's spelled two different ways in two systems. An agent that handles the clean matches automatically and flags the real exceptions for a human gives the team their time back without giving up control."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k007g",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007h",
+        "_type": "span",
+        "marks": [],
+        "text": "Close in days, not weeks, without changing your chart of accounts."
+       }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+     },
+     {
+      "_key": "k007i",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007j",
+        "_type": "span",
+        "marks": [],
+        "text": "What stays with your team"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k007k",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007l",
+        "_type": "span",
+        "marks": [],
+        "text": "The agent doesn't approve anything on its own. It does the matching, surfaces what needs a human judgment call, and keeps a clean audit trail of every decision. Compliance reporting gets easier, not harder, because every action is logged the same way, every time."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Finance",
+    "es": "Finanzas"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "Agent-led reconciliation: automatic matching, human judgment on real exceptions, and a clean audit trail. Without changing your chart of accounts."
+   },
+   "listed": false,
+   "publishedAt": "2026-05-12",
+   "readingTime": 5,
+   "showOnInsights": null,
+   "slug": "agent-reconciliation",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "Closing the books in days, not weeks, with agent-led reconciliation",
+    "es": "Cerrar la contabilidad en días, no semanas, con conciliación liderada por agentes"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-introducing-noctilabs",
+   "_rev": "tiu5awf4YZpMiGxzJBl1PD",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k0040",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0041",
+        "_type": "span",
+        "marks": [],
+        "text": "We are launching NoctiLabs."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0042",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0043",
+        "_type": "span",
+        "marks": [],
+        "text": "Most AI projects never make it to production. Not because the models are weak. The demo works, and that's what makes it a demo. It runs on clean data, with permissions nobody checks, along a path where nothing breaks. Then it meets the operation: real data, real permissions, real edge cases. That's where most projects stop."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0044",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0045",
+        "_type": "span",
+        "marks": [],
+        "text": "The Production Gap"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k0046",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0047",
+        "_type": "span",
+        "marks": [],
+        "text": "We call it the Production Gap: the distance between a prototype that works on someone's machine and a system that runs alongside your team every day."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0048",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0049",
+        "_type": "span",
+        "marks": [],
+        "text": "It was never a model problem. Every company buys the same models, the same tokens. They get better every month and the gap doesn't move."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004a",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004b",
+        "_type": "span",
+        "marks": [],
+        "text": "The gap is context. To run inside your operation, a system has to know how your operation works: how work moves between teams, which system holds the record, who's allowed to approve what, what happens when the input arrives malformed. None of that is in a demo. Most of it isn't written down anywhere. It sits in people's heads, in old threads, in the habits of whoever has been there longest."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004c",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004d",
+        "_type": "span",
+        "marks": [],
+        "text": "That's the reason your company works. It's also the reason AI can't run it yet."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004e",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004f",
+        "_type": "span",
+        "marks": [],
+        "text": "Company memory"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k004g",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004h",
+        "_type": "span",
+        "marks": [],
+        "text": "So we start by extracting it."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004i",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004j",
+        "_type": "span",
+        "marks": [],
+        "text": "Every audit produces a map of how your company actually works. Which processes run the way they're documented and which don't. Who approves what. Where the exceptions live. What breaks, how often, and why."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004k",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004l",
+        "_type": "span",
+        "marks": [],
+        "text": "That map is your company's operating memory, and it's what our agents run on. It stays current on its own: the agents run inside the operation, so every exception they hit is new evidence about how the work really moves. The map corrects itself."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004m",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004n",
+        "_type": "span",
+        "marks": [],
+        "text": "That's what makes the second agent faster to deploy than the first, and the fifth faster than the second. Over time it stops being documentation about your company and becomes the layer your company runs on."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004o",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004p",
+        "_type": "span",
+        "marks": [],
+        "text": "Tools don't close the gap"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k004q",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004r",
+        "_type": "span",
+        "marks": [],
+        "text": "Most platforms hand you the software and leave you alone to get it into production. You end up with capable technology and an operation that runs exactly as it did before."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004s",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004t",
+        "_type": "span",
+        "marks": [],
+        "text": "NoctiLabs is platform and engineering team. We architect, deploy, and improve your agents in production, shoulder to shoulder with you and your team. We build the systems that do the work."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004u",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004v",
+        "_type": "span",
+        "marks": [],
+        "text": "Four stages, one outcome"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k004w",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k004x",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "AI Opportunity Audit."
+       },
+       {
+        "_key": "k004y",
+        "_type": "span",
+        "marks": [],
+        "text": " We interview your teams and trace the work end to end: systems, decisions, exceptions, workarounds. You get your operation extracted and structured, and a prioritized map of where agents create the most value."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k004z",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0050",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Architecture & Design."
+       },
+       {
+        "_key": "k0051",
+        "_type": "span",
+        "marks": [],
+        "text": " We design the agent system against that memory: your tools, your data, your logic. Not a template."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0052",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0053",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Production Deployment."
+       },
+       {
+        "_key": "k0054",
+        "_type": "span",
+        "marks": [],
+        "text": " We deploy into your live workflows, on the stack you already run."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0055",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0056",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Control & Improvement."
+       },
+       {
+        "_key": "k0057",
+        "_type": "span",
+        "marks": [],
+        "text": " One panel to see every agent running. We stay on to sharpen decisions and extend into new work."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0058",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0059",
+        "_type": "span",
+        "marks": [],
+        "text": "Entire workflows, not isolated tasks"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k005a",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005b",
+        "_type": "span",
+        "marks": [],
+        "text": "Automating one task is easy. It also changes nothing. The audit gives us the full picture of how a workflow actually runs, and even when two companies share the same process on paper, how it runs looks different every time. That difference is the whole job."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005c",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005d",
+        "_type": "span",
+        "marks": [],
+        "text": "Why we exist"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k005e",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005f",
+        "_type": "span",
+        "marks": [],
+        "text": "The companies that pull ahead over the next decade won't be the ones with the best pilot. They'll be the ones that got to production."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005g",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005h",
+        "_type": "span",
+        "marks": [],
+        "text": "Every engagement starts with the audit, and the audit stands on its own."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005i",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005j",
+        "_type": "span",
+        "marks": [],
+        "text": "We build the bridge."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Announcement",
+    "es": "Anuncio"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "We're launching NoctiLabs to close the Production Gap directly: the platform and engineering team that architects, deploys, and improves AI agents inside your real operation.",
+    "es": "Por qué la mayoría de los proyectos de IA se traban antes de llegar a producción, y el equipo de plataforma e ingeniería que armamos para cerrar esa brecha directamente."
+   },
+   "listed": true,
+   "publishedAt": "2026-07-22",
+   "readingTime": 3,
+   "showOnInsights": null,
+   "slug": "introducing-noctilabs",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "Introducing NoctiLabs",
+    "es": "Presentamos NoctiLabs"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-legacy-stacks",
+   "_rev": "tiu5awf4YZpMiGxzJBl1PD",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k006y",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006z",
+        "_type": "span",
+        "marks": [],
+        "text": "A lot of the operations we work with run on systems that were never built with APIs, webhooks, or modern integrations in mind. On-premise ERPs, homegrown databases from a decade ago, spreadsheets that quietly became the system of record. None of that is a reason an agent can't work there. It's just a different starting point."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0070",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0071",
+        "_type": "span",
+        "marks": [],
+        "text": "Start with what's actually there"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k0072",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0073",
+        "_type": "span",
+        "marks": [],
+        "text": "The mistake we see most often is treating legacy infrastructure as something to route around, waiting on a modernization project that may never happen. We start with what's actually there: screen scraping where there's no API, scheduled batch jobs where there's no webhook, a thin integration layer that speaks to the old system on its own terms."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0074",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0075",
+        "_type": "span",
+        "marks": [],
+        "text": "You don't need to modernize your stack before you can deploy an agent on it."
+       }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+     },
+     {
+      "_key": "k0076",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0077",
+        "_type": "span",
+        "marks": [],
+        "text": "What changes, and what doesn't"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k0078",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0079",
+        "_type": "span",
+        "marks": [],
+        "text": "The agent system adapts to the constraints of the environment. What doesn't change is the outcome: the workflow still gets automated, the team still gets the hours back, and the business still doesn't have to wait on an infrastructure overhaul to see value."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Deployment",
+    "es": "Despliegue"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "You don't need to modernize your stack before you can deploy an agent on it. How NoctiLabs works with on-premise ERPs and homegrown systems."
+   },
+   "listed": false,
+   "publishedAt": "2026-05-28",
+   "readingTime": 7,
+   "showOnInsights": null,
+   "slug": "legacy-stacks",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "Deploying agents on legacy stacks: lessons from the field",
+    "es": "Desplegar agentes sobre stacks legacy: lecciones del campo"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-model-agnostic",
+   "_rev": "tiu5awf4YZpMiGxzJBl1PD",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k006k",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006l",
+        "_type": "span",
+        "marks": [],
+        "text": "Every few months, a new model takes the lead on the benchmark that matters to you. Reasoning, cost, latency, a specific language, a specific domain: the ranking shifts constantly. Building an agent system tightly coupled to one provider means re-architecting every time that ranking shifts."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k006m",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006n",
+        "_type": "span",
+        "marks": [],
+        "text": "So we don't. The agents we build are designed around your workflows and your data, with the model treated as a swappable component behind that layer, not the foundation it's built on."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k006o",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006p",
+        "_type": "span",
+        "marks": [],
+        "text": "What this looks like in practice"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k006q",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006r",
+        "_type": "span",
+        "marks": [],
+        "text": "In practice, it means the orchestration logic, the guardrails, and the integrations with your systems don't change when a model does. We can run a cheaper, faster model for high-volume, low-stakes steps, and a stronger one for the handful of decisions that need it, inside the same system."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k006s",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006t",
+        "_type": "span",
+        "marks": [],
+        "text": "Your agents shouldn't be hostage to one company's roadmap."
+       }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+     },
+     {
+      "_key": "k006u",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006v",
+        "_type": "span",
+        "marks": [],
+        "text": "Why this matters for production"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k006w",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006x",
+        "_type": "span",
+        "marks": [],
+        "text": "Production systems need to survive vendor outages, pricing changes, and deprecations. A model-agnostic architecture means a provider issue is a configuration change, not an emergency rebuild. It's a small design decision up front that saves months down the line."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Engineering",
+    "es": "Ingeniería"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "Why NoctiLabs builds agent systems with the model as a swappable component: your agents shouldn't be hostage to one company's roadmap."
+   },
+   "listed": false,
+   "publishedAt": "2026-06-10",
+   "readingTime": 5,
+   "showOnInsights": null,
+   "slug": "model-agnostic",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "Model agnostic by design: why we don't lock clients into one LLM",
+    "es": "Agnósticos de modelo por diseño: por qué no atamos a los clientes a un solo LLM"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-no-context-no-intelligence",
+   "_rev": "6hiKrYJiMBmDerMeziBqkp",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "677cda5e4e90",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "4151610d4e57",
+        "_type": "span",
+        "marks": [],
+        "text": "AI is entering companies fast. Teams are using copilots, experimenting with agents, and automating more tasks every day."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "9d6729b85564",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "3998290ba156",
+        "_type": "span",
+        "marks": [],
+        "text": "But most companies were not built for this new operating model."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "99e50c09841d",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "342c0c8f910a",
+        "_type": "span",
+        "marks": [],
+        "text": "Their knowledge is still fragmented across people, documents, ERPs, CRMs, spreadsheets, and dozens of systems. And AI is being layered on top of that fragmentation."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "67792eba7e42",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "d12e467ac76f",
+        "_type": "span",
+        "marks": [],
+        "text": "Our thesis is simple:"
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "d5146e65d345",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "78a584a8d938",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Without context, there is no intelligence."
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "478580c9cd06",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "c857ce058a64",
+        "_type": "span",
+        "marks": [],
+        "text": "At NoctiLabs, we are building that context layer."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "c08dcfd0e51b",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "959942e0bf3e",
+        "_type": "span",
+        "marks": [],
+        "text": "We start by understanding how the organization operates, then connect its systems, data, processes, and knowledge into an operational brain where people and agents can work from the same foundation."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "b8a03c3ea5a2",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "31f29fa490ff",
+        "_type": "span",
+        "marks": [],
+        "text": "On top of that infrastructure, we are building a new interface for the company: one place where you can understand what is happening, access organizational knowledge, generate analysis and projections, make decisions, and put AI agents to work."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "adad9185d67a",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "63ca2e5fc096",
+        "_type": "span",
+        "marks": [],
+        "text": "We are not just building a chat."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "6651f100cf9f",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "ff9bca3d07b9",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "We are building a system that understands the organization."
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "77715c5e7ca8",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "6a40c4a7e6b6",
+        "_type": "span",
+        "marks": [],
+        "text": "Agents work on top of that same foundation, with the context, processes, and knowledge they need to know what to do and how to do it."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "e26b579bd298",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "0cb7b27b8b3b",
+        "_type": "span",
+        "marks": [],
+        "text": "The chat is the interface."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "e946bdb021f4",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "9389adad2d25",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Context is the foundation. And on top of that context, we are building the operational brain of the company."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "854436ec8d98",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "6c9a2fe73699",
+        "_type": "span",
+        "marks": [],
+        "text": "That is what we are building at NoctiLabs."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001i",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001j",
+        "_type": "span",
+        "marks": [],
+        "text": "That understanding is the foundation. And agents can work on that same foundation."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001k",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001l",
+        "_type": "span",
+        "marks": [],
+        "text": "Not as isolated tools, but with access to the context, processes, and knowledge they need to know what to do and how to do it."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001m",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001n",
+        "_type": "span",
+        "marks": [],
+        "text": "Chat is one of the interfaces."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001o",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001p",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "The real product is the operational brain behind it."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001q",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001r",
+        "_type": "span",
+        "marks": [],
+        "text": "Our thesis is that the opportunity isn't just in building more agents."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001s",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001t",
+        "_type": "span",
+        "marks": [],
+        "text": "Agents are a consequence. Automation is a consequence. The interface is a consequence."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001u",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001v",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "The foundation is context. And on that context, we're building the company's operational brain."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001w",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001x",
+        "_type": "span",
+        "marks": [],
+        "text": "That's what we're doing at NoctiLabs."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k001y",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k001z",
+        "_type": "span",
+        "marks": [],
+        "text": "NoctiLabs builds the infrastructure that makes AI operational."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ],
+    "es": [
+     {
+      "_key": "84c1b2125e5d",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "7957a54245cf",
+        "_type": "span",
+        "marks": [],
+        "text": "La IA está entrando rápidamente en las empresas. Los equipos usan copilotos, experimentan con agentes y automatizan cada vez más tareas."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "e5db4b4fe506",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "5c5983afa231",
+        "_type": "span",
+        "marks": [],
+        "text": "Pero la mayoría de las empresas no fueron construidas para este nuevo modelo operativo."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "f64abb64a94b",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "9bbbadf6d846",
+        "_type": "span",
+        "marks": [],
+        "text": "Su conocimiento sigue fragmentado entre personas, documentos, ERPs, CRMs, planillas y decenas de sistemas. Y la IA está entrando sobre esa fragmentación."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "029bc837a248",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "9248d48012ac",
+        "_type": "span",
+        "marks": [],
+        "text": "Nuestra tesis es simple:"
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "75b403b1ecc2",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "003974368c81",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Sin contexto, no hay inteligencia."
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "3f9728131f92",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "2039a31b0632",
+        "_type": "span",
+        "marks": [],
+        "text": "En NoctiLabs estamos construyendo esa capa de contexto."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "9579d4071a4b",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "d83a576009d2",
+        "_type": "span",
+        "marks": [],
+        "text": "Empezamos por entender cómo opera la organización y conectamos sus sistemas, datos, procesos y conocimiento en un cerebro operativo sobre el cual pueden trabajar personas y agentes."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "28aefaa18e41",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "bd89393c7301",
+        "_type": "span",
+        "marks": [],
+        "text": "Sobre esa infraestructura estamos construyendo una nueva interfaz para la empresa: un solo lugar desde donde podés preguntar qué está pasando, acceder al conocimiento de la organización, generar análisis y proyecciones, tomar decisiones y poner agentes de IA a trabajar."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "ba0c659b7a57",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "5972bd3ef156",
+        "_type": "span",
+        "marks": [],
+        "text": "No estamos construyendo solamente un chat."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "38a662018df6",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "0fcdc48fb208",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "Estamos construyendo un sistema que entienda la organización."
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "fdbc1fa3c96f",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "c4f8a3bb1a0d",
+        "_type": "span",
+        "marks": [],
+        "text": "Los agentes trabajan sobre esa misma base, con el contexto, los procesos y el conocimiento que necesitan para saber qué hacer y cómo hacerlo."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "1ad4c8f31a8f",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "c07c15afdfb4",
+        "_type": "span",
+        "marks": [],
+        "text": "El chat es la interfaz."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "97877de580f5",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "1bfb91208cac",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "La base es el contexto. Y sobre ese contexto estamos construyendo el cerebro operativo de la empresa."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "5922c7608412",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "891e9d68a9dd",
+        "_type": "span",
+        "marks": [],
+        "text": "Eso es lo que estamos haciendo en NoctiLabs."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "8c9182fd6bd1",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "a4a2e0d4817a",
+        "_type": "span",
+        "marks": [
+         "strong"
+        ],
+        "text": "NoctiLabs construye la infraestructura que hace que la IA sea operativa."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "1ae5d690b92d",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "818f036d1d63",
+        "_type": "span",
+        "marks": [],
+        "text": ""
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Thesis",
+    "es": "Tesis"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "Adding AI to a company isn't the same as becoming an AI-native company. Why we believe context is the foundation, and what we're building on top of it.",
+    "es": "Agregar IA a una empresa no es lo mismo que convertirse en una empresa AI-native. Por qué creemos que la base es el contexto, y qué estamos construyendo sobre ella. "
+   },
+   "listed": true,
+   "publishedAt": "2026-09-28",
+   "readingTime": null,
+   "showOnInsights": null,
+   "slug": "no-context-no-intelligence",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "No context, no intelligence. Our thesis",
+    "es": "Sin contexto, no hay inteligencia. Nuestra tesis"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-opportunity-audit",
+   "_rev": "tiu5awf4YZpMiGxzJBl1PD",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k0066",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0067",
+        "_type": "span",
+        "marks": [],
+        "text": "The word \"audit\" tends to make people think of a long, slow process: weeks of interviews, a binder full of findings, a report nobody reads. Ours isn't that. It's built to be fast because the goal is a decision, not a document."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0068",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0069",
+        "_type": "span",
+        "marks": [],
+        "text": "We start by mapping how work actually moves through a team: not the org chart version, the real one. Where does a task sit for three days waiting on an approval? Where does someone re-key the same data into two systems? Where does a person get pulled in just to make a judgment call a machine could make faster?"
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k006a",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006b",
+        "_type": "span",
+        "marks": [],
+        "text": "What we're actually looking for"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k006c",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006d",
+        "_type": "span",
+        "marks": [],
+        "text": "Not every repetitive task is worth automating. We're looking for the intersection of three things: high frequency, clear decision logic, and a real cost to the business when it's slow or wrong. That combination is where an agent creates value fast, and where the case for building one is obvious rather than speculative."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k006e",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006f",
+        "_type": "span",
+        "marks": [],
+        "text": "The output isn't a strategy deck. It's a short, ranked list of exactly where to start."
+       }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+     },
+     {
+      "_key": "k006g",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006h",
+        "_type": "span",
+        "marks": [],
+        "text": "What you walk away with"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k006i",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k006j",
+        "_type": "span",
+        "marks": [],
+        "text": "A prioritized map of where agents create the most value in your operation, in your language, tied to your actual systems. No commitment beyond it. If the case is there, we scope the build. If it isn't, you still walk away with a clearer picture of your own operation than you had before."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Operations",
+    "es": "Operaciones"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "Not a binder of findings. A short, ranked list of where agents create the most value in your operation, tied to your actual systems."
+   },
+   "listed": false,
+   "publishedAt": "2026-06-24",
+   "readingTime": 4,
+   "showOnInsights": null,
+   "slug": "opportunity-audit",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "What actually happens in an AI opportunity audit",
+    "es": "Qué pasa realmente en una auditoría de oportunidades de IA"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-platform-engineering",
+   "_rev": "tiu5awf4YZpMiGxzJBl1PD",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k007m",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007n",
+        "_type": "span",
+        "marks": [],
+        "text": "Most companies in this space pick a side. Either you're a platform, selling software and leaving the client to figure out deployment, or you're a services shop, billing hours with no product to show for it once the engagement ends. We built NoctiLabs to not have to choose."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k007o",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007p",
+        "_type": "span",
+        "marks": [],
+        "text": "Why the split doesn't work"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k007q",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007r",
+        "_type": "span",
+        "marks": [],
+        "text": "A platform without engineering behind it hands you the Production Gap and calls it a feature: configure it yourself. A services team without a real platform behind it rebuilds the same primitives from scratch on every engagement, and you're left maintaining something nobody productized."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k007s",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007t",
+        "_type": "span",
+        "marks": [],
+        "text": "Tools don't close the Production Gap. Engineering does."
+       }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+     },
+     {
+      "_key": "k007u",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007v",
+        "_type": "span",
+        "marks": [],
+        "text": "What it looks like in practice"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k007w",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k007x",
+        "_type": "span",
+        "marks": [],
+        "text": "Our team architects, deploys, and improves your agents in production, shoulder to shoulder with yours, using an internal platform we control end to end. You get the accountability of a team that stays on, and the leverage of a system that compounds instead of resetting on every project."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Company",
+    "es": "Empresa"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "A platform without engineering hands you the Production Gap and calls it a feature. Why NoctiLabs refuses to pick a side."
+   },
+   "listed": false,
+   "publishedAt": "2026-04-22",
+   "readingTime": 4,
+   "showOnInsights": null,
+   "slug": "platform-engineering",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "Why we build platform and engineering as one team",
+    "es": "Por qué construimos plataforma e ingeniería como un solo equipo"
+   },
+   "topic": null
+  },
+  {
+   "_id": "post-production-gap",
+   "_rev": "iIEha4Lf0bd08jwW6rib3T",
+   "body": {
+    "_type": "localeBody",
+    "en": [
+     {
+      "_key": "k005k",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005l",
+        "_type": "span",
+        "marks": [],
+        "text": "Most AI initiatives start the same way. Someone on the team builds a working prototype over a weekend. It looks great in a demo. Leadership gets excited. A budget gets approved. Then, months later, nothing has actually shipped."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005m",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005n",
+        "_type": "span",
+        "marks": [],
+        "text": "This isn't a model problem. By the time a pilot reaches a demo stage, the model usually works. The gap that kills it sits somewhere else entirely: in the space between \"it works on my machine\" and \"it runs inside a real operation, on real data, in front of real customers.\""
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005o",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005p",
+        "_type": "span",
+        "marks": [],
+        "text": "The gap has a shape"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k005q",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005r",
+        "_type": "span",
+        "marks": [],
+        "text": "A prototype is built against clean, curated examples. Production is built against everything else: incomplete records, edge cases nobody thought to test, permissions that don't exist yet, systems that were never designed to talk to each other."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005s",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005t",
+        "_type": "span",
+        "marks": [],
+        "text": "None of that shows up in a demo. All of it shows up in week one of a real deployment."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k005u",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005v",
+        "_type": "span",
+        "marks": [],
+        "text": "Most AI projects don't fail because the model is wrong. They fail because nobody owned the work of getting it into production."
+       }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+     },
+     {
+      "_key": "k005w",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005x",
+        "_type": "span",
+        "marks": [],
+        "text": "What actually kills the pilot"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k005y",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k005z",
+        "_type": "span",
+        "marks": [],
+        "text": "A few patterns repeat across almost every stalled project we've seen. The team that built the prototype moves on to the next demo before anyone owns hardening it. Security or compliance review surfaces a data access question nobody had an answer for. The integration with the actual system of record turns out to be three times the work anyone budgeted for. And without a single team accountable for closing that gap, the project quietly stops moving."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0060",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0061",
+        "_type": "span",
+        "marks": [],
+        "text": "Closing the gap"
+       }
+      ],
+      "markDefs": [],
+      "style": "h2"
+     },
+     {
+      "_key": "k0062",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0063",
+        "_type": "span",
+        "marks": [],
+        "text": "The fix isn't a better model or a longer roadmap. It's treating production readiness as its own body of work, owned from day one: an audit of where the value actually is, an architecture built around your real systems, a deployment into your actual workflows, and a team that stays on to keep improving it."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     },
+     {
+      "_key": "k0064",
+      "_type": "block",
+      "children": [
+       {
+        "_key": "k0065",
+        "_type": "span",
+        "marks": [],
+        "text": "That's the entire premise behind how we work. Not another demo. A system that runs."
+       }
+      ],
+      "markDefs": [],
+      "style": "normal"
+     }
+    ]
+   },
+   "category": {
+    "_type": "localeString",
+    "en": "Production",
+    "es": "Producción"
+   },
+   "excerpt": {
+    "_type": "localeText",
+    "en": "By the time a pilot reaches a demo, the model usually works. What kills it is the gap between demo and production, and nobody owning that work."
+   },
+   "listed": false,
+   "publishedAt": "2026-07-08",
+   "readingTime": 6,
+   "showOnInsights": null,
+   "slug": "production-gap",
+   "slugEs": null,
+   "title": {
+    "_type": "localeString",
+    "en": "Why most AI pilots die before they ship",
+    "es": "Por qué la mayoría de los pilotos de IA mueren antes de llegar a producción"
+   },
+   "topic": null
+  }
+ ],
+ "syncTags": [
+  "s1:YOXVnw"
+ ],
+ "ms": 10
+}

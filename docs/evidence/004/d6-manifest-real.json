@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-10-04T16:13:06.946Z",
+  "commit": "cbfa9bc0ce43c122a24268712d12085e402d9b7d",
+  "cleanTree": true,
+  "lockfileSha256": "1dd83d121d5f1b97520b1c4cc3ad86ac760dce6a4c2443c611fde7fb849b3763",
+  "vercelJson": {
+    "path": "vercel.json",
+    "sha256": "39eee7bf487eeec9336f287849c985f1dd697c37db2cd2981ed680d9ad264d89"
+  },
+  "env": {
+    "PUBLISH": null,
+    "VERCEL": null,
+    "VERCEL_ENV": null,
+    "LEGAL_FIXTURE": null,
+    "INSIGHTS_FIXTURE": null
+  },
+  "sanity": {
+    "source": "fixture:C:\\Users\\adria\\AppData\\Local\\Temp\\claude\\C--Users-adria-OneDrive-Escritorio-TOODO-noctilabs-discovery-os-v4\\2f074e55-d3e9-45c1-88e0-c09d4cdf4518\\scratchpad\\ev004\\snapshot\\sanity-snapshot.json",
+    "readAt": "2026-10-04T16:11:09.758Z",
+    "sha256": "e1e593513154ceb429b0ec64755e30daf3c682bbe2a5ae119cb4b3fe8853dc33",
+    "docs": [
+      {
+        "_id": "post-agent-reconciliation",
+        "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+      },
+      {
+        "_id": "post-introducing-noctilabs",
+        "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+      },
+      {
+        "_id": "post-legacy-stacks",
+        "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+      },
+      {
+        "_id": "post-model-agnostic",
+        "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+      },
+      {
+        "_id": "post-no-context-no-intelligence",
+        "_rev": "6hiKrYJiMBmDerMeziBqkp"
+      },
+      {
+        "_id": "post-opportunity-audit",
+        "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+      },
+      {
+        "_id": "post-platform-engineering",
+        "_rev": "tiu5awf4YZpMiGxzJBl1PD"
+      },
+      {
+        "_id": "post-production-gap",
+        "_rev": "iIEha4Lf0bd08jwW6rib3T"
+      }
+    ]
+  },
+  "redirects": [
+    {
+      "source": "/company",
+      "destination": "/en/about/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/company/",
+      "destination": "/en/about/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/company.html",
+      "destination": "/en/about/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/book-a-call",
+      "destination": "/en/contact/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/book-a-call/",
+      "destination": "/en/contact/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/book-a-call.html",
+      "destination": "/en/contact/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/blog",
+      "destination": "/en/insights/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/blog/",
+      "destination": "/en/insights/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/en/insights/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/blog/no-context-no-intelligence",
+      "destination": "/en/insights/no-context-no-intelligence/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/blog/no-context-no-intelligence/",
+      "destination": "/en/insights/no-context-no-intelligence/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/blog/no-context-no-intelligence.html",
+      "destination": "/en/insights/no-context-no-intelligence/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/services",
+      "destination": "/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/services/",
+      "destination": "/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/es",
+      "destination": "/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/es/",
+      "destination": "/",
+      "ok": true,
+      "problems": []
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "ok": true,
+      "problems": []
+    }
+  ]
+}

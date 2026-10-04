@@ -7,7 +7,9 @@ import geistMono400 from '@fontsource/geist-mono/files/geist-mono-latin-400-norm
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 import { alternates, type Locale, type PageRef } from '../i18n/routes';
+import { jsonLdText, OG_LOCALE, ogImage, structuredData, type ArticleLd } from '../lib/seo';
 
 interface Props {
   locale: Locale;
@@ -15,9 +17,18 @@ interface Props {
   description?: string;
   /** null en la 404: sin canonical ni hreflang (spec 001 §3.7). */
   page: PageRef | null;
+  /** Solo en los artículos: H1 y fecha para el JSON-LD (spec 004 §2.5). */
+  article?: ArticleLd;
 }
-const { locale, title, description, page } = Astro.props;
+const { locale, title, description, page, article } = Astro.props;
 const alt = page ? alternates(page) : null;
+const other: Locale = locale === 'es' ? 'en' : 'es';
+const ld = page ? structuredData(page, locale, article) : [];
+// Spec 004 §2.1: las previews de Vercel (VERCEL_ENV definido y distinto de production) no se indexan.
+const vercelEnv = process.env.VERCEL_ENV;
+const noindex = !page || (vercelEnv !== undefined && vercelEnv !== 'production');
+// Spec 004 §2.7: analítica solo en producción y solo en páginas con PageRef (nunca en la 404).
+const analytics = page !== null && vercelEnv === 'production';
 ---
 <!doctype html>
 <html lang={locale}>
@@ -30,7 +41,23 @@ const alt = page ? alternates(page) : null;
     {alt && <link rel="alternate" hreflang="es" href={alt.es} />}
     {alt && <link rel="alternate" hreflang="en" href={alt.en} />}
     {alt && <link rel="alternate" hreflang="x-default" href={alt['x-default']} />}
-    {!page && <meta name="robots" content="noindex" />}
+    {noindex && <meta name="robots" content="noindex" />}
+    {alt && page && (
+      <>
+        <meta property="og:title" content={title} />
+        {description && <meta property="og:description" content={description} />}
+        <meta property="og:url" content={alt[locale]} />
+        <meta property="og:type" content={page.id === 'articulo' ? 'article' : 'website'} />
+        <meta property="og:image" content={ogImage(locale)} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="NoctiLabs" />
+        <meta property="og:locale" content={OG_LOCALE[locale]} />
+        <meta property="og:locale:alternate" content={OG_LOCALE[other]} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
+    {ld.map((d) => <script type="application/ld+json" set:html={jsonLdText(d)} />)}
     <meta name="theme-color" content="#F4F4F2" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
@@ -42,5 +69,6 @@ const alt = page ? alternates(page) : null;
       <slot />
     </main>
     <Footer locale={locale} page={page} />
+    {analytics && <Analytics />}
   </body>
 </html>

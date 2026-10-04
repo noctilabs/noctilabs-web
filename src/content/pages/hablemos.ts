@@ -21,6 +21,8 @@ export interface HablemosCopy {
   industry: { label: string; empty: string; other: string };
   submit: string;
   sending: string;
+  /** Segundo envío antes del intervalo mínimo (spec 004 §2.3). */
+  wait: string;
   /** «No pudimos enviar el mensaje. Escribinos a {mail}.» */
   error: [string, string];
   sent: string;
@@ -59,6 +61,7 @@ export const hablemos: Localized<HablemosCopy> = {
     industry: { label: 'Industria', empty: 'Elegí una…', other: 'Otra' },
     submit: 'Enviar →',
     sending: 'Enviando…',
+    wait: 'Esperá unos segundos antes de enviar otro mensaje.',
     error: ['No pudimos enviar el mensaje. Escribinos a ', '.'],
     sent: 'Gracias. Te vamos a escribir pronto.',
     again: 'Enviar otro mensaje',
@@ -93,6 +96,7 @@ export const hablemos: Localized<HablemosCopy> = {
     industry: { label: 'Industry', empty: 'Choose one…', other: 'Other' },
     submit: 'Send →',
     sending: 'Sending…',
+    wait: 'Please wait a few seconds before sending another message.',
     error: ['We couldn’t send your message. Email us at ', '.'],
     sent: 'Thank you. We’ll be in touch soon.',
     again: 'Send another message',

@@ -33,15 +33,16 @@ const { title, lead, primary, secondary, pauseLabel, playLabel } = Astro.props;
   </div>
 </section>
 
-<script is:inline>
+<script>
   // Guidelines/WCAG 2.2.2: el loop se puede pausar y se detiene con prefers-reduced-motion.
+  // Script procesado (spec 004 §2.8): Astro lo cubre con su hash en la CSP; un is:inline no lo estaría.
   (() => {
-    const v = document.querySelector('.hero .media');
-    const b = document.querySelector('.hero .toggle');
+    const v = document.querySelector<HTMLVideoElement>('.hero .media');
+    const b = document.querySelector<HTMLButtonElement>('.hero .toggle');
     if (!v || !b) return;
     const sync = () => {
       b.dataset.paused = String(v.paused);
-      b.setAttribute('aria-label', v.paused ? b.dataset.play : b.dataset.pause);
+      b.setAttribute('aria-label', (v.paused ? b.dataset.play : b.dataset.pause) ?? '');
     };
     const reduce = matchMedia('(prefers-reduced-motion: reduce)');
     const respect = () => { if (reduce.matches) { v.removeAttribute('autoplay'); v.pause(); } };

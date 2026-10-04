@@ -20,7 +20,7 @@ const t = articulo[locale];
 const meta = pageMeta(article.ref, locale, a);
 const related = (await getArticles()).filter((x) => x.key !== article.key).slice(0, 2);
 ---
-<Base locale={locale} page={article.ref} title={meta.title} description={meta.description}>
+<Base locale={locale} page={article.ref} title={meta.title} description={meta.description} article={{ headline: a.title, datePublished: article.date }}>
   <div class="page">
     <div class="wrap">
       <a class="back" href={href({ id: 'insights' }, locale)}><span aria-hidden="true">← </span>{t.back}</a>
