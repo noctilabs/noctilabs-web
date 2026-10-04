@@ -1,6 +1,6 @@
 # Spec 002 — Páginas
 
-Estado: borrador, pasada 2 de revisión · 2026-10-03
+Estado: borrador, pasada 3 de revisión · 2026-10-04
 
 ## 1. Contexto
 
@@ -92,6 +92,12 @@ URLs del contrato que se agregan:
    - negativos: `/insights/inexistente/`, `/en/insights/el-contexto-es-el-nuevo-sistema-operativo/` (slug español con prefijo inglés), `/insights/context-is-the-new-operating-system/` y `/insights/el-contexto-es-el-nuevo-sistema-operativo//`.
 4. Tipos: un `ArticleId` inexistente se rechaza con `// @ts-expect-error` en `tests/routes.types.ts`.
 
+`PAGES` (el enumerador de `routes.ts` del que salen `BY_PATH` y `pageFromPath`) suma los artículos del registro.
+
+**Páginas:** `src/pages/insights/[slug].astro` y `src/pages/en/insights/[slug].astro`. Su `getStaticPaths()` llama a
+`getArticles()` (§3.4), toma el slug del registro para su idioma y pasa la entrada localizada como prop.
+Las colecciones de Astro no generan rutas solas, y el `id` de la entrada nunca se usa como slug.
+
 En el header, «Insights» queda activo (`data-active`) en los artículos. `aria-current` solo va en `/insights/`.
 
 ### 3.3 Industrias
@@ -118,12 +124,12 @@ interface Industry {
 
 ```ts
 const insights = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/insights',
-                 generateId: ({ data }) => `${data.articleId}.${data.lang}` }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/insights' }),   // id por archivo (default): no colisiona
   schema: z.object({
     articleId: z.enum(ARTICLE_IDS), lang: z.enum(['es', 'en']),
     title: z.string().min(1), category: z.enum(CATEGORY_IDS), excerpt: z.string().min(1),
-    date: z.coerce.date(), minutes: z.number().int().positive(),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),   // fecha editorial, sin hora ni zona
+    minutes: z.number().int().positive(),
   }),
 });
 ```
@@ -131,10 +137,14 @@ const insights = defineCollection({
 - **Archivos:** `src/content/insights/<articleId>.<lang>.md`.
 - **Slug:** el de la URL sale **del registro**, no del frontmatter, así que no pueden divergir.
 - **Categorías:** `CATEGORY_IDS` son estables e independientes del idioma: `tesis`, `contexto`, `ia-operativa`, `agentes` y `transformacion`. Sus labels por idioma van en `ui.ts`.
-- **Validación en el build:** `src/lib/insights.ts` → `getArticles()` falla si:
+- **Validación en el build:** `src/lib/insights.ts` → `getArticles()` agrupa las entradas por `(articleId, lang)`
+  y falla si:
+  - algún par aparece más de una vez (dos archivos con el mismo artículo e idioma; los ids son por archivo, así que los dos llegan a la validación);
   - algún `ArticleId` registrado no tiene exactamente una entrada `es` y una `en`;
-  - alguna entrada no tiene `articleId` registrado o está duplicada;
   - algún cuerpo está vacío.
+
+  Que el `articleId` sea uno registrado lo garantiza el esquema.
+- **Fecha:** se formatea con `Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' })` sobre `new Date(date + 'T00:00:00Z')`, así no depende de la zona horaria de la máquina que construye el sitio. Vale para el destacado y para el artículo.
 
   Las páginas de artículo y de Insights usan solo esa función.
 - **Índice «En este artículo»:** se genera con los `headings` de profundidad 2 que devuelve `render(entry)`, con los ids que asigna Astro. No hay TOC escrito a mano.
@@ -150,8 +160,10 @@ type Photo = { src: ImageMetadata; alt: Localized<string> } | null;
 
 - **Componente:** `<Picture>` de `astro:assets` con `formats={['avif', 'webp']}`, `fallbackFormat="jpg"`, `widths={[480, 768, 1080, 1440, 1920]}` y un `sizes` por contexto:
   - visor del home y foto de industria: `(min-width: 1200px) 1108px, calc(100vw - 32px)`;
-  - `quality={70}`;
-  - `loading="lazy"` y `decoding="async"`, porque todas están debajo del pliegue.
+  - `quality={70}`.
+- **Carga según el contexto:**
+  - En la página de industria, la foto va inmediatamente después del hero y puede entrar en el primer viewport: `loading="eager"` y `decoding="async"`.
+  - En el visor del home, las cinco fotos son `loading="lazy"`. Cuando la sección se acerca al viewport (`IntersectionObserver` con `rootMargin: 600px`), el script de tabs pasa las cinco a `loading="eager"`. Así, la activación automática de las tabs no muestra una foto pendiente.
 - **Fuentes:** las tres fotos del diseño (`ind-manufactura.png`, `ind-consumo.png`, `ind-fitness.png`) y los dos fotogramas de D10 (`ind-retail.png`, `ind-servicios.png`), todas en `src/assets/industries/`.
 - **Sin foto (`photo === null`):** se muestra el panel oscuro de respaldo con el isotipo y el label (`role="img"` y `aria-label` = label).
 
@@ -188,10 +200,13 @@ Cada sección reproduce Inv con sus valores exactos. Acá solo se listan las dec
    - **Control Sin/Con:** un grupo de dos `<button aria-pressed>`, con `aria-describedby` hacia un texto solo para lectores: «Elegir una vista detiene la animación automática.» / «Choosing a view stops the automatic animation.».
    - **Transición de estado** (una sola función `setState(state, origin)`): actualiza `data-state`, el `aria-pressed` de los dos botones, el texto del H2 (`morphTitle`) y los pies de los tres diagramas. Si `origin` es `'usuario'`, además escribe en una región `aria-live="polite"` persistente y visualmente oculta el texto «Con Nocti: Cómo pueden operar.» o «Sin Nocti: Cómo operan hoy las empresas.». La alternancia automática no escribe en esa región.
    - **Alternancia automática:**
-     - Cada 3600 ms, solo mientras la sección está en pantalla (`IntersectionObserver`, threshold .35).
+     - Cada 3600 ms, solo mientras el **bloque acotado** formado por el control y el H2 intersecta el viewport (`IntersectionObserver`, threshold 0) y la pestaña está visible (`document.hidden === false`). No se observa la sección entera, que en pantallas bajas puede ser más alta que el viewport.
      - El primer uso del control la detiene para siempre en esa carga, aunque se salga y se vuelva.
-   - **Reduced motion:** con `prefers-reduced-motion: reduce` no alterna, el estado queda en «con» y las transiciones van a 0 ms. Se escucha el cambio en vivo: si pasa a `reduce`, se detiene y fija «con».
-   - **Sin JS:** el HTML inicial es el estado **«con»** y el control queda `hidden`. Con JS y sin reduced motion, el script muestra el control, pone «sin» y arranca la alternancia al entrar la sección en pantalla. La sección está debajo del pliegue, así que el cambio no se ve.
+   - **Reduced motion:**
+     - Con `prefers-reduced-motion: reduce` no hay alternancia y las transiciones van a 0 ms. El estado inicial es «con» y el control sigue disponible para elegir cualquiera de los dos.
+     - El cambio de preferencia se escucha en vivo. Si pasa a `reduce`, se detiene la alternancia; si el usuario ya había elegido un estado, se respeta, y si no, queda «con».
+   - **Sin JS:** el HTML inicial es el estado **«con»** y el control queda `hidden`. Con JS el control siempre se muestra. Sin reduced motion, el script pone «sin» y arranca la alternancia cuando el bloque entra en pantalla. La sección está debajo del pliegue, así que el cambio no se ve.
+   - **Nodos a 320 px:** el lienzo es un contenedor (`container-type: inline-size`) y el texto de los nodos escala con `font-size: clamp(9px, 3.4cqw, 13px)` (y el padding en proporción). Así, a 320 px los nodos con `nowrap` no se recortan ni se superponen.
    - **Mobile:** el H2 puede ocupar varias líneas; no se porta el `nowrap` (Inv §11.22).
    - **Contraste:** `chipOff` usa texto `#6B6B68` (4,85:1 sobre `#F4F4F2`) en lugar de `#9A9A96`, con el borde punteado `#9A9A96`. Diferencia autorizada.
 
@@ -257,7 +272,8 @@ Anclas `#overview`, `#cerebro`, `#bi`, `#agentes` y `#control`. Las secciones re
   - Si no hay más artículos, la grilla no aparece.
 - **Filtros por categoría: diferidos.** No se renderizan mientras haya menos de dos categorías con artículos. Su especificación (query `?categoria=` / `?category=` con ids estables, normalización de valores inválidos, destacado y grilla según el filtro) se escribe cuando exista ese contenido, en la fase 5.
 - **Artículo:**
-  - Cabecera: «← Insights» como link, categoría (label localizado), H1 y meta (autor «NoctiLabs», fecha con `Intl.DateTimeFormat(locale, { dateStyle: 'medium' })` y «8 min de lectura» / «8 min read»).
+  - Cabecera: «← Insights» como link, categoría (label localizado), H1 y meta (autor «NoctiLabs», fecha según §3.4 y «8 min de lectura» / «8 min read»).
+  - **H1 del artículo** (excepción a H1-INT): `clamp(32.8px, 4.4vw, 68.9px)`, peso 500, `line-height: 1`, `letter-spacing: -.05em` (Inv §6.1).
   - Cuerpo `.prose-article`, con el índice generado (§3.4).
   - «Seguir leyendo»: otros artículos publicados; no aparece si no hay.
 - **Fecha y minutos:** los del diseño (18 sep 2026, 8 min) son ilustrativos y quedan en `docs/pendientes.md`.
@@ -266,6 +282,7 @@ Anclas `#overview`, `#cerebro`, `#bi`, `#agentes` y `#control`. Las secciones re
 
 - **Columna izquierda:** H1, lead, pasos y mail con `mailto:`.
 - **Formulario:**
+  - `<form novalidate>`: el navegador no valida antes del `submit`, así que la validación propia muestra los errores en línea. El botón es `type="submit"`.
   - El HTML inicial lleva todos los controles dentro de `<fieldset disabled>`. Sin JS no hay control habilitado: ni el click ni el Enter envían nada.
   - Se suma un `<noscript>` con «Escribinos a hola@noctilabs.io» como link.
   - El script registra el `submit` con `preventDefault()` y recién después habilita el fieldset.
@@ -290,8 +307,8 @@ Anclas `#overview`, `#cerebro`, `#bi`, `#agentes` y `#control`. Las secciones re
 - **Estados:**
   1. **idle**.
   2. **enviando:**
-     - el botón muestra «Enviando…» y queda deshabilitado, aplicado antes del primer `await` con un `requestAnimationFrame`;
-     - un segundo submit se ignora.
+     - el estado se fija de forma sincrónica en el `submit`: el botón muestra «Enviando…» y queda deshabilitado, y un segundo submit se ignora;
+     - recién después de dos `requestAnimationFrame` consecutivos se llama a `submitContact`, para que el navegador llegue a pintar el estado aunque la promesa rechace enseguida.
   3. **error:**
      - mensaje en línea con «No pudimos enviar el mensaje. Escribinos a hola@noctilabs.io.» (con el link);
      - el botón vuelve a estar habilitado y los valores se conservan.
@@ -304,7 +321,7 @@ Anclas `#overview`, `#cerebro`, `#bi`, `#agentes` y `#control`. Las secciones re
 
 ### 4.7 Cambios transversales
 
-- **Tipografía de H1:** los H1 internos usan H1-INT (500, `line-height` .96). El H1 del home queda en 400, como en el diseño.
+- **Tipografía de H1:** los H1 internos usan H1-INT (500, `line-height` .96). Hay dos excepciones, ambas como en el diseño: el H1 del home (400) y el del artículo (§4.5).
 - **Navegación:** todo lo que en el diseño era `<button onClick=go>` pasa a `<a href>` con `href()`.
 - **`translate="no"`:** en «Nocti», «NoctiLabs» y nombres de sistemas usados como marca.
 - **Animaciones:** se transicionan `transform`, `opacity` y colores. La transición de colores en hover de tarjetas y botones es una excepción documentada a «animar solo transform/opacity» (B13), porque es corta y no mueve el layout. No se animan alturas.
@@ -353,7 +370,7 @@ TypeScript sin dependencias, incluido solo en la página que lo usa.
 
 - `Nocti App v2` como isla React (con las tabs de rol y los captions) y la textura animada: fase 3.
 - Envío real del formulario, sitemap, Open Graph, analítica y legales: fase 4.
-- Filtros de Insights, equipo, artículos 2–6, revisión del copy en inglés y del copy redactado, y licencia de Neue Haas: fase 5 (ver `docs/pendientes.md`).
+- Filtros de Insights, equipo, artículos 2–6, y revisión del copy en inglés y del copy redactado: fase 5 (ver `docs/pendientes.md`).
 - Vercel: fase 6.
 
 ## 7. Diferencias autorizadas respecto del diseño
@@ -364,9 +381,18 @@ TypeScript sin dependencias, incluido solo en la página que lo usa.
 4. «Conocer más» lleva a la industria del panel.
 5. Conectores de Overview y grilla de Control adaptados a mobile.
 6. H2 del antes/después sin `nowrap`.
-7. Sin tabs de rol ni captions hasta la fase 3.
-8. Inter en lugar de Neue Haas Unica.
-9. Las diferencias de la fase 1.
+7. Inter en lugar de Neue Haas Unica.
+8. Las diferencias de la fase 1.
+
+**Temporales, con su fase de restitución:**
+
+| Diferencia | Se restituye en |
+|---|---|
+| Demos de `Nocti App v2` como placeholder, sin tabs de rol ni captions (§4.1.3, §4.2.6, §4.8) | fase 3 |
+| Textura de fondo ausente | fase 3 |
+| Equipo de Nosotros oculto (§4.4) | fase 5 (contenido del dueño) |
+| Insights sin filtros, sin grilla y sin «Seguir leyendo» mientras haya un solo artículo (§4.5) | fase 5 (contenido del dueño) |
+| Formulario sin envío real; estado «enviado» inalcanzable (§4.6) | fase 4 |
 
 Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por el gate.
 
@@ -376,7 +402,7 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 |---|---|---|
 | B1 | `npm run build` sin errores ni warnings y `npm test` en verde, con S1 extendida (§3.2). | Salida de los comandos. |
 | B2 | 22 rutas (20 + 2 del artículo) con `lang`, canonical, hreflang, title, descripción y H1 iguales a una tabla de **valores esperados escrita a mano** (`docs/evidence/002/b2-esperados.json`), más la 404. | Comparador como el de A4. |
-| B3 | **Fidelidad:** matriz de secciones (Inv §1–§8) × 1440×900 y 390×844, con capturas lado a lado contra el diseño en las condiciones de A6 (textura «Ninguna», fuentes cargadas, fondo liso). Diferencias: solo las de §7. EN y las otras 4 industrias se comparan **estructuralmente** contra ES y Retail: mismas secciones, sin desbordes. | `docs/evidence/002/capturas/` + matriz en el README de la evidencia. |
+| B3 | **Fidelidad:** matriz de secciones (Inv §1–§8) × 1440×900 y 390×844, con capturas lado a lado contra el diseño en las condiciones de A6 (textura «Ninguna», fuentes cargadas, fondo liso). Se captura por estado: antes/después en «sin» y en «con»; tarjetas en reposo y en hover; las cinco industrias del visor; y los estados alcanzables del formulario (idle, errores, enviando, error). Diferencias: solo las de §7, permanentes o temporales. EN y las otras 4 industrias se comparan **estructuralmente** contra ES y Retail: mismas secciones, sin desbordes. | `docs/evidence/002/capturas/` + matriz en el README de la evidencia. |
 | B4 | **Antes/después:** alterna cada 3,6 s solo en pantalla; el primer uso del control la detiene aunque se salga y se vuelva; `aria-pressed`, H2 y pies quedan sincronizados; la región viva anuncia solo cambios manuales; con reduced motion (inicial y en vivo) no alterna y muestra «con»; sin JS se ve «con» y no hay control. | Escenario CDP + árbol de accesibilidad (CDP `Accessibility`). |
 | B5 | **Tabs de industria:** roles, nombres, `aria-controls`/`labelledby`, `aria-selected`/`tabindex`, flechas con vuelta, Home/End, Tab al panel; «Conocer más» lleva a la industria del panel; sin JS, el panel inicial y sin control. | Escenario CDP con teclado real. |
 | B6 | **Tarjetas:** ejemplo visible en reposo, en hover y en táctil, con contraste ≥ 4,5:1 en cada fondo; con reduced motion, sin desplazamiento. | Escenario CDP con media emulada + contraste calculado. |
@@ -385,15 +411,15 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 | B9 | Cero links internos rotos, anclas incluidas, en las 22 rutas. | Script sobre `dist/`. |
 | B10 | Cero errores de consola en las 22 rutas. | CDP. |
 | B11 | JS de la fase 2 < 8192 bytes gzip por página (mismo método que A10). | Inventario por página. |
-| B12 | **Imágenes de contenido** (fotos de industria): AVIF/WebP con fallback JPG, `width`/`height`, lazy. El recurso que elige el navegador a 1440×900 con DPR 1 pesa ≤ 300 KB (`transferSize` en la red). Los `alt` se revisan a mano y se listan. | CDP Network + lista en la evidencia. |
+| B12 | **Imágenes de contenido** (fotos de industria): AVIF/WebP con fallback JPG, `width`/`height`, y carga según §3.5. A 1440×900 con DPR 1, con la caché deshabilitada (`Network.setCacheDisabled`), se activa cada uno de los cinco paneles del visor y cada página de industria, se espera la carga y se registra el `currentSrc`. El archivo correspondiente en `dist/` pesa ≤ 300 KB (se mide el tamaño del archivo, no `transferSize`). Los `alt` se revisan a mano y se listan. | CDP + tamaños de `dist/` + lista en la evidencia. |
 | B13 | Revisión con web-design-guidelines sin hallazgos abiertos, salvo las excepciones de la fase 1, la URL efímera de las tabs (§4.1.6) y la transición de colores (§4.7). | Informe en la evidencia. |
-| B14 | El checklist del header vigente (73 casos) sigue en verde. | Re-ejecución. |
-| B15 | **Accesibilidad manual:** recorrido completo con teclado en cada página (orden, foco visible, sin trampas), zoom a 320 px de ancho sin scroll horizontal (WCAG 1.4.10), y árbol de accesibilidad de cada sección interactiva (nombres, roles, regiones vivas). No hay un lector de pantalla disponible; queda declarado como límite. | Escenario CDP + capturas a 320 px. |
+| B14 | El checklist del header vigente (75 casos al cerrar la fase 1, o el que esté vigente) sigue en verde. | Re-ejecución. |
+| B15 | **Accesibilidad manual:** recorrido completo con teclado en cada página (orden, foco visible y no tapado por el header, sin trampas). **Reflow a 320 CSS px** (WCAG 1.4.10): sin scroll horizontal **y** sin contenido recortado, superpuesto ni perdido (texto completo de nodos, tarjetas, chips y formulario), revisado sobre capturas de página completa. **Zoom 200 %**, equivalente a un viewport de 720×450 CSS px: controles operables y foco visible. **Árbol de accesibilidad** de cada sección interactiva: nombres, roles y regiones vivas. No hay un lector de pantalla disponible; queda declarado como límite. | Escenario CDP + capturas a 320 y 720 px. |
 | B16 | gpt-6.1-sol aprueba el spec antes de empezar y la implementación con la evidencia B1–B15 sobre un mismo commit. | Veredicto con hash. |
 
 ## 9. Decisiones y pendientes
 
-- **D1. Tipografía.** Resuelta: Inter.
+- **D1. Tipografía.** Cerrada: Inter. Cambiarla requiere una nueva decisión explícita del dueño; no es un pendiente de la fase 5.
 - **D4. Inglés.** Lo traduzco yo; pendiente de revisión del dueño.
 - **D6. Diagramas.** Solo la Opción 2.
 - **D7. Industria inicial del home.** Manufactura, como en el diseño.
@@ -412,7 +438,6 @@ Cualquier otra diferencia se corrige o se agrega acá como enmienda y pasa por e
 - equipo (D9);
 - artículos 2–6 o su exclusión (D11);
 - fecha y minutos reales del artículo;
-- licencia de Neue Haas o confirmación de Inter (D1);
 - terminología (D12);
 - licencia de las fotos de stock en web (D10).
 
@@ -420,8 +445,8 @@ El gate técnico no aprueba ese contenido como final.
 
 ## 10. Plan
 
-1. **Contenido tipado** (`meta.ts`, `content/pages`, `industries.ts` extendido, colección y validación) y primitivas UI. Se verifica con B1.
-2. **S1 extendida con TDD** (§3.2). Se verifica con B1 y B2.
+1. **S1 extendida con TDD** (§3.2), en rebanadas rojo/verde separadas para `href`, `alternates`, `pageFromPath` y tipos. Incluye el registro `ARTICLE_SLUGS` y los artículos en `PAGES`. Se verifica con B1.
+2. **Contenido tipado y primitivas:** `meta.ts`, `content/pages`, `industries.ts` extendido, la colección con su validación y las páginas de artículo. Se verifica con B1 y B2.
 3. **Home** (sin la isla). Se verifica con B3–B6.
 4. **Producto.** Se verifica con B3.
 5. **Industrias** (plantilla + 5, con fotos). Se verifica con B3 y B12.
