@@ -31,7 +31,7 @@ for (const f of walk(dist)) {
     const ok = (dir[d] ?? []).includes(h);
     const data = /type="application\/ld\+json"/.test(attrs);
     if (data) ld++;
-    if (!ok && !data) {
+    if (!ok) {
       bad++;
       out.push(`  FALTA ${d} ${attrs.trim()} ${h} ${body.slice(0, 60).replace(/\s+/g, ' ')}`);
     }
@@ -40,4 +40,4 @@ for (const f of walk(dist)) {
   if (unsafe.some((k) => k !== 'style-src-attr')) unsafeBad++;
   console.log(`${rel}: csp=${csp ? 'sí' : 'NO'}, ${items.length} inline (${ld} JSON-LD), 'unsafe-inline' solo en [${unsafe.join(', ')}]${out.length ? '\n' + out.join('\n') : ''}`);
 }
-console.log(`TOTAL inline ${total}; sin hash (excluido JSON-LD) ${bad}; páginas con 'unsafe-inline' fuera de style-src-attr ${unsafeBad}`);
+console.log(`TOTAL inline ${total}; sin hash (JSON-LD incluido) ${bad}; páginas con 'unsafe-inline' fuera de style-src-attr ${unsafeBad}`);

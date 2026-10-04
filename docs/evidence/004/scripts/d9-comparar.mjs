@@ -7,7 +7,8 @@ import { join } from 'node:path';
 const [rama, base] = process.argv.slice(2);
 // Normaliza lo que cambia entre corridas o entre builds (hashes de assets, tiempos, rutas) para comparar el texto.
 const norm = (l) => l.replace(/\.[\w-]{8}\.(js|css)/g, '.HASH.$1').replace(/\d+(\.\d+)? ?ms/g, 'N ms').replace(/localhost:49\d\d/g, 'localhost:PORT').trim();
-const fallas = (f) => readFileSync(f, 'utf8').split('\n').filter((l) => /FALLA/.test(l)).map(norm);
+// Solo las filas que empiezan con «FALLA», no los resúmenes como «12 FALLAS» (gate 004, pasada 1, hallazgo 3).
+const fallas = (f) => readFileSync(f, 'utf8').split('\n').filter((l) => /^\s*FALLA(\s|$)/.test(l)).map(norm);
 const oks = (f) => readFileSync(f, 'utf8').split('\n').filter((l) => /^\s*OK\b/.test(l)).length;
 let nuevas = 0;
 for (const name of readdirSync(rama).filter((f) => f.endsWith('.txt')).sort()) {

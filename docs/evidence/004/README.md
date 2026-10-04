@@ -102,3 +102,16 @@ Envío real (D2), respuestas HTTP reales del dominio, apex → www 308, `VERCEL_
 `X-Robots-Tag` en previews, Analytics activado con un pageview real sin query ni fragmento y el payload real de
 recolección (D8), restricción de dominio de Web3Forms, y los datos legales y la revisión profesional que hoy bloquean el
 build publicable.
+
+
+## Gate de implementación, pasada 1: GATE SÍ (merge `3576ba9`, arreglos en `dde181a`)
+
+La pasada 1 (`docs/reviews/004-impl-sol-pasada-1.md`) dio **GATE SÍ**, con 2 importantes y 1 menor, sobre `main` con la fase 4 mergeada. Las verificaciones corrieron sobre ese `main`, que además incluye los cierres del gate 002. La evidencia nueva está en `gate-p1/`.
+
+| # | Hallazgo | Arreglo | Verificación | Resultado |
+|---|---|---|---|---|
+| 1 | El JSON-LD no tenía hash en la CSP, y D7 lo excluía (`!data`) | `Base.astro` serializa cada bloque una vez, registra su hash con `Astro.csp.insertScriptHash()` y renderiza ese mismo texto. Se quitó la exclusión del verificador. | `csp-hashes.mjs` sobre el `dist/` de `main`: 41 scripts y estilos inline, **0 sin hash, JSON-LD incluido**. `unsafe-inline` solo en `style-src-attr`. El hash de Organization (`sha256-Fo4B6jt…`) está en la CSP del home. | OK (`gate-p1/csp-hashes.txt`) |
+| 2 | La clasificación de B15 daba por hecha la explicación, y el `<style>` inyectado por el instrumento generaba errores CSP | B15 v3 deja de clasificar a posteriori. Del desborde excluye **solo** el honeypot y cuenta cuántas entradas excluyó. En cada paso exige los 5 ids de error (`cf-name`, `cf-email`, `cf-organization`, `cf-message`, `cf-consent`) y el foco en `cf-name`. Para las capturas usa el atributo `style` del header (permitido por `style-src-attr`) en vez de un `<style>` inyectado, e informa los errores CSP de consola. | Reflow a 320: **37/37**. Las rutas suman la política ES/EN, y en Hablemos/Contact se excluyen 2 entradas del honeypot. Zoom 100–400 %: **150/150**. En los 12 casos del formulario hay 5 errores en ese orden y foco en Nombre. **0 errores CSP** en las dos corridas. | OK (`gate-p1/b15-reflow-v3.txt`, `gate-p1/b15-zoom-v3.txt`) |
+| 3 | El conteo «27 fallas nuevas» incluía la línea de resumen «12 FALLAS» | `d9-comparar.mjs` cuenta solo las filas que empiezan con `FALLA`. | `d9-comparacion.txt` regenerado: **26** fallas nuevas (B8 12, B15 reflow 2, B15 zoom 12). Las de B15 quedan resueltas en v3 (fila 2), y las de B8 están cubiertas por `b8-v2-consentimiento` (24/24). | OK |
+
+Con esto, D9 deja de ser «OK con observaciones» y la fila 2 lo reemplaza. D10 queda cumplido con esta pasada. Siguen pendientes para la fase 6 el envío real de D2, las respuestas HTTP de D6 y el payload y el panel de D8. C3, C5 y C8 corresponden a la fase 3.

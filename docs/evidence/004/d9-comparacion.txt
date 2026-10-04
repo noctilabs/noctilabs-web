@@ -26,7 +26,7 @@ b4-es.txt                        rama:   30 OK / 4 FALLA · base:   30 OK / 4 FA
 b5-en.txt                        rama:   30 OK / 0 FALLA · base:   30 OK / 0 FALLA · nuevas 0, resueltas 0
 b5-es.txt                        rama:   30 OK / 0 FALLA · base:   30 OK / 0 FALLA · nuevas 0, resueltas 0
 b8-v2-consentimiento.txt         rama:   24 OK / 0 FALLA · base: sin equivalente
-b8-v2.txt                        rama:   12 OK / 13 FALLA · base:   24 OK / 0 FALLA · nuevas 13, resueltas 0
+b8-v2.txt                        rama:   12 OK / 12 FALLA · base:   24 OK / 0 FALLA · nuevas 12, resueltas 0
     nueva en la rama: FALLA es: borde #767676 en reposo (4.54:1 sobre blanco, 4.12:1 sobre #F4F4F2)
     nueva en la rama: FALLA es: 4 errores en línea (nombre con espacios cuenta como vacío) y foco en el primero
     nueva en la rama: FALLA es: editar limpia sólo el error de ese campo
@@ -39,7 +39,6 @@ b8-v2.txt                        rama:   12 OK / 13 FALLA · base:   24 OK / 0 F
     nueva en la rama: FALLA en: email inválido → «», foco en email
     nueva en la rama: FALLA en: «Send →» sincrónico, botón y campos :disabled, doble submit ignorado
     nueva en la rama: FALLA en: estado error con el mail, botón y campos habilitados, valores conservados, en región aria-live polite
-    nueva en la rama: 12 FALLAS
 b9-b11.txt                       rama:    0 OK / 0 FALLA · base:    0 OK / 0 FALLA · nuevas 0, resueltas 0
 
-FALLAs nuevas en la rama respecto de la línea de base (scripts con equivalente): 27
+FALLAs nuevas en la rama respecto de la línea de base (scripts con equivalente): 26
