@@ -16,7 +16,7 @@ const copy = t.pages[pageKey(page)];
   {page.id === 'home' ? (
     <HomeHero
       title={copy.h1}
-      lead={copy.description}
+      lead={ui[locale].pages.home.lead}
       primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
       secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
       pauseLabel={t.hero.pause}

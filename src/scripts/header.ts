@@ -4,6 +4,19 @@ const CLOSE_DELAY = 120;
 
 type Mode = 'hover' | 'fijo';
 
+// El foco no se pierde al apretar en una zona no enfocable del panel ni al apretar un botón
+// (Safari no enfoca botones al hacer click): el handler de click enfoca explícitamente.
+function focusQuietly(el: HTMLElement): void {
+  // Sin anillo de foco cuando la activación vino del puntero (guidelines: :focus-visible, no en click).
+  if (document.activeElement !== el) el.focus({ focusVisible: false } as FocusOptions);
+}
+
+function holdFocusOnPress(el: HTMLElement, always = false): void {
+  el.addEventListener('mousedown', (e) => {
+    if (always || !(e.target as Element).closest('a, button')) e.preventDefault();
+  });
+}
+
 export function initHeader(): void {
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (!header) return;
@@ -54,7 +67,10 @@ export function initHeader(): void {
   }
 
   for (const g of groups) {
+    holdFocusOnPress(g.button, true);
+    holdFocusOnPress(g.panel);
     g.button.addEventListener('click', () => {
+      focusQuietly(g.button);
       if (!open || open.group !== g) show(g, 'fijo');
       else if (open.mode === 'hover') open.mode = 'fijo';
       else hide(g);
@@ -84,8 +100,11 @@ export function initHeader(): void {
     for (const el of [g.button, g.panel]) {
       el.addEventListener('focusout', (e) => {
         if (open?.group !== g || inFocusSet(g, e.relatedTarget)) return;
-        if (e.relatedTarget === null && hovered === g) return;
-        hide(g);
+        if (e.relatedTarget !== null) return hide(g);
+        // Sin destino (blur, foco a body): se decide con el foco efectivo después de la transición.
+        setTimeout(() => {
+          if (open?.group === g && !focusIn(g)) hide(g);
+        });
       });
     }
 
@@ -125,13 +144,21 @@ export function initHeader(): void {
   const mobileOpen = () => !mpanel.hidden;
   const inMobile = (el: EventTarget | null) => el instanceof Node && (burger.contains(el) || mpanel.contains(el));
 
-  burger.addEventListener('click', () => setMobile(!mobileOpen()));
-  mpanel.addEventListener('focusout', (e) => {
-    if (mobileOpen() && !inMobile(e.relatedTarget) && e.relatedTarget !== null) setMobile(false);
+  holdFocusOnPress(burger, true);
+  holdFocusOnPress(mpanel);
+  burger.addEventListener('click', () => {
+    focusQuietly(burger);
+    setMobile(!mobileOpen());
   });
-  burger.addEventListener('focusout', (e) => {
-    if (mobileOpen() && !inMobile(e.relatedTarget) && e.relatedTarget !== null) setMobile(false);
-  });
+  for (const el of [burger, mpanel]) {
+    el.addEventListener('focusout', (e) => {
+      if (!mobileOpen() || inMobile(e.relatedTarget)) return;
+      if (e.relatedTarget !== null) return setMobile(false);
+      setTimeout(() => {
+        if (mobileOpen() && !inMobile(document.activeElement)) setMobile(false);
+      });
+    });
+  }
   mpanel.addEventListener('click', (e) => {
     const link = (e.target as Element).closest('a');
     if (!link || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;

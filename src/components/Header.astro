@@ -2,6 +2,7 @@
 import LangSwitch from './LangSwitch.astro';
 import { href, INDUSTRY_SLUGS, pageFromPath, type IndustryId, type Locale } from '../i18n/routes';
 import { PRODUCT_SECTION_IDS, ui } from '../i18n/ui';
+import { industries } from '../content/industries';
 
 interface Props {
   locale: Locale;
@@ -18,8 +19,8 @@ const productItems = PRODUCT_SECTION_IDS.map((id) => ({
   href: href({ id: 'producto' }, locale, id),
 }));
 const industryItems = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({
-  label: t.pages[industry].title,
-  desc: t.pages[industry].description,
+  label: industries[industry][locale].label,
+  desc: industries[industry][locale].blurb,
   href: href({ id: 'industria', industry }, locale),
 }));
 
@@ -143,8 +144,8 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
     width: max-content;
     max-width: calc(100% - 2 * var(--edge));
     background: var(--glass);
-    backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
+    backdrop-filter: var(--glass-filter);
     border-radius: var(--radius-capsule);
     color: var(--ink);
     overflow: hidden;
@@ -269,8 +270,8 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
   }
   .surface {
     background: var(--glass);
-    backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
+    backdrop-filter: var(--glass-filter);
     border-radius: var(--radius-capsule);
     color: var(--ink);
     padding: 22px 28px 28px;

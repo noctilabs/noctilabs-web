@@ -13,6 +13,7 @@ const es = {
     home: {
       title: 'NoctiLabs — El cerebro operativo de tu empresa.',
       h1: 'El cerebro operativo de tu empresa.',
+      lead: 'Un contexto compartido para que personas e IA entiendan tu negocio, decidan mejor y actúen.',
       description: 'Un contexto compartido para que personas e IA entiendan tu negocio, decidan mejor y actúen.',
     },
     producto: {
@@ -97,6 +98,7 @@ const en: Dict = {
     home: {
       title: "NoctiLabs — Your company’s operational brain.",
       h1: "Your company’s operational brain.",
+      lead: 'A shared context so people and AI understand your business, decide better and act.',
       description: 'A shared context so people and AI understand your business, decide better and act.',
     },
     producto: {

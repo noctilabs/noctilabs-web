@@ -3,6 +3,7 @@ import Mark from './Mark.astro';
 import LangSwitch from './LangSwitch.astro';
 import { href, INDUSTRY_SLUGS, type IndustryId, type Locale } from '../i18n/routes';
 import { PRODUCT_SECTION_IDS, ui } from '../i18n/ui';
+import { industries } from '../content/industries';
 
 interface Props {
   locale: Locale;
@@ -17,7 +18,7 @@ const columns = [
   {
     title: t.nav.industrias,
     items: (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({
-      label: t.pages[industry].title,
+      label: industries[industry][locale].label,
       href: href({ id: 'industria', industry }, locale),
     })),
   },
