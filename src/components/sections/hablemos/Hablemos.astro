@@ -96,7 +96,7 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
             </div>
             <div class="field">
               <div class="check">
-                <input id="cf-consent" name="consent" type="checkbox" required data-required={n.consent.required} />
+                <input id="cf-consent" name="consent" type="checkbox" aria-required="true" data-required={n.consent.required} />
                 <label for="cf-consent">{n.consent.label}</label>
               </div>
               <p class="err" id="cf-consent-err" hidden></p>
