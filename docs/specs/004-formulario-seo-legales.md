@@ -1,6 +1,6 @@
 # Spec 004 — Formulario, SEO, analítica y legales
 
-Estado: borrador, pasada 2 de revisión · 2026-10-04
+Estado: borrador, pasada 3 de revisión · 2026-10-04
 
 ## 1. Contexto
 
@@ -40,7 +40,7 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 - que los datos se guardan en el correo del equipo y en el proveedor del formulario;
 - qué campos son obligatorios y qué pasa si faltan (no se puede responder);
 - la transferencia a Web3Forms (India) y sus subencargados;
-- el plazo de conservación (24 meses desde el último contacto, salvo relación comercial);
+- el plazo de conservación: 24 meses desde el último contacto, y si hay relación comercial, mientras dure más 24 meses;
 - los derechos de acceso, rectificación, actualización y supresión, y cómo ejercerlos (hola@noctilabs.io);
 - un link a la política completa, que se abre en una pestaña nueva con `rel="noopener"` y un aviso para lectores de pantalla («se abre en una pestaña nueva»), así no se pierde lo escrito.
 
@@ -50,7 +50,9 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 
 **Registro del consentimiento:** el envío incluye `consent: true`, `consent_version` (fecha y versión del aviso, por ejemplo `2026-10-04.1`) y `consent_at` (ISO, hora del cliente). Llega en el mail de cada contacto.
 
-**Datos del responsable:** razón social, RUT y domicilio los tiene que aportar el dueño (`docs/pendientes.md`). **El formulario no se habilita en producción** (fase 6) sin el aviso completo con esos datos y sin la revisión profesional del texto. Hasta entonces, el aviso lleva los marcadores `[RAZÓN SOCIAL]`, `[RUT]` y `[DOMICILIO]`, que un chequeo del build rechaza cuando `VERCEL_ENV === 'production'`.
+**Datos del responsable:** razón social, RUT y domicilio los tiene que aportar el dueño (`docs/pendientes.md`). **El formulario no se habilita en producción** (fase 6) sin el aviso completo con esos datos y sin la revisión profesional del texto. Hasta entonces, los datos viven en `src/content/legal.ts` con los marcadores `[RAZÓN SOCIAL]`, `[RUT]` y `[DOMICILIO]`, y un chequeo del build los rechaza cuando `VERCEL_ENV === 'production'`.
+
+**Fixture legal para las pruebas locales:** con `LEGAL_FIXTURE=1`, el build reemplaza los marcadores por datos sintéticos visiblemente falsos («Empresa de Prueba S.A. — DATOS DE PRUEBA, NO PUBLICAR») y escribe `dist/NO-PUBLICAR.txt`. Así se pueden construir y verificar localmente las variantes de producción sin desactivar el bloqueo. El build **falla** si `LEGAL_FIXTURE` está definido junto con la variable `VERCEL`, de modo que un deploy real nunca la usa.
 
 ### 2.3 Envío del formulario
 
@@ -64,6 +66,11 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
   - `botcheck`: boolean, ver abajo;
   - los campos de spec 002 §4.6;
   - `locale`, `page` y los tres de consentimiento de §2.2.
+- **Controlador** (`src/scripts/contact-form.ts`, adaptado):
+  - el payload se arma con campos **tipados** (strings recortados, `consent: true`, `botcheck: boolean`), no recorriendo todos los inputs;
+  - el consentimiento se valida con `.checked`;
+  - el honeypot queda fuera de la validación, de los nodos de error y del cálculo de «formulario modificado» (`beforeunload`);
+  - validar, editar y resetear no lanzan excepciones con los checkboxes.
 - **Honeypot:** un `<input type="checkbox" name="botcheck">` fuera de pantalla, con `tabindex="-1"`, `autocomplete="off"` y `aria-hidden="true"`. Se lee con **`.checked`**. Si está marcado, `submitContact` resuelve sin hacer ningún request y se ve el estado «enviado»; si no, viaja `botcheck: false`.
 - **Éxito:** solo HTTP 2xx **y** cuerpo JSON con `success === true` (booleano). Todo lo demás es error:
   - otro status;
@@ -75,7 +82,7 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 - **Antiabuso:**
   - el honeypot;
   - un intervalo mínimo de 30 s entre envíos exitosos en la misma pestaña; un nuevo envío antes de tiempo muestra «Esperá unos segundos antes de enviar otro mensaje.»;
-  - la restricción de dominio de Web3Forms (`www.noctilabs.io`), que el dueño configura en su cuenta en la fase 6.
+  - la restricción de dominio de Web3Forms (`www.noctilabs.io`), que es una función **PRO**: si la cuenta tiene PRO, el dueño la activa en la fase 6 **después** de verificar un envío desde `www`, porque restringida ya no funciona en local; si la cuenta es gratuita, el dueño acepta explícitamente el riesgo sin restricción (`docs/pendientes.md`).
 - **Riesgo aceptado:** sin captcha. Queda registrado en `docs/pendientes.md` junto con el plan y la cuota de Web3Forms (el gratuito permite 250 por mes, compartidos con la web vieja hasta el lanzamiento), quién monitorea los envíos y qué se hace si la cuota se agota (el mail sigue como canal alternativo en el estado de error).
 
 ### 2.4 Política de privacidad (cambia S1)
@@ -97,9 +104,9 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 - **Open Graph y Twitter** en `Base.astro`, para todas las páginas **indexables**: `og:title`, `og:description`, `og:url` (canonical), `og:type` (`article` o `website`), `og:image` absoluta, `og:locale` (`es_UY` / `en_US`) con su `og:locale:alternate`, y `twitter:card=summary_large_image`. La 404 no tiene canonical ni `og:url`; solo lleva title, description y `noindex`.
 - **Imagen OG:** `public/og/og-es.png` y `og-en.png` (1200×630, isotipo, «NoctiLabs» y el lema). Se generan una vez con Chrome headless a partir de una plantilla HTML local y se commitean.
 - **JSON-LD:**
-  - **Formato:** `<script type="application/ld+json">` con el JSON serializado y `<` escapado como `<`, así un `</script>` dentro de un título de Sanity no cierra el elemento. Cada bloque tiene `@context: "https://schema.org"` y su `@type`.
+  - **Formato:** `<script type="application/ld+json">` con el JSON de `JSON.stringify(datos)` en el que cada carácter `<` se reemplaza por su escape Unicode JSON (barra invertida, `u`, `003c`: seis caracteres). Así un `</script>` dentro de un título de Sanity no cierra el elemento, y el JSON sigue siendo equivalente. Cada bloque tiene `@context: "https://schema.org"` y su `@type`.
   - **Home (ES y EN):** `Organization` (`name`, `url`, `logo` absoluto, `email`) y `WebSite` (`name`, `url`, `inLanguage`).
-  - **Artículos:** `Article` (`headline` = H1, `datePublished` = fecha del post, `inLanguage`, `author` y `publisher` = la Organization, `mainEntityOfPage` = canonical, `image` = OG del idioma).
+  - **Artículos:** `Article` (`headline` = H1, `datePublished` = fecha del post, `inLanguage`, `author` y `publisher` = la Organization, `mainEntityOfPage` y `url` = canonical, `image` = OG del idioma).
   - **Política:** el JSON-LD es la única vía de scripts no ejecutables, y su contenido queda cubierto por la CSP (§2.8).
 
 ### 2.6 Sitemap y robots
@@ -116,21 +123,25 @@ El lanzamiento (dominio, proyecto Vercel, deploy hooks y webhook de Sanity) es d
 
 ### 2.7 Analítica
 
-- **Herramienta:** Vercel Web Analytics, con `@vercel/analytics` (`inject()` desde un `<script>` procesado de `Base.astro`).
-- **Activación:** solo cuando `VERCEL_ENV === 'production'`; en preview y en local no hay analítica.
-- **Datos:** el `beforeSend` descarta la query string y el fragmento de las URLs reportadas, para no enviar datos personales en parámetros.
-- **Consentimiento:** sin cookies ni identificadores persistentes, según la documentación de Vercel. Así lo informa la política (§2.4) y no hace falta un banner de consentimiento; la revisión profesional de §2.2 lo confirma.
-- **Fase 6:** activar Analytics en el proyecto y verificar un pageview real recibido.
+- **Herramienta:** Vercel Web Analytics, con `@vercel/analytics` en una **versión fijada en el lockfile**. Se llama a `inject({ mode: 'production', beforeSend })` desde un `<script>` procesado de `Base.astro`.
+- **Activación:** solo cuando `VERCEL_ENV === 'production'`. En preview y en local no hay analítica.
+- **Páginas:** solo las que tienen `PageRef`, es decir, las 22 fijas y los artículos publicados. La **404 no inyecta analítica**, así que una ruta desconocida, que podría contener datos personales en el path, no se reporta. Los paths que sí se reportan son solo los del contrato de rutas y los slugs publicados.
+- **`beforeSend`:** descarta la query string y el fragmento.
+- **Consentimiento:** sin cookies ni identificadores persistentes, según la documentación de Vercel. Así lo informa la política (§2.4) y lo confirma la revisión profesional de §2.2.
+- **Fase 6:** activar Analytics en el proyecto y verificar en el panel de Vercel un pageview real, con una URL con query y fragmento, que figure registrado sin ellos. Ese es el único lugar donde se puede verificar el `beforeSend` con el colector real.
 
 ### 2.8 Seguridad
 
-**CSP de scripts y estilos:** `security.csp` de Astro 7 genera por página un `<meta http-equiv="content-security-policy">` con hashes de los scripts y estilos que emite, islas incluidas.
-- Se configura con `algorithm: 'SHA-256'`.
-- Los scripts `is:inline` que no cubra se convierten a scripts procesados o se agregan con su hash.
-- **No se usa `'unsafe-inline'` en `script-src`.**
+**CSP de carga, en el `<meta>` de Astro** (`security.csp`):
+- todas las directivas de carga van en `security.csp.directives`, junto con los hashes que Astro genera por página para scripts y estilos, islas incluidas: `default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com https://*.vercel-insights.com; object-src 'none'; base-uri 'self'; form-action 'self'`;
+- se configura con `algorithm: 'SHA-256'`;
+- los scripts `is:inline` que no cubra se convierten a scripts procesados o se agregan con su hash;
+- **no hay `'unsafe-inline'` en `script-src`**;
+- **atributos `style`**: los hashes no los cubren, y el sitio y las islas los usan para valores calculados (posiciones de los nodos, variables de `Container` y `Kicker`, estilos de React). Se permiten **solo los atributos** con `style-src-attr 'unsafe-inline'`, mientras `style-src-elem` sigue con hashes. Es un riesgo acotado: CSS en atributos, sin ejecución de scripts.
 
-**Cabeceras HTTP** (`vercel.json` en la raíz del repo):
-- `Content-Security-Policy` con las directivas que un `<meta>` no puede expresar o que conviene fijar por servidor: `frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'`, más `default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com https://*.vercel-insights.com`. Los scripts de Vercel Analytics se sirven desde el mismo origen (`/_vercel/insights/*`), así que quedan cubiertos por `'self'`.
+**Cabecera HTTP complementaria** (`vercel.json` en la raíz), **sin `default-src`**, para no restringir por fallback lo que el `<meta>` habilita: `Content-Security-Policy: frame-ancestors 'none'`. Como las dos políticas se aplican a la vez, cada recurso tiene que cumplir ambas, y la cabecera solo agrega lo que un `<meta>` no puede expresar.
+
+**Otras cabeceras:**
 - `X-Content-Type-Options: nosniff`
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
@@ -153,7 +164,9 @@ Las URLs viejas son un conjunto **finito y congelado**: la web vieja se retira y
 | `/blog-post-introducing-noctilabs`, `/blog-post-production-gap`, `/blog-post-opportunity-audit`, `/blog-post-model-agnostic`, `/blog-post-legacy-stacks`, `/blog-post-agent-reconciliation`, `/blog-post-platform-engineering` | `/en/insights/` |
 | `/services`, `/es`, `/index.html` | `/` |
 
-**Por qué inglés:** la web vieja era primero en inglés. **Variante con barra:** `/company/` y similares los normaliza primero `trailingSlash: true` y después aplica la regla. La interacción se verifica en la fase 6. **Bajas:** cuando un post viejo se publique en Insights, su regla se actualiza a mano; queda anotado en `docs/pendientes.md` como parte de la decisión sobre los 7 posts.
+**Por qué inglés:** la web vieja era primero en inglés.
+
+**Barra final:** con `trailingSlash: true`, Vercel redirige `/company` a `/company/` **antes** de evaluar los redirects, y las fuentes se comparan de forma estricta. Por eso **cada origen se declara en las dos formas**, sin barra y con barra (`/company` y `/company/`), y las variantes `.html` sin barra. Lo mismo vale para los slugs de `/blog/…` y los aliases `/blog-post-*`. Las reglas específicas van antes del comodín `/blog/:slug*`. **Bajas:** cuando un post viejo se publique en Insights, su regla se actualiza a mano; queda anotado en `docs/pendientes.md` como parte de la decisión sobre los 7 posts.
 
 ## 3. Fuera de alcance
 
@@ -164,27 +177,36 @@ Las URLs viejas son un conjunto **finito y congelado**: la web vieja se retira y
 
 TDD en S1 para el origen nuevo y las rutas de privacidad. El resto se verifica a mano con CDP y la evidencia va en `docs/evidence/004/`.
 
-**Identidad del build verificado:** la evidencia registra:
-- el commit;
-- el hash del `package-lock.json`;
-- las variables de entorno del build;
-- un **snapshot de Sanity** (la respuesta de la consulta guardada como JSON, con su hash y su hora);
-- los hashes de `dist/sitemap.xml` y de los HTML de artículo.
+**Matriz de builds identificados:** cada criterio declara sobre qué variante corre, y cada variante tiene un manifiesto:
+- commit y árbol limpio;
+- hash del `package-lock.json`;
+- variables de entorno;
+- fixtures (`INSIGHTS_FIXTURE` con el **snapshot de Sanity**, que es la respuesta guardada como JSON con su hash y su hora; y `LEGAL_FIXTURE`);
+- hash de `vercel.json`;
+- hashes de los artefactos servidos (HTML, JS, CSS y `sitemap.xml`);
+- versión del servidor local.
 
-Todos los criterios se corren sobre **ese** build. Para que sea reproducible, se construye con `INSIGHTS_FIXTURE=<snapshot>`.
+| Variante | Entorno | Para |
+|---|---|---|
+| **base** | snapshot; sin `VERCEL_ENV` | D1, D2, D3 (ES/EN y teclado), D4, D5, D6, D7 y D9 |
+| **prod-bloqueada** | `VERCEL_ENV=production`, sin `LEGAL_FIXTURE` | D3: el build falla por los marcadores |
+| **prod-prueba** | `VERCEL_ENV=production`, `LEGAL_FIXTURE=1` | D8 (no publicable) |
+| **adversarial** | fixture con un título con comillas y `</script>` y un link `javascript:` | D4 y D7 |
+
+D7 y D9 corren sobre la variante base, con la implementación de la fase 3 identificada por su commit.
 
 ## 5. Criterios de aceptación
 
 | # | Criterio | Cómo se verifica |
 |---|---|---|
-| D1 | Build sin errores ni warnings de tipos; diagnósticos del build: solo los avisos editoriales `[insights] excluido: …` esperados para el snapshot, listados en la evidencia. S1 en verde con el origen `www` y privacidad. Conteo: 22 URLs fijas indexables + 2 × artículos del snapshot + la 404. | Salida (código de salida). |
+| D1 | Build sin errores ni warnings de tipos; diagnósticos del build: solo los avisos editoriales `[insights] excluido: …` esperados para el snapshot, listados en la evidencia. S1 en verde con el origen `www` y privacidad. Conteo de HTML: 22 + 2N + 1, con **N = artículos que devuelve `getArticles()`** para el snapshot (no los documentos crudos). Diagnósticos del build: cero errores de tipos y solo los avisos editoriales esperados para cada fixture (`[insights] excluido: …` y `[insights] <id>: bloque no admitido …`), listados en la evidencia; ningún diagnóstico inesperado. | Salida (código de salida). |
 | D2 | **Formulario contra Web3Forms**, con la API interceptada por CDP `Fetch` (sin mandar mails):<br>- payload con los campos, metadatos, `botcheck: false` y consentimiento de §2.2–2.3;<br>- **un** request por envío válido;<br>- honeypot marcado: cero requests y estado enviado;<br>- casos de error: 2xx + `success: true` → enviado con foco en el título; 2xx + `success: false`, JSON inválido, `success` de otro tipo, 4xx/5xx, error de red, timeout en los headers y timeout en la lectura del cuerpo → error con el mail y valores conservados;<br>- sin consentimiento: error en línea y foco en el checkbox;<br>- segundo envío antes de 30 s: aviso de espera.<br>**Un envío real** de prueba a la cuenta del dueño, solo con su ok explícito en el momento, confirmando que el mail llegó. | Escenario CDP + registro de red. |
 | D3 | **Aviso y política:** aviso de §2.2 completo antes del botón, con `aria-describedby`; link a la política en pestaña nueva con su aviso; checkbox accesible. Revisado en ES/EN con teclado, contraste sobre el fondo efectivo, zoom 200 % y reflow a 320 px. Política con canonical, hreflang y footer. Con `VERCEL_ENV=production` y marcadores presentes, el build falla. | CDP + comparador como A4 + build de prueba. |
 | D4 | **OG, Twitter y JSON-LD** en una página de cada tipo y en los dos idiomas: URLs absolutas con `www`; JSON-LD parseable, con `@context` y `@type`, y `headline`, `datePublished`, `inLanguage` y `url` iguales a los del artículo renderizado. Prueba manual con un post de fixture cuyo título tiene comillas y `</script>`: el HTML no se rompe y el JSON-LD parsea. La 404 queda sin `og:url`. | Extracción de `dist/` + build con fixture. |
 | D5 | **Sitemap:** todas las URLs indexables, ninguna inexistente, alternates recíprocos (cada `xhtml:link` apunta a una URL que también está en el sitemap y vuelve). `robots.txt` igual al de §2.6. | Script sobre `dist/`. |
-| D6 | **`vercel.json` de la raíz:** cada fila de la tabla de §2.9 (con sus variantes), en el orden correcto, más las cabeceras de §2.8 y la regla `noindex` de previews. Las respuestas HTTP reales se verifican en la fase 6. | Lectura del JSON contra la tabla. |
-| D7 | **Cabeceras y CSP aplicadas:** el build se sirve con un servidor local (`scratchpad`) que aplica las cabeceras de `vercel.json`. Se registran las respuestas HTTP, cero violaciones CSP (`securitypolicyviolation`) recorriendo todas las rutas con hidratación de islas, video, textura, formulario (interceptado) e Insights. Un iframe a una página del sitio no carga (`frame-ancestors`). Un link `javascript:` en un fixture de Sanity no se renderiza. | CDP + servidor local. |
-| D8 | **Analítica:** sin `VERCEL_ENV=production` no se inyecta. Con `VERCEL_ENV=production` (build de prueba), se inyecta, y los pedidos a `/_vercel/insights/*` (interceptados) llevan URLs sin query ni fragmento. El pageview real se verifica en la fase 6. | Dos builds + CDP. |
+| D6 | **`vercel.json` de la raíz:** las reglas se compilan con `@vercel/routing-utils` (el mecanismo de Vercel, instalado solo en el scratchpad de verificación) y se ejecuta la matriz completa de §2.9: cada origen sin barra, con barra y `.html`, con query (`?utm=x`). Para cada caso se registra la regla que matchea, el destino, que la query se conserva y que el destino existe en `dist/`. Se revisan también las cabeceras de §2.8 y la regla `noindex` de previews. Las respuestas HTTP reales del dominio se verifican en la fase 6. | Script con routing-utils + `dist/`. |
+| D7 | **Cabeceras y CSP aplicadas juntas:** el build base se sirve con un servidor local (`scratchpad`) que aplica las cabeceras de `vercel.json`, y el `<meta>` de Astro queda activo. Se registran las respuestas HTTP y cero violaciones CSP (`securitypolicyviolation`, desde la navegación inicial) recorriendo todas las rutas con hidratación de islas, video, textura, formulario (interceptado) e Insights, más una revisión visual de los diagramas y los nodos posicionados por `style`. Un iframe a una página del sitio no carga (`frame-ancestors`). Un link `javascript:` en un fixture de Sanity no se renderiza. | CDP + servidor local. |
+| D8 | **Analítica:** sin `VERCEL_ENV=production` no se inyecta en ninguna página. Con `VERCEL_ENV=production` (y `LEGAL_FIXTURE=1`, build local no publicable) se inyecta en las 22 + 2N páginas con `PageRef` y **no** en la 404 ni en una ruta desconocida; la carga de `/_vercel/insights/*` se intercepta y se registra. El `beforeSend` (query y fragmento) se verifica con el pageview real de la fase 6. | Builds variantes + CDP. |
 | D9 | **Regresión:** A7, B4, B5, B8, B9, B10, B15 y C3, C5 y C8 de la fase 3. | Re-ejecución. |
 | D10 | gpt-6.1-sol aprueba el spec y la implementación con la evidencia D1–D9 sobre el mismo build identificado. La aprobación es local de la fase 4; las verificaciones HTTP y de dominio quedan como condición de la fase 6. | Veredicto con hash y snapshot. |
 
@@ -196,10 +218,14 @@ Todos los criterios se corren sobre **ese** build. Para que sea reproducible, se
 - **E4. Redirects viejos a inglés.**
 - **E5. Base legal:** consentimiento expreso con aviso completo.
 
-**Pendientes del dueño** (en `docs/pendientes.md`, **bloquean el lanzamiento**):
+**Pendientes del dueño** (en `docs/pendientes.md`, **bloquean el lanzamiento**, cada uno con responsable y evidencia de cierre):
 - razón social, RUT y domicilio del responsable;
-- revisión profesional del aviso y de la política;
-- plan y cuota de Web3Forms, quién monitorea los envíos y la restricción de dominio.
+- revisión profesional del aviso y de la política, incluida la **inscripción de la base de contactos** ante la URCDP (art. 28): verificar si existe, actualizarla por los tratamientos nuevos o fundar la excepción;
+- **conservación operativa**:
+  - Web3Forms: si la cuenta permite deshabilitar el almacenamiento de envíos o borrarlos, quién lo hace y con qué frecuencia; su política declara hasta 3 años si no se borran;
+  - el proveedor del correo (buzón de hola@noctilabs.io) y sus transferencias;
+  - el procedimiento para responder pedidos de acceso, rectificación y supresión, con un plazo;
+- plan y cuota de Web3Forms, quién monitorea los envíos, y la restricción de dominio (PRO) o la aceptación del riesgo.
 
 ## 7. Plan
 
