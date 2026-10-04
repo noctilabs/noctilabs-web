@@ -341,6 +341,17 @@ del header y el footer. Los ids son iguales en los dos idiomas.
 | insights | Contexto, IA operativa y agentes. | Context, operational AI and agents. |
 | hablemos | Hablemos. | Let's talk. |
 
+**Enmienda 2026-10-03 (pedido del dueño): hero provisorio del home.** En lugar del placeholder liso,
+el home lleva `HomeHero.astro`:
+
+- **Video:** el de `public/media/hero.webm` / `hero.mp4`, con poster `hero-poster.jpg`, a sangre y con alto
+  `max(680px, 100vh)`. Atributos `autoplay muted loop playsinline` y `aria-hidden`. Con
+  `prefers-reduced-motion: reduce` se pausa.
+- **Velo encima:** `linear-gradient(#00000026 0%, #0000001a 13.1179% 60%, #0000004d 100%)`.
+- **Texto:** el H1, el lead y los dos CTA del diseño (L73–88), como links.
+- **Peso:** el video pesa ~10 MB en 1080p. Optimizarlo queda para la fase 4.
+- **Alcance:** la composición final del hero se especifica en la fase 2.
+
 Retail usa la frase del diseño (L304). Las otras cuatro industrias usan su label como placeholder hasta la fase 2.
 
 **La 404 es una excepción al `<head>` de 3.3.** `src/pages/404.astro` genera `/404.html`:

@@ -1,4 +1,22 @@
 ---
 import '../styles/global.css';
+import HomeHero from '../components/HomeHero.astro';
+import { href } from '../i18n/routes';
 ---
-<html lang="es"><head><meta charset="utf-8"><title>NoctiLabs</title></head><body><h1>NoctiLabs</h1></body></html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NoctiLabs — El cerebro operativo de tu empresa.</title>
+  </head>
+  <body>
+    <main id="contenido" tabindex="-1">
+      <HomeHero
+        title="El cerebro operativo de tu empresa."
+        lead="Un contexto compartido para que personas e IA entiendan tu negocio, decidan mejor y actúen."
+        primary={{ label: 'Hablemos', href: href({ id: 'hablemos' }, 'es') }}
+        secondary={{ label: 'Ver el producto', href: href({ id: 'producto' }, 'es') }}
+      />
+    </main>
+  </body>
+</html>
