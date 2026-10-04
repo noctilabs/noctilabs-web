@@ -1,6 +1,6 @@
 # Spec 001 — Fundación de la web nueva
 
-Estado: APROBADO · gate SÍ de gpt-6.1-sol en la pasada 4, con sus 7 hallazgos no bloqueantes aplicados · 2026-10-03
+Estado: CERRADO · spec aprobado en la pasada 4 (2026-10-03); implementación aprobada en el gate pasada 5 (2026-10-04). A11 (Vercel) pasa al lanzamiento.
 
 ## 1. Contexto
 

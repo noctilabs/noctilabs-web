@@ -1,6 +1,6 @@
 # Evidencia del spec 001 — fundación
 
-Commit verificado: `45f828e` (arreglos de las pasadas 1 a 4 del gate sobre `0f7730f`, más Inter como sans por decisión del dueño). Incluye el inicio de la fase 2 (`8263092`, `25a8892`), que cambia el H1 de 4 industrias: A4 lo registra como enmienda. Verificación local:
+Commit verificado: `09ae2a0` (arreglos de las pasadas 1 a 5 del gate sobre `0f7730f`, más Inter como sans por decisión del dueño). Incluye el inicio de la fase 2 (`8263092`, `25a8892`), que cambia el H1 de 4 industrias: A4 lo registra como enmienda. **Gate de implementación: GATE SÍ en la pasada 5** (`docs/reviews/001-impl-sol-pasada-5.md`); sus dos observaciones no bloqueantes quedaron resueltas en este commit. Verificación local:
 
 - `astro preview` en `localhost:4932`;
 - Chrome headless por CDP con emulación de foco;
@@ -17,7 +17,7 @@ del gate de implementación están en `docs/reviews/001-impl-sol-pasada-*.md`.
 | A4 | **226/226** comprobaciones de los **valores esperados** (`a4-esperados.json`, escritos a mano desde §3.2, §3.7 y la tabla de copy) contra el HTML de `dist/` (`a4-comparar.mjs`). Cubre por página: `lang`, canonical, los tres hreflang, title, descripción, H1, destino del selector (footer y menú mobile), idioma actual con `aria-current` y, en Producto, las 5 anclas con `tabindex`, H2 y `data-placeholder`. El head (viewport, favicon, theme-color, preload) se revisa en una página por idioma. En la 404: title, `noindex`, sin canonical, sin hreflang, sin selector, bloque en inglés y links a los dos homes. | `a4-esperados.json`, `a4-comparar.mjs`, `a4-comparacion.txt` |
 | A5 | **Links:** 1054 hrefs internos en `dist/`, 0 rotos (anclas incluidas). **Sin JS:** los paneles no abren, y los labels Producto e Industrias navegan a `/producto/` y a Retail. **Recorridos con JS** (en el checklist de A7): las 5 anclas del menú mobile en los dos idiomas (URL final, foco en el destino, destino visible bajo el header en top 76–92 px), el fragmento que ya estaba en la URL el Ctrl+click sin interceptar y presionar y sostener un link de los paneles (desktop y mobile) antes de soltar. Las filas registran los valores finales. | `a5-a10.txt`, `a5-sin-js.txt`, `a7-a8-checklist.txt` |
 | A6 | Capturas lado a lado: header, megamenú Producto, megamenú Industrias y footer en 1440; header, menú y footer en 390. Todas sobre fondo liso: la referencia mobile se toma en la página Producto del diseño, no sobre el video. Diferencias abajo. | `capturas/ref-*` vs `capturas/nuevo-*` |
-| A7 | **77/77** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, link presionado y sostenido (el caso de Safari), callbacks de foco viejos frente a una apertura nueva, hover que no cancela un cierre por pérdida de foco, click central sostenido sobre links de los dos paneles (sin cerrar ni navegar), tabindex explícito en los 26 links de los paneles, skip link y `aria-current`. | `a7-a8-checklist.txt` |
+| A7 | **78/78** casos: megamenú 1–9, mobile 1–7, cortes 999/1000 en las dos direcciones (foco en link del nav, CTA, chevron, link del megamenú, botón hamburguesa y link del panel mobile), secuencias combinadas, cerrar y reabrir antes de que venza el temporizador, `blur()` sin destino (desktop y mobile), click en zona vacía del panel, link presionado y sostenido (el caso de Safari), callbacks de foco viejos frente a una apertura nueva, hover que no cancela un cierre por pérdida de foco, click central sostenido sobre links de los dos paneles (sin cerrar, sin navegar la pestaña original y con la pestaña nueva en el destino), tabindex explícito en los 26 links de los paneles, selección de texto dentro del panel, skip link y `aria-current`. | `a7-a8-checklist.txt` |
 | A8 | 0 errores de consola en las 20 rutas. | `a7-a8-checklist.txt` (último caso) |
 | A9 | Revisión con web-design-guidelines: abajo. | — |
 | A10 | Máximo 2016 bytes gzip por página (umbral 3072). Astro inlinea el script del header; el home suma el del video. | `a5-a10.txt` |
@@ -82,7 +82,9 @@ Reglas bajadas de `vercel-labs/web-interface-guidelines/command.md` (2026-10-03)
   ni links sin `tabindex`, se cubre por diseño:
   - los links de los paneles llevan `tabindex="0"` explícito, así que Safari los enfoca con cualquier botón del
     mouse y el foco no sale del conjunto;
-  - los botones y las zonas vacías del panel retienen el foco con `preventDefault` solo en el botón principal, y
-    el click enfoca el botón explícitamente.
+  - los paneles llevan `tabindex="-1"`, así que presionar su texto o una zona vacía deja el foco dentro del panel
+    sin cancelar la selección;
+  - los botones retienen el foco con `preventDefault` solo en el botón principal, y el click los enfoca
+    explícitamente.
 
   No hubo un Safari disponible para probarlo.

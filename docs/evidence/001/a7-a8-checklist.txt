@@ -50,7 +50,8 @@ OK    Mob5 focusout fuera cierra
 OK    Mob6 a desktop con foco en un link del panel mobile: cierra y foco al logo → {"m":{"open":false,"exp":"false","label":"Abrir menú","d":"M4 8h16M4 16h16"},"f":"A.logo \"NoctiLabs\""}
 OK    M9 cerrar y reabrir antes de 120 ms: el temporizador viejo no cierra
 OK    M5 blur() sin destino con el puntero encima: cierra
-OK    M5 click en zona vacía del panel: sigue abierto y con foco
+OK    M5 click en zona vacía del panel: sigue abierto y el foco queda en el panel → {"s":{"prod":true,"ind":false,"ep":"true","ei":"false"},"f":"DIV#mega-producto.mega \"ProductoOverviewSistemas, cono\""}
+OK    M5 se puede seleccionar el texto del panel y sigue abierto → {"texto":"PRODUCTO","abierto":true}
 OK    Mob5 blur() sin destino: cierra
 OK    Mob3 es #overview: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"overview","top":84,"hash":"#overview","path":"/producto/"}
 OK    Mob3 es #cerebro: cierra, foco, visible bajo el header, URL → {"open":false,"focus":"cerebro","top":84,"hash":"#cerebro","path":"/producto/"}
@@ -71,9 +72,9 @@ OK    Mob5 al soltar navega al destino → "/insights/"
 OK    M9 blur → Esc → salir y volver: el callback de foco viejo no cierra la apertura nueva → {"prod":true,"ind":false,"ep":"true","ei":"false"}
 OK    Mob5 blur → cerrar → reabrir: el callback viejo no cierra el panel nuevo → true
 OK    M5 fijo → blur → hover sobre el panel: el cierre por foco no se cancela → {"s":{"prod":false,"ind":false,"ep":"false","ei":"false"},"f":"body"}
-OK    M5 click central sostenido (1440): panel abierto, foco en el conjunto, sin navegar → {"during":{"open":true,"focoEnConjunto":true},"after":{"open":true,"path":"/nosotros/"}}
-OK    M5 click central sostenido (390): panel abierto, foco en el conjunto, sin navegar → {"during":{"open":true,"focoEnConjunto":true},"after":{"open":true,"path":"/nosotros/"}}
+OK    M5 click central sostenido (1440): panel abierto, foco en el conjunto, la pestaña original no navega y se abre una pestaña nueva con el destino → {"during":{"open":true,"focoEnConjunto":true},"after":{"open":true,"path":"/nosotros/","link":"http://localhost:4932/producto/#bi"},"pestañaNueva":["http://localhost:4932/producto/#bi"]}
+OK    M5 click central sostenido (390): panel abierto, foco en el conjunto, la pestaña original no navega y se abre una pestaña nueva con el destino → {"during":{"open":true,"focoEnConjunto":true},"after":{"open":true,"path":"/nosotros/","link":"http://localhost:4932/insights/"},"pestañaNueva":["http://localhost:4932/insights/"]}
 OK    M5 todos los links de los paneles con tabindex="0" explícito → {"cantidad":26}
 OK    A8 cero errores de consola en las 20 rutas
 
-77/77 OK
+78/78 OK

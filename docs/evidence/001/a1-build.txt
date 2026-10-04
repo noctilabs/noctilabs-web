@@ -2,53 +2,53 @@
 > build
 > astro check && astro build
 
-08:06:33 [content] Syncing content
-08:06:33 [content] Synced content
-08:06:33 [types] Generated 725ms
-08:06:33 [check] Getting diagnostics for Astro files in C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web...
+08:15:14 [content] Syncing content
+08:15:14 [content] Synced content
+08:15:14 [types] Generated 807ms
+08:15:14 [check] Getting diagnostics for Astro files in C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web...
 Result (45 files): 
 - 0 errors
 - 0 warnings
 - 0 hints
 
-08:06:41 [content] Syncing content
-08:06:41 [content] Synced content
-08:06:41 [types] Generated 701ms
-08:06:41 [build] output: "static"
-08:06:41 [build] mode: "static"
-08:06:41 [build] directory: C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web\dist\
-08:06:41 [build] Collecting build info...
-08:06:41 [build] ✓ Completed in 826ms.
-08:06:41 [build] Building static entrypoints...
-08:06:42 [vite] ✓ built in 579ms
-08:06:42 [vite] ✓ built in 57ms
-08:06:42 [build] Rearranging server assets...
+08:15:23 [content] Syncing content
+08:15:23 [content] Synced content
+08:15:23 [types] Generated 726ms
+08:15:23 [build] output: "static"
+08:15:23 [build] mode: "static"
+08:15:23 [build] directory: C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web\dist\
+08:15:23 [build] Collecting build info...
+08:15:23 [build] ✓ Completed in 860ms.
+08:15:23 [build] Building static entrypoints...
+08:15:23 [vite] ✓ built in 538ms
+08:15:23 [vite] ✓ built in 71ms
+08:15:23 [build] Rearranging server assets...
 
  generating static routes 
-08:06:42   ├─ /404.html (+22ms) 
-08:06:42   ├─ /en/about/index.html (+31ms) 
-08:06:42   ├─ /en/contact/index.html (+6ms) 
-08:06:42   ├─ /en/industries/retail-distribution/index.html (+4ms) 
-08:06:42   ├─ /en/industries/manufacturing/index.html (+3ms) 
-08:06:42   ├─ /en/industries/food-consumer-goods/index.html (+3ms) 
-08:06:42   ├─ /en/industries/health-fitness/index.html (+3ms) 
-08:06:42   ├─ /en/industries/professional-services/index.html (+3ms) 
-08:06:42   ├─ /en/insights/index.html (+7ms) 
-08:06:42   ├─ /en/product/index.html (+5ms) 
-08:06:42   ├─ /en/index.html (+5ms) 
-08:06:42   ├─ /favicon.svg (+3ms) 
-08:06:42   ├─ /hablemos/index.html (+5ms) 
-08:06:42   ├─ /industrias/retail-distribucion/index.html (+3ms) 
-08:06:42   ├─ /industrias/manufactura/index.html (+2ms) 
-08:06:42   ├─ /industrias/alimentos-consumo/index.html (+2ms) 
-08:06:42   ├─ /industrias/salud-fitness/index.html (+2ms) 
-08:06:42   ├─ /industrias/servicios/index.html (+2ms) 
-08:06:42   ├─ /insights/index.html (+5ms) 
-08:06:42   ├─ /nosotros/index.html (+5ms) 
-08:06:42   ├─ /producto/index.html (+5ms) 
-08:06:42   ├─ /index.html (+4ms) 
-08:06:42 ✓ Completed in 163ms.
+08:15:24   ├─ /404.html (+24ms) 
+08:15:24   ├─ /en/about/index.html (+9ms) 
+08:15:24   ├─ /en/contact/index.html (+7ms) 
+08:15:24   ├─ /en/industries/retail-distribution/index.html (+4ms) 
+08:15:24   ├─ /en/industries/manufacturing/index.html (+4ms) 
+08:15:24   ├─ /en/industries/food-consumer-goods/index.html (+3ms) 
+08:15:24   ├─ /en/industries/health-fitness/index.html (+3ms) 
+08:15:24   ├─ /en/industries/professional-services/index.html (+4ms) 
+08:15:24   ├─ /en/insights/index.html (+8ms) 
+08:15:24   ├─ /en/product/index.html (+7ms) 
+08:15:24   ├─ /en/index.html (+8ms) 
+08:15:24   ├─ /favicon.svg (+5ms) 
+08:15:24   ├─ /hablemos/index.html (+7ms) 
+08:15:24   ├─ /industrias/retail-distribucion/index.html (+4ms) 
+08:15:24   ├─ /industrias/manufactura/index.html (+3ms) 
+08:15:24   ├─ /industrias/alimentos-consumo/index.html (+3ms) 
+08:15:24   ├─ /industrias/salud-fitness/index.html (+2ms) 
+08:15:24   ├─ /industrias/servicios/index.html (+3ms) 
+08:15:24   ├─ /insights/index.html (+6ms) 
+08:15:24   ├─ /nosotros/index.html (+6ms) 
+08:15:24   ├─ /producto/index.html (+6ms) 
+08:15:24   ├─ /index.html (+5ms) 
+08:15:24 ✓ Completed in 178ms.
 
-08:06:42 [build] ✓ Completed in 1.05s.
-08:06:42 [build] 21 page(s) built in 1.90s
-08:06:42 [build] Complete!
+08:15:24 [build] ✓ Completed in 988ms.
+08:15:24 [build] 21 page(s) built in 1.88s
+08:15:24 [build] Complete!
