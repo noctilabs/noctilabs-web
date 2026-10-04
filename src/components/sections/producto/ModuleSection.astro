@@ -1,0 +1,36 @@
+---
+// Cerebro / BI / Agentes (Inv §2.4): head-row, chips y la demo de su vista.
+// Sin caption mientras el slot sea un placeholder (spec 002 §4.2.6).
+import Container from '../../ui/Container.astro';
+import HeadRow from '../../ui/HeadRow.astro';
+import Kicker from '../../ui/Kicker.astro';
+import AppSlot from '../../ui/AppSlot.astro';
+import Brand from './Brand.astro';
+import type { ProductSection } from '../../../content/pages/producto';
+import type { Locale } from '../../../i18n/routes';
+
+interface Props { s: ProductSection; locale: Locale; contactHref: string }
+const { s, locale, contactHref } = Astro.props;
+---
+<Container gap="P" id={s.id} tabindex="-1" aria-labelledby={`${s.id}-title`} class="mod">
+  <HeadRow>
+    <Kicker as="p">{s.kicker}</Kicker>
+    <h2 id={`${s.id}-title`} class="h2">{s.title}</h2>
+    <Fragment slot="lead"><Brand text={s.lead} /></Fragment>
+  </HeadRow>
+  <ul class="chips">{s.chips.map((c) => <li>{c}</li>)}</ul>
+  <AppSlot view={s.view} locale={locale} contactHref={contactHref} frame="app" />
+</Container>
+
+<style>
+  .mod { display: flex; flex-direction: column; gap: 24px; }
+  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li {
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    border: 1px solid var(--line);
+    font-size: 14px;
+    font-weight: 500;
+  }
+</style>

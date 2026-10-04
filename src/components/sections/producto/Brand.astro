@@ -1,0 +1,6 @@
+---
+// Texto con «Nocti» / «NoctiLabs» marcados translate="no" (spec 002 §4.7).
+interface Props { text: string }
+const parts = Astro.props.text.split(/(NoctiLabs|Nocti)/);
+---
+{parts.map((p, i) => (i % 2 ? <span translate="no">{p}</span> : p))}

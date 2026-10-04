@@ -1,0 +1,190 @@
+---
+// Plantilla de industria (spec 002 §4.3, Inv §3), alimentada por industries.ts.
+import Base from '../../../layouts/Base.astro';
+import HablemosBand from '../../HablemosBand.astro';
+import Container from '../../ui/Container.astro';
+import DarkBig from '../../ui/DarkBig.astro';
+import Kicker from '../../ui/Kicker.astro';
+import PageHero from '../producto/PageHero.astro';
+import Brand from '../producto/Brand.astro';
+import IndustryPhoto from './IndustryPhoto.astro';
+import { industria } from '../../../content/pages/industria';
+import { industry as getIndustry, industryPhotos } from '../../../content/industries';
+import { href, INDUSTRY_SLUGS, type IndustryId, type Locale } from '../../../i18n/routes';
+import { ui } from '../../../i18n/ui';
+import { pageMeta } from '../../../lib/meta';
+
+interface Props { locale: Locale; industry: IndustryId }
+const { locale, industry } = Astro.props;
+const page = { id: 'industria', industry } as const;
+const meta = pageMeta(page, locale);
+const t = industria[locale];
+const ind = getIndustry(industry, locale);
+const n = (i: number) => String(i + 1).padStart(2, '0');
+const others = (Object.keys(INDUSTRY_SLUGS) as IndustryId[])
+  .filter((id) => id !== industry)
+  .map((id) => ({ label: getIndustry(id, locale).label, href: href({ id: 'industria', industry: id }, locale) }));
+---
+<Base locale={locale} page={page} title={meta.title} description={meta.description}>
+  <div class="page">
+    <PageHero
+      kicker={`${t.kicker} · ${ind.label}`}
+      title={ind.hero.h1}
+      lead={ind.hero.lead}
+      cta={{ label: ui[locale].nav.cta, href: href({ id: 'hablemos' }, locale) }}
+    />
+    <IndustryPhoto photo={industryPhotos[industry]} label={ind.label} locale={locale} />
+
+    <Container gap="P" class="stack" aria-labelledby="procesos-title">
+      <div class="head">
+        <Kicker as="p">{t.processes.kicker}</Kicker>
+        <h2 id="procesos-title" class="h2">{t.processes.title}</h2>
+      </div>
+      <ol class="grid">
+        {ind.processes.map((p, i) => (
+          <li class="card proc">
+            <span class="num" aria-hidden="true">{n(i)}</span>
+            <h3 class="pt">{p.title}</h3>
+            <p class="cd">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </Container>
+
+    <Container gap="P" aria-labelledby="preguntas-title">
+      <DarkBig class="qs">
+        <Kicker tone="dark-muted" as="h2"><span id="preguntas-title"><Brand text={t.questions.kicker} /></span></Kicker>
+        <ul class="qlist">
+          {ind.questions.map((q) => (
+            <li class="q"><span class="qt">{q.q}</span><span class="area">{q.area}</span></li>
+          ))}
+        </ul>
+      </DarkBig>
+    </Container>
+
+    <Container gap="P" class="stack" aria-labelledby="agentes-title">
+      <div class="head">
+        <Kicker as="p">{t.agents.kicker}</Kicker>
+        <h2 id="agentes-title" class="h2">{t.agents.title}</h2>
+      </div>
+      <ul class="grid">
+        {ind.agents.map((a) => (
+          <li class="card agent">
+            <span class="badge"><span class="dot" />{t.agents.badge}</span>
+            <h3 class="at">{a.title}</h3>
+            <p class="cd">{a.text}</p>
+          </li>
+        ))}
+      </ul>
+    </Container>
+
+    <Container gap="P" aria-labelledby="porque-title">
+      <div class="why">
+        <h2 id="porque-title" class="h2"><Brand text={t.whyTitle(ind.whyFor)} /></h2>
+        <ol class="wgrid">
+          {ind.why.map((w, i) => (
+            <li class="wcard">
+              <span class="num" aria-hidden="true">{n(i)}</span>
+              <p class="wt"><strong>{w.strong}</strong> <span><Brand text={w.rest} /></span></p>
+            </li>
+          ))}
+        </ol>
+        <nav class="others" aria-labelledby="otras-title">
+          <Kicker as="h3" class="others-label"><span id="otras-title">{t.others}</span></Kicker>
+          <ul role="list">
+            {others.map((o) => <li><a href={o.href}>{o.label} <span aria-hidden="true">→</span></a></li>)}
+          </ul>
+        </nav>
+      </div>
+    </Container>
+  </div>
+  <HablemosBand locale={locale} />
+</Base>
+
+<style>
+  /* Inv §3: el main del diseño cierra con 24 px antes de la banda. */
+  .page { padding-bottom: 24px; }
+  ol, ul { list-style: none; margin: 0; padding: 0; }
+  h3, p { margin: 0; }
+
+  .stack { display: flex; flex-direction: column; gap: 24px; }
+  .head { display: flex; flex-direction: column; gap: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .proc { min-height: 189px; }
+  .agent { min-height: 172px; }
+  .num { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .pt { margin-top: auto; font-size: 25px; font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
+  .at { margin-top: auto; font-size: 23px; font-weight: 500; letter-spacing: -.035em; line-height: 1.08; }
+  .cd { font-size: 15px; color: var(--muted); }
+  .badge {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--blue-link);
+    text-transform: uppercase;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); flex: none; }
+
+  .qs { display: flex; flex-direction: column; gap: 28px; }
+  .qlist { display: flex; flex-direction: column; }
+  .q {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 22px 0;
+    border-top: 1px solid #2A2A2E;
+  }
+  .qt { font-size: clamp(18px, 2.1vw, 31.2px); font-weight: 500; letter-spacing: -.035em; line-height: 1.12; }
+  .area {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: #1E1E21;
+    color: #9FBEFF;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .why {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: clamp(19.7px, 2.5vw, 29.5px);
+    padding: clamp(32.8px, 4.9vw, 65.6px) clamp(13.1px, 2.9vw, 45.9px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .wgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+  .wcard { background: var(--bg); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .wt { font-size: 16px; line-height: 1.4; }
+  .wt strong { font-weight: 500; }
+  .wt span { color: var(--muted); }
+
+  .others { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .others ul { display: contents; }
+  .others :global(.others-label) { margin-right: 8px; }
+  .others a {
+    display: inline-block;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color .15s ease;
+  }
+  .others a:hover { background: var(--surface); color: var(--ink); }
+</style>

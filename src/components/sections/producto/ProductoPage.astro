@@ -1,0 +1,49 @@
+---
+// Página Producto (spec 002 §4.2, Inv §2).
+import Base from '../../../layouts/Base.astro';
+import HablemosBand from '../../HablemosBand.astro';
+import AppSlot from '../../ui/AppSlot.astro';
+import PageHero from './PageHero.astro';
+import Overview from './Overview.astro';
+import ModuleSection from './ModuleSection.astro';
+import Control from './Control.astro';
+import { producto } from '../../../content/pages/producto';
+import { href, type Locale } from '../../../i18n/routes';
+import { ui } from '../../../i18n/ui';
+import { pageMeta } from '../../../lib/meta';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const page = { id: 'producto' } as const;
+const meta = pageMeta(page, locale);
+const t = producto[locale];
+const contactHref = href({ id: 'hablemos' }, locale);
+---
+<Base locale={locale} page={page} title={meta.title} description={meta.description}>
+  <div class="page">
+    <PageHero
+      kicker={t.hero.kicker}
+      title={ui[locale].pages.producto.h1}
+      lead={t.hero.lead}
+      cta={{ label: ui[locale].nav.cta, href: contactHref }}
+    />
+    <div class="demo">
+      <AppSlot view="inicio" locale={locale} contactHref={contactHref} frame="app" />
+    </div>
+    <Overview t={t.overview} />
+    {t.sections.map((s) => <ModuleSection s={s} locale={locale} contactHref={contactHref} />)}
+    <Control t={t.control} locale={locale} contactHref={contactHref} />
+  </div>
+  <HablemosBand locale={locale} />
+</Base>
+
+<style>
+  /* Inv §2: el main del diseño cierra con 24 px antes de la banda. */
+  .page { padding-bottom: 24px; }
+  .demo {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(26.2px, 3.3vw, 45.9px) var(--edge) 0;
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+// Overview (Inv §2.3): lo que la empresa tiene → barra Nocti → quién lo usa.
+// Conectores de 3 columnas solo desde 1000 px; por debajo, uno solo centrado (spec 002 §4.2.3, Inv §11.21).
+import Container from '../../ui/Container.astro';
+import CardBig from '../../ui/CardBig.astro';
+import Kicker from '../../ui/Kicker.astro';
+import Mark from '../../Mark.astro';
+import type { ProductoCopy } from '../../../content/pages/producto';
+
+interface Props { t: ProductoCopy['overview'] }
+const { t } = Astro.props;
+---
+<Container gap="P" id="overview" tabindex="-1" aria-labelledby="overview-title">
+  <CardBig variant="p" class="ov">
+    <div class="head">
+      <Kicker as="p">{t.kicker}</Kicker>
+      <h2 id="overview-title" class="h2">{t.title}</h2>
+    </div>
+    <div class="diagram">
+      <div class="group">
+        <Kicker size={11} as="h3">{t.inLabel}</Kicker>
+        <ul class="cards">
+          {t.in.map((c) => <li class="card"><span class="ct">{c.title}</span><span class="cd">{c.text}</span></li>)}
+        </ul>
+      </div>
+      <div class="links" aria-hidden="true">{[1, 2, 3].map(() => <span class="link"><span class="line" /></span>)}</div>
+      <div class="bar">
+        <div class="brand">
+          <Mark fg="#F4F4F2" core="#3D7BFF" size={26} />
+          <span class="name" translate="no">Nocti</span>
+          <span class="label">{t.bar.label}</span>
+        </div>
+        <ul class="pills">{t.bar.pills.map((p) => <li>{p}</li>)}</ul>
+      </div>
+      <div class="links" aria-hidden="true">{[1, 2, 3].map(() => <span class="link"><span class="line" /></span>)}</div>
+      <div class="group">
+        <Kicker size={11} as="h3">{t.outLabel}</Kicker>
+        <ul class="cards">
+          {t.out.map((c) => <li class="card"><span class="ct">{c.title}</span><span class="cd">{c.text}</span></li>)}
+        </ul>
+      </div>
+    </div>
+  </CardBig>
+</Container>
+
+<style>
+  .ov { display: flex; flex-direction: column; gap: 36px; }
+  .head { display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center; }
+  .head .h2 { max-width: 20ch; }
+  .diagram { display: flex; flex-direction: column; }
+  .group { display: flex; flex-direction: column; gap: 8px; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 8px; }
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ct { font-size: 19px; font-weight: 500; letter-spacing: -.03em; }
+  .cd { font-size: 14px; color: var(--muted); }
+
+  .links { display: grid; grid-template-columns: minmax(0, 1fr); height: 28px; }
+  .link { display: flex; justify-content: center; }
+  .link:not(:first-child) { display: none; }
+  @media (min-width: 1000px) {
+    .links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .link:not(:first-child) { display: flex; }
+  }
+  .line { position: relative; width: 1.5px; height: 100%; background: var(--blue-light); }
+  .line::before, .line::after {
+    content: '';
+    position: absolute;
+    left: -2.5px;
+    width: 6.5px;
+    height: 6.5px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  .line::before { top: -3px; }
+  .line::after { bottom: -3px; }
+
+  .bar {
+    position: relative;
+    background: var(--dark);
+    color: var(--bg);
+    border-radius: 20px;
+    padding: 18px 22px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    overflow: hidden;
+  }
+  .bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(61, 123, 255, .28), rgba(61, 123, 255, 0) 60%);
+  }
+  .brand { position: relative; display: flex; align-items: center; gap: 10px; }
+  .brand :global(svg) { flex: none; }
+  .name { font-size: 26px; font-weight: 500; letter-spacing: -.045em; line-height: 1; }
+  .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: #9FBEFF; }
+  .pills { position: relative; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pills li { padding: 6px 12px; border-radius: var(--radius-pill); background: #1E1E21; font-family: var(--font-mono); font-size: 12px; }
+</style>
