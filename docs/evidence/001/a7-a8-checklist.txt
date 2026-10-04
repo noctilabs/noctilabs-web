@@ -1,0 +1,53 @@
+OK    M4 hover abre Producto
+OK    M4 cierre retardado: sigue abierto a los 60 ms
+OK    M4 cierre retardado: cerrado pasado 120 ms
+OK    M4 puente de 8 px mantiene el panel
+OK    M4 volver antes de 120 ms cancela el cierre
+OK    M9 cambio por hover antes de 120 ms: sólo Industrias
+OK    M3 click abre en fijo y el hover no lo cierra
+OK    M3 segundo click cierra
+OK    M3 foco queda en el botón
+OK    M3 Tab tras cerrar va al siguiente control visible (Industrias)
+OK    M3 Enter abre Producto
+OK    M3 Tab entra al primer link del panel (Overview)
+OK    M4 prioridad del foco: hover en Industrias ignorado
+OK    M3 botón de Industrias cambia de panel
+OK    M3 foco en el botón de Industrias
+OK    M6 Esc dentro del panel cierra
+OK    M6 Esc devuelve foco al botón
+OK    M6 Esc con foco fuera cierra el panel hover
+OK    M6 foco no se mueve
+OK    M6 no reabre sin salir del ítem
+OK    M6 reabre al salir y volver a entrar
+OK    M3 click sobre panel hover lo fija (sigue abierto)
+OK    M4 panel fijo no se cierra al salir
+OK    M4 reentrar conserva fijo: el click siguiente cierra
+OK    M3 Enter sobre panel hover lo fija
+OK    M7 click fuera cierra
+OK    M5 Shift+Tab fuera del conjunto cierra
+OK    Industrias activa sin aria-current en Manufactura
+OK    aria-current=page en Industrias sólo en Retail
+OK    Skip link es el primer enfocable
+OK    Skip link mueve el foco a main
+OK    M7 a mobile con foco en link del nav: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (link del nav)
+OK    M7 a mobile con foco en CTA: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (CTA)
+OK    M7 a mobile con foco en chevron: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (chevron)
+OK    M7 a mobile con foco en link del megamenú: paneles cerrados y foco al logo
+OK    M7 volver a desktop: paneles siguen cerrados (link del megamenú)
+OK    Mob1 botón abre, ícono cruz, label Cerrar
+OK    Mob1 foco queda en el botón
+OK    Mob1 Tab entra al panel (Producto)
+OK    Mob2 Esc cierra y devuelve foco al botón
+OK    Mob3 ancla misma página: cierra, enfoca destino
+OK    Mob3 destino visible debajo del header (top≈84)
+OK    Mob3 URL con #agentes
+OK    Mob3 Ctrl+click no cierra el panel ni intercepta
+OK    Mob4 click fuera de la cápsula cierra
+OK    Mob5 focusout fuera cierra
+OK    Mob6 a desktop: cierra y foco al logo
+OK    A8 cero errores de consola en las 20 rutas
+
+51/51 OK

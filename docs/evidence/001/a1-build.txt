@@ -1,0 +1,50 @@
+
+> build
+> astro check && astro build
+
+23:13:45 [types] Generated 139ms
+23:13:45 [check] Getting diagnostics for Astro files in C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web...
+Result (30 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+23:13:52 [types] Generated 103ms
+23:13:52 [build] output: "static"
+23:13:52 [build] mode: "static"
+23:13:52 [build] directory: C:\Users\adria\OneDrive\Escritorio\TOODO\noctilabs-web\dist\
+23:13:52 [build] Collecting build info...
+23:13:52 [build] ✓ Completed in 246ms.
+23:13:52 [build] Building static entrypoints...
+23:13:52 [vite] ✓ built in 498ms
+23:13:53 [vite] ✓ built in 59ms
+23:13:53 [build] Rearranging server assets...
+
+ generating static routes 
+23:13:53   ├─ /404.html (+19ms) 
+23:13:53   ├─ /en/about/index.html (+7ms) 
+23:13:53   ├─ /en/contact/index.html (+6ms) 
+23:13:53   ├─ /en/industries/retail-distribution/index.html (+4ms) 
+23:13:53   ├─ /en/industries/manufacturing/index.html (+4ms) 
+23:13:53   ├─ /en/industries/food-consumer-goods/index.html (+3ms) 
+23:13:53   ├─ /en/industries/health-fitness/index.html (+3ms) 
+23:13:53   ├─ /en/industries/professional-services/index.html (+4ms) 
+23:13:53   ├─ /en/insights/index.html (+7ms) 
+23:13:53   ├─ /en/product/index.html (+7ms) 
+23:13:53   ├─ /en/index.html (+5ms) 
+23:13:53   ├─ /favicon.svg (+4ms) 
+23:13:53   ├─ /hablemos/index.html (+5ms) 
+23:13:53   ├─ /industrias/retail-distribucion/index.html (+3ms) 
+23:13:53   ├─ /industrias/manufactura/index.html (+3ms) 
+23:13:53   ├─ /industrias/alimentos-consumo/index.html (+3ms) 
+23:13:53   ├─ /industrias/salud-fitness/index.html (+3ms) 
+23:13:53   ├─ /industrias/servicios/index.html (+2ms) 
+23:13:53   ├─ /insights/index.html (+9ms) 
+23:13:53   ├─ /nosotros/index.html (+6ms) 
+23:13:53   ├─ /producto/index.html (+6ms) 
+23:13:53   ├─ /index.html (+6ms) 
+23:13:53 ✓ Completed in 156ms.
+
+23:13:53 [build] ✓ Completed in 871ms.
+23:13:53 [build] 21 page(s) built in 1.14s
+23:13:53 [build] Complete!
