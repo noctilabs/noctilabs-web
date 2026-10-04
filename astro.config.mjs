@@ -15,6 +15,8 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   integrations: [publishGuard()],
+  // font-src 'self' (spec 004 §2.8): las fuentes pequeñas de @fontsource no se incrustan como data: en el CSS.
+  vite: { build: { assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined) } },
   // Sin Markdown en el sitio: sin Shiki, que usa estilos inline incompatibles con la CSP.
   markdown: { syntaxHighlight: false },
   // Spec 004 §2.8: CSP de carga en el <meta>, con los hashes que Astro genera por página.
