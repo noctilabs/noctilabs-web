@@ -146,3 +146,23 @@ Lo que quedaba abierto en B3 y B13 sobre `7813449` se cerró en `962a1fe`. Los c
 - **N1:** el formato de fecha en español con abreviaturas propias («18 sep 2026», como el diseño) queda documentado como excepción de B13.
 
 El build de `962a1fe` da salida 0, con 0 errores, warnings y hints, y Vitest 80/80.
+
+
+## Cierre del gate de implementación, pasada 1 (código `a11f70f`)
+
+La pasada 1 del gate (`docs/reviews/002-impl-sol-pasada-1.md`) dio GATE NO, con 1 bloqueante y 9 hallazgos más. El código se corrigió en `a11f70f`, y la evidencia nueva está en `gate-p1/`. Los scripts corren desde la carpeta de la sesión (`…/scratchpad/ev002/gate/`, con `cdp.mjs` y `routes.mjs` un nivel arriba) y aquí se guarda una copia.
+
+| # | Hallazgo | Arreglo | Verificación | Resultado |
+|---|---|---|---|---|
+| 1 | Datos inválidos del CMS tiraban el build | El loader excluye con motivo los documentos que no pasan el schema. Los bloques nulos o ajenos se ignoran con aviso. Un cuerpo que no se puede renderizar excluye ese artículo. | Fixture F8: `gate-nulo` (`body.es = [null, bloque]`) se publica con el aviso `bloque no admitido ignorado (null)`, y `gate-minutos` (`readingTime: "5"`) queda excluido con `datos inválidos`. El build termina con código 0. | OK (`f8-check.txt`, `f8-build.txt`) |
+| 2 | ids de H2 repetidos y choque con `toc-title` | Prefijo `sec-` y sufijo libre comprobado contra los ids ya usados | «Contexto», «Contexto», «Contexto 2» y «Toc title» generan `sec-contexto`, `sec-contexto-2`, `sec-contexto-2-2` y `sec-toc-title`. Hay 13 ids únicos por página, y cada link del índice apunta a su H2 (ES y EN). | OK |
+| 3 | `safeHref` descartaba rutas relativas | Una ruta sin esquema es relativa. Se descartan `//host`, las barras invertidas y los esquemas que no sean http(s) ni mailto. | Se conservan `../otro-articulo/`, `otro-articulo/` y `./?x=1`. Se descartan `javascript:`, `//evil.example/` y `/\evil.example/`. | OK |
+| 4 | Listas con estilos desconocidos | Solo se admiten `bullet`/`number` con estilo `normal`, con el mismo criterio para publicar, renderizar y contar palabras | `h3`+`bullet` y `check` se ignoran con aviso, y la lista válida se renderiza | OK |
+| 5 | Contenido largo del cuerpo y del resumen | `overflow-wrap: anywhere` en `.prose-article` y `.f-excerpt` | Un identificador de 120 caracteres en el lead, un párrafo, un H2, una cita y el resumen destacado, a 320 px (ES/EN): sin desborde ni recortes | OK (`b13-largo-f8.txt`) |
+| 6 | AppSlot sin `Props` | `interface Props extends AppSlotProps {}`, sin cast, y `data-app-frame` | `astro check`: 0 errores | OK (`build-final.txt`) |
+| 7 | Edición durante el envío | Todo el `fieldset` queda deshabilitado mientras está ocupado. Con error se rehabilita. | Lo verifica D2 de la fase 4, con respuesta demorada, cuando exista el envío real; hoy `submitContact` siempre rechaza | Código listo; escenario en D2 (fase 4) |
+| 8 | B3 del hero sin video en la referencia | La referencia sirve `assets/hero.mp4` y `hero.webm` (los mismos archivos que la web nueva, mismo md5). | Mismo fotograma (t = 0, porque el servidor de la referencia no admite Range), pausado, a 1440 y 390. Encuadre idéntico (`cover`, 50 % 50 %). Luminancia del velo en tres zonas: 176,9/177,1, 77,1/76,9 y 84,0/84,0. Las únicas diferencias son la fuente (Arial de respaldo en la referencia) y el botón de pausa (§7.8). | OK (`b3-hero/`, `b3-hero-video.txt`) |
+| 9 | B15 incompleto | `layoutcheck.mjs` v2 detecta además texto recortado por un ancestro con overflow hidden/clip; un control negativo prueba que lo detecta. Reflow y zoom recorren las cinco industrias del home. | Reflow a 320: 35/35 (todas las rutas, la 404 y, en el home ES/EN, Sin/Con y las cinco industrias). Zoom 100–400 %: 138/138, con el layout medido con cada industria activa. Consola sin errores. Corre sobre `a11f70f`, que incluye el CSS de `962a1fe` (`.rel-title`, `:focus-visible`). | OK (`b15-reflow-v2.txt`, `b15-zoom-v2.txt`) |
+| 10 | `translate="no"` incompleto | Las marcas están en `src/lib/brand.ts` (NoctiLabs, Nocti, WhatsApp, HubSpot, SAP y Gmail), con bordes Unicode. Se aplican en Overview y en los títulos, resúmenes, índice y relacionados del CMS. | `dist/`: WhatsApp 3/3 en el home, 1/1 en Producto (ES y EN). En el cuerpo del CMS (F8), WhatsApp con `translate="no"`. | OK |
+
+Builds: F8 y normal, los dos con código 0. `astro check`: 0 errores. `vitest`: 80/80. Después de las pruebas con F8 se volvió a correr el build normal (`build-final.txt`).
