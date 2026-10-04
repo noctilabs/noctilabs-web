@@ -1,0 +1,41 @@
+/* Tokens extraídos de «NoctiLabs Web v3.dc.html» (Claude Design). */
+:root {
+  --bg: #F4F4F2;
+  --ink: #0B0B0C;
+  --ink-hover: #2A2A2C;
+  --muted: #6B6B68;
+  --body-2: #3A3A38;
+  --body-3: #262626;
+  --line: #E2E2DE;
+  --surface: #E6E6E2;
+  --surface-2: #E9E9E5;
+  --surface-3: #EDEDEA;
+  --white: #FFFFFF;
+  --blue: #0047FF;
+  --blue-link: #0038CC;
+  --blue-light: #3D7BFF;
+  --dark: #0A0A0B;
+  --glass: rgba(190, 190, 188, .62);
+  --glass-filter: blur(18px) saturate(1.15);
+
+  /* D1 pendiente: Neue Haas Unica Pro es comercial y no se carga. */
+  --font-sans: 'Neue Haas Unica Pro', 'Neue Haas Unica', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+
+  /* Mobile primero; el diseño corta en 1000px. */
+  --edge: 16px;
+  --display: 46px;
+  --h2: 32px;
+
+  --radius-pill: 999px;
+  --radius-capsule: 28px;
+  --radius-card: 20px;
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --edge: clamp(16.4px, 3.3vw, 45.9px);
+    --display: clamp(42.6px, 5.9vw, 95.1px);
+    --h2: clamp(27.9px, 3.4vw, 52.5px);
+  }
+}
