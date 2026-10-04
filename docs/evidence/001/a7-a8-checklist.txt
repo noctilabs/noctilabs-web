@@ -70,6 +70,8 @@ OK    Mob5 link del panel mobile presionado 300 ms: el panel sigue abierto → t
 OK    Mob5 al soltar navega al destino → "/insights/"
 OK    M9 blur → Esc → salir y volver: el callback de foco viejo no cierra la apertura nueva → {"prod":true,"ind":false,"ep":"true","ei":"false"}
 OK    Mob5 blur → cerrar → reabrir: el callback viejo no cierra el panel nuevo → true
+OK    M5 fijo → blur → hover sobre el panel: el cierre por foco no se cancela → {"s":{"prod":false,"ind":false,"ep":"false","ei":"false"},"f":"body"}
+OK    M5 mousedown central no se previene; el principal sí → {"centralPrevenido":false,"principalPrevenido":true}
 OK    A8 cero errores de consola en las 20 rutas
 
-73/73 OK
+75/75 OK
