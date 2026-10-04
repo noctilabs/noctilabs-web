@@ -194,3 +194,18 @@ La pasada 3 (`docs/reviews/002-impl-sol-pasada-3.md`) dio GATE NO, con 1 bloquea
 | 3 | `safeHref` borraba los espacios internos | Se quitan solo los controles C0 y DEL, que los navegadores ignoran dentro de una URL, y los espacios de los extremos. Los espacios internos se codifican (`%20`). | `/buscar/?q=dos palabras` → `/buscar/?q=dos%20palabras`. `mailto:…?subject=Hola Nocti` → `subject=Hola%20Nocti`. `java<TAB>script:alert(1)` se descarta. | OK |
 
 Regresiones: F8 16/16 y F9 7/7 sobre el código nuevo. Builds de F8, F9, F10 y normal: los cuatro con código 0. `astro check`: 0 errores (`check-f10.txt`, `f8-check-p3.txt`, `f9-check-p3.txt`, `build-final-p3.txt`).
+
+
+## Gate de implementación, pasada 4: GATE SÍ (código `2846a00`)
+
+La pasada 4 (`docs/reviews/002-impl-sol-pasada-4.md`) dio **GATE SÍ**: no reprodujo bloqueantes de P1–P3 y dejó 3 hallazgos menores. La evidencia de los dos primeros está en `gate-p4/`.
+
+| # | Hallazgo | Arreglo | Verificación (fixture F11, ES y EN) | Resultado |
+|---|---|---|---|---|
+| 1 | Un `level` de lista inválido hacía perder la lista sin aviso | En los ítems de lista, `level` se normaliza a un entero positivo. Uno inválido pasa a 1, con aviso. | Lista simple, anidada (nivel 2 dentro de 1), con `level: "2"`, con `level` objeto, sin nivel, y una numerada. El HTML es `<ul><li>Uno<ul><li>Uno punto uno</li></ul></li><li>Dos</li><li>Nivel texto</li><li>Nivel objeto</li><li>Sin nivel</li></ul><ol><li>Numerado</li></ol>`, con dos avisos `nivel de lista inválido`. | OK (`f11-html.txt`) |
+| 2 | `safeHref` admitía URLs que no resuelven | Además del protocolo, el destino tiene que resolverse con `new URL(href, base)`. | `https://`, `http:` y `http://[` quedan como texto, sin link. `https://www.noctilabs.io/?q=a b` → `?q=a%20b`. | OK |
+| 3 | Falta la primitiva `Segmented` (§3.6): BeforeAfter e Industries repiten `.seg` | **Diferido a después de mergear la fase 3**, que trabaja en paralelo sobre los mismos componentes del home. Se extrae el envoltorio visual a `src/components/ui/Segmented.astro`, y los roles y el comportamiento quedan en cada componente que lo usa. | — | pendiente técnico (antes del gate de la fase 3) |
+
+Regresiones: F8 16/16, F9 7/7 y F10 11/11. Builds de F8–F11 y normal, todos con código 0. `astro check`: 0 errores.
+
+**La fase 2 queda cerrada:** spec APROBADO (pasada 6) e implementación con GATE SÍ (pasada 4).
