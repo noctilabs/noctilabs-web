@@ -140,3 +140,8 @@ así que el peor caso es el mismo en los dos estados.
 La rama de la fase 4 agrega una CSP en `<meta>` con `font-src 'self'` y `script-src` por hashes. Sobre la preview de esa rama se vio
 que bloquea las fuentes WOFF que Vite incrusta como `data:`; además, la isla agrega scripts inline de Astro (runtime y directiva de
 hidratación) cuyos hashes tienen que entrar en la CSP. Hay que revisarlo al integrar las dos ramas.
+
+
+## Gate de implementación: GATE SÍ (pasada 1, sobre el merge `93fa57c`)
+
+gpt-6.1-sol aprobó la implementación sin hallazgos accionables (`docs/reviews/003-impl-sol-pasada-1.md`). Coincidió con la clasificación de B15 teclado: el salto de controles antes de hidratar responde al contrato de `client:visible` y queda como pendiente 20, y la «trampa ciclo» es un falso positivo del detector de fin de documento. **La fase 3 queda cerrada.** Siguen pendientes 17–20 de `docs/pendientes.md`.
