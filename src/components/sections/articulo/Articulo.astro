@@ -52,7 +52,7 @@ const related = (await getArticles()).filter((x) => x.key !== article.key).slice
             {related.map((r) => (
               <li>
                 <a class="r-card" href={href(r.ref, locale)}>
-                  <span>{r[locale].title}</span><span aria-hidden="true">→</span>
+                  <span class="rel-title">{r[locale].title}</span><span aria-hidden="true">→</span>
                 </a>
               </li>
             ))}
@@ -145,4 +145,5 @@ const related = (await getArticles()).filter((x) => x.key !== article.key).slice
     transition: border-color .15s ease;
   }
   .r-card:hover { border-color: #B9B9B4; color: var(--ink); }
+  .rel-title { min-width: 0; overflow-wrap: anywhere; }
 </style>
