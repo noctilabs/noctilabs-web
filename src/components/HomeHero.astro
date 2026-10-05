@@ -56,6 +56,11 @@ const { title, lead, primary, secondary } = Astro.props;
     background: var(--ink-hover);
     color: var(--white);
   }
+  /* Dueño 2026-10-04: en mobile el hero ocupa exactamente la pantalla visible. `svh` es el alto con las barras del
+     navegador visibles: no queda tapado por la barra de dirección ni salta al scrollear (dvh sí). */
+  @media (max-width: 999px) {
+    .hero { height: 100vh; height: 100svh; }
+  }
   .poster { position: absolute; inset: 0; display: block; }
   .poster img, .media {
     position: absolute;
