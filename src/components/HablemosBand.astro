@@ -40,7 +40,8 @@ const t = ui[locale].band;
   .word {
     position: relative;
     margin: 0;
-    font-size: clamp(49.2px, 7.4vw, 123px);
+    /* Dueño 2026-10-04: nunca más grande que el h1 del hero (mismo tope de 80 px). */
+    font-size: clamp(40px, 5.556vw, 5rem);
     font-weight: 500;
     letter-spacing: -.055em;
     line-height: .9;

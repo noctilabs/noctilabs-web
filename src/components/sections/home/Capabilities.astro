@@ -47,13 +47,15 @@ const t = home[locale].capabilities;
     border: 1px solid var(--line);
     border-radius: 24px;
     padding: 22px;
-    min-height: 213px;
+    /* Dueño 2026-10-05: el alto baja en proporción al título (213 px con h3 de 30 → ~185 con 26); en mobile la tarjeta
+       se ajusta a su contenido, sin hueco sobre el título. */
+    min-height: clamp(160px, 12.9vw, 185px);
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
   .n { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
-  h3 { margin: auto 0 0; font-size: 30px; font-weight: 500; letter-spacing: -.045em; line-height: 1; }
+  h3 { margin: auto 0 0; font-size: clamp(22px, 1.8vw, 26px); font-weight: 500; letter-spacing: -.045em; line-height: 1; }
   .d { margin: 0; font-size: 16px; color: var(--muted); max-width: 28ch; }
   /* §4.1.4: en reposo --body-2 sobre blanco con borde --line; en hover #D9D9DC sobre negro con borde #2A2A2E. */
   .ex {

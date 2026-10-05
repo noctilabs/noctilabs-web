@@ -379,7 +379,7 @@ const dot = (i: number) => t.dot.replace('{n}', String(i + 1)).replace('{total}'
     color: var(--blue-link);
   }
   [data-state='sin'] .cap-k { color: var(--muted); }
-  .cap-t { font-size: 26px; font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
+  .cap-t { font-size: clamp(20px, 1.6vw, 23px); font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
   .cap-x { font-size: 16px; color: var(--muted); }
 
   .dots { display: none; }
