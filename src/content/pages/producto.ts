@@ -29,6 +29,8 @@ export interface ProductoCopy {
     out: [OvCard, OvCard, OvCard];
   };
   sections: [ProductSection, ProductSection, ProductSection];
+  /** «El valor de una capa compartida», versión Editorial (spec 007 §3.4, V4 L546–562). `k` es el ícono animado. */
+  valor: { kicker: string; title: string; lead: string; rows: { k: string; t: string; d: string }[]; close: string };
   control: {
     kicker: string;
     title: string;
@@ -69,8 +71,8 @@ export const producto: Localized<ProductoCopy> = {
       {
         id: 'cerebro', view: 'cerebro',
         kicker: 'Cerebro organizacional',
-        title: 'Preguntá. Decidí. Ejecutá.',
-        lead: 'CEO, Comercial y Operaciones consultan el mismo cerebro, pero ven solo la información y las acciones que les corresponden.',
+        title: 'Preguntá. Entendé. Actuá.',
+        lead: 'Cada persona y agente trabaja sobre el mismo contexto, con la información y los permisos que le corresponden.',
         chips: ['Pregunta en lenguaje natural', 'Respuesta contextualizada', 'Fuentes consultadas', 'Permisos por rol', 'Análisis e insight', 'Acción sugerida'],
         caption: 'Cambiá de rol con “Ver como” para comparar respuestas.',
       },
@@ -91,6 +93,20 @@ export const producto: Localized<ProductoCopy> = {
         caption: 'Los agentes usan los mismos permisos y la misma trazabilidad que las personas.',
       },
     ],
+    valor: {
+      kicker: 'Capa compartida',
+      title: 'El valor de una capa compartida',
+      lead: 'Lo que cambia cuando personas e IA trabajan sobre el mismo contexto de tu empresa.',
+      rows: [
+        { k: 'b1', t: 'Menos tiempo buscando información', d: 'Encontrá lo que necesitás, cuando lo necesitás.' },
+        { k: 'b2', t: 'Decisiones con más contexto', d: 'Datos, reglas, antecedentes y conocimiento en una misma vista.' },
+        { k: 'b7', t: 'Más rentabilidad', d: 'Mejores decisiones, menos errores y más oportunidades detectadas ayudan a proteger margen y reducir costos.' },
+        { k: 'b3', t: 'Una misma versión de la realidad', d: 'Equipos distintos trabajan sobre las mismas definiciones, métricas y datos.' },
+        { k: 'b5', t: 'Nuevos casos de uso más rápido', d: 'Reutilizá contexto, integraciones y reglas ya construidas.' },
+        { k: 'b6', t: 'Conocimiento que se acumula', d: 'Cada decisión, excepción y acción enriquece lo que la empresa sabe.' },
+      ],
+      close: 'Y no lo hacés solo: NoctiLabs lo implementa con vos y lo sigue haciendo evolucionar.',
+    },
     control: {
       kicker: 'Control y gobernanza',
       title: 'Una capa de control debajo de todo.',
@@ -127,8 +143,8 @@ export const producto: Localized<ProductoCopy> = {
       {
         id: 'cerebro', view: 'cerebro',
         kicker: 'Organizational brain',
-        title: 'Ask. Decide. Execute.',
-        lead: 'CEO, Sales and Operations query the same brain, but each sees only the information and actions that apply to them.',
+        title: 'Ask. Understand. Act.',
+        lead: 'Every person and agent works on the same context, with the information and permissions that belong to them.',
         chips: ['Natural-language questions', 'Contextualized answers', 'Sources consulted', 'Role-based permissions', 'Analysis and insight', 'Suggested action'],
         caption: 'Switch roles with “View as” to compare answers.',
       },
@@ -149,6 +165,20 @@ export const producto: Localized<ProductoCopy> = {
         caption: 'Agents use the same permissions and the same traceability as people.',
       },
     ],
+    valor: {
+      kicker: 'Shared layer',
+      title: 'The value of a shared layer',
+      lead: 'What changes when people and AI work on the same context of your company.',
+      rows: [
+        { k: 'b1', t: 'Less time searching for information', d: 'Find what you need, when you need it.' },
+        { k: 'b2', t: 'Decisions with more context', d: 'Data, rules, history and knowledge in a single view.' },
+        { k: 'b7', t: 'Higher profitability', d: 'Better decisions, fewer errors and more opportunities spotted help protect margin and cut costs.' },
+        { k: 'b3', t: 'One version of reality', d: 'Different teams work on the same definitions, metrics and data.' },
+        { k: 'b5', t: 'New use cases, faster', d: 'Reuse context, integrations and rules you have already built.' },
+        { k: 'b6', t: 'Knowledge that compounds', d: 'Every decision, exception and action enriches what the company knows.' },
+      ],
+      close: 'And you’re not on your own: NoctiLabs implements it with you and keeps evolving it.',
+    },
     control: {
       kicker: 'Control and governance',
       title: 'A control layer beneath everything.',

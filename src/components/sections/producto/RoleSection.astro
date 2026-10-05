@@ -1,0 +1,36 @@
+---
+// «Preguntá. Entendé. Actuá.» por rol (spec 007 §3.1, V4 L250–287): la demo por rol que salió de la home.
+// El selector «Ver como» y el panel de permisos los dibuja la isla (variant role-demo, spec 003 §4.4).
+import Container from '../../ui/Container.astro';
+import HeadRow from '../../ui/HeadRow.astro';
+import AppSlot from '../../ui/AppSlot.astro';
+import Brand from '../../Brand.astro';
+import type { ProductSection } from '../../../content/pages/producto';
+import type { Locale } from '../../../i18n/routes';
+
+interface Props { s: ProductSection; locale: Locale; contactHref: string }
+const { s, locale, contactHref } = Astro.props;
+---
+<Container gap="P" id={s.id} tabindex="-1" aria-labelledby={`${s.id}-title`} class="role">
+  <HeadRow>
+    <h2 id={`${s.id}-title`} class="h2">{s.title}</h2>
+    <Fragment slot="lead"><Brand text={s.lead} /></Fragment>
+  </HeadRow>
+  <AppSlot view="cerebro" locale={locale} contactHref={contactHref} frame="none" variant="role-demo" />
+  <p class="note"><span class="dot" aria-hidden="true"></span>{s.caption}</p>
+</Container>
+
+<style>
+  .role { display: flex; flex-direction: column; gap: 28px; }
+  .note {
+    margin: 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .02em;
+    color: var(--body-2);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex: none; }
+</style>
