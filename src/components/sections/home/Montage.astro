@@ -1,0 +1,23 @@
+---
+// «Preguntá. Entendé. Actuá.» (spec 006 §4 y §6): reemplaza a Roles en la home (P2, dueño 2026-10-05).
+import Container from '../../ui/Container.astro';
+import HeadRow from '../../ui/HeadRow.astro';
+import HomeMontage from '../../../islands/montage/HomeMontage.tsx';
+import type { Locale } from '../../../i18n/routes';
+import { home } from '../../../content/pages/home';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = home[locale].montage;
+---
+<Container gap="L" class="montage">
+  <HeadRow>
+    <h2 class="h2">{t.h2}</h2>
+    <Fragment slot="lead">{t.lead}</Fragment>
+  </HeadRow>
+  <HomeMontage client:visible locale={locale} />
+</Container>
+
+<style>
+  .montage { display: flex; flex-direction: column; gap: 28px; }
+</style>
