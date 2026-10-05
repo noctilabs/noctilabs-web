@@ -8,6 +8,7 @@ import Overview from './Overview.astro';
 import ModuleSection from './ModuleSection.astro';
 import RoleSection from './RoleSection.astro';
 import Valor from './Valor.astro';
+import AgentesSection from './AgentesSection.astro';
 import ControlArch from './ControlArch.astro';
 import { producto } from '../../../content/pages/producto';
 import { href, type Locale } from '../../../i18n/routes';
@@ -35,7 +36,8 @@ const contactHref = href({ id: 'hablemos' }, locale);
     </div>
     <RoleSection s={t.sections[0]} locale={locale} contactHref={contactHref} />
     <Overview t={t.overview} />
-    {t.sections.slice(1).map((s) => <ModuleSection s={s} locale={locale} contactHref={contactHref} />)}
+    <ModuleSection s={t.sections[1]} locale={locale} contactHref={contactHref} />
+    <AgentesSection s={t.sections[2]} locale={locale} contactHref={contactHref} />
     <Valor t={t.valor} />
     <ControlArch locale={locale} />
   </div>

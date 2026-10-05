@@ -1,0 +1,26 @@
+---
+// «Agentes que trabajan sobre el contexto real de tu empresa.» (spec 007 §3.3, V4 L465–475): el flujo de agentes
+// de «Agent Flow.dc.html» en lugar de la vista Agentes de la app.
+import Container from '../../ui/Container.astro';
+import HeadRow from '../../ui/HeadRow.astro';
+import Kicker from '../../ui/Kicker.astro';
+import Brand from '../../Brand.astro';
+import AgentFlow from '../../../islands/producto/AgentFlow.tsx';
+import type { ProductSection } from '../../../content/pages/producto';
+import type { Locale } from '../../../i18n/routes';
+
+interface Props { s: ProductSection; locale: Locale; contactHref: string }
+const { s, locale, contactHref } = Astro.props;
+---
+<Container gap="P" id={s.id} tabindex="-1" aria-labelledby={`${s.id}-title`} class="ag">
+  <HeadRow>
+    <Kicker as="p">{s.kicker}</Kicker>
+    <h2 id={`${s.id}-title`} class="h2">{s.title}</h2>
+    <Fragment slot="lead"><Brand text={s.lead} /></Fragment>
+  </HeadRow>
+  <AgentFlow client:visible locale={locale} contactHref={contactHref} />
+</Container>
+
+<style>
+  .ag { display: flex; flex-direction: column; gap: 22px; }
+</style>
