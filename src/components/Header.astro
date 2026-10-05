@@ -44,7 +44,7 @@ const mobileGroups = [
 ];
 const MENU_OPEN = 'M4 8h16M4 16h16';
 ---
-<a class="skip" href="#contenido">{t.nav.skip}</a>
+<a class="skip" href="#contenido" data-skip>{t.nav.skip}</a>
 <header class="site-header" data-header>
   <div class="capsule" data-capsule>
     <div class="row">
@@ -170,6 +170,10 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
     white-space: nowrap;
     color: inherit;
     text-decoration: none;
+    /* Área táctil de 44 px sin cambiar el texto (spec 005 §3.5). */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
   .logo:hover { color: inherit; }
 
@@ -298,6 +302,17 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
   .mega-item:hover { color: inherit; opacity: .65; }
   .mega-label { font-size: 14px; font-weight: 500; }
   .mega-desc { font-size: 13px; line-height: 1.4; color: var(--body-3); }
+
+  /* Mobile: la cápsula sale hacia arriba al bajar y vuelve al subir (spec 005 §3.1; estado en header.ts). */
+  @media (max-width: 999.98px) {
+    .skip { padding-block: 12px; }
+    .capsule { transition: transform .2s ease; }
+    .site-header[data-hidden] { pointer-events: none; }
+    .site-header[data-hidden] .capsule { transform: translate(-50%, -120%); }
+  }
+  @media (max-width: 999.98px) and (prefers-reduced-motion: reduce) {
+    .capsule { transition: none; }
+  }
 
   @media (min-width: 1000px) {
     .desk { display: flex; }

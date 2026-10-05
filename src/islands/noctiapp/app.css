@@ -126,6 +126,16 @@
 .na-narrow-convos { padding: 4px 6px 10px; border-top: 1px solid var(--na-divider); display: flex; flex-direction: column; gap: 6px; }
 .na-narrow-convos[hidden] { display: none; }
 
+/* Filas deslizables (spec 005 §3.3): snap y desvanecido del borde con contenido oculto (clases de useScrollRow). */
+.na-tabs ul, .na-rd-sel { scroll-snap-type: x proximity; scroll-padding-inline: 28px; }
+.na-tabs li, .na-rd-sel button { scroll-snap-align: start; }
+.na-tabs ul.is-fade-s, .na-tabs ul.is-fade-e, .na-rd-sel.is-fade-s, .na-rd-sel.is-fade-e {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--na-fs, 0px), #000 calc(100% - var(--na-fe, 0px)), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--na-fs, 0px), #000 calc(100% - var(--na-fe, 0px)), transparent 100%);
+}
+.na-tabs ul.is-fade-s, .na-rd-sel.is-fade-s { --na-fs: 28px; }
+.na-tabs ul.is-fade-e, .na-rd-sel.is-fade-e { --na-fe: 28px; }
+
 /* Comunes de las vistas. */
 .na-vhead { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; min-height: 36px; }
 .na-vtitle { font-size: 20px; font-weight: 500; letter-spacing: -.02em; line-height: 1.2; }
@@ -445,6 +455,48 @@
 .na-hub-core-m { font-family: var(--na-mono); font-size: 10px; line-height: 1.5; color: var(--na-n400); }
 .na-hub-right { position: absolute; left: 66%; right: 0; top: 0; bottom: 0; display: grid; grid-template-rows: repeat(4, 1fr); align-items: center; }
 .na-hub-use { display: flex; flex-direction: column; justify-content: center; height: 54px; padding: 0 14px; background: #FFFFFF; border: 1px solid var(--na-divider); border-radius: 12px; }
+
+/* Mobile (spec 005 §3.3, solo por debajo de 1000 px). */
+.na-ctx-h { display: none; }
+@media (max-width: 999.98px) {
+  /* Objetivos táctiles ≥ 44 px. Pausar y los chips crecen con un borde transparente: el pill visible no cambia. */
+  .na-tabs button, .na-disclosure, .na-user.is-compact .na-user-btn, .na-convo { min-height: 44px; }
+  .na-narrow-row { padding-block: 2px; }
+  .na-rd-sel { gap: 2px; padding: 3px; }
+  .na-rd-sel button { min-height: 44px; padding: 0 12px; font-size: 12px; }
+  .na-pause, .na-chip { border: 0 solid transparent; border-block-width: 8px; background-clip: padding-box; padding: 6px 13px; }
+  .na-pause { box-shadow: inset 0 0 0 1px var(--na-n400); }
+  .na-chip { box-shadow: inset 0 0 0 1px var(--na-divider); }
+  .na-chip[aria-pressed='true'] { border-color: transparent; background-clip: padding-box; box-shadow: none; }
+  .na-ask-top, .na-chips, .na-ask-tags { row-gap: 0; }
+  .na-rd { gap: 16px; }
+  /* Alto de la sección (≤ 1.250 px): sugerencias en 2 × 2, como ya se ven en escritorio, y sin el hueco del log vacío. */
+  .is-roledemo .na-sugg { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .is-roledemo .na-sugg li { padding: 12px; }
+  .is-roledemo .na-log:empty { display: none; }
+  .is-roledemo .na-main, .is-roledemo .na-chat { gap: 12px; }
+
+  /* Permisos en versión intermedia (D6): lo esencial a todo el ancho; el contexto consultado, en un disclosure cerrado. */
+  .na-perms-side { width: 100%; justify-self: stretch; }
+  .na-ctx-static { display: none; }
+  .na-ctx-h { display: block; padding: 0; }
+  .na-perms-b.is-collapsible { padding: 0 12px; }
+  .na-perms-b.is-collapsible.is-open { padding-bottom: 10px; }
+  .na-perms-b.is-collapsible:not(.is-open) dl { display: none; }
+  .na-ctx-btn { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--na-n700); }
+  .na-ctx-btn:focus-visible { outline-offset: -2px; }
+
+  /* Texto chico: nada visible por debajo de 12 px dentro de la demo del home. */
+  .is-roledemo :is(.na-xs, .na-kicker, .na-nav-n, .na-cgroup-t, .na-convo-d, .na-user-co, .na-user-meta, .na-table thead th, .na-kpi dt,
+    .na-tag, .na-refs-l, .na-ref, .na-chips-l, .na-think-h, .na-sugg-k, .na-bar span, .na-bars-x span, .na-acard .na-small, .na-fcard-kick,
+    .na-fcard-p, .na-fcard-m, .na-fcard-r, .na-fdep, .na-atable th, .na-result h4, .na-oc-banner, .na-hub-h, .na-hub-d, .na-hub-r, .na-hub-core-m) {
+    font-size: 12px;
+  }
+}
+@media (max-width: 999.98px) and (hover: hover) {
+  .na-pause:hover, .na-chip:hover { border-color: transparent; box-shadow: inset 0 0 0 1px var(--na-n700); }
+  .na-chip[aria-pressed='true']:hover { box-shadow: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .nocti-root *, .nocti-root *::before, .nocti-root *::after { transition: none !important; }

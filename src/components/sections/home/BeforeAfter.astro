@@ -1,26 +1,34 @@
 ---
-// Antes y después, sólo Opción 1 (spec 002 §4.1.2, enmienda 2026-10-04; Inv §1.2, §9.10 y §9.12).
+// «Por qué Nocti»: antes y después con el estilo de la Nocti App (spec 002 §4.1.2; spec 005 §3.2 y §6).
 // El HTML sale en estado «con» y sin control (sin JS). Los textos de cada estado se apilan en la misma celda
 // de grid y el inactivo queda con visibility:hidden: fuera del árbol accesible y sin saltos de alto al alternar.
-// Como en el diseño, la Opción 1 no lleva el cierre («Tus sistemas siguen siendo tus sistemas…»).
+// Por debajo de 1000 px los 3 diagramas pasan a un carrusel horizontal con puntos indicadores.
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
 import Kicker from '../../ui/Kicker.astro';
 import Txt from '../../Brand.astro';
-import { DIAGRAMS, type DiagramNode, type Place } from './diagrams';
+import Mark from '../../Mark.astro';
+import { DIAGRAMS, LOGOS, type DiagramNode, type Place } from './diagrams';
 import { home, type BaState } from '../../../content/pages/home';
 import type { Locale } from '../../../i18n/routes';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const t = home[locale].before;
+const L = t.labels;
 const STATES: BaState[] = ['sin', 'con'];
 
 // Cada nodo lleva su lugar en los dos estados como variables (0 = «sin», 1 = «con»); el CSS elige según data-state.
-const placeVars = ([x, y, r = 0, s = 1, o = 1]: Place, k: 0 | 1) =>
-  [`--x${k}:${+x.toFixed(2)}%`, `--y${k}:${+y.toFixed(2)}%`, r && `--r${k}:${r}deg`, s !== 1 && `--s${k}:${s}`, o !== 1 && `--o${k}:${o}`];
-const nodeStyle = (n: DiagramNode) =>
-  [...placeVars(n.at.sin, 0), ...placeVars(n.at.con, 1), n.wd?.sin && `--w0:${n.wd.sin}`, n.wd?.con && `--w1:${n.wd.con}`].filter(Boolean).join(';');
+const placeVars = ([x, y, r = 0, o = 1]: Place, k: 0 | 1) => [`--x${k}:${x}%`, `--y${k}:${y}%`, r && `--r${k}:${r}deg`, o !== 1 && `--o${k}:${o}`];
+const nodeStyle = (n: DiagramNode) => [...placeVars(n.at.sin, 0), ...placeVars(n.at.con, 1)].filter(Boolean).join(';');
+const nodeClass = (n: DiagramNode) => ['nd', n.at.sin[3] === 0 && 'gone-sin', n.at.con[3] === 0 && 'gone-con', n.kind === 'bar' && 'wide'];
+
+// Íconos de trazo de la app (lucide).
+const TEAM = 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75';
+const SPARK = 'M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8';
+const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM2 14h2M20 14h2M9 13v2M15 13v2';
+const CHECK = 'M20 6 9 17l-5-5';
+const dot = (i: number) => t.dot.replace('{n}', String(i + 1)).replace('{total}', String(DIAGRAMS.length));
 ---
 <Container gap="L">
   <CardBig>
@@ -39,20 +47,79 @@ const nodeStyle = (n: DiagramNode) =>
         </div>
         <p id="ba-hint" class="sr-only">{t.hint}</p>
       </div>
-      <div class="grid" data-ba-trigger>
+      <div class="grid" role="region" aria-label={t.carousel} tabindex="0" data-ba-trigger data-ba-row>
         {DIAGRAMS.map((g, i) => {
           const d = t.diagrams[i]!;
           return (
             <figure class="item">
               <div class="canvas" aria-hidden="true">
-                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                  {g.lines.map(([x1, y1, x2, y2]) => <line x1={x1} y1={y1} x2={x2} y2={y2} />)}
+                <svg class="curves" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  {g.curves.map((c) => <path d={c} />)}
                 </svg>
                 {g.nodes.map((n) => (
-                  <div class:list={['node', `k-${n.kind}`, n.sinKind && `sin-${n.sinKind}`]} style={nodeStyle(n)}>
-                    {n.labelSin
-                      ? <><span class="l-sin"><Txt text={t.labels[n.labelSin]} /></span><span class="l-con"><Txt text={t.labels[n.label]} /></span></>
-                      : <span><Txt text={t.labels[n.label]} /></span>}
+                  <div class:list={nodeClass(n)} style={nodeStyle(n)}>
+                    {n.kind === 'source' && (
+                      <div class="fc">
+                        <span class="fi">
+                          <svg viewBox="0 0 24 24" width="13" height="13"><path fill={`#${LOGOS[n.logo].icon.hex}`} d={LOGOS[n.logo].icon.path} /></svg>
+                        </span>
+                        <span class="ft"><span class="fk">{L[n.kicker]}</span><span class="fn" translate="no">{LOGOS[n.logo].name}</span></span>
+                      </div>
+                    )}
+                    {n.kind === 'team' && (
+                      <div class="fc">
+                        <span class="fi"><svg class="ico" viewBox="0 0 24 24" width="13" height="13"><path d={TEAM} /></svg></span>
+                        <span class="ft"><span class="fk">{L.equipo}</span><span class="fn">{L.personas}</span></span>
+                      </div>
+                    )}
+                    {n.kind === 'core' && (
+                      <div class="fc core">
+                        <span class="fi blue"><Mark fg="#FFFFFF" core="#FFFFFF" size={16} /></span>
+                        <span class="ft"><span class="fk" translate="no">Nocti</span><span class="fn">{L.empresa}</span></span>
+                        <span class="pill ok">{L.unificado}</span>
+                      </div>
+                    )}
+                    {n.kind === 'ia' && (
+                      <div class="fc ia">
+                        <span class="fi dark"><svg class="ico" viewBox="0 0 24 24" width="13" height="13"><path d={SPARK} /></svg></span>
+                        <span class="ft">
+                          <span class="fk m"><span class="s-sin">{L.modelo}</span><span class="s-con" translate="no">Nocti</span></span>
+                          <span class="fn m"><span class="s-sin">{L.iaGenerica}</span><span class="s-con"><Txt text={L.iaNocti} /></span></span>
+                        </span>
+                        <span class="m pills"><span class="pill wait s-sin">{L.sinContexto}</span><span class="pill run s-con">{L.conContexto}</span></span>
+                      </div>
+                    )}
+                    {n.kind === 'list' && (
+                      <div class="fc list">
+                        <span class="fk">{L.conocimiento}</span>
+                        {n.items.map((k) => (
+                          <span class="row">
+                            <svg class="ico chk" viewBox="0 0 24 24" width="13" height="13"><path d={CHECK} /></svg>
+                            <span>{L[k]}</span>
+                            <span class="tag">{L.aplicado}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {n.kind === 'chip' && <div class="chip">{L[n.label]}</div>}
+                    {n.kind === 'person' && (
+                      <div class="fc person">
+                        <span class={`av av-${n.tone}`}>{L[n.label].slice(0, 2).toUpperCase()}</span>
+                        <span class="fn">{L[n.label]}</span>
+                      </div>
+                    )}
+                    {n.kind === 'agent' && (
+                      <div class="fc agent" data-st={n.st}>
+                        <span class="row1">
+                          <span class="fi"><svg class="ico bot" viewBox="0 0 24 24" width="13" height="13"><path d={BOT} /></svg></span>
+                          <span class="fn">{L[n.label]}</span>
+                        </span>
+                        <span class="pill">{n.st === 'run' ? L.enEjecucion : L.aprobacion}</span>
+                      </div>
+                    )}
+                    {n.kind === 'bar' && (
+                      <div class="bar"><Mark fg="#FFFFFF" core="#FFFFFF" size={16} /><span><Txt text={L.compartido} /></span></div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -70,6 +137,9 @@ const nodeStyle = (n: DiagramNode) =>
           );
         })}
       </div>
+      <div class="dots" data-ba-dots hidden>
+        {DIAGRAMS.map((_, i) => <button type="button" aria-label={dot(i)} aria-current={i === 0 ? 'true' : undefined}></button>)}
+      </div>
       <p class="sr-only" aria-live="polite" data-ba-live data-live-sin={t.live.sin} data-live-con={t.live.con}></p>
     </div>
   </CardBig>
@@ -82,7 +152,23 @@ const nodeStyle = (n: DiagramNode) =>
 </script>
 
 <style>
-  .ba { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .ba {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    /* Estados de las tarjetas de la app (app.css: .na-fcard y sus data-st). */
+    --ok-bg: #DDEEE3;
+    --ok-fg: #24613F;
+    --ok-line: #CFE3D6;
+    --run-bg: #EEF3FF;
+    --run-line: #C9D8FF;
+    --appr-bg: #F6EBD3;
+    --appr-fg: #7A5208;
+    --appr-line: #E3C46F;
+    --off-bg: #F7F7F5;
+    --off-fg: #6B6B68;
+  }
   .watch { display: flex; flex-direction: column; align-items: center; gap: 28px; max-width: 100%; }
   /* §7.6: sin nowrap; el H2 puede ocupar varias líneas en mobile. */
   .title { text-align: center; }
@@ -115,64 +201,174 @@ const nodeStyle = (n: DiagramNode) =>
   .grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     margin-top: 8px;
   }
   .item { margin: 0; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 
-  /* Lienzo: los nodos escalan con el ancho (§4.1.2, «Nodos a 320 px»). --u = tamaño de los nodos de 13 px. */
+  /* Lienzo del flujo de agentes de la app: gris con grilla de puntos. */
   .canvas {
     position: relative;
     aspect-ratio: 1 / 1;
-    border-radius: 24px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
     overflow: hidden;
-    background: var(--bg);
+    background: #EFEFEC radial-gradient(circle, #D6D6D2 1px, transparent 1.2px) 0 0 / 14px 14px;
     container-type: inline-size;
-    --u: clamp(9px, 3.4cqw, 13px);
   }
-  svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  /* oldLines: sin círculos, todas con el mismo delay. */
-  line { stroke: var(--blue-light); stroke-width: 1.5; vector-effect: non-scaling-stroke; transition: opacity .5s .55s; }
-  [data-state='sin'] line { opacity: 0; transition-delay: 0s; }
+  .curves { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; opacity: 0; transition: opacity .5s; }
+  .curves path {
+    stroke: var(--blue-light);
+    stroke-width: 1.4px;
+    stroke-dasharray: 3 4;
+    vector-effect: non-scaling-stroke;
+    animation: ba-flow 1.6s linear infinite;
+    animation-play-state: paused;
+  }
+  [data-state='con'] .curves { opacity: 1; transition-delay: .25s; }
+  [data-state='con'] .curves path { animation-play-state: running; }
+  @keyframes ba-flow { to { stroke-dashoffset: -14; } }
 
-  /* oldNode: el nodo se desplaza, rota y escala entre los lugares de cada estado (--x0…--o0 «sin», --x1…--o1 «con»). */
-  .node {
+  /* Nodo: se desplaza, rota y se apaga entre los lugares de cada estado (--x0…--o0 «sin», --x1…--o1 «con»).
+     Con opacidad 0 además queda oculto (visibility), así no cuenta como texto superpuesto. */
+  .nd {
     position: absolute;
+    z-index: 1;
     left: var(--x1);
     top: var(--y1);
-    width: var(--w1, auto);
     opacity: var(--o1, 1);
-    transform: translate(-50%, -50%) rotate(var(--r1, 0deg)) scale(var(--s1, 1));
+    transform: translate(-50%, -50%) rotate(var(--r1, 0deg));
+    transition: left .8s cubic-bezier(.2, .7, .2, 1), top .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1),
+      opacity .6s, visibility .6s;
+  }
+  [data-state='sin'] .nd {
+    left: var(--x0);
+    top: var(--y0);
+    opacity: var(--o0, 1);
+    transform: translate(-50%, -50%) rotate(var(--r0, 0deg));
+  }
+  [data-state='sin'] .gone-sin, [data-state='con'] .gone-con { visibility: hidden; }
+  .nd.wide { width: 86%; }
+
+  /* Tarjeta de fuente (.na-fcard): blanca con borde de sincronizada en «con», apagada en «sin». */
+  .fc {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px 7px 8px;
+    border: 1px solid var(--ok-line);
+    border-radius: 12px;
+    background: var(--white);
+    box-shadow: 0 1px 2px rgba(11, 11, 12, .04);
+    color: var(--ink);
+    white-space: nowrap;
+    transition: border-color .5s, background-color .5s;
+  }
+  [data-state='sin'] .fc { border-color: var(--line); background: var(--off-bg); }
+  [data-state='sin'] .fc .fi { opacity: .55; }
+  .fi {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: calc(var(--u) * 7 / 13) var(--u);
-    border: 1px solid #D9D9D4;
+  }
+  .fi.blue { background: var(--blue); border-color: var(--blue); }
+  .fi.dark { background: var(--ink); border-color: var(--ink); transition: background-color .5s, border-color .5s; }
+  .ico { fill: none; stroke: var(--body-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .fi.dark .ico { stroke: var(--white); }
+  .ico.chk { flex: none; stroke: var(--blue-link); }
+  .ico.bot { stroke: var(--blue); }
+  /* El espacio entre la etiqueta y el nombre evita que sus renglones se toquen con la tarjeta rotada en «sin». */
+  .ft { display: flex; flex-direction: column; gap: 4px; min-width: 0; line-height: 1.15; }
+  .fk { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--off-fg); }
+  .fn { font-size: 13px; font-weight: 500; letter-spacing: -.01em; }
+  .pill { display: inline-flex; justify-self: start; padding: 2px 8px; border-radius: 6px; font-size: 12px; line-height: 1.3; white-space: nowrap; }
+  .pill.ok { background: var(--ok-bg); color: var(--ok-fg); }
+  .pill.run, .agent[data-st='run'] .pill { background: var(--run-bg); color: var(--blue-link); }
+  .pill.wait { background: var(--surface-3); color: var(--off-fg); }
+  .agent[data-st='appr'] .pill { background: var(--appr-bg); color: var(--appr-fg); }
+
+  /* Núcleo «Tu empresa» e «IA genérica / IA + Nocti»: ícono y nombre arriba, píldora abajo. */
+  .core, .ia { display: grid; grid-template-columns: auto 1fr; gap: 6px 8px; padding: 10px 12px; }
+  .core .pill, .ia .pills { grid-column: 1 / -1; }
+  .core, [data-state='sin'] .core { border-color: var(--run-line); background: var(--white); box-shadow: 0 8px 24px rgba(0, 71, 255, .12); }
+  [data-state='con'] .ia { border-color: var(--run-line); box-shadow: 0 8px 24px rgba(0, 71, 255, .12); }
+  [data-state='con'] .ia .fi.dark { background: var(--blue); border-color: var(--blue); }
+
+  /* Tarjeta-lista del conocimiento de la empresa. */
+  .list { flex-direction: column; align-items: stretch; gap: 0; width: 236px; padding: 10px 12px 6px; white-space: normal; }
+  .list > .fk { margin-bottom: 4px; }
+  .row { display: flex; align-items: center; gap: 7px; padding: 4px 0; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.35; }
+  .tag {
+    margin-left: auto;
+    padding: 1px 6px;
+    border-radius: 5px;
+    background: var(--ok-bg);
+    color: var(--ok-fg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+  }
+  .chip {
+    padding: 4px 11px;
+    border: 1px dashed #C9C9C4;
     border-radius: var(--radius-pill);
-    background: var(--white);
-    color: var(--ink);
-    font-size: var(--u);
-    font-weight: 500;
-    line-height: 1.2;
+    background: var(--off-bg);
+    color: var(--off-fg);
+    font-size: 12px;
+    line-height: 1.5;
     white-space: nowrap;
-    text-align: center;
-    transition: left .9s cubic-bezier(.7, 0, .2, 1), top .9s cubic-bezier(.7, 0, .2, 1), transform .9s cubic-bezier(.7, 0, .2, 1),
-      opacity .6s, background-color .6s, color .6s;
   }
-  [data-state='sin'] .node {
-    left: var(--x0);
-    top: var(--y0);
-    width: var(--w0, auto);
-    opacity: var(--o0, 1);
-    transform: translate(-50%, -50%) rotate(var(--r0, 0deg)) scale(var(--s0, 1));
+
+  /* Personas con avatar de iniciales y agentes con su estado. */
+  .person { padding: 4px 11px 4px 4px; border-radius: var(--radius-pill); }
+  .av { flex: none; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+  .av-blue { background: #E8EEFF; color: var(--blue-link); }
+  .av-green { background: #E6F2EA; color: var(--ok-fg); }
+  .av-amber { background: var(--appr-bg); color: var(--appr-fg); }
+  .agent { flex-direction: column; align-items: flex-start; gap: 5px; padding: 8px 10px; }
+  .row1 { display: flex; align-items: center; gap: 7px; }
+  .agent[data-st='run'] { border-color: var(--run-line); }
+  .agent[data-st='appr'] { border-color: var(--appr-line); background: #FFFDF6; box-shadow: 0 6px 18px rgba(154, 106, 14, .12); }
+  [data-state='sin'] .agent { border-color: var(--line); background: var(--off-bg); box-shadow: none; }
+  [data-state='sin'] .agent .pill { background: var(--surface-3); color: var(--off-fg); }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0, 71, 255, .25);
   }
-  .k-agent { background: #EEF3FF; color: var(--blue-link); border-color: #A9C4FF; }
-  .k-dark, [data-state='sin'] .sin-dark { background: var(--ink); color: var(--white); border-color: var(--ink); }
-  .k-core { background: var(--blue); color: var(--white); border-color: var(--blue); }
-  /* OLD_FADED con el contraste de chipOff (§4.1.2): texto #6B6B68 (4,85:1) y borde punteado #9A9A96. */
-  [data-state='sin'] .sin-faded { background: transparent; color: #6B6B68; border: 1px dashed #9A9A96; }
-  [data-state='sin'] .l-con, [data-state='con'] .l-sin { display: none; }
+
+  /* Lienzo angosto (columnas de escritorio entre 1000 y 1200 px y el carrusel mobile): tarjetas compactas, sin la etiqueta mono
+     de las fuentes. Ningún texto baja de 12 px. */
+  @container (max-width: 339.98px) {
+    .fc:not(.core, .ia, .list) .fk { display: none; }
+    .fc { gap: 5px; padding: 5px 8px 5px 6px; border-radius: 10px; }
+    .fn, .row, .bar { font-size: 12px; }
+    .fi { width: 18px; height: 18px; }
+    .core, .ia { padding: 8px 10px; }
+    .list { width: 204px; padding: 8px 10px 4px; }
+    .row { padding: 3px 0; }
+    .person { padding: 3px 9px 3px 3px; }
+    .agent { padding: 6px 8px; }
+    .bar { padding: 9px 12px; }
+  }
 
   .cap { display: flex; flex-direction: column; gap: 6px; padding: 0 6px 4px; min-height: 120px; }
   .cap-k {
@@ -186,7 +382,67 @@ const nodeStyle = (n: DiagramNode) =>
   .cap-t { font-size: 26px; font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
   .cap-x { font-size: 16px; color: var(--muted); }
 
+  .dots { display: none; }
+
+  /* Columnas angostas de escritorio: el lienzo toma la proporción del carrusel para que las tarjetas compactas no se pisen. */
+  @media (min-width: 1000px) and (max-width: 1199.98px) {
+    .canvas { aspect-ratio: 4 / 5; }
+  }
+
+  /* §3.2: carrusel por debajo de 1000 px. Cada diagrama ocupa ~86 % de la fila, así se asoma el siguiente. */
+  @media (max-width: 999.98px) {
+    .ba { gap: 14px; }
+    .watch { gap: 20px; }
+    .seg button { min-height: 44px; }
+    .grid {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: min(86%, 400px);
+      gap: 12px;
+      margin-top: 6px;
+      /* relative: la descripción .sr-only (absoluta) de cada diagrama queda dentro de la fila y no ensancha la página. */
+      position: relative;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      border-radius: 16px;
+    }
+    .grid::-webkit-scrollbar { display: none; }
+    .grid:focus-visible { outline-offset: 2px; }
+    .item { scroll-snap-align: start; gap: 14px; }
+    .canvas { aspect-ratio: 4 / 5; }
+    .cap { min-height: 0; }
+    .cap-t { font-size: 24px; }
+    .cap-x { font-size: 15px; }
+
+    .dots:not([hidden]) { display: flex; justify-content: center; }
+    .dots button {
+      appearance: none;
+      border: 0;
+      margin: 0;
+      padding: 0;
+      width: 32px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      cursor: pointer;
+    }
+    .dots button::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-pill);
+      background: #C9C9C4;
+      transition: width .25s, background-color .25s;
+    }
+    .dots button[aria-current='true']::before { width: 20px; background: var(--ink); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    line, .node, [data-state='sin'] line { transition: none; }
+    .nd, .fc, .fi.dark, .curves, .dots button::before { transition: none; }
+    .curves path { animation: none; }
   }
 </style>

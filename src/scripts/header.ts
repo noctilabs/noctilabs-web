@@ -217,7 +217,39 @@ export function initHeader(): void {
     if (mobileOpen() && !capsule.contains(e.target as Node)) setMobile(false);
   });
 
+  // ---------- Esconder al bajar (mobile, spec 005 §3.1) ----------
+  // Un frame por ráfaga de scroll; sólo lee scrollY. Bajar más de 8 px pasado el primer tramo esconde,
+  // cualquier subida muestra. Queda visible arriba de todo, en escritorio, con un menú abierto o con el foco
+  // en el header o en «Saltar al contenido».
+  const skip = document.querySelector<HTMLElement>('[data-skip]');
+  const setHidden = (hidden: boolean) => header.toggleAttribute('data-hidden', hidden);
+  // El foco solo fija el header si es de teclado (:focus-visible): el que deja un toque al cerrar el menú no cuenta.
+  const keyboardFocus = () => {
+    const a = document.activeElement;
+    return !!a && (header.contains(a) || a === skip) && a.matches(':focus-visible');
+  };
+  const pinned = () => mq.matches || mobileOpen() || open !== null || keyboardFocus();
+  let lastY = scrollY;
+  let frame = 0;
+  addEventListener('scroll', () => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      const y = scrollY;
+      if (y <= 120 || y < lastY || pinned()) {
+        setHidden(false);
+        lastY = y;
+      } else if (y - lastY > 8) {
+        setHidden(true);
+        lastY = y;
+      }
+    });
+  }, { passive: true });
+  header.addEventListener('focusin', () => setHidden(false));
+  skip?.addEventListener('focus', () => setHidden(false));
+
   mq.addEventListener('change', () => {
+    setHidden(false);
     const active = document.activeElement === document.body ? lastHeaderFocus : document.activeElement;
     if (mq.matches) {
       const hadFocus = inMobile(active);

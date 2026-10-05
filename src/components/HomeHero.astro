@@ -10,7 +10,14 @@ interface Props {
 const { title, lead, primary, secondary } = Astro.props;
 ---
 <section class="hero">
-  <video class="media" autoplay muted loop playsinline preload="metadata" poster="/media/hero-poster.webp" width="1920" height="1080" aria-hidden="true">
+  {/* Póster por <picture> (el atributo poster no admite media): el vertical solo se baja en mobile. El video, sin poster, es transparente hasta su primer cuadro. */}
+  <picture class="poster" aria-hidden="true">
+    <source media="(max-width: 767px)" srcset="/media/hero-vertical-poster.webp" width="608" height="1080" />
+    <img src="/media/hero-poster.webp" alt="" width="1920" height="1080" fetchpriority="high" decoding="async" />
+  </picture>
+  <video class="media" autoplay muted loop playsinline preload="metadata" width="1920" height="1080" aria-hidden="true">
+    <source src="/media/hero-vertical-av1.mp4" media="(max-width: 767px)" type='video/mp4; codecs="av01.0.04M.10"' />
+    <source src="/media/hero-vertical-h264.mp4" media="(max-width: 767px)" type='video/mp4; codecs="avc1.640028"' />
     <source src="/media/hero-av1.mp4" type='video/mp4; codecs="av01.0.08M.10"' />
     <source src="/media/hero-h264.mp4" type='video/mp4; codecs="avc1.640028"' />
   </video>
@@ -49,7 +56,8 @@ const { title, lead, primary, secondary } = Astro.props;
     background: var(--ink-hover);
     color: var(--white);
   }
-  .media {
+  .poster { position: absolute; inset: 0; display: block; }
+  .poster img, .media {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -57,6 +65,8 @@ const { title, lead, primary, secondary } = Astro.props;
     object-fit: cover;
     display: block;
   }
+  /* Con reduced motion el video no se pinta: queda el póster (que es su primer cuadro). */
+  @media (prefers-reduced-motion: reduce) { .media { visibility: hidden; } }
   .veil {
     position: absolute;
     inset: 0;

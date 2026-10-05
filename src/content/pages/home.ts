@@ -11,11 +11,15 @@ export interface BaDiagram {
   desc: ByState;
 }
 
-/** Etiquetas de los nodos de los diagramas de la Opción 1 (Inv §9.12). La geometría vive en sections/home/diagrams.ts. */
+/** Textos de las tarjetas de los diagramas (spec 005 §6). La geometría vive en sections/home/diagrams.ts; los nombres de
+ *  los productos (SAP, HubSpot, Sheets, WhatsApp, Gmail, Drive) no se traducen y viven allí. */
 export interface DiagramLabels {
-  erp: string; crm: string; planillas: string; whatsapp: string; mails: string; documentos: string; personas: string; empresa: string;
-  procesos: string; reglas: string; clientes: string; precios: string; excepciones: string; iaGenerica: string; iaNocti: string;
-  ventas: string; finanzas: string; operaciones: string; agComercial: string; agCobranzas: string; compartido: string;
+  erp: string; crm: string; planillas: string; mensajes: string; correo: string; documentos: string; equipo: string; personas: string;
+  empresa: string; unificado: string;
+  modelo: string; iaGenerica: string; iaNocti: string; sinContexto: string; conContexto: string; conocimiento: string; aplicado: string;
+  procesos: string; reglas: string; clientes: string; precios: string; excepciones: string;
+  ventas: string; finanzas: string; operaciones: string; agComercial: string; agCobranzas: string; enEjecucion: string; aprobacion: string;
+  compartido: string;
 }
 
 interface Card { n: string; t: string; d: string; ex: string }
@@ -33,6 +37,9 @@ export interface HomeCopy {
     live: ByState;
     diagrams: [BaDiagram, BaDiagram, BaDiagram];
     labels: DiagramLabels;
+    /** Fila del carrusel (< 1000 px) y sus puntos: «Diagrama {n} de {total}». */
+    carousel: string;
+    dot: string;
   };
   roles: { h2: string; lead: string; note: string };
   capabilities: { kicker: string; h2: string; items: [Card, Card, Card, Card]; cta: string };
@@ -52,35 +59,41 @@ export const home: Localized<HomeCopy> = {
       live: { sin: 'Sin Nocti: Cómo operan hoy las empresas.', con: 'Con Nocti: Cómo pueden operar.' },
       diagrams: [
         {
-          title: { sin: 'Fragmentado', con: 'Conectado' },
-          text: { sin: 'Información y conocimiento dispersos.', con: 'Sistemas y conocimiento sobre una misma base.' },
+          title: { sin: 'Dispersos', con: 'Conectado' },
+          text: { sin: 'Sistemas, planillas, mensajes y documentos sin conexión entre sí.', con: 'Sistemas y conocimiento sobre una misma base.' },
           desc: {
-            sin: 'ERP, CRM, planillas, WhatsApp, mails, documentos y personas dispersos, sin conexión entre sí.',
-            con: 'ERP, CRM, planillas, WhatsApp, mails, documentos y personas en un anillo, todos conectados a tu empresa, en el centro.',
+            sin: 'SAP, HubSpot, Sheets, WhatsApp, Gmail, Drive y el equipo sueltos y apagados, sin conexión entre sí.',
+            con: 'SAP, HubSpot, Sheets, WhatsApp, Gmail, Drive y el equipo alrededor de tu empresa, todos conectados a ella con Nocti y con el contexto unificado.',
           },
         },
         {
-          title: { sin: 'Genérico', con: 'Contextualizado' },
-          text: { sin: 'La IA conoce el modelo, no tu empresa.', con: 'La IA entiende procesos, reglas y realidad operativa.' },
+          title: { sin: 'Sin contexto', con: 'Contextualizado' },
+          text: { sin: 'Una IA genérica responde sin conocer cómo funciona tu empresa.', con: 'La IA entiende procesos, reglas y realidad operativa.' },
           desc: {
-            sin: 'Una IA genérica y, sueltos y apagados, sin conexión con ella: procesos, reglas, clientes, precios y excepciones.',
-            con: 'IA + Nocti conectada a una columna ordenada de procesos, reglas, clientes, precios y excepciones.',
+            sin: 'Una IA genérica, sin contexto y, sueltos y apagados, sin conexión con ella: procesos, reglas, clientes, precios y excepciones.',
+            con: 'IA + Nocti, con contexto, conectada al conocimiento de la empresa: procesos, reglas, clientes, precios y excepciones, todos aplicados.',
           },
         },
         {
-          title: { sin: 'Aislado', con: 'Coordinado' },
-          text: { sin: 'Personas, sistemas y agentes trabajan por separado.', con: 'Personas y agentes trabajan sobre el mismo contexto.' },
+          title: { sin: 'Aislados', con: 'Coordinado' },
+          text: { sin: 'Cada área y cada herramienta trabaja por su cuenta.', con: 'Personas y agentes trabajan sobre el mismo contexto.' },
           desc: {
             sin: 'Ventas, Finanzas, Operaciones, el agente comercial y el agente de cobranzas, dispersos y sin conexión entre sí.',
-            con: 'Ventas, Finanzas y Operaciones en una fila y, debajo, el agente comercial y el agente de cobranzas, todos conectados a un contexto compartido de Nocti.',
+            con: 'Ventas, Finanzas y Operaciones, el agente comercial en ejecución y el agente de cobranzas que necesita aprobación, todos conectados al contexto compartido de Nocti.',
           },
         },
       ],
       labels: {
-        erp: 'ERP', crm: 'CRM', planillas: 'Planillas', whatsapp: 'WhatsApp', mails: 'Mails', documentos: 'Documentos', personas: 'Personas', empresa: 'Tu empresa',
-        procesos: 'Procesos', reglas: 'Reglas', clientes: 'Clientes', precios: 'Precios', excepciones: 'Excepciones', iaGenerica: 'IA genérica', iaNocti: 'IA + Nocti',
-        ventas: 'Ventas', finanzas: 'Finanzas', operaciones: 'Operaciones', agComercial: 'Agente comercial', agCobranzas: 'Agente de cobranzas', compartido: 'Contexto compartido · Nocti',
+        erp: 'ERP', crm: 'CRM', planillas: 'Planillas', mensajes: 'Mensajes', correo: 'Correo', documentos: 'Documentos', equipo: 'Equipo', personas: 'Personas',
+        empresa: 'Tu empresa', unificado: 'Contexto unificado',
+        modelo: 'Modelo', iaGenerica: 'IA genérica', iaNocti: 'IA + Nocti', sinContexto: 'Sin contexto', conContexto: 'Con contexto',
+        conocimiento: 'Conocimiento de la empresa', aplicado: 'Aplicado',
+        procesos: 'Procesos', reglas: 'Reglas', clientes: 'Clientes', precios: 'Precios', excepciones: 'Excepciones',
+        ventas: 'Ventas', finanzas: 'Finanzas', operaciones: 'Operaciones', agComercial: 'Agente comercial', agCobranzas: 'Agente de cobranzas',
+        enEjecucion: 'En ejecución', aprobacion: 'Necesita aprobación', compartido: 'Contexto compartido · Nocti',
       },
+      carousel: 'Diagramas',
+      dot: 'Diagrama {n} de {total}',
     },
     roles: {
       h2: 'Toda la empresa puede preguntar. Cada uno ve lo que le corresponde.',
@@ -126,36 +139,42 @@ export const home: Localized<HomeCopy> = {
       live: { sin: 'Without Nocti: How companies operate today.', con: 'With Nocti: How they could operate.' },
       diagrams: [
         {
-          title: { sin: 'Fragmented', con: 'Connected' },
-          // Opción 1 (2026-10-04): los textos y etiquetas nuevos son traducción provisoria (D4).
-          text: { sin: 'Scattered information and knowledge.', con: 'Systems and knowledge on a single foundation.' },
+          title: { sin: 'Scattered', con: 'Connected' },
+          // Estilo de plataforma (spec 005 §6): los textos y etiquetas nuevos son traducción provisoria (D4).
+          text: { sin: 'Systems, spreadsheets, messages and documents with no connection between them.', con: 'Systems and knowledge on a single foundation.' },
           desc: {
-            sin: 'ERP, CRM, spreadsheets, WhatsApp, email, documents and people scattered, with no connection between them.',
-            con: 'ERP, CRM, spreadsheets, WhatsApp, email, documents and people in a ring, all connected to your company at the center.',
+            sin: 'SAP, HubSpot, Sheets, WhatsApp, Gmail, Drive and the team loose and faded, with no connection between them.',
+            con: 'SAP, HubSpot, Sheets, WhatsApp, Gmail, Drive and the team around your company, all connected to it with Nocti and a unified context.',
           },
         },
         {
-          title: { sin: 'Generic', con: 'Contextualized' },
-          text: { sin: 'AI knows the model, not your company.', con: 'AI understands processes, rules and operational reality.' },
+          title: { sin: 'No context', con: 'Contextualized' },
+          text: { sin: 'A generic AI answers without knowing how your company works.', con: 'AI understands processes, rules and operational reality.' },
           desc: {
-            sin: 'A generic AI and, loose and faded, with no connection to it: processes, rules, customers, prices and exceptions.',
-            con: 'AI + Nocti connected to an ordered column of processes, rules, customers, prices and exceptions.',
+            sin: 'A generic AI with no context and, loose and faded, with no connection to it: processes, rules, customers, prices and exceptions.',
+            con: 'AI + Nocti, with context, connected to company knowledge: processes, rules, customers, prices and exceptions, all applied.',
           },
         },
         {
           title: { sin: 'Isolated', con: 'Coordinated' },
-          text: { sin: 'People, systems and agents work separately.', con: 'People and agents work on the same context.' },
+          text: { sin: 'Each team and each tool works on its own.', con: 'People and agents work on the same context.' },
           desc: {
             sin: 'Sales, Finance, Operations, the sales agent and the collections agent, scattered and with no connection between them.',
-            con: 'Sales, Finance and Operations in a row and, below them, the sales agent and the collections agent, all connected to a shared Nocti context.',
+            con: 'Sales, Finance and Operations, the sales agent running and the collections agent awaiting approval, all connected to the shared Nocti context.',
           },
         },
       ],
       labels: {
-        erp: 'ERP', crm: 'CRM', planillas: 'Spreadsheets', whatsapp: 'WhatsApp', mails: 'Email', documentos: 'Documents', personas: 'People', empresa: 'Your company',
-        procesos: 'Processes', reglas: 'Rules', clientes: 'Customers', precios: 'Prices', excepciones: 'Exceptions', iaGenerica: 'Generic AI', iaNocti: 'AI + Nocti',
-        ventas: 'Sales', finanzas: 'Finance', operaciones: 'Operations', agComercial: 'Sales agent', agCobranzas: 'Collections agent', compartido: 'Shared context · Nocti',
+        erp: 'ERP', crm: 'CRM', planillas: 'Spreadsheets', mensajes: 'Messages', correo: 'Email', documentos: 'Documents', equipo: 'Team', personas: 'People',
+        empresa: 'Your company', unificado: 'Unified context',
+        modelo: 'Model', iaGenerica: 'Generic AI', iaNocti: 'AI + Nocti', sinContexto: 'No context', conContexto: 'With context',
+        conocimiento: 'Company knowledge', aplicado: 'Applied',
+        procesos: 'Processes', reglas: 'Rules', clientes: 'Customers', precios: 'Prices', excepciones: 'Exceptions',
+        ventas: 'Sales', finanzas: 'Finance', operaciones: 'Operations', agComercial: 'Sales agent', agCobranzas: 'Collections agent',
+        enEjecucion: 'Running', aprobacion: 'Needs approval', compartido: 'Shared context · Nocti',
       },
+      carousel: 'Diagrams',
+      dot: 'Diagram {n} of {total}',
     },
     roles: {
       h2: 'The whole company can ask. Everyone sees what’s theirs to see.',

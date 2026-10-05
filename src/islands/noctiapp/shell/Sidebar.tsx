@@ -2,7 +2,7 @@
 import { useId, useState } from 'react';
 import type { Convo, Person, ViewKey } from '../data/types';
 import { ICONS } from '../icons';
-import { Icon, useApp } from '../views/ui';
+import { Icon, useApp, useScrollRow } from '../views/ui';
 import { Mark } from './Mark';
 import { User } from './User';
 
@@ -79,10 +79,11 @@ export function NarrowBar(p: ShellProps) {
   const { copy, mounted } = useApp();
   const [open, setOpen] = useState(false);
   const id = useId();
+  const row = useScrollRow<HTMLUListElement>(p.view);
   return (
     <div className="na-narrow">
       <nav aria-label={copy.viewsNav} className="na-tabs">
-        <ul>
+        <ul ref={row}>
           {VIEW_ORDER.map((k) => (
             <li key={k}>
               <button type="button" aria-current={k === p.view ? 'page' : undefined} disabled={!mounted} onClick={() => p.onView(k)}>{copy.views[k]}</button>

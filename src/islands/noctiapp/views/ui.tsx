@@ -52,6 +52,52 @@ export function ScrollRegion({ label, className, children }: { label: string; cl
   );
 }
 
+/**
+ * Fila deslizable (spec 005 §3.3): marca con `is-fade-s` / `is-fade-e` el borde que tiene contenido oculto (el CSS lo
+ * desvanece) y, cuando cambia `active`, trae a la vista el ítem activo (`aria-pressed`/`aria-current`). Desplaza solo la
+ * fila, nunca la página: `scrollIntoView` movería también el scroll vertical si la fila queda fuera de pantalla.
+ */
+export function useScrollRow<T extends HTMLElement>(active: unknown) {
+  const ref = useRef<T>(null);
+  const { reduced } = useApp();
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const upd = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      el.classList.toggle('is-fade-s', el.scrollLeft > 1);
+      el.classList.toggle('is-fade-e', el.scrollLeft < max - 1);
+    };
+    const ro = new ResizeObserver(upd);
+    ro.observe(el);
+    for (const c of el.children) ro.observe(c);
+    el.addEventListener('scroll', upd, { passive: true });
+    upd();
+    return () => { ro.disconnect(); el.removeEventListener('scroll', upd); };
+  }, []);
+  useEffect(() => {
+    const el = ref.current;
+    const it = el?.querySelector<HTMLElement>('[aria-pressed="true"], [aria-current="page"]');
+    if (!el || !it || el.scrollWidth <= el.clientWidth + 1) return;
+    // Margen del desvanecido y del scroll-padding (ver app.css): el ítem queda entero fuera del degradé. Los destinos son
+    // puntos de snap (el inicio de un ítem a `pad` del borde), así el snap no lo corre: el más cercano que deja el activo visible.
+    const pad = 28;
+    const max = el.scrollWidth - el.clientWidth;
+    const r = el.getBoundingClientRect();
+    const a = it.getBoundingClientRect();
+    const fits = (s: number) => {
+      const d = s - el.scrollLeft;
+      return a.left - d >= r.left + (s > 1 ? pad : 0) - 1 && a.right - d <= r.right + 1 - (s < max - 1 ? pad : 0);
+    };
+    if (fits(el.scrollLeft)) return;
+    const stops = [...el.children].map((c) => Math.min(max, Math.max(0, el.scrollLeft + c.getBoundingClientRect().left - r.left - pad)));
+    const near = stops.filter(fits).sort((x, y) => Math.abs(x - el.scrollLeft) - Math.abs(y - el.scrollLeft));
+    const left = near[0] ?? Math.max(0, el.scrollLeft + a.left - r.left - pad);
+    el.scrollTo({ left, behavior: reduced ? 'auto' : 'smooth' });
+  }, [active, reduced]);
+  return ref;
+}
+
 /** Ícono de trazo de 24×24, decorativo. */
 export function Icon({ d, size = 15, width = 1.5, className, transform }: { d: string; size?: number; width?: number; className?: string; transform?: string }) {
   return (

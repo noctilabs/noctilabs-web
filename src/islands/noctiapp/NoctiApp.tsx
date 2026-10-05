@@ -15,7 +15,7 @@ import { Inicio } from './views/Inicio';
 import { Inteligencia } from './views/Inteligencia';
 import { Permisos } from './views/Permisos';
 import { PermsPanel, Preguntar, ROLE_ORDER } from './views/Preguntar';
-import { Ctx } from './views/ui';
+import { Ctx, useScrollRow } from './views/ui';
 
 export interface NoctiAppProps {
   view: 'inicio' | 'cerebro' | 'inteligencia' | 'agentes' | 'control';
@@ -26,6 +26,18 @@ export interface NoctiAppProps {
 
 const COPY = { es: ES, en: EN };
 const FMT = { es: makeFmt('es'), en: makeFmt('en') };
+
+/** Selector de rol de role-demo (§4.4): fila deslizable con el rol activo a la vista (spec 005 §3.3). */
+function RoleSel({ role, label, tabs, disabled, onRole }: { role: RoleKey; label: string; tabs: Record<RoleKey, string>; disabled: boolean; onRole: (k: RoleKey) => void }) {
+  const row = useScrollRow<HTMLDivElement>(role);
+  return (
+    <div ref={row} className="na-rd-sel" role="group" aria-label={label}>
+      {ROLE_ORDER.map((k) => (
+        <button key={k} type="button" aria-pressed={role === k} disabled={disabled} onClick={() => onRole(k)}>{tabs[k]}</button>
+      ))}
+    </div>
+  );
+}
 
 export default function NoctiApp(props: NoctiAppProps) {
   const copy = COPY[props.locale];
@@ -197,14 +209,10 @@ export default function NoctiApp(props: NoctiAppProps) {
       <section ref={root} className={'nocti-root' + (roleDemo ? ' is-roledemo' : '')} aria-label={copy.rootLabel}>
         {roleDemo ? (
           <div className="na-rd">
-            <div className="na-rd-sel" role="group" aria-label={copy.ask.viewAs}>
-              {ROLE_ORDER.map((k) => (
-                <button key={k} type="button" aria-pressed={role === k} disabled={!mounted} onClick={() => chooseRole(k)}>{copy.roleTabs[k]}</button>
-              ))}
-            </div>
+            <RoleSel role={role} label={copy.ask.viewAs} tabs={copy.roleTabs} disabled={!mounted} onRole={chooseRole} />
             <div className={'na-rd-grid' + (view === 'cerebro' ? ' has-side' : '')}>
               {app}
-              {view === 'cerebro' && <PermsPanel ans={ans} className="na-perms-side" />}
+              {view === 'cerebro' && <PermsPanel ans={ans} className="na-perms-side" collapsible />}
             </div>
           </div>
         ) : app}

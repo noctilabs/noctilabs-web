@@ -13,10 +13,12 @@ const { locale, page } = Astro.props;
 const t = ui[locale];
 const columns = [
   {
+    id: 'producto',
     title: t.nav.producto,
     items: PRODUCT_SECTION_IDS.map((id) => ({ label: t.productSections[id].label, href: href({ id: 'producto' }, locale, id) })),
   },
   {
+    id: 'industrias',
     title: t.nav.industrias,
     items: (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({
       label: industries[industry][locale].label,
@@ -24,6 +26,7 @@ const columns = [
     })),
   },
   {
+    id: 'compania',
     title: t.nav.company,
     items: [
       { label: t.nav.nosotros, href: href({ id: 'nosotros' }, locale) },
@@ -43,7 +46,7 @@ const texture = locale === 'es' ? { pause: 'Pausar fondo', play: 'Animar fondo' 
       <span class="tagline">{t.tagline}</span>
     </div>
     {columns.map((col) => (
-      <div class="col">
+      <div class="col" data-col={col.id}>
         <span class="kicker">{col.title}</span>
         {col.items.map((item) => <a href={item.href}>{item.label}</a>)}
       </div>
@@ -117,4 +120,23 @@ const texture = locale === 'es' ? { pause: 'Pausar fondo', play: 'Animar fondo' 
   .legal { display: flex; flex-wrap: wrap; gap: 8px 16px; }
   .legal a { color: inherit; }
   .legal a:hover { color: var(--blue-link); }
+
+  /* Por debajo de 1000 px (spec 005 §3.5): links en filas de 44 px, sin cambiar el tamaño del texto. Los espacios
+     descuentan los 10 px de padding de las filas para mantener las distancias visuales de antes, y los links de la
+     barra de abajo amplían su área táctil a 44 px de alto sin mover el texto. */
+  @media (max-width: 999.98px) {
+    .site-footer { gap: 30px; }
+    .main { row-gap: 22px; }
+    .col { gap: 0; }
+    .col a { min-height: 44px; padding-block: 10px; display: flex; align-items: center; }
+    .bottom { row-gap: 26px; }
+    .legal a, .tex, .bottom :global(.lang a) { padding-block: 12.5px; margin-block: -12.5px; }
+    .bottom :global(.lang a) { padding-inline: 5px; margin-inline: -5px; }
+  }
+  /* Teléfono, donde las columnas se apilaban en una sola: Producto y Compañía lado a lado e Industrias a ancho completo. */
+  @media (max-width: 599.98px) {
+    .main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
+    .brand { grid-column: 1 / -1; margin-bottom: 10px; }
+    .col[data-col='industrias'] { grid-column: 1 / -1; grid-row: 3; }
+  }
 </style>

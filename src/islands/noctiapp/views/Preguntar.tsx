@@ -1,10 +1,10 @@
 // Vista Preguntar (App L83–167): fila de controles observada, chat animado por el controlador y panel de permisos (spec 003 §4.3–4.4).
-import type { Ref as RRef } from 'react';
+import { useId, useState, type Ref as RRef } from 'react';
 import type { ChatState } from '../controller';
 import type { Person, RoleAnswer, RoleKey, SourceId } from '../data/types';
 import { Mark } from '../shell/Mark';
 import { Avatar } from '../shell/User';
-import { Kicker, RefChip, useApp } from './ui';
+import { Icon, Kicker, RefChip, useApp } from './ui';
 
 export const ROLE_ORDER: RoleKey[] = ['ceo', 'comercial', 'operaciones', 'agentes'];
 
@@ -15,9 +15,17 @@ export function useSystems(ans: RoleAnswer) {
   return ids.map((id) => copy.conex.sources[id].short).join(' · ');
 }
 
-export function PermsPanel({ ans, className }: { ans: RoleAnswer; className?: string }) {
-  const { copy } = useApp();
+/**
+ * `collapsible` (role-demo, spec 005 §3.3): por debajo de 1000 px el «Contexto consultado» es un disclosure cerrado; el CSS
+ * muestra el encabezado con botón solo ahí y el encabezado fijo en escritorio, donde la lista se ve siempre.
+ */
+export function PermsPanel({ ans, className, collapsible = false }: { ans: RoleAnswer; className?: string; collapsible?: boolean }) {
+  const { copy, mounted } = useApp();
   const systems = useSystems(ans);
+  const [open, setOpen] = useState(false);
+  // Sin JS (antes de hidratar) el contexto queda visible: se pliega recién cuando el botón puede abrirlo.
+  const shown = open || !mounted;
+  const id = useId();
   return (
     <div className={'na-perms' + (className ? ' ' + className : '')}>
       <div className="na-perms-a">
@@ -25,9 +33,17 @@ export function PermsPanel({ ans, className }: { ans: RoleAnswer; className?: st
         <p className="na-perm"><span className="na-perm-i is-ok" aria-hidden="true">✓</span><span><span className="sr-only">{copy.ask.sees}: </span>{ans.sees}</span></p>
         <p className="na-perm is-no"><span className="na-perm-i" aria-hidden="true">✕</span><span><span className="sr-only">{copy.ask.hidden}: </span>{ans.hidden}</span></p>
       </div>
-      <div className="na-perms-b">
-        <Kicker as="h4">{copy.ask.ctxTitle}</Kicker>
-        <dl>
+      <div className={'na-perms-b' + (collapsible ? ' is-collapsible' + (shown ? ' is-open' : '') : '')}>
+        <Kicker as="h4" className={collapsible ? 'na-ctx-static' : undefined}>{copy.ask.ctxTitle}</Kicker>
+        {collapsible && (
+          <h4 className="na-ctx-h">
+            <button type="button" className="na-ctx-btn" aria-expanded={shown} aria-controls={id} disabled={!mounted} onClick={() => setOpen((o) => !o)}>
+              <span className="na-kicker">{copy.ask.ctxTitle}</span>
+              <Icon d="M6 9l6 6 6-6" size={14} width={1.8} className={'na-chev' + (shown ? ' is-open' : '')} />
+            </button>
+          </h4>
+        )}
+        <dl id={collapsible ? id : undefined}>
           {copy.ask.brainMap.map((b) => (
             <div key={b.k}><dt>{b.k}</dt><dd>{b.k === copy.ask.systemsKey ? systems : b.v}</dd></div>
           ))}

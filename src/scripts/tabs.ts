@@ -13,9 +13,36 @@ export function initTabs(root: HTMLElement): void {
   // al salir, así Tab y Shift+Tab salen del grupo desde cualquier tab y la reentrada cae en la seleccionada.
   let selected = 0;
   const rove = (k: number) => tabs.forEach((t, j) => { t.tabIndex = j === k ? 0 : -1; });
-  const select = (i: number) => {
+
+  // Fila deslizable (spec 005 §3.5): el CSS desvanece sólo el borde con tabs ocultas y la tab activa o con foco se trae a la
+  // vista desplazando sólo la fila, nunca la página. FADE = ancho del desvanecido, para que la tab no quede debajo.
+  const FADE = 32;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const edges = () => {
+    const max = list.scrollWidth - list.clientWidth;
+    list.toggleAttribute('data-more-start', list.scrollLeft > 1);
+    list.toggleAttribute('data-more-end', list.scrollLeft < max - 1);
+  };
+  // El destino es siempre un punto de snap (inicio de una tab menos el scroll-padding, que mide lo mismo que el
+  // desvanecido); si no, el navegador vuelve a ajustar y la tab puede quedar debajo del borde. Suave sólo para el click;
+  // con el teclado es inmediato, así varias flechas seguidas no parten de una posición a mitad de animación.
+  const reveal = (t: HTMLElement, smooth: boolean) => {
+    const origin = list.getBoundingClientRect().left - list.scrollLeft;
+    const snaps = tabs.map((x) => Math.max(0, x.getBoundingClientRect().left - origin - FADE));
+    const left = t.getBoundingClientRect().left - origin;
+    const right = left + t.offsetWidth;
+    const max = list.scrollWidth - list.clientWidth;
+    const now = list.scrollLeft;
+    let to = now;
+    if (left - FADE < now) to = snaps[tabs.indexOf(t as HTMLButtonElement)]!;
+    else if (right + FADE > now + list.clientWidth) to = Math.min(max, snaps.find((s) => s >= right + FADE - list.clientWidth) ?? max);
+    if (Math.abs(to - now) > 1) list.scrollTo({ left: to, behavior: smooth && !reduce.matches ? 'smooth' : 'auto' });
+  };
+
+  const select = (i: number, smooth = true) => {
     selected = i;
     rove(i);
+    reveal(tabs[i]!, smooth);
     tabs.forEach((t, j) => {
       t.setAttribute('aria-selected', String(i === j));
       panels[j]!.hidden = i !== j;
@@ -42,14 +69,17 @@ export function initTabs(root: HTMLElement): void {
     if (i < 0 || j === undefined) return;
     e.preventDefault();
     rove(j);
-    tabs[j]!.focus();
+    tabs[j]!.focus({ preventScroll: true });
+    reveal(tabs[j]!, false);
   });
   list.addEventListener('focusout', (e) => {
     if (!list.contains(e.relatedTarget as Node | null)) rove(selected);
   });
 
-  select(Math.max(0, panels.findIndex((p) => !p.hidden)));
   list.hidden = false;
+  select(Math.max(0, panels.findIndex((p) => !p.hidden)), false);
+  list.addEventListener('scroll', edges, { passive: true });
+  new ResizeObserver(edges).observe(list);
 
   const imgs = [...root.querySelectorAll<HTMLImageElement>('img[loading="lazy"]')];
   for (const img of imgs) {

@@ -39,4 +39,55 @@ export function initBeforeAfter(root: HTMLElement): void {
   }).observe(root);
 
   control.hidden = false;
+
+  const row = root.querySelector<HTMLElement>('[data-ba-row]');
+  const dots = root.querySelector<HTMLElement>('[data-ba-dots]');
+  if (row && dots) initCarousel(row, dots);
+}
+
+// Carrusel de los diagramas por debajo de 1000 px (spec 005 §3.2): puntos que llevan a cada tarjeta, flechas sobre la fila
+// y el punto activo según IntersectionObserver. En escritorio la fila no se desplaza y no es una parada de Tab.
+function initCarousel(row: HTMLElement, box: HTMLElement): void {
+  const items = [...row.children] as HTMLElement[];
+  const dots = [...box.querySelectorAll<HTMLButtonElement>('button')];
+  const wide = matchMedia('(min-width: 1000px)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const ratios = items.map(() => 0);
+  let active = 0;
+
+  function mark(i: number): void {
+    active = i;
+    dots.forEach((d, j) => (j === i ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
+  }
+  // Desplaza sólo la fila (no la página) hasta la tarjeta i.
+  function go(i: number): void {
+    const k = Math.min(items.length - 1, Math.max(0, i));
+    row.scrollTo({ left: items[k]!.offsetLeft - items[0]!.offsetLeft, behavior: reduce.matches ? 'auto' : 'smooth' });
+    mark(k);
+  }
+
+  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+  row.addEventListener('keydown', (e) => {
+    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!step || e.target !== row || wide.matches) return;
+    e.preventDefault();
+    go(active + step);
+  });
+
+  // Activo = la tarjeta más visible; si hay empate (tablet, dos enteras), la última cuando la fila llegó al final.
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) ratios[items.indexOf(e.target as HTMLElement)] = e.intersectionRatio;
+    const max = Math.max(...ratios);
+    const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+    mark(atEnd ? ratios.lastIndexOf(max) : ratios.indexOf(max));
+  }, { root: row, threshold: [0, 0.25, 0.5, 0.75, 1] });
+  for (const it of items) io.observe(it);
+
+  const syncTab = () => {
+    if (wide.matches) row.removeAttribute('tabindex');
+    else row.tabIndex = 0;
+  };
+  syncTab();
+  wide.addEventListener('change', syncTab);
+  box.hidden = false;
 }
