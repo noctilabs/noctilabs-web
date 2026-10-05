@@ -8,7 +8,7 @@ import Overview from './Overview.astro';
 import ModuleSection from './ModuleSection.astro';
 import RoleSection from './RoleSection.astro';
 import Valor from './Valor.astro';
-import Control from './Control.astro';
+import ControlArch from './ControlArch.astro';
 import { producto } from '../../../content/pages/producto';
 import { href, type Locale } from '../../../i18n/routes';
 import { ui } from '../../../i18n/ui';
@@ -37,7 +37,7 @@ const contactHref = href({ id: 'hablemos' }, locale);
     <Overview t={t.overview} />
     {t.sections.slice(1).map((s) => <ModuleSection s={s} locale={locale} contactHref={contactHref} />)}
     <Valor t={t.valor} />
-    <Control t={t.control} locale={locale} contactHref={contactHref} />
+    <ControlArch locale={locale} />
   </div>
   <HablemosBand locale={locale} />
 </Base>

@@ -1,0 +1,29 @@
+---
+// «Delegá trabajo en la IA sin perder el control.» (spec 007 §3.5, V4 L564–658). Reemplaza a Control.astro, que sigue
+// en el repo. El encabezado va en el HTML del servidor; el diagrama y el detalle son la isla ControlArch.
+import Container from '../../ui/Container.astro';
+import CardBig from '../../ui/CardBig.astro';
+import HeadRow from '../../ui/HeadRow.astro';
+import Kicker from '../../ui/Kicker.astro';
+import ControlArchIsland from '../../../islands/producto/ControlArch.tsx';
+import { ARCH } from '../../../islands/producto/archData';
+import type { Locale } from '../../../i18n/routes';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = ARCH[locale];
+---
+<Container gap="clamp(64px,8vw,128px)" id="control" tabindex="-1" aria-labelledby="control-title">
+  <CardBig variant="p" class="ctl">
+    <HeadRow>
+      <Kicker as="p">{t.kicker}</Kicker>
+      <h2 id="control-title" class="h2">{t.title}</h2>
+      <Fragment slot="lead">{t.lead}</Fragment>
+    </HeadRow>
+    <ControlArchIsland client:visible locale={locale} />
+  </CardBig>
+</Container>
+
+<style>
+  .ctl { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px); }
+</style>
