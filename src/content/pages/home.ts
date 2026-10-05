@@ -42,6 +42,10 @@ export interface HomeCopy {
     dot: string;
   };
   roles: { h2: string; lead: string; note: string };
+  /** Frase con revelado por scroll (spec 006 §5). */
+  frase: string;
+  /** Encabezado del montaje «Preguntá. Entendé. Actuá.» (spec 006 §6). */
+  montage: { h2: string; lead: string };
   capabilities: { kicker: string; h2: string; items: [Card, Card, Card, Card]; cta: string };
   steps: { h2: string; lead: string; items: [Step, Step, Step, Step] };
   industries: { h2: string; lead: string; tablist: string; more: string; moreAbout: string };
@@ -100,6 +104,11 @@ export const home: Localized<HomeCopy> = {
       lead: 'La experiencia cambia por rol, manteniendo el mismo cerebro organizacional y los permisos correspondientes.',
       note: 'En Preguntar, cada persona y cada agente ven únicamente lo que sus permisos permiten.',
     },
+    frase: 'El límite de la IA no es el modelo. Es cuánto entiende de tu empresa. Con el contexto correcto, personas y agentes pueden analizar mejor, decidir con más criterio y ejecutar trabajo real.',
+    montage: {
+      h2: 'Preguntá. Entendé. Actuá.',
+      lead: 'Personas y agentes trabajan sobre el mismo contexto, con la información, las fuentes y los permisos que les corresponden.',
+    },
     capabilities: {
       kicker: 'Capacidades',
       h2: 'Qué podés hacer dentro de Nocti.',
@@ -112,13 +121,13 @@ export const home: Localized<HomeCopy> = {
       cta: 'Creá tus propios agentes, integrá los que ya tenés o construílos con NoctiLabs.',
     },
     steps: {
-      h2: 'Construimos Nocti alrededor de tu empresa.',
-      lead: 'Servicio + plataforma. El equipo de NoctiLabs implementa y tu organización sigue construyendo sobre Nocti.',
+      h2: 'Tu empresa, un solo lugar.',
+      lead: 'NoctiLabs implementa y evoluciona Nocti junto a tu organización.',
       items: [
-        { n: '01', who: 'NoctiLabs', t: 'Entendemos', d: 'Aprendemos cómo funciona tu empresa.', ex: 'Entrevistas, procesos y reglas reales del negocio.' },
-        { n: '02', who: 'NoctiLabs', t: 'Conectamos', d: 'Unimos sistemas, información y conocimiento.', ex: 'ERP, CRM, planillas, correo y documentos, sin migrar nada.' },
-        { n: '03', who: 'NoctiLabs + Nocti', t: 'Implementamos', d: 'Ponemos Nocti en funcionamiento sobre ese contexto.', ex: 'Primeros casos de uso en producción, por rol.' },
-        { n: '04', who: 'Tu equipo + Nocti', t: 'Evolucionamos', d: 'Sumamos procesos, agentes y nuevas capacidades.', ex: 'Nuevos agentes y procesos sobre el mismo contexto.' },
+        { n: '01', who: 'NoctiLabs', t: 'Entendemos', d: 'Cómo funciona realmente tu empresa.', ex: 'Procesos y reglas reales del negocio.' },
+        { n: '02', who: 'NoctiLabs', t: 'Conectamos', d: 'Sistemas, información y conocimiento.', ex: 'ERP, CRM, planillas, correo y documentos, sin migrar nada.' },
+        { n: '03', who: 'NoctiLabs + Nocti', t: 'Implementamos', d: 'Nocti sobre el contexto de tu negocio.', ex: 'Primeros casos de uso en producción, por rol.' },
+        { n: '04', who: 'Tu equipo + Nocti', t: 'Evolucionamos', d: 'Nuevos procesos, agentes y capacidades sobre la misma base.', ex: 'Nuevos agentes y procesos sobre el mismo contexto.' },
       ],
     },
     industries: {
@@ -181,6 +190,11 @@ export const home: Localized<HomeCopy> = {
       lead: 'The experience changes by role, with the same organizational brain and the right permissions.',
       note: 'In Ask, each person and each agent sees only what their permissions allow.',
     },
+    frase: 'The limit of AI isn’t the model. It’s how much it understands about your company. With the right context, people and agents can analyze better, decide with more judgment and get real work done.',
+    montage: {
+      h2: 'Ask. Understand. Act.',
+      lead: 'People and agents work on the same context, with the information, sources and permissions that belong to them.',
+    },
     capabilities: {
       kicker: 'Capabilities',
       h2: 'What you can do inside Nocti.',
@@ -193,13 +207,13 @@ export const home: Localized<HomeCopy> = {
       cta: 'Create your own agents, integrate the ones you already have or build them with NoctiLabs.',
     },
     steps: {
-      h2: 'We build Nocti around your company.',
-      lead: 'Service + platform. The NoctiLabs team implements, and your organization keeps building on Nocti.',
+      h2: 'Your company, in one place.',
+      lead: 'NoctiLabs implements and evolves Nocti together with your organization.',
       items: [
-        { n: '01', who: 'NoctiLabs', t: 'We understand', d: 'We learn how your company works.', ex: 'Interviews, processes and the real rules of the business.' },
-        { n: '02', who: 'NoctiLabs', t: 'We connect', d: 'We bring together systems, information and knowledge.', ex: 'ERP, CRM, spreadsheets, email and documents, with nothing to migrate.' },
-        { n: '03', who: 'NoctiLabs + Nocti', t: 'We implement', d: 'We put Nocti to work on that context.', ex: 'First use cases in production, by role.' },
-        { n: '04', who: 'Your team + Nocti', t: 'We evolve', d: 'We add processes, agents and new capabilities.', ex: 'New agents and processes on the same context.' },
+        { n: '01', who: 'NoctiLabs', t: 'We understand', d: 'How your company really works.', ex: 'The real processes and rules of the business.' },
+        { n: '02', who: 'NoctiLabs', t: 'We connect', d: 'Systems, information and knowledge.', ex: 'ERP, CRM, spreadsheets, email and documents, with nothing to migrate.' },
+        { n: '03', who: 'NoctiLabs + Nocti', t: 'We implement', d: 'Nocti on the context of your business.', ex: 'First use cases in production, by role.' },
+        { n: '04', who: 'Your team + Nocti', t: 'We evolve', d: 'New processes, agents and capabilities on the same foundation.', ex: 'New agents and processes on the same context.' },
       ],
     },
     industries: {

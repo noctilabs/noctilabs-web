@@ -1,0 +1,45 @@
+---
+// Frase con revelado por scroll (spec 006 §5, V4 L134–136). Cada palabra es un span; el párrafo se lee entero.
+import type { Locale } from '../../../i18n/routes';
+import { home } from '../../../content/pages/home';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const words = home[locale].frase.split(' ');
+---
+<section class="frase" id="frase">
+  <p data-frase>
+    {words.map((w, i) => <Fragment><span data-fw>{w}</span>{i < words.length - 1 && ' '}</Fragment>)}
+  </p>
+</section>
+
+<script>
+  import { initFrase } from '../../../scripts/frase';
+  initFrase();
+</script>
+
+<style>
+  .frase {
+    max-width: 1200px;
+    width: 100%;
+    margin: clamp(64px, 8vw, 128px) auto 0;
+    padding: clamp(48px, 7vw, 120px) var(--edge);
+    display: flex;
+    justify-content: center;
+  }
+  p {
+    margin: 0;
+    max-width: 34ch;
+    text-align: center;
+    font-size: clamp(28px, 3.8vw, 56px);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -.04em;
+    text-wrap: balance;
+  }
+  span { transition: color .35s ease; }
+  span.is-dim { color: #D9D9D5; }
+  @media (prefers-reduced-motion: reduce) {
+    span { transition: none; }
+  }
+</style>
