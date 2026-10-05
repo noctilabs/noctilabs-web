@@ -66,7 +66,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
   retail: {
     es: {
       label: 'Retail y distribución', short: 'Retail',
-      blurb: 'Pedidos, stock, cobranzas y proveedores sobre un mismo contexto, con prioridades claras cada día.',
+      blurb: 'Ventas, pedidos, stock, compras y cobranzas conectados para operar con mayor visibilidad y prioridad.',
       hero: {
         h1: 'Cada cliente, pedido y proveedor en un mismo contexto.',
         lead: 'Nocti conecta ventas, stock, compras y cobranzas para que tu equipo sepa qué priorizar cada día y tus agentes trabajen con las mismas reglas.',
@@ -95,7 +95,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
     },
     en: {
       label: 'Retail and distribution', short: 'Retail',
-      blurb: 'Orders, stock, collections and suppliers on a shared context, with clear priorities every day.',
+      blurb: 'Sales, orders, stock, purchasing and collections connected, so you operate with more visibility and clearer priorities.',
       hero: {
         h1: 'Every customer, order and supplier in one context.',
         lead: 'Nocti connects sales, stock, purchasing and collections so your team knows what to prioritize each day and your agents work by the same rules.',
@@ -126,7 +126,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
   manufactura: {
     es: {
       label: 'Manufactura', short: 'Manufactura',
-      blurb: 'Producción, compras y calidad conectadas con los sistemas que la planta ya usa.',
+      blurb: 'Producción, mantenimiento, calidad y abastecimiento conectados con los sistemas que la planta ya utiliza.',
       hero: {
         h1: 'Cada orden, insumo y línea de producción en un mismo contexto.',
         lead: 'Nocti conecta producción, compras, calidad y mantenimiento para que la planta sepa qué priorizar en cada turno y tus agentes trabajen con las mismas reglas.',
@@ -155,7 +155,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
     },
     en: {
       label: 'Manufacturing', short: 'Manufacturing',
-      blurb: 'Production, purchasing and quality connected to the systems your plant already uses.',
+      blurb: 'Production, maintenance, quality and supply connected to the systems the plant already uses.',
       hero: {
         h1: 'Every order, input and production line in one context.',
         lead: 'Nocti connects production, purchasing, quality and maintenance so the plant knows what to prioritize each shift and your agents work by the same rules.',
@@ -186,7 +186,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
   consumo: {
     es: {
       label: 'Alimentos y bienes de consumo', short: 'Consumo masivo',
-      blurb: 'Lotes, vencimientos, canales y márgenes en una sola vista operativa.',
+      blurb: 'Ventas, lotes, inventario, vencimientos y distribución conectados en una misma operación.',
       hero: {
         h1: 'Cada lote, canal y cliente en un mismo contexto.',
         lead: 'Nocti conecta producción, lotes, vencimientos y canales de venta para que tu equipo cuide el margen todos los días y tus agentes trabajen con las mismas reglas.',
@@ -215,7 +215,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
     },
     en: {
       label: 'Food and consumer goods', short: 'Consumer goods',
-      blurb: 'Batches, expiry dates, channels and margins in a single operational view.',
+      blurb: 'Sales, batches, inventory, expiry dates and distribution connected in a single operation.',
       hero: {
         h1: 'Every batch, channel and customer in one context.',
         lead: 'Nocti connects production, batches, expiry dates and sales channels so your team protects margin every day and your agents work by the same rules.',
@@ -246,7 +246,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
   salud: {
     es: {
       label: 'Salud y actividad física', short: 'Salud y fitness',
-      blurb: 'Socios, sedes, agenda y cobranzas, con permisos claros por rol.',
+      blurb: 'Pacientes o socios, sedes, agenda, atención y administración conectados con permisos por rol.',
       hero: {
         h1: 'Cada socio, sede y agenda en un mismo contexto.',
         lead: 'Nocti conecta socios, sedes, agenda y cobranzas para que cada equipo vea lo que necesita y tus agentes trabajen con permisos claros por rol.',
@@ -275,7 +275,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
     },
     en: {
       label: 'Health and fitness', short: 'Health & fitness',
-      blurb: 'Members, locations, schedules and collections, with clear permissions by role.',
+      blurb: 'Patients or members, locations, scheduling, service and administration connected, with role-based permissions.',
       hero: {
         h1: 'Every member, location and schedule in one context.',
         lead: 'Nocti connects members, locations, schedules and collections so each team sees what it needs and your agents work with clear permissions by role.',
@@ -306,7 +306,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
   servicios: {
     es: {
       label: 'Servicios profesionales y empresariales', short: 'Servicios',
-      blurb: 'Clientes, proyectos, horas y facturación conectados en un mismo contexto.',
+      blurb: 'Clientes, proyectos, conocimiento, entregables y facturación conectados en un mismo contexto.',
       hero: {
         h1: 'Cada cliente, proyecto y hora en un mismo contexto.',
         lead: 'Nocti conecta clientes, proyectos, horas y facturación para que tu equipo sepa dónde está la rentabilidad y tus agentes trabajen con las mismas reglas.',
@@ -335,7 +335,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
     },
     en: {
       label: 'Professional and business services', short: 'Services',
-      blurb: 'Clients, projects, hours and billing connected in a single context.',
+      blurb: 'Clients, projects, knowledge, deliverables and billing connected in a single context.',
       hero: {
         h1: 'Every client, project and hour in one context.',
         lead: 'Nocti connects clients, projects, hours and billing so your team knows where profitability is and your agents work by the same rules.',

@@ -10,7 +10,7 @@ import type { AgentKey, ApprState, Locale, RoleAnswer, RoleKey, ViewKey } from '
 import { NarrowBar, Sidebar } from './shell/Sidebar';
 import { Agentes, activeAgents } from './views/Agentes';
 import { Conexiones, type ConexMode } from './views/Conexiones';
-import { Control } from './views/Control';
+import { Control, type ControlTab } from './views/Control';
 import { Inicio } from './views/Inicio';
 import { Inteligencia } from './views/Inteligencia';
 import { Permisos } from './views/Permisos';
@@ -22,7 +22,17 @@ export interface NoctiAppProps {
   locale: Locale;
   contactHref: string;
   variant?: 'role-demo';
+  /**
+   * Sub-vista de Control (0–6) de la sección «Control y gobernanza» (spec 006 §3.4). Con este prop la isla escucha el
+   * evento `nocti:control-tab` (detail: número) en su ancestro `[data-ctl-app]`, y al montar lee su `data-tab`: así el
+   * acordeón de la sección (scripts/auto-accordion.ts) le cambia la vista aunque haya elegido antes de hidratar.
+   */
+  controlTab?: ControlTab;
 }
+
+/** Ítem del menú que se marca en cada sub-vista de Control (App v2 L695). */
+const CT_NAV: Partial<Record<ControlTab, ViewKey>> = { 1: 'permisos', 3: 'agentes', 5: 'agentes' };
+const asTab = (n: unknown): ControlTab | null => (typeof n === 'number' && Number.isInteger(n) && n >= 0 && n <= 6 ? (n as ControlTab) : null);
 
 const COPY = { es: ES, en: EN };
 const FMT = { es: makeFmt('es'), en: makeFmt('en') };
@@ -54,6 +64,8 @@ export default function NoctiApp(props: NoctiAppProps) {
   const [agentOpen, setAgentOpen] = useState<AgentKey | null>(null);
   const [drill, setDrill] = useState(false);
   const [conex, setConex] = useState<ConexMode>('list');
+  const ctlDemo = props.controlTab !== undefined;
+  const [ct, setCt] = useState<ControlTab>(props.controlTab ?? 0);
   const [mounted, setMounted] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [live, setLive] = useState('');
@@ -103,6 +115,26 @@ export default function NoctiApp(props: NoctiAppProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sub-vista elegida desde la sección (spec 006 §3.4): siempre lleva a Control, aunque se haya navegado a otra vista.
+  useEffect(() => {
+    if (!ctlDemo) return;
+    const host = root.current?.closest<HTMLElement>('[data-ctl-app]');
+    if (!host) return;
+    const show = (n: ControlTab) => {
+      getCtrl().cancel();
+      setView('control');
+      setAgentOpen(null);
+      setConvo(null);
+      setCt(n);
+    };
+    const first = asTab(Number(host.dataset.tab));
+    if (first !== null) show(first);
+    const on = (e: Event) => { const n = asTab((e as CustomEvent<unknown>).detail); if (n !== null) show(n); };
+    host.addEventListener('nocti:control-tab', on);
+    return () => host.removeEventListener('nocti:control-tab', on);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Disparador de visibilidad: la fila de controles de Preguntar, con threshold 0 (§4.3).
   const controlsRef = useCallback((el: HTMLDivElement | null) => {
     io.current?.disconnect();
@@ -132,6 +164,8 @@ export default function NoctiApp(props: NoctiAppProps) {
     setView(v);
     setAgentOpen(null);
     setConvo(null);
+    // Desde el menú de la app, Control abre su vista de siempre (si no, «Operaciones / Control» mostraría Permisos).
+    if (v === 'control') setCt(0);
     if (v === 'cerebro') startSeq(role);
   };
   const chooseRole = (k: RoleKey) => {
@@ -165,7 +199,7 @@ export default function NoctiApp(props: NoctiAppProps) {
   const greeting = copy.hello(person.bot ? null : person.first);
   const ans = answerOf(role, convo);
   const shell = {
-    view,
+    view: view === 'control' ? CT_NAV[ct] ?? view : view,
     convo,
     person,
     counts: { agentes: 3, control: oc === 'pending' ? 1 : 0, fuentes: 8 },
@@ -189,7 +223,7 @@ export default function NoctiApp(props: NoctiAppProps) {
           onOpen={setAgentOpen} onClose={closeAgent} onApprove={approveAgent} />
       );
       break;
-    case 'control': main = <Control oc={oc} run={runs.cobranzas} onOc={(s) => setOcFrom(s, true)} />; break;
+    case 'control': main = <Control oc={oc} run={runs.cobranzas} tab={ct} onOc={(s) => setOcFrom(s, true)} />; break;
     case 'fuentes': main = <Conexiones mode={conex} onMode={setConex} />; break;
     case 'permisos': main = <Permisos />; break;
   }
@@ -206,7 +240,7 @@ export default function NoctiApp(props: NoctiAppProps) {
 
   return (
     <Ctx.Provider value={{ copy, fmt, mounted, reduced }}>
-      <section ref={root} className={'nocti-root' + (roleDemo ? ' is-roledemo' : '')} aria-label={copy.rootLabel}>
+      <section ref={root} className={'nocti-root' + (roleDemo ? ' is-roledemo' : '') + (ctlDemo ? ' is-ctldemo' : '')} aria-label={copy.rootLabel}>
         {roleDemo ? (
           <div className="na-rd">
             <RoleSel role={role} label={copy.ask.viewAs} tabs={copy.roleTabs} disabled={!mounted} onRole={chooseRole} />

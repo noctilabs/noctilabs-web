@@ -3,7 +3,7 @@ export type Locale = 'es' | 'en';
 export type ViewKey = 'inicio' | 'cerebro' | 'inteligencia' | 'agentes' | 'control' | 'fuentes' | 'permisos';
 export type RoleKey = 'ceo' | 'comercial' | 'operaciones' | 'agentes';
 export type SourceId = 'erp' | 'crm' | 'drive' | 'planillas' | 'whatsapp' | 'correo' | 'documentos' | 'conocimiento';
-export type Tag = 'warn' | 'danger' | 'info' | 'success' | 'neutral';
+export type Tag = 'warn' | 'danger' | 'info' | 'success' | 'neutral' | 'change';
 export type AgentKey = 'cobranzas' | 'comercial' | 'compras';
 /** Estado de la OC-4471 (§4.8). Las corridas usan solo `pending | approved`. */
 export type ApprState = 'pending' | 'approved' | 'rejected';
@@ -166,6 +166,23 @@ export interface Copy {
     tableLabel: string;
     cols: [string, string, string, string];
     trace: (oc: ApprState, run: ApprState) => { t: string; a: string; x: string; s: string; tag: Tag }[];
+  };
+  /** Sub-vistas de Control de la sección «Control y gobernanza» (spec 006 §3.4), por `controlTab`. */
+  ctl: {
+    /** Título y bajada de las sub-vistas 1 y 3–6 (la 0 y la 2 usan los de `control`). */
+    heads: Record<1 | 3 | 4 | 5 | 6, [string, string]>;
+    perm: { tableLabel: string; cols: [string, string, string, string, string]; badge: string; rows: { r: string; v: string; c: string; e: string; a: string; agent?: boolean }[]; note: string };
+    agent: {
+      name: string; sub: string; status: Record<ApprState, [string, Tag]>;
+      allowH: string; allow: { t: string; d: string }[]; denyH: string; deny: { t: string; d: string }[];
+      limitH: string; limitV: string; auto: string; above: string;
+    };
+    trace: { order: string; status: Record<ApprState, [string, Tag]>; listLabel: string; steps: (oc: ApprState) => { t: string; x: string; src: string; tone: 'blue' | ApprState }[] };
+    obs: {
+      agents: (oc: ApprState, run: ApprState) => { n: string; s: [string, Tag]; rows: { k: string; v: number; tone?: 'w' | 'd' }[] }[];
+      exc: { banner: string; agent: string; title: string; text: string; cta: string };
+    };
+    audit: { filtersLabel: string; filters: { k: string; v: string }[]; exportLabel: string; change: { t: string; a: string; x: string; s: string } };
   };
   conex: {
     title: string;

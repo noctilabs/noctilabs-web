@@ -15,7 +15,7 @@ export interface InsightsCopy {
 // El H1, el title y la descripción salen de ui.pages.insights (spec 002 §3.1).
 export const insights: Localized<InsightsCopy> = {
   es: {
-    kicker: 'Insights',
+    kicker: 'Blog',
     lead: 'Tesis y análisis sobre cómo cambian las organizaciones cuando personas e IA trabajan sobre el mismo contexto.',
     featured: 'Destacado',
     read: 'Leer →',
@@ -25,7 +25,7 @@ export const insights: Localized<InsightsCopy> = {
   },
   // D4: traducción provisoria, pendiente de revisión del dueño.
   en: {
-    kicker: 'Insights',
+    kicker: 'Blog',
     lead: 'Theses and analysis on how organizations change when people and AI work on the same context.',
     featured: 'Featured',
     read: 'Read →',

@@ -119,7 +119,7 @@ export const policy: Localized<PolicyCopy> = {
         list: [
           'Web3Forms, el proveedor del formulario, que recibe el envío y lo reenvía por correo. Procesa los datos en India, con sus subencargados.',
           'Vercel, que aloja el sitio y la analítica.',
-          'Sanity, que guarda solo el contenido editorial de Insights. No recibe datos de los visitantes.',
+          'Sanity, que guarda solo el contenido editorial del Blog. No recibe datos de los visitantes.',
         ],
       },
       {
@@ -177,7 +177,7 @@ export const policy: Localized<PolicyCopy> = {
         list: [
           'Web3Forms, the form provider, which receives the submission and forwards it by email. It processes the data in India, with its sub-processors.',
           'Vercel, which hosts the site and the analytics.',
-          'Sanity, which only stores the editorial content of Insights. It receives no visitor data.',
+          'Sanity, which only stores the editorial content of the Blog. It receives no visitor data.',
         ],
       },
       {

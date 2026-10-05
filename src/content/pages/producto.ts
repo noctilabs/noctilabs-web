@@ -1,6 +1,7 @@
 import type { Localized } from '../types';
 
 export interface OvCard { title: string; text: string }
+export interface CtlItem { title: string; text: string }
 
 export interface ProductSection {
   /** Ancla de la sección (la usan el header, el menú mobile y el footer). */
@@ -34,9 +35,11 @@ export interface ProductoCopy {
     title: string;
     lead: string;
     layers: [string, string, string];
-    bar: { title: string; list: string };
-    /** Caption de la demo de aprobación (Inv §2.5). */
-    caption: string;
+    bar: string;
+    /** Los 6 controles del acordeón (spec 006 §3.4); el n.º i abre la sub-vista i + 1 de la app. */
+    items: [CtlItem, CtlItem, CtlItem, CtlItem, CtlItem, CtlItem];
+    /** Control visible del avance automático (WCAG 2.2.2). */
+    autoplay: { pause: string; play: string };
   };
 }
 
@@ -93,11 +96,19 @@ export const producto: Localized<ProductoCopy> = {
     ],
     control: {
       kicker: 'Control y gobernanza',
-      title: 'Una capa de control debajo de todo.',
+      title: 'Controlá cómo personas e IA operan sobre tu empresa',
       lead: 'Cerebro, Inteligencia y Agentes comparten los mismos permisos, aprobaciones y trazabilidad.',
       layers: ['Cerebro', 'Inteligencia', 'Agentes'],
-      bar: { title: 'Control y gobernanza', list: 'Permisos · Seguridad · Aprobaciones · Trazabilidad · Observabilidad · Agentes' },
-      caption: 'Ejemplo: una orden por encima del límite espera aprobación humana. Probá aprobarla o rechazarla.',
+      bar: 'Control y gobernanza',
+      items: [
+        { title: 'Permisos por rol', text: 'Cada persona y cada agente acceden únicamente a lo que les corresponde.' },
+        { title: 'Aprobaciones humanas', text: 'Definí cuándo una acción puede ejecutarse automáticamente y cuándo requiere intervención.' },
+        { title: 'Límites de acción', text: 'Controlá qué sistemas, herramientas y acciones puede utilizar cada agente.' },
+        { title: 'Trazabilidad completa', text: 'Sabé qué información se utilizó, qué decisión se tomó y qué acción se ejecutó.' },
+        { title: 'Observabilidad', text: 'Supervisá actividad, excepciones, errores y resultados de tus agentes.' },
+        { title: 'Auditoría e historial', text: 'Conservá un registro verificable de acciones, cambios y decisiones.' },
+      ],
+      autoplay: { pause: 'Pausar avance', play: 'Reanudar avance' },
     },
   },
   en: {
@@ -151,11 +162,19 @@ export const producto: Localized<ProductoCopy> = {
     ],
     control: {
       kicker: 'Control and governance',
-      title: 'A control layer beneath everything.',
+      title: 'Control how people and AI operate across your company',
       lead: 'Brain, Intelligence and Agents share the same permissions, approvals and traceability.',
       layers: ['Brain', 'Intelligence', 'Agents'],
-      bar: { title: 'Control and governance', list: 'Permissions · Security · Approvals · Traceability · Observability · Agents' },
-      caption: 'Example: an order above the limit waits for human approval. Try approving or rejecting it.',
+      bar: 'Control and governance',
+      items: [
+        { title: 'Role-based permissions', text: 'Each person and each agent accesses only what applies to them.' },
+        { title: 'Human approvals', text: 'Define when an action can run automatically and when it needs a person.' },
+        { title: 'Action limits', text: 'Control which systems, tools and actions each agent can use.' },
+        { title: 'Full traceability', text: 'Know what information was used, what decision was made and what action was taken.' },
+        { title: 'Observability', text: 'Monitor your agents’ activity, exceptions, errors and results.' },
+        { title: 'Audit and history', text: 'Keep a verifiable record of actions, changes and decisions.' },
+      ],
+      autoplay: { pause: 'Pause autoplay', play: 'Resume autoplay' },
     },
   },
 };

@@ -14,7 +14,7 @@ export const INDUSTRY_SLUGS = {
 
 export type IndustryId = keyof typeof INDUSTRY_SLUGS;
 
-/** Artículo de Insights: los slugs vienen de Sanity, ya validados (spec 002 §3.2 y §3.4). */
+/** Artículo del blog: los slugs vienen de Sanity, ya validados (spec 002 §3.2 y §3.4). */
 export type ArticleRef = { id: 'articulo'; slug: Record<Locale, string> };
 
 export type PageRef =
@@ -26,13 +26,14 @@ const PATHS: Record<SimpleId, Record<Locale, string>> = {
   home: { es: '/', en: '/en/' },
   producto: { es: '/producto/', en: '/en/product/' },
   nosotros: { es: '/nosotros/', en: '/en/about/' },
-  insights: { es: '/insights/', en: '/en/insights/' },
+  insights: { es: '/blog/', en: '/en/blog/' },
   hablemos: { es: '/hablemos/', en: '/en/contact/' },
   privacidad: { es: '/privacidad/', en: '/en/privacy/' },
 };
 
 const INDUSTRY_BASE: Record<Locale, string> = { es: '/industrias/', en: '/en/industries/' };
-const ARTICLE_BASE: Record<Locale, string> = { es: '/insights/', en: '/en/insights/' };
+// Spec 006 §3.2: Insights pasa a Blog; la página interna sigue siendo `insights`.
+const ARTICLE_BASE: Record<Locale, string> = { es: '/blog/', en: '/en/blog/' };
 
 function pathOf(page: PageRef, locale: Locale): string {
   if (page.id === 'industria') {

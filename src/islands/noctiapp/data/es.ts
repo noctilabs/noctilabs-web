@@ -1,5 +1,5 @@
 // Datos y copy en español: transcripción literal de Nocti App v2 (App L419–505) con las correcciones de spec 003 §4.7.
-import { AGING, DEBTORS, HELD, HELD_TOTAL, OC, OVER_30, OVERDUE_TOTAL, PAYMENTS_LIMIT, PURCHASE_LIMIT, DISCOUNT_LIMIT, ROWS, TODAY, total } from './facts';
+import { AGING, DEBTORS, HELD, HELD_TOTAL, OC, OVER_30, OVERDUE_TOTAL, PAYMENTS_LIMIT, PREV_PURCHASE_LIMIT, PURCHASE_LIMIT, DISCOUNT_LIMIT, ROWS, TODAY, total } from './facts';
 import { makeFmt } from './format';
 import type { ApprState, Copy, Ref, SourceId } from './types';
 
@@ -433,6 +433,74 @@ export const ES: Copy = {
       { t: 'Hoy 09:15', a: 'Martín · Comercial', x: 'Aprobó 5 seguimientos', s: 'Ejecutada', tag: 'neutral' },
       { t: 'Ayer 18:10', a: 'Agente de cobranzas', x: 'Envió 35 recordatorios', s: 'Ejecutada', tag: 'neutral' },
     ],
+  },
+  ctl: {
+    heads: {
+      1: ['Permisos', '5 roles · 1 agente'],
+      3: ['Agentes', 'Configuración'],
+      4: ['Trazabilidad', `Decisión ${OC.id}`],
+      5: ['Observabilidad', 'Hoy · 3 agentes'],
+      6: ['Auditoría', 'Registro de hoy'],
+    },
+    perm: {
+      tableLabel: 'Matriz de permisos por rol',
+      cols: ['Rol', 'Ver', 'Consultar', 'Ejecutar', 'Requiere aprobación'],
+      badge: 'Agente',
+      rows: [
+        { r: 'CEO', v: 'Toda la empresa', c: 'Todo', e: 'Aprobaciones', a: '—' },
+        { r: 'Comercial', v: 'Su cartera', c: 'Clientes, ventas, stock', e: 'Seguimientos', a: `Descuentos > ${f.pct(DISCOUNT_LIMIT)}` },
+        { r: 'Finanzas', v: 'Finanzas y compras', c: 'Márgenes, caja, compras', e: 'Aprobar compras', a: '—' },
+        { r: 'Operaciones', v: 'Pedidos, stock, compras', c: 'Operación', e: 'Reposiciones', a: `Compras > ${f.mill(PURCHASE_LIMIT, 0)}` },
+        { r: 'Agente de compras', v: 'Stock y proveedores', c: 'ERP · Compras', e: 'Crear órdenes', a: `Compras > ${f.mill(PURCHASE_LIMIT, 0)}`, agent: true },
+      ],
+      note: 'Los agentes reciben permisos como cualquier persona del equipo.',
+    },
+    agent: {
+      name: 'Agente de compras',
+      sub: 'Reposición de insumos · versión publicada',
+      status: { pending: ['En pausa', 'warn'], approved: ['Activo', 'success'], rejected: ['En pausa', 'warn'] },
+      allowH: 'Permitido',
+      allow: [{ t: 'ERP · Compras', d: 'Leer y crear órdenes' }, { t: 'Correo', d: 'Enviar a proveedores' }],
+      denyH: 'No permitido',
+      deny: [{ t: 'Pagos', d: 'Sin acceso' }, { t: 'Modificar precios', d: 'Sin acceso' }],
+      limitH: 'Límite de compra automática',
+      limitV: `Hasta ${f.money(PURCHASE_LIMIT)}`,
+      auto: 'Automática',
+      above: `Por encima: aprobación de Finanzas · ${OC.id} ${f.mill(OC.amount)}`,
+    },
+    trace: {
+      order: `${OC.id} · ${OC.supplier} · ${f.money(OC.amount)}`,
+      status: { pending: ['En aprobación', 'warn'], approved: ['Aprobada', 'success'], rejected: ['Rechazada', 'danger'] },
+      listLabel: `Pasos de la decisión ${OC.id}`,
+      steps: (oc) => [
+        { t: '09:58', x: 'Detectó stock bajo del SKU 4410', src: 'ERP · Stock', tone: 'blue' },
+        { t: '10:00', x: 'Consultó contrato vigente', src: 'Contrato Plastar 2026.pdf', tone: 'blue' },
+        { t: '10:01', x: 'Aplicó regla de compras', src: 'Política de compras', tone: 'blue' },
+        { t: '10:04', x: `Preparó ${OC.id} por ${f.money(OC.amount)}`, src: 'ERP · Compras', tone: 'blue' },
+        { t: '10:04', x: 'Envió a aprobación de Finanzas', src: 'Carla Ruiz · Finanzas', tone: oc === 'pending' ? 'pending' : 'blue' },
+        ...(oc === 'pending' ? [] : [{ t: '10:07', x: oc === 'approved' ? 'Aprobada · la orden se envía al ERP' : 'Rechazada · no se ejecutó', src: 'Carla Ruiz · Finanzas', tone: oc }]),
+      ],
+    },
+    obs: {
+      agents: (oc, run) => [
+        { n: 'Agente de compras', s: oc === 'approved' ? ['Activo', 'success'] : ['En pausa', 'warn'], rows: [{ k: 'Tareas hoy', v: 6 }, { k: 'Excepciones abiertas', v: pending(oc) ? 1 : 0, tone: 'w' }, { k: 'Errores', v: 0, tone: 'd' }] },
+        { n: 'Agente de cobranzas', s: ['Activo', 'success'], rows: [{ k: 'Tareas hoy', v: 214 }, { k: 'Excepciones abiertas', v: pending(run) ? 1 : 0, tone: 'w' }, { k: 'Errores', v: 0, tone: 'd' }] },
+        { n: 'Agente comercial', s: ['Activo', 'success'], rows: [{ k: 'Tareas hoy', v: 38 }, { k: 'Excepciones abiertas', v: 0, tone: 'w' }, { k: 'Errores', v: 1, tone: 'd' }] },
+      ],
+      exc: {
+        banner: 'Excepción abierta',
+        agent: 'Agente de cobranzas',
+        title: 'Propuso plan de pago a Mayorista El Sur · fuera de política',
+        text: 'Plazo propuesto: 120 días. La política permite hasta 90.',
+        cta: 'Revisar',
+      },
+    },
+    audit: {
+      filtersLabel: 'Filtros del registro',
+      filters: [{ k: 'Actor', v: 'Todos' }, { k: 'Tipo', v: 'Todos' }, { k: 'Fecha', v: 'Hoy' }],
+      exportLabel: 'Exportar registro',
+      change: { t: 'Hoy 08:40', a: 'Valeria Costa · Finanzas', x: `Modificó el límite de compras automáticas: ${f.money(PREV_PURCHASE_LIMIT)} → ${f.money(PURCHASE_LIMIT)}`, s: 'Cambio' },
+    },
   },
   conex: {
     title: 'Conexiones',

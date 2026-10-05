@@ -1,9 +1,9 @@
 ---
-// Control y gobernanza (Inv §2.5): capas, barra y la demo de aprobación.
-// Capas en 1 columna por debajo de 600 px (spec 002 §4.2.5); caption de la demo (Inv §2.5, spec 003 §3.3).
+// Control y gobernanza (spec 006 §3.4, diseño v3 deploy L326–362): título con las capas a la derecha y el acordeón de
+// 6 controles, cada uno con su sub-vista de la app (controlTab = n.º del control). Escritorio (≥ 1000 px): acordeón y app
+// en dos columnas, con avance cada 6 s. Mobile: la app va debajo del acordeón, entera y sin escalar (spec 005 §3.3).
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
-import HeadRow from '../../ui/HeadRow.astro';
 import Kicker from '../../ui/Kicker.astro';
 import AppSlot from '../../ui/AppSlot.astro';
 import type { ProductoCopy } from '../../../content/pages/producto';
@@ -14,48 +14,146 @@ const { t, locale, contactHref } = Astro.props;
 ---
 <Container gap="P" id="control" tabindex="-1" aria-labelledby="control-title">
   <CardBig variant="p" class="ctl">
-    <HeadRow>
-      <Kicker as="p">{t.kicker}</Kicker>
-      <h2 id="control-title" class="h2">{t.title}</h2>
-      <Fragment slot="lead">{t.lead}</Fragment>
-    </HeadRow>
-    <div class="layers">
-      <ul class="grid">{t.layers.map((l) => <li>{l}</li>)}</ul>
-      <div class="bar">
-        <span class="bt">{t.bar.title}</span>
-        <span class="bl">{t.bar.list}</span>
+    <div class="head">
+      <div class="title">
+        <Kicker as="p">{t.kicker}</Kicker>
+        <h2 id="control-title" class="h2">{t.title}</h2>
+        <p class="lead">{t.lead}</p>
+      </div>
+      <div class="layers">
+        <ul class="grid">{t.layers.map((l) => <li>{l}</li>)}</ul>
+        <div class="bar"><span class="dot" aria-hidden="true"></span><span>{t.bar}</span></div>
       </div>
     </div>
-    <AppSlot view="control" locale={locale} contactHref={contactHref} frame="control" />
-    <p class="caption">{t.caption}</p>
+    <div class="zone" data-aa data-aa-interval="6000">
+      <div class="col">
+        <div class="acc">
+          {t.items.map((it, i) => (
+            <div class="item" data-aa-item data-open={i === 0 ? '' : undefined}>
+              <div class="prog" aria-hidden="true"><span data-aa-bar></span></div>
+              <h3 class="ih">
+                <button type="button" class="btn" id={`ctl-b${i}`} data-aa-trigger aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`ctl-p${i}`}>
+                  <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="t">{it.title}</span>
+                  <span class="sign" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="panel" id={`ctl-p${i}`}>
+                <div class="pi"><p>{it.text}</p></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button type="button" class="pause" data-aa-toggle hidden data-label-pause={t.autoplay.pause} data-label-play={t.autoplay.play}>
+          <svg class="ico-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 2h2v8H3zM7 2h2v8H7z" /></svg>
+          <svg class="ico-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 1.5v9l7.5-4.5z" /></svg>
+          <span data-aa-label>{t.autoplay.pause}</span>
+        </button>
+      </div>
+      <div class="app" data-ctl-app data-tab="1">
+        <AppSlot view="control" locale={locale} contactHref={contactHref} frame="control" controlTab={1} />
+      </div>
+    </div>
   </CardBig>
 </Container>
 
+<script>
+  import { initAutoAccordion } from '../../../scripts/auto-accordion';
+  const root = document.querySelector<HTMLElement>('#control [data-aa]');
+  const app = root?.querySelector<HTMLElement>('[data-ctl-app]');
+  if (root && app) {
+    // Cada control abre su sub-vista (n.º + 1) con un fundido de 220 ms (diseño L812–816); sin fundido con reduced motion.
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const show = (tab: number) => {
+      app.dataset.tab = String(tab);
+      app.dispatchEvent(new CustomEvent('nocti:control-tab', { detail: tab }));
+    };
+    // Con avance automático, la app no achica al cambiar de vista: así la página de abajo no salta cada 6 s. Se mide de
+    // nuevo si cambia el ancho.
+    const frame = app.firstElementChild as HTMLElement;
+    let width = 0;
+    new ResizeObserver(() => {
+      const w = Math.round(app.clientWidth);
+      if (w !== width) { width = w; app.style.minHeight = ''; }
+      if (root.hasAttribute('data-aa-auto')) app.style.minHeight = Math.max(parseFloat(app.style.minHeight) || 0, frame.offsetHeight) + 'px';
+    }).observe(frame);
+    // El control n.º i abre la sub-vista i + 1; con todos cerrados (mobile) la app queda en la última.
+    initAutoAccordion(root, (i) => {
+      if (i < 0) return;
+      clearTimeout(timer);
+      if (still.matches) { app.classList.remove('is-fading'); show(i + 1); return; }
+      app.classList.add('is-fading');
+      timer = setTimeout(() => { show(i + 1); app.classList.remove('is-fading'); }, 220);
+    });
+  }
+</script>
+
 <style>
-  .ctl { display: flex; flex-direction: column; gap: 28px; }
-  .caption { margin: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; color: var(--muted); }
-  .layers { display: flex; flex-direction: column; gap: 8px; }
-  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  .grid li {
-    background: var(--bg);
-    border-radius: 20px;
-    padding: 22px 18px;
-    font-size: clamp(14.8px, 1.6vw, 21.3px);
-    font-weight: 500;
-    letter-spacing: -.03em;
-  }
+  .ctl { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px); }
+  .head { display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-end; }
+  .title { flex: 3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  .title .h2 { max-width: 20ch; }
+  .lead { margin: 0; font-size: 16px; color: var(--muted); max-width: 52ch; }
+  .layers { flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .grid li { background: var(--bg); border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 500; letter-spacing: -.02em; text-align: center; }
   .bar {
-    background: var(--dark);
-    color: var(--bg);
-    border-radius: 20px;
-    padding: 20px 22px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 12px 24px;
-    align-items: center;
+    background: var(--dark); color: var(--bg); border-radius: 12px; padding: 12px 14px;
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 500; letter-spacing: -.02em; text-align: center;
   }
-  .bt { font-size: clamp(16.4px, 1.8vw, 23px); font-weight: 500; letter-spacing: -.03em; }
-  .bl { font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: #A7A7AC; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-light); flex: none; }
+
+  .zone { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2.5vw, 32px); align-items: start; }
+  @media (min-width: 1000px) { .zone { grid-template-columns: minmax(0, 280px) minmax(0, 1fr); } }
+
+  .col { min-width: 0; display: flex; flex-direction: column; }
+  .acc { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); }
+  .item { position: relative; border-top: 1px solid var(--line); }
+  .prog { position: absolute; left: 0; right: 0; top: -1px; height: 2px; overflow: hidden; display: none; }
+  [data-aa-auto] [data-open] .prog { display: block; }
+  .prog span { display: block; height: 100%; background: var(--blue); transform: scaleX(0); transform-origin: left; }
+  .ih { margin: 0; font: inherit; }
+  .btn {
+    all: unset; box-sizing: border-box; width: 100%; min-height: 44px; cursor: pointer;
+    display: grid; grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 10px; align-items: baseline; padding: 16px 0;
+  }
+  .btn:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; border-radius: 4px; }
+  .n { font-family: var(--font-mono); font-size: 12px; color: #6B6B68; transition: color .3s; }
+  .t { font-size: 18px; font-weight: 500; letter-spacing: -.025em; line-height: 1.2; color: #6B6B68; transition: color .3s; }
+  .sign { font-family: var(--font-mono); font-size: 14px; color: #6B6B68; }
+  .sign::before { content: '+'; }
+  [data-open] .n { color: var(--blue); }
+  [data-open] .t { color: var(--ink); }
+  [data-open] .sign { color: var(--blue); }
+  [data-open] .sign::before { content: '−'; }
+  @media (hover: hover) { .btn:hover .t { color: var(--ink); } }
+  .panel {
+    display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+    transition: grid-template-rows .4s cubic-bezier(.4, 0, .2, 1), opacity .3s, visibility 0s .4s;
+  }
+  /* El texto sube 6 px hacia el título (diseño: margin −6 px); el margen va en el panel para que .pi no lo recorte. */
+  [data-open] > .panel { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition-delay: 0s; margin-top: -6px; }
+  .pi { overflow: hidden; min-height: 0; }
+  .pi p { margin: 0; padding: 0 8px 16px 42px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+  .pause {
+    display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; min-height: 44px; margin: 12px 0;
+    padding: 0 14px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--white);
+    font: inherit; font-size: 13px; color: var(--muted); cursor: pointer;
+  }
+  .pause[hidden] { display: none; }
+  .pause svg { fill: currentColor; flex: none; }
+  .pause .ico-play, [data-aa-held] .pause .ico-pause { display: none; }
+  [data-aa-held] .pause .ico-play { display: block; }
+  .pause:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; }
+  @media (hover: hover) { .pause:hover { color: var(--ink); border-color: #A3A39E; } }
+
+  .app { min-width: 0; transition: opacity .22s, transform .22s; }
+  .app.is-fading { opacity: 0; transform: translateY(6px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .n, .t, .panel, .app { transition: none; }
+  }
 </style>

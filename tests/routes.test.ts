@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { alternates, href, pageFromPath, PAGES, type Locale, type PageRef } from '../src/i18n/routes';
 
 // Los valores esperados son literales copiados del contrato de URLs del spec 001 (§3.2), con el origen `www` y las
-// rutas de privacidad del spec 004 (§2.1 y §2.4).
+// rutas de privacidad del spec 004 (§2.1 y §2.4) y el blog del spec 006 (§3.2: Insights pasa a /blog/ y /en/blog/).
 
 describe('href', () => {
   test('home en español e inglés', () => {
@@ -17,7 +17,7 @@ describe('href', () => {
 
   test.each([
     ['nosotros', '/nosotros/', '/en/about/'],
-    ['insights', '/insights/', '/en/insights/'],
+    ['insights', '/blog/', '/en/blog/'],
     ['hablemos', '/hablemos/', '/en/contact/'],
     ['privacidad', '/privacidad/', '/en/privacy/'],
   ] as const)('%s en los dos idiomas', (id, es, en) => {
@@ -62,7 +62,7 @@ describe('alternates', () => {
     ['salud', { id: 'industria', industry: 'salud' }, `${O}/industrias/salud-fitness/`, `${O}/en/industries/health-fitness/`],
     ['servicios', { id: 'industria', industry: 'servicios' }, `${O}/industrias/servicios/`, `${O}/en/industries/professional-services/`],
     ['nosotros', { id: 'nosotros' }, `${O}/nosotros/`, `${O}/en/about/`],
-    ['insights', { id: 'insights' }, `${O}/insights/`, `${O}/en/insights/`],
+    ['insights', { id: 'insights' }, `${O}/blog/`, `${O}/en/blog/`],
     ['hablemos', { id: 'hablemos' }, `${O}/hablemos/`, `${O}/en/contact/`],
     ['privacidad', { id: 'privacidad' }, `${O}/privacidad/`, `${O}/en/privacy/`],
   ])('%s: es, en y x-default = es, absolutas', (_, page, es, en) => {
@@ -80,7 +80,7 @@ describe('pageFromPath', () => {
     ['/industrias/salud-fitness/', { id: 'industria', industry: 'salud' }, 'es'],
     ['/industrias/servicios/', { id: 'industria', industry: 'servicios' }, 'es'],
     ['/nosotros/', { id: 'nosotros' }, 'es'],
-    ['/insights/', { id: 'insights' }, 'es'],
+    ['/blog/', { id: 'insights' }, 'es'],
     ['/hablemos/', { id: 'hablemos' }, 'es'],
     ['/privacidad/', { id: 'privacidad' }, 'es'],
     ['/en/', { id: 'home' }, 'en'],
@@ -91,7 +91,7 @@ describe('pageFromPath', () => {
     ['/en/industries/health-fitness/', { id: 'industria', industry: 'salud' }, 'en'],
     ['/en/industries/professional-services/', { id: 'industria', industry: 'servicios' }, 'en'],
     ['/en/about/', { id: 'nosotros' }, 'en'],
-    ['/en/insights/', { id: 'insights' }, 'en'],
+    ['/en/blog/', { id: 'insights' }, 'en'],
     ['/en/contact/', { id: 'hablemos' }, 'en'],
     ['/en/privacy/', { id: 'privacidad' }, 'en'],
   ];
@@ -108,6 +108,7 @@ describe('pageFromPath', () => {
     '/nada/', '/en/nada/', '/en/producto/', '/industrias/inexistente/', '/404.html',
     '/es/', '/es/producto/', '/producto/extra/', '/en/industries/manufactura/',
     '/producto//', '/en/product//', '/en/privacidad/', '/privacy/',
+    '/insights/', '/en/insights/', '/insights', '/en/insights', '/en/blog//', '/es/blog/',
   ])('%s → null', (path) => {
     expect(pageFromPath(path)).toBeNull();
   });
@@ -127,26 +128,28 @@ describe('artículos (spec 002 §3.2, enmienda Sanity)', () => {
   const page = { id: 'articulo', slug: { es: 'sin-contexto-no-hay-inteligencia', en: 'no-context-no-intelligence' } } as const;
 
   test('href del artículo con los slugs que trae el ref, con y sin fragmento', () => {
-    expect(href(page, 'es')).toBe('/insights/sin-contexto-no-hay-inteligencia/');
-    expect(href(page, 'en')).toBe('/en/insights/no-context-no-intelligence/');
-    expect(href(page, 'es', '#sin-contexto')).toBe('/insights/sin-contexto-no-hay-inteligencia/#sin-contexto');
+    expect(href(page, 'es')).toBe('/blog/sin-contexto-no-hay-inteligencia/');
+    expect(href(page, 'en')).toBe('/en/blog/no-context-no-intelligence/');
+    expect(href(page, 'es', '#sin-contexto')).toBe('/blog/sin-contexto-no-hay-inteligencia/#sin-contexto');
   });
 
   test('alternates del artículo: absolutas y x-default = es', () => {
     expect(alternates(page)).toEqual({
-      es: 'https://www.noctilabs.io/insights/sin-contexto-no-hay-inteligencia/',
-      en: 'https://www.noctilabs.io/en/insights/no-context-no-intelligence/',
-      'x-default': 'https://www.noctilabs.io/insights/sin-contexto-no-hay-inteligencia/',
+      es: 'https://www.noctilabs.io/blog/sin-contexto-no-hay-inteligencia/',
+      en: 'https://www.noctilabs.io/en/blog/no-context-no-intelligence/',
+      'x-default': 'https://www.noctilabs.io/blog/sin-contexto-no-hay-inteligencia/',
     });
   });
 
   test.each([
+    '/blog/sin-contexto-no-hay-inteligencia/',
+    '/blog/sin-contexto-no-hay-inteligencia',
+    '/en/blog/no-context-no-intelligence/',
+    '/en/blog/no-context-no-intelligence',
+    '/blog/inexistente/',
+    '/blog/no-context-no-intelligence//',
     '/insights/sin-contexto-no-hay-inteligencia/',
-    '/insights/sin-contexto-no-hay-inteligencia',
     '/en/insights/no-context-no-intelligence/',
-    '/en/insights/no-context-no-intelligence',
-    '/insights/inexistente/',
-    '/insights/no-context-no-intelligence//',
   ])('pageFromPath no resuelve artículos: %s → null', (path) => {
     expect(pageFromPath(path)).toBeNull();
   });

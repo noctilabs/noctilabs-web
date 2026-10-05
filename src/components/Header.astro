@@ -75,7 +75,10 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
           ))}
         </ul>
       </nav>
-      <a class="cta desk" href={href({ id: 'hablemos' }, locale)}>{t.nav.cta}</a>
+      <div class="actions desk">
+        <LangSwitch page={page} locale={locale} variant="pill" />
+        <a class="cta" href={href({ id: 'hablemos' }, locale)}>{t.nav.cta}</a>
+      </div>
       <button
         type="button"
         class="burger"
@@ -208,6 +211,7 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
   .chev:hover, .chev[aria-expanded='true'] { opacity: 1; }
   .chev:focus-visible { outline: 2px solid var(--blue-link); outline-offset: -8px; border-radius: 8px; }
   .chev[aria-expanded='true'] svg { transform: rotate(180deg); }
+  .actions { flex: none; align-items: center; gap: 10px; }
   .cta {
     flex: none;
     font-family: var(--font-mono);

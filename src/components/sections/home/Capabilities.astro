@@ -26,7 +26,7 @@ const t = home[locale].capabilities;
     ))}
   </ul>
   <a class="wide" href={href({ id: 'producto' }, locale, 'agentes')}>
-    <span><Txt text={t.cta} /></span><span class="arrow" aria-hidden="true">→</span>
+    <span class="cta-text"><Txt text={t.cta} /></span><span class="arrow" aria-hidden="true">→</span>
   </a>
 </Container>
 
@@ -90,15 +90,31 @@ const t = home[locale].capabilities;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: 22px 28px;
+    padding: 14px 14px 14px 28px;
     border-radius: var(--radius-pill);
     background: var(--surface);
     color: var(--ink);
     font-size: 16px;
     font-weight: 500;
+    line-height: 1.35;
     text-decoration: none;
     transition: background-color .15s ease;
   }
   .wide:hover { background: #DCDCD7; color: var(--ink); }
-  .arrow { flex: none; }
+  .cta-text { text-wrap: balance; }
+  /* Botón circular del diseño (spec 006 §3.1): decorativo, el área táctil es todo el link. */
+  .arrow {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 679.98px) {
+    .wide { padding: 18px 18px 18px 22px; border-radius: 24px; }
+  }
 </style>

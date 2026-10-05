@@ -9,7 +9,7 @@ export interface ArticuloCopy {
 }
 
 export const articulo: Localized<ArticuloCopy> = {
-  es: { back: 'Insights', author: 'NoctiLabs', toc: 'En este artículo', related: 'Seguir leyendo' },
+  es: { back: 'Blog', author: 'NoctiLabs', toc: 'En este artículo', related: 'Seguir leyendo' },
   // D4: traducción provisoria, pendiente de revisión del dueño.
-  en: { back: 'Insights', author: 'NoctiLabs', toc: 'In this article', related: 'Keep reading' },
+  en: { back: 'Blog', author: 'NoctiLabs', toc: 'In this article', related: 'Keep reading' },
 };

@@ -1,5 +1,5 @@
 // English data and copy (D4: my translation, pending the owner's review). Same facts as es.ts (spec 003 §3.2, §4.7).
-import { AGING, DEBTORS, HELD, HELD_TOTAL, OC, OVER_30, OVERDUE_TOTAL, PAYMENTS_LIMIT, PURCHASE_LIMIT, DISCOUNT_LIMIT, ROWS, TODAY, total } from './facts';
+import { AGING, DEBTORS, HELD, HELD_TOTAL, OC, OVER_30, OVERDUE_TOTAL, PAYMENTS_LIMIT, PREV_PURCHASE_LIMIT, PURCHASE_LIMIT, DISCOUNT_LIMIT, ROWS, TODAY, total } from './facts';
 import { makeFmt } from './format';
 import type { ApprState, Copy, Ref, SourceId } from './types';
 
@@ -433,6 +433,74 @@ export const EN: Copy = {
       { t: 'Today 09:15', a: 'Martín · Sales', x: 'Approved 5 follow-ups', s: 'Done', tag: 'neutral' },
       { t: 'Yesterday 18:10', a: 'Collections agent', x: 'Sent 35 reminders', s: 'Done', tag: 'neutral' },
     ],
+  },
+  ctl: {
+    heads: {
+      1: ['Permissions', '5 roles · 1 agent'],
+      3: ['Agents', 'Configuration'],
+      4: ['Traceability', `Decision ${OC.id}`],
+      5: ['Observability', 'Today · 3 agents'],
+      6: ['Audit', 'Today’s log'],
+    },
+    perm: {
+      tableLabel: 'Permissions matrix by role',
+      cols: ['Role', 'View', 'Query', 'Execute', 'Requires approval'],
+      badge: 'Agent',
+      rows: [
+        { r: 'CEO', v: 'The whole company', c: 'Everything', e: 'Approvals', a: '—' },
+        { r: 'Sales', v: 'Their accounts', c: 'Customers, sales, stock', e: 'Follow-ups', a: `Discounts > ${f.pct(DISCOUNT_LIMIT)}` },
+        { r: 'Finance', v: 'Finance and purchasing', c: 'Margins, cash, purchasing', e: 'Approve purchases', a: '—' },
+        { r: 'Operations', v: 'Orders, stock, purchasing', c: 'Operations', e: 'Restocks', a: `Purchases > ${f.mill(PURCHASE_LIMIT, 0)}` },
+        { r: 'Purchasing agent', v: 'Stock and suppliers', c: 'ERP · Purchasing', e: 'Create orders', a: `Purchases > ${f.mill(PURCHASE_LIMIT, 0)}`, agent: true },
+      ],
+      note: 'Agents get permissions like any person on the team.',
+    },
+    agent: {
+      name: 'Purchasing agent',
+      sub: 'Supply restocking · published version',
+      status: { pending: ['Paused', 'warn'], approved: ['Active', 'success'], rejected: ['Paused', 'warn'] },
+      allowH: 'Allowed',
+      allow: [{ t: 'ERP · Purchasing', d: 'Read and create orders' }, { t: 'Email', d: 'Send to suppliers' }],
+      denyH: 'Not allowed',
+      deny: [{ t: 'Payments', d: 'No access' }, { t: 'Change prices', d: 'No access' }],
+      limitH: 'Automatic purchase limit',
+      limitV: `Up to ${f.money(PURCHASE_LIMIT)}`,
+      auto: 'Automatic',
+      above: `Above: Finance approval · ${OC.id} ${f.mill(OC.amount)}`,
+    },
+    trace: {
+      order: `${OC.id} · ${OC.supplier} · ${f.money(OC.amount)}`,
+      status: { pending: ['In approval', 'warn'], approved: ['Approved', 'success'], rejected: ['Rejected', 'danger'] },
+      listLabel: `Steps of decision ${OC.id}`,
+      steps: (oc) => [
+        { t: '09:58', x: 'Detected low stock for SKU 4410', src: 'ERP · Stock', tone: 'blue' },
+        { t: '10:00', x: 'Checked the current contract', src: 'Plastar contract 2026.pdf', tone: 'blue' },
+        { t: '10:01', x: 'Applied the purchasing rule', src: 'Purchasing policy', tone: 'blue' },
+        { t: '10:04', x: `Prepared ${OC.id} for ${f.money(OC.amount)}`, src: 'ERP · Purchasing', tone: 'blue' },
+        { t: '10:04', x: 'Sent to Finance for approval', src: 'Carla Ruiz · Finance', tone: oc === 'pending' ? 'pending' : 'blue' },
+        ...(oc === 'pending' ? [] : [{ t: '10:07', x: oc === 'approved' ? 'Approved · the order is sent to the ERP' : 'Rejected · not executed', src: 'Carla Ruiz · Finance', tone: oc }]),
+      ],
+    },
+    obs: {
+      agents: (oc, run) => [
+        { n: 'Purchasing agent', s: oc === 'approved' ? ['Active', 'success'] : ['Paused', 'warn'], rows: [{ k: 'Tasks today', v: 6 }, { k: 'Open exceptions', v: pending(oc) ? 1 : 0, tone: 'w' }, { k: 'Errors', v: 0, tone: 'd' }] },
+        { n: 'Collections agent', s: ['Active', 'success'], rows: [{ k: 'Tasks today', v: 214 }, { k: 'Open exceptions', v: pending(run) ? 1 : 0, tone: 'w' }, { k: 'Errors', v: 0, tone: 'd' }] },
+        { n: 'Sales agent', s: ['Active', 'success'], rows: [{ k: 'Tasks today', v: 38 }, { k: 'Open exceptions', v: 0, tone: 'w' }, { k: 'Errors', v: 1, tone: 'd' }] },
+      ],
+      exc: {
+        banner: 'Open exception',
+        agent: 'Collections agent',
+        title: 'Proposed a payment plan to Mayorista El Sur · outside policy',
+        text: 'Proposed term: 120 days. Policy allows up to 90.',
+        cta: 'Review',
+      },
+    },
+    audit: {
+      filtersLabel: 'Log filters',
+      filters: [{ k: 'Actor', v: 'All' }, { k: 'Type', v: 'All' }, { k: 'Date', v: 'Today' }],
+      exportLabel: 'Export log',
+      change: { t: 'Today 08:40', a: 'Valeria Costa · Finance', x: `Changed the automatic purchase limit: ${f.money(PREV_PURCHASE_LIMIT)} → ${f.money(PURCHASE_LIMIT)}`, s: 'Change' },
+    },
   },
   conex: {
     title: 'Connections',

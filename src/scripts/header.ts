@@ -257,7 +257,7 @@ export function initHeader(): void {
       if (hadFocus) logo.focus();
     } else {
       const desktopOnly = active instanceof Node && (header.querySelector('nav.desk')!.contains(active)
-        || header.querySelector('a.cta')!.contains(active)
+        || header.querySelector('.actions')!.contains(active)
         || groups.some((g) => g.panel.contains(active)));
       if (open) hide(open.group);
       hovered = suppressed = null;
