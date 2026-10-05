@@ -1,0 +1,26 @@
+---
+// «Entendé qué está pasando y por qué.» (spec 007 §3.2, V4 L324–463): el explorador de Inteligencia de v4 en lugar
+// de la vista Inteligencia de la app. El encabezado va en el HTML del servidor.
+import Container from '../../ui/Container.astro';
+import HeadRow from '../../ui/HeadRow.astro';
+import Kicker from '../../ui/Kicker.astro';
+import BiExplorer from '../../../islands/producto/BiExplorer.tsx';
+import { BI } from '../../../islands/producto/biData';
+import type { Locale } from '../../../i18n/routes';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = BI[locale];
+---
+<Container gap="P" id="bi" tabindex="-1" aria-labelledby="bi-title" class="bisec">
+  <HeadRow>
+    <Kicker as="p">{t.kicker}</Kicker>
+    <h2 id="bi-title" class="h2">{t.title}</h2>
+    <Fragment slot="lead">{t.lead}</Fragment>
+  </HeadRow>
+  <BiExplorer client:visible locale={locale} />
+</Container>
+
+<style>
+  .bisec { display: flex; flex-direction: column; gap: 22px; }
+</style>
