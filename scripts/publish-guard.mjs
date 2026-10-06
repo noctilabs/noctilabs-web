@@ -6,6 +6,7 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ALLOW_PENDING_LAUNCH } from '../src/site.mjs';
 
 export const LEGAL_MARKERS = ['[RAZÓN SOCIAL]', '[RUT]', '[DOMICILIO]'];
 const TEST_TEXT = 'DATOS DE PRUEBA';
@@ -45,7 +46,8 @@ export function publishGuard() {
         if (!publish) return;
         const fixtures = ['LEGAL_FIXTURE', 'INSIGHTS_FIXTURE'].filter((k) => env[k] !== undefined);
         if (fixtures.length) throw new Error(`[publicación] PUBLISH=1 no admite ${fixtures.join(' ni ')} definidos.`);
-        if (!env.PUBLIC_WEB3FORMS_KEY) throw new Error('[publicación] falta PUBLIC_WEB3FORMS_KEY (clave pública de Web3Forms).');
+        // Con ALLOW_PENDING_LAUNCH (src/site.mjs) se publica sin la clave: Hablemos muestra el contacto por mail.
+        if (!env.PUBLIC_WEB3FORMS_KEY && !ALLOW_PENDING_LAUNCH) throw new Error('[publicación] falta PUBLIC_WEB3FORMS_KEY (clave pública de Web3Forms).');
       },
       'astro:build:done': ({ dir }) => {
         const out = fileURLToPath(dir);

@@ -2,6 +2,7 @@
 // BORRADOR pendiente de revisión profesional. Los marcadores los reemplaza el dueño.
 import type { Localized } from './types';
 import { CONTACT_EMAIL } from './pages/hablemos';
+import { ALLOW_PENDING_LAUNCH } from '../site.mjs';
 
 /** Versión del aviso que acompaña cada envío como `consent_version` (fecha y número). */
 export const CONSENT_VERSION = '2026-10-04.1';
@@ -25,7 +26,9 @@ const usesFixture = process.env.LEGAL_FIXTURE === '1';
 const hasMarkers = Object.values(OWNER).some((v) => (LEGAL_MARKERS as readonly string[]).includes(v));
 
 // Bloqueo de producción (§2.2): con VERCEL_ENV=production o PUBLISH=1, los marcadores hacen fallar el build.
-if (hasMarkers && !usesFixture && (process.env.VERCEL_ENV === 'production' || process.env.PUBLISH === '1')) {
+// Con ALLOW_PENDING_LAUNCH (decisión del dueño, src/site.mjs) no se bloquea: el responsable figura como «NoctiLabs», sin
+// RUT ni domicilio, y los marcadores nunca llegan al HTML (el control del artefacto los sigue rechazando).
+if (hasMarkers && !usesFixture && !ALLOW_PENDING_LAUNCH && (process.env.VERCEL_ENV === 'production' || process.env.PUBLISH === '1')) {
   throw new Error(
     '[legal] faltan los datos del responsable (razón social, RUT y domicilio) en src/content/legal.ts: '
     + 'el formulario no se publica con los marcadores (spec 004 §2.2).',
@@ -35,6 +38,10 @@ if (hasMarkers && !usesFixture && (process.env.VERCEL_ENV === 'production' || pr
 export const responsable: Responsable = usesFixture ? FIXTURE : OWNER;
 
 const r = responsable;
+/** Datos del responsable pendientes: se nombra solo a NoctiLabs. */
+const pending = hasMarkers && !usesFixture;
+const respEs = pending ? 'NoctiLabs' : `${r.razonSocial} (NoctiLabs), RUT ${r.rut}, con domicilio en ${r.domicilio}`;
+const respEn = pending ? 'NoctiLabs' : `${r.razonSocial} (NoctiLabs), RUT ${r.rut}, located at ${r.domicilio}`;
 
 /** Fecha de la última actualización de la política (YYYY-MM-DD). */
 export const POLICY_UPDATED = '2026-10-04';
@@ -52,7 +59,7 @@ export const notice: Localized<NoticeCopy> = {
   es: {
     title: 'Antes de enviar',
     items: [
-      { label: 'Responsable', text: `${r.razonSocial} (NoctiLabs), RUT ${r.rut}, con domicilio en ${r.domicilio}.` },
+      { label: 'Responsable', text: `${respEs}.` },
       { label: 'Finalidad', text: 'responder tu consulta y coordinar una conversación comercial.' },
       { label: 'Dónde se guardan', text: 'en el correo del equipo y en Web3Forms, el proveedor del formulario.' },
       { label: 'Transferencia', text: 'Web3Forms procesa los datos en India, con sus subencargados. La transferencia se basa en tu consentimiento.' },
@@ -70,7 +77,7 @@ export const notice: Localized<NoticeCopy> = {
   en: {
     title: 'Before you send',
     items: [
-      { label: 'Controller', text: `${r.razonSocial} (NoctiLabs), RUT ${r.rut}, located at ${r.domicilio}.` },
+      { label: 'Controller', text: `${respEn}.` },
       { label: 'Purpose', text: 'to answer your inquiry and set up a business conversation.' },
       { label: 'Where it is stored', text: 'in the team’s email and in Web3Forms, the form provider.' },
       { label: 'Transfer', text: 'Web3Forms processes the data in India, with its sub-processors. The transfer is based on your consent.' },
@@ -97,7 +104,7 @@ export const policy: Localized<PolicyCopy> = {
       {
         title: 'Responsable',
         paragraphs: [
-          `El responsable de la base de datos es ${r.razonSocial} (NoctiLabs), RUT ${r.rut}, con domicilio en ${r.domicilio}. Podés escribirnos a ${CONTACT_EMAIL}.`,
+          `El responsable de la base de datos es ${respEs}. Podés escribirnos a ${CONTACT_EMAIL}.`,
         ],
       },
       {
@@ -155,7 +162,7 @@ export const policy: Localized<PolicyCopy> = {
       {
         title: 'Controller',
         paragraphs: [
-          `The database controller is ${r.razonSocial} (NoctiLabs), RUT ${r.rut}, located at ${r.domicilio}. You can write to us at ${CONTACT_EMAIL}.`,
+          `The database controller is ${respEn}. You can write to us at ${CONTACT_EMAIL}.`,
         ],
       },
       {

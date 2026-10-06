@@ -29,6 +29,8 @@ export interface HablemosCopy {
   again: string;
   /** Sin JS: «Escribinos a {mail}». */
   noscript: string;
+  /** Sin la clave de Web3Forms (ALLOW_PENDING_LAUNCH): contacto por mail en lugar del formulario. */
+  fallback: { title: string; text: string; cta: string };
 }
 
 // El H1, el title y la descripción salen de ui.pages.hablemos (spec 002 §3.1).
@@ -66,6 +68,7 @@ export const hablemos: Localized<HablemosCopy> = {
     sent: 'Gracias. Te vamos a escribir pronto.',
     again: 'Enviar otro mensaje',
     noscript: 'Escribinos a ',
+    fallback: { title: 'Escribinos', text: 'Mandanos un mail y te respondemos para coordinar una conversación.', cta: 'Escribinos por mail' },
   },
   // D4: traducción provisoria, pendiente de revisión del dueño.
   en: {
@@ -101,5 +104,6 @@ export const hablemos: Localized<HablemosCopy> = {
     sent: 'Thank you. We’ll be in touch soon.',
     again: 'Send another message',
     noscript: 'Email us at ',
+    fallback: { title: 'Write to us', text: 'Send us an email and we will get back to you to set up a conversation.', cta: 'Email us' },
   },
 };

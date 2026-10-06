@@ -19,6 +19,8 @@ const mailto = `mailto:${CONTACT_EMAIL}`;
 const n = notice[locale];
 // Spec 004 §2.3: `page` es la URL canónica de Hablemos en este idioma, nunca location.href.
 const canonical = alternates(page)[locale];
+// Sin la clave de Web3Forms (lanzamiento con ALLOW_PENDING_LAUNCH) no hay formulario: el contacto es por mail.
+const formReady = Boolean(import.meta.env.PUBLIC_WEB3FORMS_KEY);
 
 // Tabla de campos de §4.6 (sin Industria ni Mensaje, que van aparte).
 const inputs = [
@@ -43,6 +45,14 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
         <p class="mail">{t.mailPrefix}<a href={mailto}>{CONTACT_EMAIL}</a></p>
       </div>
 
+      {!formReady && (
+        <div class="card fallback">
+          <h2 class="fb-t">{t.fallback.title}</h2>
+          <p class="fb-p">{t.fallback.text}</p>
+          <a class="fb-cta" href={mailto}>{t.fallback.cta} <span class="fb-mail">{CONTACT_EMAIL}</span></a>
+        </div>
+      )}
+      {formReady && (
       <div class="card" data-contact data-locale={locale} data-page={canonical} data-consent-version={CONSENT_VERSION}>
         <noscript><p class="noscript">{t.noscript}<a href={mailto}>{CONTACT_EMAIL}</a></p></noscript>
         <form novalidate aria-label={t.formLabel} aria-describedby="cf-notice">
@@ -116,6 +126,7 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
           </div>
         </div>
       </div>
+      )}
     </section>
   </div>
 </Base>
@@ -127,6 +138,12 @@ const options = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((id) => ({ val
 </script>
 
 <style>
+  .fallback { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .fb-t { margin: 0; font-size: var(--h2); font-weight: 500; letter-spacing: -.045em; line-height: 1.02; }
+  .fb-p { margin: 0; color: var(--muted); font-size: 16px; max-width: 46ch; }
+  .fb-cta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px; border-radius: var(--radius-pill); background: var(--ink); color: var(--white); text-decoration: none; font-weight: 500; }
+  .fb-cta:hover { background: var(--ink-hover); color: var(--white); }
+  .fb-mail { opacity: .8; font-weight: 400; }
   /* Inv §7: <main> con padding inferior de 24px; es la única página sin banda. */
   .page { padding-bottom: 24px; }
   .contact {
