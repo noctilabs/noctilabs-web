@@ -51,17 +51,6 @@ const others = (Object.keys(INDUSTRY_SLUGS) as IndustryId[])
       </ol>
     </Container>
 
-    <Container gap="P" aria-labelledby="preguntas-title">
-      <DarkBig class="qs">
-        <Kicker tone="dark-muted" as="h2"><span id="preguntas-title"><Brand text={t.questions.kicker} /></span></Kicker>
-        <ul class="qlist">
-          {ind.questions.map((q) => (
-            <li class="q"><span class="qt">{q.q}</span><span class="area">{q.area}</span></li>
-          ))}
-        </ul>
-      </DarkBig>
-    </Container>
-
     <Container gap="P" class="stack" aria-labelledby="agentes-title">
       <div class="head">
         <Kicker as="p">{t.agents.kicker}</Kicker>
@@ -135,27 +124,6 @@ const others = (Object.keys(INDUSTRY_SLUGS) as IndustryId[])
     text-transform: uppercase;
   }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); flex: none; }
-
-  .qs { display: flex; flex-direction: column; gap: 28px; }
-  .qlist { display: flex; flex-direction: column; }
-  .q {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 16px;
-    align-items: center;
-    padding: 22px 0;
-    border-top: 1px solid #2A2A2E;
-  }
-  .qt { font-size: clamp(18px, 2.1vw, 31.2px); font-weight: 500; letter-spacing: -.035em; line-height: 1.12; }
-  .area {
-    padding: 6px 12px;
-    border-radius: var(--radius-pill);
-    background: #1E1E21;
-    color: #9FBEFF;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    white-space: nowrap;
-  }
 
   .why {
     background: var(--white);

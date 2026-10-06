@@ -63,3 +63,9 @@ a:hover { color: var(--ink); }
   white-space: nowrap;
   border: 0;
 }
+
+/* Dueño 2026-10-06: en escritorio toda la web se ve 10 % más chica (como el zoom del navegador al 90 %), salvo el hero
+   del home. Solo desde 1000 px: en mobile se mantienen los mínimos de 12 px y 44 px. */
+@media (min-width: 1000px) {
+  .site-header, .site-footer, main > :not(.home), .home > :not(.hero) { zoom: .9; }
+}

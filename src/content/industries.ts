@@ -8,7 +8,6 @@ import saludImg from '../assets/industries/salud.png';
 import serviciosImg from '../assets/industries/servicios.png';
 
 export interface Item { title: string; text: string }
-export interface Question { q: string; area: string }
 export interface Why { strong: string; rest: string }
 
 /** Copy visible y metadatos de cada industria (spec 002 §3.3). */
@@ -20,7 +19,6 @@ export interface Industry {
   /** Complemento de «Por qué Nocti para …» (en minúscula, como en el diseño). */
   whyFor: string;
   processes: [Item, Item, Item, Item];
-  questions: [Question, Question, Question, Question];
   agents: [Item, Item, Item, Item];
   why: [Why, Why, Why, Why];
   /** true = copy redactado sin diseño fuente, pendiente de aprobación del dueño. */
@@ -78,12 +76,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Compras y proveedores', text: 'Órdenes, plazos y condiciones.' },
         { title: 'Finanzas y cobranzas', text: 'Facturas, vencimientos y planes de pago.' },
       ],
-      questions: [
-        { q: '¿Qué clientes están comprando menos que hace tres meses?', area: 'Ventas' },
-        { q: '¿Qué productos tienen riesgo de quiebre esta semana?', area: 'Inventario' },
-        { q: '¿Qué pedidos deberían priorizarse hoy?', area: 'Pedidos' },
-        { q: '¿Qué facturas vencidas requieren seguimiento?', area: 'Cobranzas' },
-      ],
       agents: [
         { title: 'Agente comercial', text: 'Prepara seguimientos para clientes que compran menos.' },
         { title: 'Agente de cobranzas', text: 'Envía recordatorios y propone planes de pago dentro de las reglas.' },
@@ -106,12 +98,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Orders and inventory', text: 'Stock, stockouts and dispatch priorities.' },
         { title: 'Purchasing and suppliers', text: 'Orders, lead times and terms.' },
         { title: 'Finance and collections', text: 'Invoices, due dates and payment plans.' },
-      ],
-      questions: [
-        { q: 'Which customers are buying less than three months ago?', area: 'Sales' },
-        { q: 'Which products are at risk of stocking out this week?', area: 'Inventory' },
-        { q: 'Which orders should be prioritized today?', area: 'Orders' },
-        { q: 'Which overdue invoices need follow-up?', area: 'Collections' },
       ],
       agents: [
         { title: 'Sales agent', text: 'Prepares follow-ups for customers who are buying less.' },
@@ -138,12 +124,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Calidad', text: 'Controles, desvíos y no conformidades.' },
         { title: 'Mantenimiento', text: 'Paradas, repuestos y planes preventivos.' },
       ],
-      questions: [
-        { q: '¿Qué órdenes están en riesgo de no cumplir la fecha comprometida?', area: 'Producción' },
-        { q: '¿Qué insumos se van a quedar cortos para el plan de la semana?', area: 'Compras' },
-        { q: '¿Qué línea acumula más desvíos de calidad este mes?', area: 'Calidad' },
-        { q: '¿Qué paradas no planificadas se repitieron en el último trimestre?', area: 'Mantenimiento' },
-      ],
       agents: [
         { title: 'Agente de planificación', text: 'Reordena la producción cuando falta un insumo o se detiene una línea.' },
         { title: 'Agente de compras', text: 'Prepara reposiciones de insumos y pide aprobación por encima del límite.' },
@@ -166,12 +146,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Purchasing and inputs', text: 'Raw material stock, suppliers and lead times.' },
         { title: 'Quality', text: 'Checks, deviations and non-conformities.' },
         { title: 'Maintenance', text: 'Downtime, spare parts and preventive plans.' },
-      ],
-      questions: [
-        { q: 'Which orders are at risk of missing their committed date?', area: 'Production' },
-        { q: 'Which inputs will run short for this week’s plan?', area: 'Purchasing' },
-        { q: 'Which line has the most quality deviations this month?', area: 'Quality' },
-        { q: 'Which unplanned stops repeated in the last quarter?', area: 'Maintenance' },
       ],
       agents: [
         { title: 'Planning agent', text: 'Reschedules production when an input is missing or a line stops.' },
@@ -198,12 +172,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Precios y márgenes', text: 'Listas, promociones y rentabilidad por producto.' },
         { title: 'Distribución', text: 'Pedidos, rutas y entregas.' },
       ],
-      questions: [
-        { q: '¿Qué lotes vencen en los próximos 30 días y dónde están?', area: 'Lotes' },
-        { q: '¿Qué canal perdió margen este mes y por qué?', area: 'Márgenes' },
-        { q: '¿Qué promociones aumentaron el volumen sin bajar la rentabilidad?', area: 'Comercial' },
-        { q: '¿Qué clientes tienen entregas atrasadas esta semana?', area: 'Distribución' },
-      ],
       agents: [
         { title: 'Agente de vencimientos', text: 'Detecta lotes próximos a vencer y propone acciones de rotación.' },
         { title: 'Agente comercial', text: 'Prepara seguimientos para cuentas que bajaron su volumen.' },
@@ -226,12 +194,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Channels and customers', text: 'Supermarkets, wholesalers and direct sales.' },
         { title: 'Pricing and margins', text: 'Price lists, promotions and profitability by product.' },
         { title: 'Distribution', text: 'Orders, routes and deliveries.' },
-      ],
-      questions: [
-        { q: 'Which batches expire in the next 30 days and where are they?', area: 'Batches' },
-        { q: 'Which channel lost margin this month, and why?', area: 'Margins' },
-        { q: 'Which promotions grew volume without hurting profitability?', area: 'Sales' },
-        { q: 'Which customers have late deliveries this week?', area: 'Distribution' },
       ],
       agents: [
         { title: 'Expiry agent', text: 'Spots batches close to expiry and proposes rotation actions.' },
@@ -258,12 +220,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Cobranzas', text: 'Cuotas, débitos y morosidad.' },
         { title: 'Atención', text: 'Consultas, reclamos y seguimiento.' },
       ],
-      questions: [
-        { q: '¿Qué socios tienen riesgo de darse de baja este mes?', area: 'Socios' },
-        { q: '¿Qué sedes tienen horarios con poca ocupación?', area: 'Agenda' },
-        { q: '¿Qué cuotas vencidas conviene gestionar hoy?', area: 'Cobranzas' },
-        { q: '¿Qué reclamos se repiten más en cada sede?', area: 'Atención' },
-      ],
       agents: [
         { title: 'Agente de retención', text: 'Detecta socios con baja asistencia y propone un contacto.' },
         { title: 'Agente de cobranzas', text: 'Envía recordatorios y propone planes de pago dentro de las reglas.' },
@@ -286,12 +242,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Schedules and locations', text: 'Bookings, classes and occupancy by location.' },
         { title: 'Collections', text: 'Fees, direct debits and arrears.' },
         { title: 'Member service', text: 'Questions, complaints and follow-up.' },
-      ],
-      questions: [
-        { q: 'Which members are at risk of cancelling this month?', area: 'Members' },
-        { q: 'Which locations have time slots with low occupancy?', area: 'Schedules' },
-        { q: 'Which overdue fees should be handled today?', area: 'Collections' },
-        { q: 'Which complaints repeat most at each location?', area: 'Service' },
       ],
       agents: [
         { title: 'Retention agent', text: 'Spots members with low attendance and proposes outreach.' },
@@ -318,12 +268,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Horas y equipo', text: 'Carga, asignación y disponibilidad.' },
         { title: 'Facturación y cobranzas', text: 'Facturas, vencimientos y cobros.' },
       ],
-      questions: [
-        { q: '¿Qué proyectos están consumiendo más horas de las presupuestadas?', area: 'Proyectos' },
-        { q: '¿Qué clientes tienen facturas vencidas hace más de 30 días?', area: 'Cobranzas' },
-        { q: '¿Quién del equipo tiene disponibilidad el mes que viene?', area: 'Equipo' },
-        { q: '¿Qué propuestas están por vencer sin respuesta?', area: 'Comercial' },
-      ],
       agents: [
         { title: 'Agente de proyectos', text: 'Avisa cuando un proyecto se desvía de las horas presupuestadas.' },
         { title: 'Agente de cobranzas', text: 'Envía recordatorios y propone planes de pago dentro de las reglas.' },
@@ -346,12 +290,6 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
         { title: 'Projects', text: 'Scope, progress and deliverables.' },
         { title: 'Hours and team', text: 'Workload, allocation and availability.' },
         { title: 'Billing and collections', text: 'Invoices, due dates and payments.' },
-      ],
-      questions: [
-        { q: 'Which projects are using more hours than budgeted?', area: 'Projects' },
-        { q: 'Which clients have invoices overdue by more than 30 days?', area: 'Collections' },
-        { q: 'Who on the team has availability next month?', area: 'Team' },
-        { q: 'Which proposals are about to expire without a reply?', area: 'Sales' },
       ],
       agents: [
         { title: 'Projects agent', text: 'Warns when a project drifts from its budgeted hours.' },
