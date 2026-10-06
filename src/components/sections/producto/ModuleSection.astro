@@ -1,38 +1,60 @@
 ---
-// Cerebro / BI / Agentes (Inv §2.4): head-row, chips y la demo de su vista.
-// Caption debajo de la demo (Inv §2.4), restituido con la isla (spec 003 §3.3).
+// Secciones con demo de Producto en la v4 (spec 007 §3.C): por rol, Inteligencia y Agentes. Head-row con kicker opcional,
+// capacidades (si van afuera de la demo), la demo en el slot y, debajo, la nota y el enlace a Hablemos.
 import Container from '../../ui/Container.astro';
 import HeadRow from '../../ui/HeadRow.astro';
 import Kicker from '../../ui/Kicker.astro';
-import AppSlot from '../../ui/AppSlot.astro';
 import Brand from '../../Brand.astro';
 import type { ProductSection } from '../../../content/pages/producto';
-import type { Locale } from '../../../i18n/routes';
 
-interface Props { s: ProductSection; locale: Locale; contactHref: string }
-const { s, locale, contactHref } = Astro.props;
+interface Props {
+  s: ProductSection;
+  /** Las capacidades se dibujan arriba de la demo (Inteligencia); en Agentes las dibuja la isla. */
+  chips?: boolean;
+  /** Nota con punto azul (por rol) o nota mono simple (Agentes). */
+  note?: 'dot' | 'plain';
+  contactHref?: string;
+}
+const { s, chips = false, note = 'plain', contactHref } = Astro.props;
 ---
-<Container gap="P" id={s.id} tabindex="-1" aria-labelledby={`${s.id}-title`} class="mod">
+<Container gap="P" id={s.id} tabindex="-1" aria-labelledby={`${s.id}-title`} class:list={['mod', `mod-${s.id}`]}>
   <HeadRow>
-    <Kicker as="p">{s.kicker}</Kicker>
+    {s.kicker && <Kicker as="p">{s.kicker}</Kicker>}
     <h2 id={`${s.id}-title`} class="h2">{s.title}</h2>
     <Fragment slot="lead"><Brand text={s.lead} /></Fragment>
   </HeadRow>
-  <ul class="chips">{s.chips.map((c) => <li>{c}</li>)}</ul>
-  <AppSlot view={s.view} locale={locale} contactHref={contactHref} frame="app" />
-  <p class="caption">{s.caption}</p>
+  {chips && s.chips && <ul class="caps">{s.chips.map((c) => <li>{c}</li>)}</ul>}
+  <slot />
+  {(s.cta || s.caption) && (
+    <div class="foot">
+      {s.cta && contactHref && <a class="cta" href={contactHref}><span><Brand text={s.cta[0]} /></span> <span class="cta-a">{s.cta[1]}</span></a>}
+      {s.caption && <p class:list={['note', `note-${note}`]}>{note === 'dot' && <span class="dot" aria-hidden="true" />}{s.caption}</p>}
+    </div>
+  )}
 </Container>
 
 <style>
-  .mod { display: flex; flex-direction: column; gap: 24px; }
-  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .caption { margin: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; color: var(--muted); padding-left: 8px; }
-  .chips li {
-    padding: 9px 16px;
+  .mod { display: flex; flex-direction: column; gap: 22px; }
+  .mod-cerebro { gap: 28px; }
+  .caps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .caps li {
+    padding: 8px 14px;
     border-radius: var(--radius-pill);
-    background: var(--white);
-    border: 1px solid var(--line);
-    font-size: 14px;
-    font-weight: 500;
+    border: 1px solid #C9C9C4;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .02em;
+    color: var(--body-2);
+    white-space: nowrap;
+  }
+  .foot { display: flex; flex-direction: column; gap: 10px; }
+  .cta { align-self: flex-start; font-size: 15px; color: var(--body-2); text-decoration: none; }
+  .cta-a { color: var(--blue-link); font-weight: 500; white-space: nowrap; }
+  .cta:hover { color: var(--ink); }
+  .note { margin: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em; color: var(--muted); }
+  .note-dot { display: flex; gap: 10px; align-items: center; font-size: 13px; letter-spacing: .02em; color: var(--body-2); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex: none; }
+  @media (max-width: 999.98px) {
+    .cta { display: inline-flex; flex-wrap: wrap; align-items: center; column-gap: .3em; min-height: 44px; }
   }
 </style>

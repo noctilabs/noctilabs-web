@@ -1,63 +1,45 @@
 import type { Localized } from '../types';
-import type { NodeLabel } from '../../scripts/value-graph';
+import type { IconKey } from '../../scripts/nicon';
 
-export interface ValorItem { title: string; text: string }
+export interface ValorRow { icon: IconKey; title: string; text: string }
 
-/** Copy de «El valor de una capa compartida» en Producto (spec 006 §3.3). El inglés sale de `i18n-en.js` del diseño. */
+/**
+ * Copy de «El valor de una capa compartida», variante «C · Editorial» de la v4 (spec 007 §3.D; diseño BEN_ED, L1055).
+ * El inglés sale de `i18n-en.js` de la v4; lo que no está ahí va marcado como provisorio (F4).
+ */
 export interface ValorCopy {
   kicker: string;
   title: string;
   lead: string;
-  /** Alternativa textual del grafo, que es decorativo (aria-hidden). */
-  graphAlt: string;
-  legend: { systems: string; people: string; knowledge: string };
-  nodes: Record<NodeLabel, string>;
-  items: [ValorItem, ValorItem, ValorItem, ValorItem, ValorItem, ValorItem];
-  /** Botón de pausa del avance automático: el verbo visible y el resto del nombre accesible. */
-  pause: { pause: string; play: string; rest: string };
+  rows: [ValorRow, ValorRow, ValorRow, ValorRow, ValorRow, ValorRow];
 }
 
 export const valor: Localized<ValorCopy> = {
   es: {
-    kicker: 'Valor compuesto',
+    kicker: 'Capa compartida',
     title: 'El valor de una capa compartida',
-    lead: 'Cada sistema, persona y decisión que se suma a Nocti hace más útil todo lo que ya está conectado.',
-    graphAlt: 'Grafo ilustrativo: sistemas, personas, conocimiento y un agente que se van conectando en seis etapas, una por cada beneficio.',
-    legend: { systems: 'Sistemas', people: 'Personas', knowledge: 'Conocimiento' },
-    nodes: {
-      erp: 'ERP', crm: 'CRM', drive: 'Drive', whatsapp: 'WhatsApp', correo: 'Correo',
-      ventas: 'Ventas', finanzas: 'Finanzas', operaciones: 'Operaciones', compras: 'Compras',
-      agente: 'Agente', politicas: 'Políticas', contratos: 'Contratos',
-    },
-    items: [
-      { title: 'Menos tiempo buscando información', text: 'Personas y agentes acceden al mismo contexto sin reconstruirlo cada vez.' },
-      { title: 'Decisiones con más contexto', text: 'Los datos, antecedentes, reglas y conocimiento relevantes aparecen juntos.' },
-      { title: 'Más trazabilidad', text: 'Podés entender qué información se utilizó, qué decisión se tomó y qué acción se ejecutó.' },
-      { title: 'Menos dependencia de personas clave', text: 'El conocimiento deja de vivir únicamente en quienes saben cómo resolver cada situación.' },
-      { title: 'Nuevos casos de uso más rápido', text: 'Cada aplicación o agente nuevo aprovecha las integraciones y el contexto que ya existen.' },
-      { title: 'Conocimiento que se acumula', text: 'Las decisiones, excepciones y acciones generan una memoria cada vez más rica de cómo opera la empresa.' },
+    lead: 'Lo que cambia cuando personas e IA trabajan sobre el mismo contexto de tu empresa.',
+    rows: [
+      { icon: 'b1', title: 'Menos tiempo buscando información', text: 'Encontrá lo que necesitás, cuando lo necesitás.' },
+      { icon: 'b2', title: 'Decisiones con más contexto', text: 'Datos, reglas, antecedentes y conocimiento en una misma vista.' },
+      { icon: 'b7', title: 'Más rentabilidad', text: 'Mejores decisiones, menos errores y más oportunidades detectadas ayudan a proteger margen y reducir costos.' },
+      { icon: 'b3', title: 'Una misma versión de la realidad', text: 'Equipos distintos trabajan sobre las mismas definiciones, métricas y datos.' },
+      { icon: 'b5', title: 'Nuevos casos de uso más rápido', text: 'Reutilizá contexto, integraciones y reglas ya construidas.' },
+      { icon: 'b6', title: 'Conocimiento que se acumula', text: 'Cada decisión, excepción y acción enriquece lo que la empresa sabe.' },
     ],
-    pause: { pause: 'Pausar', play: 'Reanudar', rest: 'el avance automático' },
   },
   en: {
-    kicker: 'Compounding value',
+    // Provisorio (F4): kicker, lead, las bajadas de las seis filas y los títulos 3 y 4 no están en i18n-en.js.
+    kicker: 'Shared layer',
     title: 'The value of a shared layer',
-    lead: 'Every system, person and decision added to Nocti makes everything already connected more useful.',
-    graphAlt: 'Illustrative graph: systems, people, knowledge and an agent connecting over six stages, one for each benefit.',
-    legend: { systems: 'Systems', people: 'People', knowledge: 'Knowledge' },
-    nodes: {
-      erp: 'ERP', crm: 'CRM', drive: 'Drive', whatsapp: 'WhatsApp', correo: 'Email',
-      ventas: 'Sales', finanzas: 'Finance', operaciones: 'Operations', compras: 'Purchasing',
-      agente: 'Agent', politicas: 'Policies', contratos: 'Contracts',
-    },
-    items: [
-      { title: 'Less time searching for information', text: 'People and agents access the same context without rebuilding it every time.' },
-      { title: 'Decisions with more context', text: 'The relevant data, history, rules and knowledge show up together.' },
-      { title: 'More traceability', text: 'You can see what information was used, what decision was made and what action was taken.' },
-      { title: 'Less dependence on key people', text: 'Knowledge no longer lives only with the people who know how to handle each situation.' },
-      { title: 'New use cases, faster', text: 'Every new application or agent builds on the integrations and context that already exist.' },
-      { title: 'Knowledge that compounds', text: 'Decisions, exceptions and actions build an ever-richer memory of how the company operates.' },
+    lead: 'What changes when people and AI work on the same context of your company.',
+    rows: [
+      { icon: 'b1', title: 'Less time searching for information', text: 'Find what you need, when you need it.' },
+      { icon: 'b2', title: 'Decisions with more context', text: 'Data, rules, history and knowledge in a single view.' },
+      { icon: 'b7', title: 'More profitability', text: 'Better decisions, fewer errors and more opportunities spotted help protect margin and cut costs.' },
+      { icon: 'b3', title: 'A single version of the truth', text: 'Different teams work on the same definitions, metrics and data.' },
+      { icon: 'b5', title: 'New use cases, faster', text: 'Reuse the context, integrations and rules you’ve already built.' },
+      { icon: 'b6', title: 'Knowledge that compounds', text: 'Every decision, exception and action adds to what the company knows.' },
     ],
-    pause: { pause: 'Pause', play: 'Resume', rest: 'automatic rotation' },
   },
 };

@@ -15,7 +15,8 @@ const columns = [
   {
     id: 'producto',
     title: t.nav.producto,
-    items: PRODUCT_SECTION_IDS.map((id) => ({ label: t.productSections[id].label, href: href({ id: 'producto' }, locale, id) })),
+    // Overview lleva al principio de Producto, no al ancla (spec 007 §3.C).
+    items: PRODUCT_SECTION_IDS.map((id) => ({ label: t.productSections[id].label, href: href({ id: 'producto' }, locale, id === 'overview' ? '' : id) })),
   },
   {
     id: 'industrias',

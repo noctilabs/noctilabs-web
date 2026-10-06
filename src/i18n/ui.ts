@@ -7,7 +7,8 @@ const es = {
     home: {
       title: 'NoctiLabs — El cerebro operativo de tu empresa.',
       h1: 'El cerebro operativo de tu empresa.',
-      lead: 'Un contexto compartido para que personas e IA entiendan tu negocio, decidan mejor y actúen.',
+      // Spec 007 §3 A: bajada del hero de la v4.
+      lead: 'Donde personas e IA pueden entender el negocio, tomar mejores decisiones y hacer el trabajo.',
       description: 'Un contexto compartido para que personas e IA entiendan tu negocio, decidan mejor y actúen.',
     },
     producto: {
@@ -74,7 +75,8 @@ const en: Dict = {
     home: {
       title: "NoctiLabs — Your company’s operational brain.",
       h1: "Your company’s operational brain.",
-      lead: 'A shared context so people and AI understand your business, decide better and act.',
+      // Spec 007 §3 A: la v4 no trae esta clave en i18n-en.js; traducción provisoria (F4).
+      lead: 'Where people and AI can understand the business, make better decisions and get the work done.',
       description: 'A shared context so people and AI understand your business, decide better and act.',
     },
     producto: {

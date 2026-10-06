@@ -2,9 +2,10 @@
 // Página Home (spec 002 §4.1): hero de la fase 1 + secciones + banda «Hablemos.».
 import Base from '../../../layouts/Base.astro';
 import HomeHero from '../../HomeHero.astro';
+import Frase from './Frase.astro';
 import HablemosBand from '../../HablemosBand.astro';
 import BeforeAfter from './BeforeAfter.astro';
-import Roles from './Roles.astro';
+import Montage from './Montage.astro';
 import Capabilities from './Capabilities.astro';
 import Steps from './Steps.astro';
 import Industries from './Industries.astro';
@@ -26,8 +27,9 @@ const t = ui[locale];
       primary={{ label: t.hero.primary, href: href({ id: 'hablemos' }, locale) }}
       secondary={{ label: t.hero.secondary, href: href({ id: 'producto' }, locale) }}
     />
+    <Frase locale={locale} />
     <BeforeAfter locale={locale} />
-    <Roles locale={locale} />
+    <Montage locale={locale} />
     <Capabilities locale={locale} />
     <Steps locale={locale} />
     <Industries locale={locale} />

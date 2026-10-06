@@ -1,0 +1,47 @@
+---
+// Frase (spec 007 §3 A, v4 `#frase`): entre el hero y el antes/después; se revela palabra por palabra con el scroll.
+import Container from '../../ui/Container.astro';
+import type { Locale } from '../../../i18n/routes';
+import { home } from '../../../content/pages/home';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = home[locale].frase;
+const words = [
+  ...t.a.split(' ').map((w) => ({ w, tone: 'a' })),
+  ...t.b.split(' ').map((w) => ({ w, tone: 'b' })),
+];
+---
+<Container gap="clamp(64px,8vw,128px)">
+  <div class="pad">
+    <p class="frase" data-frase>{words.map((x, i) => <>{i > 0 && ' '}<span class:list={['w', x.tone]}>{x.w}</span></>)}</p>
+  </div>
+</Container>
+
+<script>
+  import { initFrase } from '../../../scripts/frase';
+  const p = document.querySelector<HTMLElement>('[data-frase]');
+  if (p) initFrase(p);
+</script>
+
+<style>
+  .pad { padding: clamp(48px, 7vw, 120px) 0; display: flex; justify-content: center; }
+  .frase {
+    margin: 0;
+    max-width: 34ch;
+    text-align: center;
+    font-size: clamp(28px, 3.8vw, 56px);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -.04em;
+    text-wrap: balance;
+  }
+  .a { color: var(--ink); }
+  /* Gris de la v4 para la segunda parte (6,3:1 sobre --bg). */
+  .b { color: #5A5A5E; }
+  /* Palabra todavía no alcanzada por el scroll (decorativo: el texto completo está siempre en el DOM). */
+  .frase.armed .w:not(.on) { color: #D9D9D5; }
+  @media (prefers-reduced-motion: no-preference) {
+    .w { transition: color .35s ease; }
+  }
+</style>

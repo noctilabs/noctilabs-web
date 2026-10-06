@@ -1,0 +1,33 @@
+---
+// Ícono animado de la v4 (src/scripts/nicon.ts). Decorativo: aria-hidden. El color del trazo es `color` y el del acento,
+// la variable --ac; los dos los pone el CSS de quien lo usa. `auto` lo anima al entrar en pantalla (initIcons).
+import { iconMarkup, type IconKey } from '../../../scripts/nicon';
+
+interface Props {
+  k: IconKey;
+  size: number;
+  class?: string;
+  auto?: boolean;
+  prime?: boolean;
+  hover?: boolean;
+}
+const { k, size, class: cls, auto = false, prime = false, hover = false } = Astro.props;
+---
+<svg
+  class:list={['nicon', cls]}
+  data-nicon={k}
+  data-nicon-auto={auto ? '' : undefined}
+  data-nicon-prime={prime ? '' : undefined}
+  data-nicon-hover={hover ? '' : undefined}
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+  set:html={iconMarkup(k)}
+/>
+
+<style>
+  .nicon { display: block; flex: none; overflow: visible; }
+</style>

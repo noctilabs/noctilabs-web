@@ -1,0 +1,67 @@
+/* «Preguntá. Entendé. Actuá.» de Producto (spec 007 §3.C): la app compacta de la v4 (Nocti App v2, compact + show-ctx). */
+.pr-roles { container: prroles / inline-size; display: flex; flex-direction: column; gap: 28px; }
+.pr-sel-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 100%; min-width: 0; }
+.pr-sel-l { font-family: var(--na-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: #595956; }
+.pr-sel button { display: flex; align-items: center; gap: 6px; padding: 9px 13px; }
+.pr-sel-bot { color: var(--na-blue); flex: none; }
+.pr-cq { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+.pr-app {
+  width: 100%; min-height: 520px; background: #F6F6F4; border: 1px solid var(--na-divider); border-radius: 24px;
+  display: flex; overflow: hidden;
+}
+.pr-rail { display: none; }
+.pr-main { flex: 1; min-width: 0; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.pr-top { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.pr-pill-bot { color: var(--na-blue); flex: none; }
+.pr-grid { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.pr-chat { min-height: 380px; max-width: 520px; }
+.pr-perms { display: none; }
+.pr-figs { display: flex; flex-direction: column; border: 1px solid var(--na-divider); border-radius: 12px; overflow: hidden; }
+.pr-figs > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 12px; border-top: 1px solid var(--na-divider); background: #FFFFFF; }
+.pr-figs > div:first-child { border-top: 0; }
+.pr-figs dt { font-size: 12.5px; color: var(--na-n700); }
+.pr-figs dd { font-size: 17px; font-weight: 500; letter-spacing: -.02em; font-feature-settings: 'tnum' 1; }
+.pr-figs > .is-diff { background: #FBF1EE; border-top-color: #F0CFC7; }
+.pr-figs > .is-diff :is(dt, dd) { color: #AE1800; }
+.pr-note { font-size: 13px; color: var(--na-n700); padding-top: 2px; }
+
+/* «Qué puede ver» (v4 mobile): el panel de permisos y contexto, debajo de la app. */
+.pr-see { background: #FFFFFF; border: 1px solid var(--na-divider); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.pr-see-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.pr-see-h h4 { font-size: 17px; font-weight: 500; letter-spacing: -.03em; }
+.pr-see-who { font-family: var(--na-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--na-n700); text-align: right; }
+.pr-see-p { display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.4; }
+.pr-see-p .na-perm-i.is-ok { color: var(--na-link); }
+.pr-see-rows > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #ECECE8; font-size: 14px; line-height: 1.35; }
+.pr-see-rows dt { font-family: var(--na-mono); font-size: 12px; color: var(--na-n700); padding-top: 1px; }
+
+@container prroles (min-width: 720px) {
+  /* Escritorio: el riel de íconos se desvanece a la izquierda, como en la v4. */
+  .pr-app { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px); mask-image: linear-gradient(90deg, transparent 0, #000 64px); }
+  .pr-rail {
+    display: flex; flex: none; width: 60px; background: #F1F1EF; border-right: 1px solid var(--na-divider);
+    flex-direction: column; align-items: center; gap: 16px; padding: 18px 0 14px;
+  }
+  .pr-rail ul { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+  .pr-rail li { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; color: var(--na-n800); }
+  .pr-rail li.is-on { background: #FFFFFF; border-color: var(--na-divider); color: var(--na-text); }
+  .pr-rail > .na-avatar { margin-top: auto; }
+  .pr-main { padding: 18px 20px; }
+  .pr-chat { margin: 0 auto; }
+}
+@container prroles (min-width: 900px) {
+  .pr-grid { grid-template-columns: minmax(0, 1fr) 240px; }
+  .pr-perms { display: flex; margin-top: 8px; background: #FFFFFF; box-shadow: 0 14px 36px rgba(11, 11, 12, .08); }
+  .pr-perms .na-perms-a { gap: 6px; }
+  .pr-see { display: none; }
+}
+
+@media (max-width: 999.98px) {
+  .pr-roles { gap: 16px; }
+  .pr-sel button { padding: 0 14px; }
+  /* Nada visible por debajo de 12 px (spec 005). */
+  .pr-roles :is(.na-kicker, .na-ref, .na-refs-l, .na-think-h, .na-tagpill, .pr-figs dt) { font-size: 12px; }
+  .pr-chat { min-height: 0; }
+  .pr-roles .na-avatar { font-size: 12px !important; }
+}

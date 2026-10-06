@@ -17,7 +17,8 @@ const section = page?.id;
 const productItems = PRODUCT_SECTION_IDS.map((id) => ({
   label: t.productSections[id].label,
   desc: t.productSections[id].desc,
-  href: href({ id: 'producto' }, locale, id),
+  // Overview lleva al principio de Producto, no al ancla (spec 007 §3.C).
+  href: href({ id: 'producto' }, locale, id === 'overview' ? '' : id),
 }));
 const industryItems = (Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({
   label: industries[industry][locale].label,

@@ -1,159 +1,361 @@
 ---
-// Control y gobernanza (spec 006 §3.4, diseño v3 deploy L326–362): título con las capas a la derecha y el acordeón de
-// 6 controles, cada uno con su sub-vista de la app (controlTab = n.º del control). Escritorio (≥ 1000 px): acordeón y app
-// en dos columnas, con avance cada 6 s. Mobile: la app va debajo del acordeón, entera y sin escalar (spec 005 §3.3).
+// Control y gobernanza, variante «C · Editorial» de la v4 (spec 007 §3.D; diseño L564–651, L1060–1068 y L1428–1478):
+// diagrama de arquitectura (personas y agentes → seis compuertas de Nocti → tus sistemas) y, debajo, el control elegido
+// con su vista de ejemplo de la OC-4471. Escritorio (≥ 1000 px): las compuertas del diagrama eligen el control. Mobile:
+// el diagrama se apila y los controles son filas; el elegido se reemplaza por su detalle.
+// El recorrido de la OC por las compuertas dura ≤ 2,7 s y no se repite solo (F5: sin pausa; con reduced motion, sin
+// recorrido). Lo maneja src/scripts/control-arch.ts.
+// La app con sub-vistas de Control (spec 006) ya no se usa acá: la v4 no la lleva en esta variante.
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
 import Kicker from '../../ui/Kicker.astro';
-import AppSlot from '../../ui/AppSlot.astro';
+import Mark from '../../Mark.astro';
+import NIcon from './NIcon.astro';
+import { control } from '../../../content/pages/producto-control';
 import type { ProductoCopy } from '../../../content/pages/producto';
 import type { Locale } from '../../../i18n/routes';
 
+// `t` y `contactHref` quedan por compatibilidad con ProductoPage.astro (spec 007: ese archivo es de otra tarea).
 interface Props { t: ProductoCopy['control']; locale: Locale; contactHref: string }
-const { t, locale, contactHref } = Astro.props;
+const c = control[Astro.props.locale];
+const s = c.snip;
+const n2 = (i: number) => String(i + 1).padStart(2, '0');
+// Posiciones del diseño, en % del diagrama (ARCH_PPL, ARCH_SYS y GX).
+const PX = [11, 30, 50, 70, 89];
+const SX = [14, 32, 50, 68, 86];
+const GX = [17.5, 32, 46.5, 61, 75.5, 90];
+const pill = (i: number) => (i < 2 ? 'agent' : undefined);
 ---
-<Container gap="P" id="control" tabindex="-1" aria-labelledby="control-title">
-  <CardBig variant="p" class="ctl">
+<Container gap="clamp(64px,8vw,128px)" id="control" tabindex="-1" aria-labelledby="control-title">
+  <CardBig variant="p" class="ctl" data-arch data-sel="0" data-done="">
     <div class="head">
       <div class="title">
-        <Kicker as="p">{t.kicker}</Kicker>
-        <h2 id="control-title" class="h2">{t.title}</h2>
-        <p class="lead">{t.lead}</p>
+        <Kicker as="p">{c.kicker}</Kicker>
+        <h2 id="control-title" class="h2">{c.title}</h2>
       </div>
-      <div class="layers">
-        <ul class="grid">{t.layers.map((l) => <li>{l}</li>)}</ul>
-        <div class="bar"><span class="dot" aria-hidden="true"></span><span>{t.bar}</span></div>
-      </div>
+      <p class="lead">{c.lead}</p>
     </div>
-    <div class="zone" data-aa data-aa-interval="6000">
-      <div class="col">
-        <div class="acc">
-          {t.items.map((it, i) => (
-            <div class="item" data-aa-item data-open={i === 0 ? '' : undefined}>
-              <div class="prog" aria-hidden="true"><span data-aa-bar></span></div>
-              <h3 class="ih">
-                <button type="button" class="btn" id={`ctl-b${i}`} data-aa-trigger aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`ctl-p${i}`}>
-                  <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  <span class="t">{it.title}</span>
-                  <span class="sign" aria-hidden="true"></span>
-                </button>
-              </h3>
-              <div class="panel" id={`ctl-p${i}`}>
-                <div class="pi"><p>{it.text}</p></div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button type="button" class="pause" data-aa-toggle hidden data-label-pause={t.autoplay.pause} data-label-play={t.autoplay.play}>
-          <svg class="ico-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 2h2v8H3zM7 2h2v8H7z" /></svg>
-          <svg class="ico-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 1.5v9l7.5-4.5z" /></svg>
-          <span data-aa-label>{t.autoplay.pause}</span>
+
+    <div class="arch" role="group" aria-label={c.diagram}>
+      <svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        {PX.map((x) => <line x1={x} y1="18" x2={x} y2="34" />)}
+        {SX.map((x) => <line x1={x} y1="64" x2={x} y2="82" />)}
+      </svg>
+      <span class="lbl l-ppl">{c.peopleLabel}</span>
+      {c.people.map((l, i) => <span class="pill ppl" data-kind={pill(i)} data-src={i === 0 ? '' : undefined} data-p={i} style={`left:${PX[i]}%`}>{l}</span>)}
+      <div class="band" aria-hidden="true"></div>
+      <span class="lbl l-band">{c.bandLabel}</span>
+      {c.gates.map((g, i) => (
+        <button type="button" class="gate" data-gate={i} data-st={i === 0 ? 'on' : undefined} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls="ctl-info" style={`left:${GX[i]}%`}>
+          <NIcon k={g.icon} size={24} />
+          <span>{g.short}</span>
         </button>
+      ))}
+      {c.systems.map((l, i) => <span class="pill sys" data-s={i} data-hl={i === 0 ? '' : undefined} style={`left:${SX[i]}%`}>{l}</span>)}
+      <span class="lbl l-sys">{c.systemsLabel}</span>
+    </div>
+
+    <div class="arch-m">
+      <span class="lbl">{c.peopleLabel}</span>
+      <div class="pills">{c.people.map((l, i) => <span class="pill ppl" data-kind={pill(i)} data-src={i === 0 ? '' : undefined} data-p={i}>{l}</span>)}</div>
+      <span class="wire" aria-hidden="true"></span>
+      <div class="box">
+        <span class="lbl band-l">{c.bandLabel}</span>
+        <span class="box-t">{c.diagram}</span>
       </div>
-      <div class="app" data-ctl-app data-tab="1">
-        <AppSlot view="control" locale={locale} contactHref={contactHref} frame="control" controlTab={1} />
+      <span class="wire" aria-hidden="true"></span>
+      <div class="pills">{c.systems.map((l, i) => <span class="pill sys" data-s={i} data-hl={i === 0 ? '' : undefined}>{l}</span>)}</div>
+      <span class="lbl">{c.systemsLabel}</span>
+    </div>
+
+    <div class="below">
+      {c.gates.map((g, i) => (
+        <button type="button" class="row" data-row={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls="ctl-info" style={`order:${i * 10}`}>
+          <NIcon k={g.icon} size={30} auto hover />
+          <span class="rn" aria-hidden="true">{n2(i)}</span>
+          <span class="rt">{g.title}</span>
+          <span class="rs" aria-hidden="true">+</span>
+        </button>
+      ))}
+
+      <div class="info" id="ctl-info" tabindex="-1" style="order:1">
+        {c.gates.map((g, i) => (
+          <div class="ib" data-ib={i} hidden={i !== 0}>
+            <div class="ih">
+              <NIcon k={g.icon} size={32} />
+              <span class="num">{n2(i)} / 06 · {g.short}</span>
+            </div>
+            <h3 class="it">{g.title}</h3>
+            <p class="id">{g.text}</p>
+            <p class="fx" data-warn={i === 1 ? '' : undefined}>
+              <span class="dot" aria-hidden="true"></span>
+              <span class="fx-p">{c.pending}</span>
+              <span class="fx-d">{g.fx}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div class="snips" style="order:2">
+        {c.gates.map((g, i) => (
+          <div class="snip" data-sn={i} hidden={i !== 0} data-appr={i === 2 ? '' : undefined}>
+            <div class="sh">
+              <span class="sh-l"><Mark size={18} /><span>Nocti · {g.title}</span></span>
+              <span class="sh-o">{s.order}</span>
+            </div>
+            {i === 0 && (
+              <div class="sb perm">
+                <div class="perm-h"><span class="strong">{s.perm.agent}</span><span class="badge ok">{s.perm.status}</span></div>
+                {s.perm.rows.map(([ok, t, d]) => (
+                  <div class="perm-r">
+                    <span class:list={['mk', ok ? 'yes' : 'no']} aria-hidden="true">{ok ? '✓' : '✕'}</span>
+                    <span class="strong">{t}</span>
+                    <span class="mut">{d}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {i === 1 && (
+              <div class="sb lim">
+                <div class="lim-h"><span class="cap">{s.limit.head}</span><span class="strong">{s.limit.value}</span></div>
+                <div class="lim-bar" aria-hidden="true"><span style={`width:${s.limit.fill}`}></span></div>
+                <div class="lim-f"><span class="mut">{s.limit.auto}</span><span class="warn">{s.limit.over}</span></div>
+                <span class="lim-n warn">{s.limit.note}</span>
+              </div>
+            )}
+            {i === 2 && (
+              <div class="sb appr">
+                <div class="appr-h">
+                  <span class="ah-p">{s.appr.pending}</span>
+                  <span class="ah-ok">{s.appr.approved}</span>
+                  <span class="ah-no">{s.appr.rejected}</span>
+                  <span>{s.appr.who}</span>
+                </div>
+                <div class="appr-b">
+                  <span class="strong">{s.appr.order}</span>
+                  <div class="appr-act">
+                    <button type="button" class="ab dark" data-appr-set="ok">{s.appr.approve}</button>
+                    <button type="button" class="ab" data-appr-set="no">{s.appr.reject}</button>
+                  </div>
+                  <div class="appr-done" aria-live="polite">
+                    <span class="msg-ok">{s.appr.approvedMsg}</span>
+                    <span class="msg-no">{s.appr.rejectedMsg}</span>
+                    <button type="button" class="undo" data-appr-set="">{s.appr.undo}</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {i === 3 && (
+              <div class="sb trace">
+                {s.trace.map(([t, x, src]) => (
+                  <div class="tr-r">
+                    <span class="time">{t}</span>
+                    <span class="tr-x"><span class="strong">{x}</span><span class="src">{src}</span></span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {i === 4 && (
+              <div class="sb obs">
+                {s.agents.map(([n, tk, st, tone]) => (
+                  <div class="obs-r"><span class="strong">{n}</span><span class="mut">{tk}</span><span class:list={['badge', tone]}>{st}</span></div>
+                ))}
+              </div>
+            )}
+            {i === 5 && (
+              <div class="sb log">
+                {s.log.map(([t, a, x]) => (
+                  <div class="log-r"><span class="time">{t}</span><span class="log-x"><span class="strong">{x}</span><span class="mut">{a}</span></span></div>
+                ))}
+                <span class="export">{s.export}</span>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   </CardBig>
 </Container>
 
 <script>
-  import { initAutoAccordion } from '../../../scripts/auto-accordion';
-  const root = document.querySelector<HTMLElement>('#control [data-aa]');
-  const app = root?.querySelector<HTMLElement>('[data-ctl-app]');
-  if (root && app) {
-    // Cada control abre su sub-vista (n.º + 1) con un fundido de 220 ms (diseño L812–816); sin fundido con reduced motion.
-    const still = matchMedia('(prefers-reduced-motion: reduce)');
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const show = (tab: number) => {
-      app.dataset.tab = String(tab);
-      app.dispatchEvent(new CustomEvent('nocti:control-tab', { detail: tab }));
-    };
-    // Con avance automático, la app no achica al cambiar de vista: así la página de abajo no salta cada 6 s. Se mide de
-    // nuevo si cambia el ancho.
-    const frame = app.firstElementChild as HTMLElement;
-    let width = 0;
-    new ResizeObserver(() => {
-      const w = Math.round(app.clientWidth);
-      if (w !== width) { width = w; app.style.minHeight = ''; }
-      if (root.hasAttribute('data-aa-auto')) app.style.minHeight = Math.max(parseFloat(app.style.minHeight) || 0, frame.offsetHeight) + 'px';
-    }).observe(frame);
-    // El control n.º i abre la sub-vista i + 1; con todos cerrados (mobile) la app queda en la última.
-    initAutoAccordion(root, (i) => {
-      if (i < 0) return;
-      clearTimeout(timer);
-      if (still.matches) { app.classList.remove('is-fading'); show(i + 1); return; }
-      app.classList.add('is-fading');
-      timer = setTimeout(() => { show(i + 1); app.classList.remove('is-fading'); }, 220);
-    });
-  }
+  import { initControlArch } from '../../../scripts/control-arch';
+  const root = document.querySelector<HTMLElement>('#control [data-arch]');
+  if (root) initControlArch(root);
 </script>
 
 <style>
   .ctl { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px); }
-  .head { display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-end; }
+  .head { display: flex; flex-wrap: wrap; gap: 20px 64px; align-items: flex-end; }
   .title { flex: 3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
   .title .h2 { max-width: 20ch; }
-  .lead { margin: 0; font-size: 16px; color: var(--muted); max-width: 52ch; }
-  .layers { flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-  .grid li { background: var(--bg); border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 500; letter-spacing: -.02em; text-align: center; }
-  .bar {
-    background: var(--dark); color: var(--bg); border-radius: 12px; padding: 12px 14px;
-    display: flex; justify-content: center; align-items: center; gap: 10px;
-    font-size: 14px; font-weight: 500; letter-spacing: -.02em; text-align: center;
-  }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-light); flex: none; }
+  .lead { flex: 2 1 300px; min-width: 0; margin: 0; font-size: 16px; color: var(--muted); }
 
-  .zone { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2.5vw, 32px); align-items: start; }
-  @media (min-width: 1000px) { .zone { grid-template-columns: minmax(0, 280px) minmax(0, 1fr); } }
-
-  .col { min-width: 0; display: flex; flex-direction: column; }
-  .acc { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); }
-  .item { position: relative; border-top: 1px solid var(--line); }
-  .prog { position: absolute; left: 0; right: 0; top: -1px; height: 2px; overflow: hidden; display: none; }
-  [data-aa-auto] [data-open] .prog { display: block; }
-  .prog span { display: block; height: 100%; background: var(--blue); transform: scaleX(0); transform-origin: left; }
-  .ih { margin: 0; font: inherit; }
-  .btn {
-    all: unset; box-sizing: border-box; width: 100%; min-height: 44px; cursor: pointer;
-    display: grid; grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 10px; align-items: baseline; padding: 16px 0;
+  .lbl { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .pill {
+    padding: 6px 11px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; line-height: 1.4;
+    background: var(--white); color: var(--ink); border: 1px solid #D9D9D4;
+    transition: background .4s, color .4s, border-color .4s;
   }
-  .btn:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; border-radius: 4px; }
-  .n { font-family: var(--font-mono); font-size: 12px; color: #6B6B68; transition: color .3s; }
-  .t { font-size: 18px; font-weight: 500; letter-spacing: -.025em; line-height: 1.2; color: #6B6B68; transition: color .3s; }
-  .sign { font-family: var(--font-mono); font-size: 14px; color: #6B6B68; }
-  .sign::before { content: '+'; }
-  [data-open] .n { color: var(--blue); }
-  [data-open] .t { color: var(--ink); }
-  [data-open] .sign { color: var(--blue); }
-  [data-open] .sign::before { content: '−'; }
-  @media (hover: hover) { .btn:hover .t { color: var(--ink); } }
-  .panel {
-    display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
-    transition: grid-template-rows .4s cubic-bezier(.4, 0, .2, 1), opacity .3s, visibility 0s .4s;
-  }
-  /* El texto sube 6 px hacia el título (diseño: margin −6 px); el margen va en el panel para que .pi no lo recorte. */
-  [data-open] > .panel { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition-delay: 0s; margin-top: -6px; }
-  .pi { overflow: hidden; min-height: 0; }
-  .pi p { margin: 0; padding: 0 8px 16px 42px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  .pill.ppl[data-kind='agent'] { background: #EEF3FF; color: var(--blue-link); border-color: #A9C4FF; }
+  .pill.ppl[data-src] { border-color: var(--blue); }
+  .pill.sys { border-radius: 10px; }
+  .pill[data-hl] { background: var(--blue); color: var(--white); border-color: var(--blue); }
 
-  .pause {
-    display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; min-height: 44px; margin: 12px 0;
-    padding: 0 14px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--white);
-    font: inherit; font-size: 13px; color: var(--muted); cursor: pointer;
+  /* Diagrama de escritorio: lienzo 16:9 con todo posicionado en % (diseño L573–583). */
+  .arch { display: none; position: relative; aspect-ratio: 16 / 9; min-height: 440px; background: var(--bg); border-radius: 24px; overflow: hidden; }
+  .lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .lines line { stroke: #B9B9B4; stroke-width: 1; stroke-dasharray: 3 4; vector-effect: non-scaling-stroke; }
+  .arch .lbl { position: absolute; white-space: nowrap; }
+  .l-ppl { left: 3%; top: 4%; }
+  .l-band { left: calc(3% + 18px); top: 36.5%; color: #8FB0FF; }
+  .l-sys { left: 3%; bottom: 3.5%; }
+  .arch .pill { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; padding: 7px 13px; }
+  .arch .ppl { top: 14%; }
+  .arch .sys { top: 86%; }
+  .band { position: absolute; left: 3%; right: 3%; top: 34%; height: 30%; background: var(--ink); border-radius: 18px; }
+  .gate {
+    position: absolute; top: 48.5%; transform: translate(-50%, -50%);
+    appearance: none; border: 0; margin: 0; cursor: pointer;
+    padding: 9px 10px 8px; border-radius: 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 12px; line-height: 1.2; white-space: nowrap;
+    background: #1E1E21; color: var(--white); box-shadow: inset 0 0 0 1px #3A3A3E;
+    --ac: #5B8CFF;
+    transition: background .3s, color .3s;
   }
-  .pause[hidden] { display: none; }
-  .pause svg { fill: currentColor; flex: none; }
-  .pause .ico-play, [data-aa-held] .pause .ico-pause { display: none; }
-  [data-aa-held] .pause .ico-play { display: block; }
-  .pause:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; }
-  @media (hover: hover) { .pause:hover { color: var(--ink); border-color: #A3A39E; } }
+  .gate[data-st='past'] { background: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+  .gate[data-st='on'] { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1px var(--white); }
+  .gate[data-st='on'] .nicon { color: var(--blue); --ac: var(--blue); }
+  @media (hover: hover) { .gate:hover { box-shadow: inset 0 0 0 1px var(--white); } }
+  .gate:focus-visible { outline: 2px solid #8FB0FF; outline-offset: 2px; }
 
-  .app { min-width: 0; transition: opacity .22s, transform .22s; }
-  .app.is-fading { opacity: 0; transform: translateY(6px); }
+  /* Diagrama de mobile: apilado (diseño L585–599). */
+  .arch-m { display: flex; flex-direction: column; gap: 10px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wire { width: 1.5px; height: 18px; background: var(--blue-light); margin-left: 18px; }
+  .box { background: var(--ink); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .band-l { color: #8FB0FF; letter-spacing: .05em; }
+  .box-t { font-size: 14px; line-height: 1.45; color: #A8A8A3; }
+
+  @media (min-width: 1000px) {
+    .arch { display: block; }
+    .arch-m { display: none; }
+  }
+
+  /* Debajo: filas (mobile) y el control elegido con su vista de ejemplo. */
+  /* Mobile: filas, detalle y vista separados por 24 px, como la grilla del diseño (gap 24px 48px). */
+  .below { display: flex; flex-direction: column; gap: 24px; }
+  .row {
+    appearance: none; border: 0; border-top: 1px solid var(--line); background: none; margin: 0; cursor: pointer;
+    width: 100%; min-height: 44px; padding: 14px 0; text-align: left; font: inherit; color: var(--ink);
+    display: grid; grid-template-columns: 30px 26px minmax(0, 1fr) 16px; gap: 12px; align-items: center;
+    --ac: var(--blue);
+  }
+  .row[aria-pressed='true'] { display: none; }
+  .rn { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .rt { font-size: 17px; font-weight: 500; letter-spacing: -.02em; line-height: 1.25; }
+  .rs { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
+  @media (hover: hover) { .row:hover .rt { color: var(--blue-link); } }
+
+  .info { padding-top: 14px; border-top: 1px solid var(--line); }
+  .info:focus { outline: none; }
+  .info:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; }
+  .ib { display: flex; flex-direction: column; gap: 10px; }
+  .ib[hidden], .snip[hidden] { display: none; }
+  .ih { display: flex; align-items: center; gap: 12px; color: var(--blue); --ac: var(--blue); }
+  .num { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--blue-link); }
+  .it { margin: 0; font-size: clamp(24px, 2.4vw, 32px); font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
+  .id { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--muted); max-width: 46ch; }
+  .fx { margin: 6px 0 0; display: flex; gap: 8px; align-items: baseline; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--muted); }
+  .fx .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; transform: translateY(-1px); }
+  .ctl[data-done] .fx { color: var(--blue-link); }
+  .ctl[data-done] .fx[data-warn] { color: #9A6A0E; }
+  .ctl[data-done] .fx-p, .ctl:not([data-done]) .fx-d { display: none; }
+
+  @media (min-width: 1000px) {
+    .below { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 24px 48px; align-items: start; }
+    .row { display: none; }
+    .info { padding-top: 0; border-top: 0; }
+  }
+
+  /* Vistas de ejemplo (diseño L601–647). Textos de 12 px como mínimo (spec 005). */
+  .snip { background: var(--bg); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; font-size: 13px; line-height: 1.45; }
+  .sh { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .sh-l { display: flex; gap: 8px; align-items: center; min-width: 0; }
+  .sh-l > span, .sh-o { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .sh-o { white-space: nowrap; letter-spacing: 0; }
+  .sb { background: var(--white); border-radius: 14px; display: flex; flex-direction: column; }
+  .strong { font-weight: 500; }
+  .mut { color: var(--muted); }
+  .warn { color: #9A6A0E; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 12px; white-space: nowrap; }
+  .badge.ok { background: #DDEEE3; color: #2F7D52; }
+  .badge.warn { background: #F6EBD3; color: #8A5E0A; }
+  .badge.err { background: #F9DED8; color: #AE1800; }
+
+  .perm { padding: 12px 14px; gap: 8px; }
+  .perm-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; }
+  .perm-r { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding-top: 8px; border-top: 1px solid var(--surface-3); }
+  .perm-r .mut { white-space: nowrap; }
+  .mk { font-weight: 600; }
+  .mk.yes { color: #2F7D52; }
+  .mk.no { color: #AE1800; }
+
+  .lim { padding: 14px; gap: 10px; }
+  .lim-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .cap { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .lim-bar { position: relative; height: 10px; border-radius: var(--radius-pill); background: repeating-linear-gradient(135deg, #F6EBD3 0 5px, #EBD6A8 5px 10px); overflow: hidden; }
+  .lim-bar span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); }
+  .lim-f { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; }
+  .lim-n { padding-top: 8px; border-top: 1px solid var(--surface-3); }
+
+  .appr { overflow: hidden; }
+  .appr-h {
+    padding: 7px 12px; color: var(--white); background: #9A6A0E;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+    display: flex; justify-content: space-between; gap: 4px 8px; flex-wrap: wrap;
+  }
+  [data-appr='ok'] .appr-h { background: #2F7D52; }
+  [data-appr='no'] .appr-h { background: var(--ink); }
+  .ah-ok, .ah-no, [data-appr='ok'] .ah-p, [data-appr='no'] .ah-p { display: none; }
+  [data-appr='ok'] .ah-ok, [data-appr='no'] .ah-no { display: inline; }
+  .appr-b { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .appr-b > .strong { font-size: 14px; }
+  .appr-act { display: flex; gap: 8px; flex-wrap: wrap; }
+  .appr-done { display: none; gap: 4px 10px; align-items: center; flex-wrap: wrap; }
+  [data-appr='ok'] .appr-act, [data-appr='no'] .appr-act { display: none; }
+  [data-appr='ok'] .appr-done, [data-appr='no'] .appr-done { display: flex; }
+  .msg-ok, .msg-no, [data-appr='ok'] .msg-no, [data-appr='no'] .msg-ok { display: none; }
+  [data-appr='ok'] .msg-ok, [data-appr='no'] .msg-no { display: inline; }
+  .ab {
+    appearance: none; border: 0; margin: 0; cursor: pointer; font: inherit; font-weight: 500;
+    padding: 8px 16px; border-radius: var(--radius-pill); background: var(--surface-3); color: var(--ink);
+  }
+  .ab.dark { background: var(--ink); color: var(--white); }
+  @media (hover: hover) { .ab:hover { background: var(--line); } .ab.dark:hover { background: var(--ink-hover); } }
+  .undo { appearance: none; border: 0; background: none; margin: 0; padding: 0; cursor: pointer; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 999.98px) {
+    .ab, .undo { min-height: 44px; }
+    .ab { padding: 0 18px; }
+  }
+
+  .trace { padding: 12px 14px; gap: 8px; }
+  .tr-r { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; align-items: start; }
+  .time { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding-top: 1px; }
+  .tr-x { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .src { display: inline-flex; padding: 2px 10px; border-radius: var(--radius-pill); font-size: 12px; border: 1px solid var(--blue-link); color: var(--blue-link); }
+
+  .obs { padding: 4px 14px; }
+  .obs-r { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--surface-3); }
+  .obs-r:last-child { border-bottom: 0; }
+
+  .log { padding: 4px 14px 12px; }
+  .log-r { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--surface-3); }
+  .log-x { display: flex; flex-direction: column; }
+  .log-x .mut { font-size: 12px; }
+  .export { align-self: flex-start; margin-top: 10px; padding: 7px 14px; border-radius: var(--radius-pill); background: var(--ink); color: var(--white); font-size: 12px; font-weight: 500; }
 
   @media (prefers-reduced-motion: reduce) {
-    .n, .t, .panel, .app { transition: none; }
+    .pill, .gate { transition: none; }
   }
 </style>

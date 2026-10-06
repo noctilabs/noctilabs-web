@@ -1,257 +1,71 @@
 ---
-// «El valor de una capa compartida» (spec 006 §3.3, E5): grafo de 22 nodos en 6 etapas y acordeón de 6 beneficios que
-// avanza solo cada 7 s (src/scripts/auto-accordion.ts). La etapa del grafo sigue al ítem abierto.
-// El grafo usa un lienzo de 400 × 300: las aristas en un SVG estirado y los nodos y etiquetas en HTML por porcentaje, así
-// el lienzo puede ser más alto en mobile sin deformar los nodos y las etiquetas quedan en 12 px a cualquier ancho.
+// «El valor de una capa compartida», variante «C · Editorial» de la v4 (spec 007 §3.D; diseño L533–549 y L1460–1461):
+// seis filas con ícono, título grande y bajada. Los íconos se animan una vez al entrar en pantalla y otra vez con el hover
+// de su fila (≈ 1 s, nada con reduced motion).
 import Container from '../../ui/Container.astro';
-import CardBig from '../../ui/CardBig.astro';
 import Kicker from '../../ui/Kicker.astro';
+import NIcon from './NIcon.astro';
 import { valor } from '../../../content/pages/producto-valor';
-import { EDGES, NODES, graphState, stageLabel, type NodeLabel } from '../../../scripts/value-graph';
 import type { Locale } from '../../../i18n/routes';
 
 interface Props { locale: Locale }
 const t = valor[Astro.props.locale];
-const first = graphState(1);
-const R = { s: 6.5, p: 5.5, a: 6.5, k: 4 } as const;
 const num = (i: number) => String(i + 1).padStart(2, '0');
-// En mobile el lienzo es más angosto y las etiquetas siguen en 12 px: dos se reubican para no chocar ni tocar el borde.
-const MOBILE: Partial<Record<NodeLabel, 'end' | 'below'>> = { contratos: 'end', finanzas: 'below' };
 ---
-<Container gap="P" id="valor" tabindex="-1" aria-labelledby="valor-title">
-  <CardBig variant="p" class="val" data-aa data-aa-interval="7000">
-    <div class="side">
-      <div class="head">
-        <Kicker as="p">{t.kicker}</Kicker>
-        <h2 id="valor-title" class="h2">{t.title}</h2>
-      </div>
-      <p class="lead">{t.lead}</p>
-      <p class="sr-only">{t.graphAlt}</p>
-      <div class="graph" aria-hidden="true" data-graph>
-        <div class="plot">
-          <svg viewBox="0 0 400 300" preserveAspectRatio="none" focusable="false">
-            {EDGES.map(({ a, b }, i) => (
-              <line x1={NODES[a]![0]} y1={NODES[a]![1]} x2={NODES[b]![0]} y2={NODES[b]![1]} vector-effect="non-scaling-stroke" data-edge data-s={first.edges[i]} />
-            ))}
-          </svg>
-          {NODES.map(([x, y, kind, label], i) => (
-            <span
-              class="nd"
-              data-node
-              data-kind={kind}
-              data-m={label && MOBILE[label]}
-              data-lit={first.lit[i] ? '' : undefined}
-              data-hot={first.hot[i] ? '' : undefined}
-              style={`--x:${+(x / 4).toFixed(2)}%;--y:${+(y / 3).toFixed(2)}%;--r:${R[kind]}`}
-            >{label && <span class="lb">{t.nodes[label]}</span>}</span>
-          ))}
+<Container gap="clamp(64px,8vw,128px)" id="valor" tabindex="-1" aria-labelledby="valor-title">
+  <div class="head">
+    <Kicker as="p">{t.kicker}</Kicker>
+    <h2 id="valor-title" class="title">{t.title}</h2>
+    <p class="lead">{t.lead}</p>
+  </div>
+  <div class="rows">
+    {t.rows.map((r, i) => (
+      <div class="row" data-valor-row>
+        <div class="mark">
+          <NIcon k={r.icon} size={48} auto prime />
+          <span class="n" aria-hidden="true">{num(i)}</span>
         </div>
-        <div class="legend">
-          <span class="keys">
-            <span class="key"><span class="dot" data-kind="s"></span>{t.legend.systems}</span>
-            <span class="key"><span class="dot" data-kind="p"></span>{t.legend.people}</span>
-            <span class="key"><span class="dot" data-kind="k"></span>{t.legend.knowledge}</span>
-          </span>
-          <span class="count" data-stage-label>{stageLabel(1)}</span>
-        </div>
+        <h3>{r.title}</h3>
+        <p>{r.text}</p>
       </div>
-    </div>
-    <div class="acc">
-      <div class="list">
-        {t.items.map((it, i) => (
-          <div class="item" data-aa-item data-open={i === 0 ? '' : undefined}>
-            <h3 class="ih">
-              <button type="button" id={`valor-b-${i + 1}`} aria-controls={`valor-p-${i + 1}`} aria-expanded={i === 0 ? 'true' : 'false'} data-aa-trigger>
-                <span class="num">{num(i)}</span>
-                <span class="ttl">{it.title}</span>
-                <span class="sign" aria-hidden="true"></span>
-              </button>
-            </h3>
-            <div class="panel" id={`valor-p-${i + 1}`}>
-              <div class="clip"><p>{it.text}</p></div>
-            </div>
-            <span class="track" aria-hidden="true"><span class="bar" data-aa-bar></span></span>
-          </div>
-        ))}
-      </div>
-      <button type="button" class="pause" data-aa-toggle data-label-pause={t.pause.pause} data-label-play={t.pause.play} hidden>
-        <span class="ico" aria-hidden="true"></span>
-        <span><span data-aa-label>{t.pause.pause}</span><span class="sr-only"> {t.pause.rest}</span></span>
-      </button>
-    </div>
-  </CardBig>
+    ))}
+  </div>
 </Container>
 
 <script>
-  import { initAutoAccordion } from '../../../scripts/auto-accordion';
-  import { paintGraph } from '../../../scripts/value-graph';
-  const root = document.querySelector<HTMLElement>('#valor [data-aa]');
-  const graph = document.querySelector<HTMLElement>('#valor [data-graph]');
-  if (root && graph) initAutoAccordion(root, (i) => paintGraph(graph, Math.max(i, 0) + 1));
+  import { initIcons, playIcon } from '../../../scripts/nicon';
+  const root = document.querySelector<HTMLElement>('#valor');
+  if (root) {
+    initIcons(root);
+    for (const row of root.querySelectorAll<HTMLElement>('[data-valor-row]')) {
+      const svg = row.querySelector<SVGSVGElement>('svg[data-nicon]');
+      if (svg) row.addEventListener('mouseenter', () => playIcon(svg));
+    }
+  }
 </script>
 
 <style>
-  .val { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
-  @media (min-width: 1000px) { .val { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
-  .side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-  .head { display: flex; flex-direction: column; gap: 14px; }
-  .lead { margin: 0; font-size: 16px; color: var(--muted); max-width: 44ch; }
+  .head { display: flex; flex-direction: column; gap: 18px; padding-bottom: clamp(40px, 5vw, 72px); }
+  .title { margin: 0; font-size: var(--display); font-weight: 500; line-height: .98; letter-spacing: -.05em; max-width: 14ch; }
+  .lead { margin: 0; font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); max-width: 46ch; }
 
-  /* Grafo. --u = px por unidad del lienzo, para el tamaño de los nodos y el grosor de las aristas. */
-  .graph {
-    --past: #8FB0FF;
-    --agent: #EEF3FF;
-    --dim: #9A9A96;
-    --u: .23cqw;
-    container-type: inline-size;
-    position: relative;
-    border-radius: 24px;
-    background: var(--bg);
-    overflow: hidden;
-  }
-  .plot { position: relative; margin: 6% 6% 0; aspect-ratio: 1; }
-  @media (min-width: 1000px) {
-    /* Escritorio, como el diseño: caja 4:3 con el dibujo en 84 % × 84 % y la leyenda encima del borde inferior. */
-    .graph { --u: .21cqw; aspect-ratio: 4 / 3; }
-    .plot { position: absolute; inset: 4% 8% 12%; margin: 0; aspect-ratio: auto; }
-  }
-  svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  line { stroke: var(--past); stroke-width: calc(1.1 * var(--u)); opacity: 0; transition: opacity .7s, stroke .7s; }
-  line[data-s='past'] { opacity: .55; }
-  line[data-s='cur'] { stroke: var(--blue); stroke-width: calc(1.6 * var(--u)); opacity: 1; }
-
-  .nd { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
-  .nd::before, .nd::after { content: ''; position: absolute; border-radius: 50%; }
-  .nd::before {
-    --d: calc((var(--r) + 5) * var(--u));
-    left: calc(-1 * var(--d)); top: calc(-1 * var(--d)); width: calc(2 * var(--d)); height: calc(2 * var(--d));
-    border: 1px solid var(--blue);
-    opacity: 0;
-    transition: opacity .6s;
-  }
-  .nd[data-hot]::before { opacity: .5; }
-  .nd::after {
-    --d: calc(var(--r) * var(--u));
-    left: calc(-1 * var(--d)); top: calc(-1 * var(--d)); width: calc(2 * var(--d)); height: calc(2 * var(--d));
-    opacity: .35;
-    transition: opacity .6s;
-  }
-  .nd[data-lit]::after { opacity: 1; }
-  .nd[data-kind='s']::after { background: var(--white); border: 1.5px solid var(--ink); }
-  .nd[data-kind='p']::after { background: var(--ink); }
-  .nd[data-kind='a']::after { background: var(--agent); border: 1.5px solid var(--blue); }
-  .nd[data-kind='k']::after { background: var(--blue-light); }
-  .lb {
-    position: absolute;
-    left: 0;
-    bottom: calc((var(--r) + 4) * var(--u));
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.2;
-    letter-spacing: .03em;
-    color: var(--dim);
-    transition: color .6s;
-  }
-  .nd[data-lit] .lb { color: var(--ink); }
-  @media (max-width: 999.98px) {
-    .nd[data-m='end'] .lb { transform: translateX(calc(-100% + 8px)); }
-    .nd[data-m='below'] .lb { bottom: auto; top: calc((var(--r) + 4) * var(--u)); }
-  }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 6px 12px;
-    padding: 12px 16px 14px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: .03em;
-    color: var(--muted);
-  }
-  @media (min-width: 1000px) { .legend { position: absolute; left: 16px; right: 16px; bottom: 14px; padding: 0; } }
-  .keys { display: flex; flex-wrap: wrap; gap: 6px 12px; }
-  .key { display: flex; gap: 6px; align-items: center; }
-  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .dot[data-kind='s'] { background: var(--white); border: 1.5px solid var(--ink); }
-  .dot[data-kind='p'] { background: var(--ink); }
-  .dot[data-kind='k'] { background: var(--blue-light); }
-  .count { color: var(--blue-link); }
-
-  /* Acordeón. Los títulos cerrados van en --muted y no en el gris del diseño, por contraste (AA). */
-  .acc { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-  .list { border-top: 1px solid var(--line); }
-  /* El panel sube 6 px sobre el padding del botón (como el margen −6 del diseño) sin que .clip recorte el texto;
-     el padding del ítem lo compensa para que cerrado mida lo mismo que el botón. */
-  .item { position: relative; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-  .ih { margin: 0; font: inherit; }
-  .ih button {
-    appearance: none;
-    border: 0;
-    background: none;
-    margin: 0;
-    padding: 20px 0;
-    width: 100%;
+  .rows { border-top: 2px solid var(--ink); }
+  .row {
     display: grid;
-    grid-template-columns: 40px minmax(0, 1fr) 16px;
-    gap: 12px;
-    align-items: baseline;
-    text-align: left;
-    font: inherit;
-    color: var(--muted);
-    cursor: pointer;
-  }
-  .num { font-family: var(--font-mono); font-size: 13px; transition: color .3s; }
-  .ttl { font-size: clamp(19px, 1.8vw, 24px); font-weight: 500; letter-spacing: -.03em; line-height: 1.15; transition: color .3s; }
-  .sign { font-family: var(--font-mono); font-size: 15px; }
-  .sign::before { content: '+'; }
-  .ih button:hover .ttl { color: var(--ink); }
-  [data-open] .num { color: var(--blue); }
-  [data-open] .ttl { color: var(--ink); }
-  [data-open] .sign { color: var(--blue); }
-  [data-open] .sign::before { content: '−'; }
-
-  /* Cerrado: alto 0 y visibility hidden (fuera del árbol de accesibilidad y del Tab) al terminar la transición. */
-  .panel {
-    display: grid;
-    grid-template-rows: 0fr;
-    opacity: 0;
-    visibility: hidden;
-    transition: grid-template-rows .45s cubic-bezier(.4, 0, .2, 1), opacity .35s, visibility 0s .45s;
-  }
-  [data-open] .panel { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition-delay: 0s; }
-  .panel { margin-top: -6px; }
-  .clip { overflow: hidden; min-height: 0; }
-  .panel p { margin: 0; padding: 0 28px 16px 52px; font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 52ch; }
-
-  .track { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; overflow: hidden; }
-  .bar { display: block; height: 100%; background: var(--blue); transform: scaleX(0); transform-origin: left; }
-
-  .pause {
-    align-self: flex-end;
-    display: inline-flex;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px 40px;
     align-items: center;
-    gap: 10px;
-    min-height: 44px;
-    padding: 0 18px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-pill);
-    background: var(--white);
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    cursor: pointer;
+    padding: clamp(22px, 3vw, 40px) 16px;
+    margin: 0 -16px;
+    border-bottom: 1px solid #D9D9D4;
+    transition: background .3s;
   }
-  .pause[hidden] { display: none; }
-  .pause:hover { color: var(--ink); border-color: var(--ink); }
-  .ico { width: 9px; height: 10px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
-  [data-aa-held] .ico { border-style: solid; border-width: 5px 0 5px 9px; border-color: transparent transparent transparent currentColor; }
+  @media (min-width: 900px) { .row { grid-template-columns: 96px minmax(0, 1fr) minmax(0, 320px); } }
+  @media (hover: hover) { .row:hover { background: #EBEBE7; } }
+  .mark { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; color: var(--ink); --ac: var(--blue); }
+  .n { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); }
+  h3 { margin: 0; font-size: clamp(28px, 3.8vw, 58px); font-weight: 500; line-height: 1; letter-spacing: -.05em; }
+  .row p { margin: 0; font-size: 16px; line-height: 1.5; color: var(--body-2); max-width: 34ch; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .graph *, .graph *::before, .graph *::after, .panel, .num, .ttl { transition: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .row { transition: none; } }
 </style>

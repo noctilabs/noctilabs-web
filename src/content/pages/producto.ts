@@ -6,13 +6,16 @@ export interface CtlItem { title: string; text: string }
 export interface ProductSection {
   /** Ancla de la sección (la usan el header, el menú mobile y el footer). */
   id: 'cerebro' | 'bi' | 'agentes';
-  view: 'cerebro' | 'inteligencia' | 'agentes';
-  kicker: string;
+  /** La sección por rol de la v4 no lleva kicker. */
+  kicker?: string;
   title: string;
   lead: string;
-  chips: [string, string, string, string, string, string];
-  /** Caption debajo de la demo (Inv §2.4, spec 003 §3.3). */
-  caption: string;
+  /** Capacidades de la sección (Inteligencia y Agentes; en Agentes las enciende la corrida). */
+  chips?: [string, string, string, string, string, string];
+  /** Nota debajo de la demo. */
+  caption?: string;
+  /** Enlace a Hablemos debajo de la demo de Agentes (v4 «→ Nuevo agente»). */
+  cta?: [string, string];
 }
 
 /** Copy de la página Producto (Inv §2). El h1 sale de `ui.pages.producto.h1`. */
@@ -70,28 +73,26 @@ export const producto: Localized<ProductoCopy> = {
     },
     sections: [
       {
-        id: 'cerebro', view: 'cerebro',
-        kicker: 'Cerebro organizacional',
-        title: 'Preguntá. Decidí. Ejecutá.',
-        lead: 'CEO, Comercial y Operaciones consultan el mismo cerebro, pero ven solo la información y las acciones que les corresponden.',
-        chips: ['Pregunta en lenguaje natural', 'Respuesta contextualizada', 'Fuentes consultadas', 'Permisos por rol', 'Análisis e insight', 'Acción sugerida'],
+        id: 'cerebro',
+        title: 'Preguntá. Entendé. Actuá.',
+        lead: 'Cada persona y agente trabaja sobre el mismo contexto, con la información y los permisos que le corresponden.',
         caption: 'Cambiá de rol con “Ver como” para comparar respuestas.',
       },
       {
-        id: 'bi', view: 'inteligencia',
+        id: 'bi',
         kicker: 'Inteligencia / BI',
-        title: 'De la pregunta al dato. Del dato a la acción.',
-        lead: 'Conversacional y visual, no un tablero estático. Cada resultado se puede rastrear hasta el registro que lo origina.',
+        title: 'Entendé qué está pasando y por qué.',
+        lead: 'Explorá métricas sobre datos vivos, detectá cambios y llegá desde una pregunta hasta el dato que la explica.',
         chips: ['Lenguaje natural', 'Métricas sobre datos vivos', 'Trazabilidad hasta la fuente', 'Del KPI a la transacción', 'Anomalías y excepciones', 'Acciones desde el análisis'],
-        caption: 'Probá “Ver transacciones” para bajar del KPI al detalle.',
       },
       {
-        id: 'agentes', view: 'agentes',
+        id: 'agentes',
         kicker: 'Agentes',
         title: 'Agentes que trabajan sobre el contexto real de tu empresa.',
         lead: 'Creá los tuyos, integrá los que ya tenés o construílos con NoctiLabs.',
         chips: ['Crear o integrar', 'Sistemas, fuentes y herramientas', 'Permisos, reglas y acciones', 'Probar, publicar y versionar', 'Tareas, excepciones y aprobaciones', 'Historial y consumo de tokens'],
         caption: 'Los agentes usan los mismos permisos y la misma trazabilidad que las personas.',
+        cta: ['Creá un agente, conectá uno existente o pedile uno a NoctiLabs', '→ Nuevo agente'],
       },
     ],
     control: {
@@ -114,7 +115,7 @@ export const producto: Localized<ProductoCopy> = {
   en: {
     hero: {
       kicker: 'Nocti · Product',
-      lead: 'A system where people and AI can understand the business, make decisions and get work done.',
+      lead: 'One system where people and AI can understand the business, make decisions and get work done.',
     },
     demoCaption: 'Explore Nocti from the side menu · illustrative data',
     overview: {
@@ -136,28 +137,26 @@ export const producto: Localized<ProductoCopy> = {
     },
     sections: [
       {
-        id: 'cerebro', view: 'cerebro',
-        kicker: 'Organizational brain',
-        title: 'Ask. Decide. Execute.',
-        lead: 'CEO, Sales and Operations query the same brain, but each sees only the information and actions that apply to them.',
-        chips: ['Natural-language questions', 'Contextualized answers', 'Sources consulted', 'Role-based permissions', 'Analysis and insight', 'Suggested action'],
+        id: 'cerebro',
+        title: 'Ask. Understand. Act.',
+        lead: 'Every person and agent works on the same context, with the information and permissions that are theirs.',
         caption: 'Switch roles with “View as” to compare answers.',
       },
       {
-        id: 'bi', view: 'inteligencia',
+        id: 'bi',
         kicker: 'Intelligence / BI',
-        title: 'From question to data. From data to action.',
-        lead: 'Conversational and visual, not a static dashboard. Every result can be traced back to the record it comes from.',
-        chips: ['Natural language', 'Metrics on live data', 'Traceability to the source', 'From KPI to transaction', 'Anomalies and exceptions', 'Actions from analysis'],
-        caption: 'Try “See transactions” to drill down from the KPI to the detail.',
+        title: 'Understand what’s happening and why.',
+        lead: 'Explore metrics on live data, spot changes and go from a question to the data point that explains it.',
+        chips: ['Natural language', 'Metrics on live data', 'Traceable to the source', 'From KPI to transaction', 'Anomalies and exceptions', 'Actions from analysis'],
       },
       {
-        id: 'agentes', view: 'agentes',
+        id: 'agentes',
         kicker: 'Agents',
         title: 'Agents that work on your company’s real context.',
-        lead: 'Create your own, integrate the ones you already have or build them with NoctiLabs.',
-        chips: ['Create or integrate', 'Systems, sources and tools', 'Permissions, rules and actions', 'Test, publish and version', 'Tasks, exceptions and approvals', 'History and token usage'],
-        caption: 'Agents use the same permissions and the same traceability as people.',
+        lead: 'Build your own, integrate the ones you have, or build them with NoctiLabs.',
+        chips: ['Build or integrate', 'Systems, sources and tools', 'Permissions, rules and actions', 'Test, publish and version', 'Tasks, exceptions and approvals', 'History and token usage'],
+        caption: 'Agents use the same permissions and traceability as people.',
+        cta: ['Create an agent, connect an existing one or ask NoctiLabs for one', '→ New agent'],
       },
     ],
     control: {

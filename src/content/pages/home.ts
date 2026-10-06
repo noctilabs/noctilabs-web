@@ -41,10 +41,11 @@ export interface HomeCopy {
     carousel: string;
     dot: string;
   };
-  roles: { h2: string; lead: string; note: string };
   capabilities: { kicker: string; h2: string; items: [Card, Card, Card, Card]; cta: string };
   steps: { h2: string; lead: string; items: [Step, Step, Step, Step] };
   industries: { h2: string; lead: string; tablist: string; more: string; moreAbout: string };
+  /** Frase de la v4 que se revela palabra por palabra (spec 007 §3 A): `a` en tinta, `b` en gris. */
+  frase: { a: string; b: string };
 }
 
 // D4: el inglés es traducción provisoria, pendiente de revisión del dueño.
@@ -95,11 +96,6 @@ export const home: Localized<HomeCopy> = {
       carousel: 'Diagramas',
       dot: 'Diagrama {n} de {total}',
     },
-    roles: {
-      h2: 'Toda la empresa puede preguntar. Cada uno ve lo que le corresponde.',
-      lead: 'La experiencia cambia por rol, manteniendo el mismo cerebro organizacional y los permisos correspondientes.',
-      note: 'En Preguntar, cada persona y cada agente ven únicamente lo que sus permisos permiten.',
-    },
     capabilities: {
       kicker: 'Capacidades',
       h2: 'Qué podés hacer dentro de Nocti.',
@@ -112,8 +108,9 @@ export const home: Localized<HomeCopy> = {
       cta: 'Creá tus propios agentes, integrá los que ya tenés o construílos con NoctiLabs.',
     },
     steps: {
-      h2: 'Construimos Nocti alrededor de tu empresa.',
-      lead: 'Servicio + plataforma. El equipo de NoctiLabs implementa y tu organización sigue construyendo sobre Nocti.',
+      // Spec 007 §3 A: título y bajada de la v4.
+      h2: 'Tu empresa, un solo lugar.',
+      lead: 'NoctiLabs implementa y evoluciona Nocti junto a tu organización.',
       items: [
         { n: '01', who: 'NoctiLabs', t: 'Entendemos', d: 'Aprendemos cómo funciona tu empresa.', ex: 'Entrevistas, procesos y reglas reales del negocio.' },
         { n: '02', who: 'NoctiLabs', t: 'Conectamos', d: 'Unimos sistemas, información y conocimiento.', ex: 'ERP, CRM, planillas, correo y documentos, sin migrar nada.' },
@@ -127,6 +124,10 @@ export const home: Localized<HomeCopy> = {
       tablist: 'Industrias',
       more: 'Conocer más',
       moreAbout: 'sobre',
+    },
+    frase: {
+      a: 'El límite de la IA no es el modelo. Es cuánto entiende de tu empresa.',
+      b: 'Con el contexto correcto, personas y agentes pueden analizar mejor, decidir con más criterio y ejecutar trabajo real.',
     },
   },
   en: {
@@ -176,11 +177,6 @@ export const home: Localized<HomeCopy> = {
       carousel: 'Diagrams',
       dot: 'Diagram {n} of {total}',
     },
-    roles: {
-      h2: 'The whole company can ask. Everyone sees what’s theirs to see.',
-      lead: 'The experience changes by role, with the same organizational brain and the right permissions.',
-      note: 'In Ask, each person and each agent sees only what their permissions allow.',
-    },
     capabilities: {
       kicker: 'Capabilities',
       h2: 'What you can do inside Nocti.',
@@ -193,8 +189,9 @@ export const home: Localized<HomeCopy> = {
       cta: 'Create your own agents, integrate the ones you already have or build them with NoctiLabs.',
     },
     steps: {
-      h2: 'We build Nocti around your company.',
-      lead: 'Service + platform. The NoctiLabs team implements, and your organization keeps building on Nocti.',
+      // Spec 007 §3 A: la v4 no trae estas claves en i18n-en.js; traducción provisoria (F4).
+      h2: 'Your company, in one place.',
+      lead: 'NoctiLabs implements and evolves Nocti alongside your organization.',
       items: [
         { n: '01', who: 'NoctiLabs', t: 'We understand', d: 'We learn how your company works.', ex: 'Interviews, processes and the real rules of the business.' },
         { n: '02', who: 'NoctiLabs', t: 'We connect', d: 'We bring together systems, information and knowledge.', ex: 'ERP, CRM, spreadsheets, email and documents, with nothing to migrate.' },
@@ -208,6 +205,11 @@ export const home: Localized<HomeCopy> = {
       tablist: 'Industries',
       more: 'Learn more',
       moreAbout: 'about',
+    },
+    // Spec 007 §3 A: la v4 no trae la frase en i18n-en.js; traducción provisoria (F4).
+    frase: {
+      a: 'The limit of AI isn’t the model. It’s how much it understands about your company.',
+      b: 'With the right context, people and agents can analyze better, decide with more judgment and do real work.',
     },
   },
 };
