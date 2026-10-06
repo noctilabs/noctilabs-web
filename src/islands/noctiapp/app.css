@@ -432,74 +432,6 @@
 .na-oc-title { font-size: 15px; font-weight: 500; }
 .na-oc-done { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
-/* Sub-vistas de Control (spec 006 §3.4, App v2 L289–375). */
-.na-card { flex-shrink: 0; background: #FFFFFF; border: 1px solid var(--na-divider); border-radius: 16px; min-width: 0; }
-.na-warn { color: #7A5208; }
-.na-tag[data-tag='change'] { background: #EEF3FF; color: var(--na-link); }
-.na-row-hl { background: #F7F9FF; }
-.na-dot-blue { background: var(--na-blue); }
-.na-note { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--na-n700); }
-.na-pmatrix { padding: 4px 0 0 14px; }
-.na-ptable { min-width: 460px; }
-.na-ptable th, .na-ptable td { padding: 11px 14px 11px 0; border-bottom-color: var(--na-n200); }
-.na-ptable thead th { border-bottom-color: var(--na-divider); }
-.na-ptable tbody tr:last-child > * { border-bottom: 0; }
-.na-row-agent { background: #EEF3FF; }
-.na-prole { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
-.na-agcard { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
-.na-aghead { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
-.na-agid { display: flex; gap: 10px; align-items: center; min-width: 0; }
-.na-agicon { width: 30px; height: 30px; border-radius: 50%; background: var(--na-blue); color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex: none; }
-.na-agname { font-size: 14px; font-weight: 500; }
-.na-agsub { font-size: 11px; color: var(--na-n700); }
-.na-aggrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; }
-.na-agbox { background: #F6F6F4; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.na-agbox h4 { font-size: 10px; }
-.na-agbox ul { display: flex; flex-direction: column; gap: 8px; }
-.na-agbox li { display: flex; gap: 8px; align-items: flex-start; }
-.na-agbox li svg { flex: none; margin-top: 2px; }
-.na-ok { color: #2F7D52; }
-.na-no { color: #AE1800; }
-.na-agd { font-size: 12px; color: var(--na-n700); }
-.na-aglimit { border: 1px solid var(--na-divider); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-.na-aglimit-h { display: flex; justify-content: space-between; gap: 4px 10px; align-items: baseline; flex-wrap: wrap; }
-.na-aglimit-h .na-kicker { font-size: 10px; }
-.na-aglimit-v { font-size: 14px; font-weight: 500; }
-.na-agbar { display: flex; height: 8px; border-radius: 999px; overflow: hidden; }
-.na-agbar span:first-child { flex: 0 0 auto; background: #0B0B0C; }
-.na-agbar span:last-child { flex: 1; background: repeating-linear-gradient(135deg, #F6EBD3 0 5px, #EBD6A8 5px 10px); }
-.na-aglimit-f { display: flex; justify-content: space-between; gap: 4px 10px; flex-wrap: wrap; font-size: 12px; color: var(--na-n700); }
-.na-trace { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-.na-trace-h { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 14px; }
-.na-trace li { display: grid; grid-template-columns: 44px 14px minmax(0, 1fr); gap: 10px; }
-.na-trace-t { font-family: var(--na-mono); font-size: 11px; color: var(--na-n700); padding-top: 1px; }
-.na-trace-rail { display: flex; flex-direction: column; align-items: center; }
-.na-trace-rail::after { content: ''; flex: 1; width: 1.5px; background: #A9C4FF; }
-.na-trace li.is-last .na-trace-rail::after { content: none; }
-.na-trace-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 3px; flex: none; background: var(--na-blue); }
-.na-trace-dot[data-tone='pending'] { background: #9A6A0E; }
-.na-trace-dot[data-tone='approved'] { background: #2F7D52; }
-.na-trace-dot[data-tone='rejected'] { background: #AE1800; }
-.na-trace-b { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; padding-bottom: 14px; min-width: 0; }
-.na-trace li.is-last .na-trace-b { padding-bottom: 0; }
-.na-trace-x { font-size: 13px; font-weight: 500; }
-.na-obs { flex-shrink: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 8px; }
-.na-obs > li { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.na-obs-h { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; line-height: 1.25; }
-.na-obs-h .na-tag { flex: none; white-space: nowrap; }
-.na-obs dl { display: flex; flex-direction: column; gap: 6px; }
-.na-obs dl div { display: flex; justify-content: space-between; gap: 8px; padding-top: 6px; border-top: 1px solid var(--na-n200); font-size: 12px; }
-.na-obs dt { color: var(--na-n700); }
-.na-obs dd { font-weight: 500; font-feature-settings: 'tnum' 1; }
-.na-tone-w { color: #7A5208; }
-.na-tone-d { color: #AE1800; }
-.na-exc { padding: 12px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
-.na-exc-t { font-size: 14px; font-weight: 500; }
-.na-audit { flex-shrink: 0; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; }
-.na-audit-f { display: flex; gap: 6px; flex-wrap: wrap; }
-.na-fake-out { background: #FFFFFF; border: 1px solid var(--na-divider); font-weight: 400; gap: 6px; }
-.na-fake-out svg { color: var(--na-n700); }
-
 /* Conexiones (App L315–359). */
 .na-seg { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--na-n200); }
 .na-seg button { padding: 6px 12px; border-radius: 999px; font-size: 12px; white-space: nowrap; color: var(--na-n700); }
@@ -554,16 +486,13 @@
   .na-ctx-btn { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--na-n700); }
   .na-ctx-btn:focus-visible { outline-offset: -2px; }
 
-  /* Texto chico: nada visible por debajo de 12 px dentro de la demo del home ni de la de Control (spec 006 E2). */
-  :is(.is-roledemo, .is-ctldemo) :is(.na-xs, .na-kicker, .na-nav-n, .na-cgroup-t, .na-convo-d, .na-user-co, .na-user-meta, .na-table thead th, .na-kpi dt,
+  /* Texto chico: nada visible por debajo de 12 px dentro de la demo del home (spec 006 E2). */
+  .is-roledemo :is(.na-xs, .na-kicker, .na-nav-n, .na-cgroup-t, .na-convo-d, .na-user-co, .na-user-meta, .na-table thead th, .na-kpi dt,
     .na-tag, .na-refs-l, .na-ref, .na-chips-l, .na-think-h, .na-sugg-k, .na-bar span, .na-bars-x span, .na-acard .na-small, .na-fcard-kick,
     .na-fcard-p, .na-fcard-m, .na-fcard-r, .na-fdep, .na-atable th, .na-result h4, .na-oc-banner, .na-hub-h, .na-hub-d, .na-hub-r, .na-hub-core-m) {
     font-size: 12px;
   }
-  /* Las piezas que solo tiene la demo de Control. */
-  .is-ctldemo :is(.na-agsub, .na-trace-t), .is-ctldemo .na-agbox h4, .is-ctldemo .na-aglimit-h .na-kicker { font-size: 12px; }
-  /* Demo de Control: los botones de la vista también llegan a 44 px (el pill visible crece con su caja). */
-  .is-ctldemo :is(.na-btn, .na-link) { min-height: 44px; }}
+}
 @media (max-width: 999.98px) and (hover: hover) {
   .na-pause:hover, .na-chip:hover { border-color: transparent; box-shadow: inset 0 0 0 1px var(--na-n700); }
   .na-chip[aria-pressed='true']:hover { box-shadow: none; }

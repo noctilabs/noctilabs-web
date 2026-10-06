@@ -5,18 +5,15 @@
 // el diagrama se apila y los controles son filas; el elegido se reemplaza por su detalle.
 // El recorrido de la OC por las compuertas dura ≤ 2,7 s y no se repite solo (F5: sin pausa; con reduced motion, sin
 // recorrido). Lo maneja src/scripts/control-arch.ts.
-// La app con sub-vistas de Control (spec 006) ya no se usa acá: la v4 no la lleva en esta variante.
 import Container from '../../ui/Container.astro';
 import CardBig from '../../ui/CardBig.astro';
 import Kicker from '../../ui/Kicker.astro';
 import Mark from '../../Mark.astro';
 import NIcon from './NIcon.astro';
 import { control } from '../../../content/pages/producto-control';
-import type { ProductoCopy } from '../../../content/pages/producto';
 import type { Locale } from '../../../i18n/routes';
 
-// `t` y `contactHref` quedan por compatibilidad con ProductoPage.astro (spec 007: ese archivo es de otra tarea).
-interface Props { t: ProductoCopy['control']; locale: Locale; contactHref: string }
+interface Props { locale: Locale }
 const c = control[Astro.props.locale];
 const s = c.snip;
 const n2 = (i: number) => String(i + 1).padStart(2, '0');

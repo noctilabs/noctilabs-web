@@ -7,20 +7,17 @@ export interface AppSlotProps {
   view: 'inicio' | 'cerebro' | 'inteligencia' | 'agentes' | 'control';
   locale: Locale;
   contactHref: string;
-  frame: 'app' | 'control' | 'none';
+  frame: 'app' | 'none';
   variant?: 'role-demo';
-  /** Sub-vista de Control (spec 006 §3.4); ver NoctiAppProps.controlTab. */
-  controlTab?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 interface Props extends AppSlotProps {}
-const { view, locale, contactHref, frame, variant, controlTab } = Astro.props;
+const { view, locale, contactHref, frame, variant } = Astro.props;
 ---
 <div class:list={['slot', `f-${frame}`]}>
-  <NoctiApp client:visible view={view} locale={locale} contactHref={contactHref} variant={variant} {...(controlTab === undefined ? {} : { controlTab })} />
+  <NoctiApp client:visible view={view} locale={locale} contactHref={contactHref} variant={variant} />
 </div>
 
 <style>
   .slot { min-width: 0; }
   .f-app { background: var(--surface-2); border-radius: clamp(19.7px, 2.5vw, 29.5px); padding: clamp(8.2px, 1.3vw, 18px); }
-  .f-control { background: var(--surface-2); border-radius: 28px; padding: clamp(8.2px, 1.3vw, 14.8px); }
 </style>

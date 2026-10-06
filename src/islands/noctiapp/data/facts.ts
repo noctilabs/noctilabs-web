@@ -8,8 +8,6 @@ export const TODAY = '2026-10-05';
 export const OC = { id: 'OC-4471', supplier: 'Plastar S.A.', amount: 18_400_000 } as const;
 /** Umbral único de aprobación de compras (§4.7 n.º 2; spec 006 E3: $10.000.000 en toda la demo). */
 export const PURCHASE_LIMIT = 10_000_000;
-/** Límite anterior, el de la fila de auditoría «$8.000.000 → $10.000.000» (spec 006 §3.4). */
-export const PREV_PURCHASE_LIMIT = 8_000_000;
 export const PAYMENTS_LIMIT = 5_000_000;
 export const DISCOUNT_LIMIT = 10;
 
