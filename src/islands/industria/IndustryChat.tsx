@@ -81,9 +81,14 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
   /** Foco en cualquier control del chat: detiene el avance automático (spec 009 §3.E, prioridad 2). */
   const [within, setWithin] = useState(false);
   const [draft, setDraft] = useState('');
-  /** Anuncio para lectores de pantalla; `n` cambia en cada respuesta para que una respuesta idéntica se vuelva a leer. */
-  const [announce, setAnnounce] = useState({ n: 0, text: '' });
-  const say = (text: string) => setAnnounce((a) => ({ n: a.n + 1, text }));
+  /** Anuncios para lectores de pantalla: cada respuesta pedida entra como un nodo nuevo (también si repite el texto). */
+  const [announce, setAnnounce] = useState<{ n: number; text: string }[]>([]);
+  const said = useRef(new WeakSet<Turn>());
+  const say = (turn: Turn) => {
+    if (said.current.has(turn)) return;
+    said.current.add(turn);
+    setAnnounce((a) => [...a.slice(-2), { n: (a[a.length - 1]?.n ?? 0) + 1, text: plainText(turn) }]);
+  };
   const visible = useRef(false);
   const sec = useRef<HTMLDivElement | null>(null);
   const sc = useRef<HTMLDivElement | null>(null);
@@ -143,7 +148,7 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
     if (S.ph === 'think') return setS(e > 950 ? { ...S, ph: 'ans', e: 0 } : { ...S, e });
     if (S.ph === 'ans') {
       // Sólo se anuncian las respuestas que pidió el visitante; el avance automático no habla (spec 009 §3.E).
-      if (S.user && S.e < total && e >= total) say(plainText(turn));
+      if (S.user && S.e < total && e >= total) say(turn);
       const hold = total + (last ? (S.user ? 7000 : 4500) : 2600);
       if (e < hold) return setS({ ...S, e });
       return setS(last ? { ...S, ph: 'clear', e: 0 } : { ...S, k: S.k + 1, ph: 'type', e: 0 });
@@ -157,13 +162,17 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
 
   /** Agrega un turno del visitante (seguimiento o texto propio) a la conversación en curso. */
   const push = useCallback((turn: Turn, ph: Phase) => {
+    // Un pedido anterior que todavía piensa o responde queda como historia, completo: se anuncia ahora.
+    const S0 = live.current.s;
+    const prev = S0.list[S0.k];
+    if (S0.user && prev && (S0.ph === 'think' || S0.ph === 'ans')) say(prev);
     setS((S) => {
       const kc = S.ph === 'clear' ? -1 : S.ph === 'type' || S.ph === 'idle' ? S.k - 1 : S.k;
       const list = (S.ph === 'clear' ? [] : S.list.slice(0, kc + 1)).concat([turn]);
       if (live.current.reduced) return { ...S, list, k: list.length - 1, ph: 'static', e: 0, user: true, seen: true };
       return { ...S, list, k: list.length - 1, ph, e: 0, user: true, seen: true };
     });
-    if (live.current.reduced) say(plainText(turn));
+    if (live.current.reduced) say(turn);
     setDraft('');
   }, []);
 
@@ -222,7 +231,7 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
           </div>
         </div>
         <div className="ic-scroll" ref={sc} role="region" aria-label={copy.log} tabIndex={0} onScroll={onScroll}>
-          <div className="ic-list" style={{ opacity: S.ph === 'clear' ? 0 : 1 }}>
+          <div className="ic-list" style={{ opacity: S.ph === 'clear' ? 0 : 1 }} inert={S.ph === 'clear'}>
             {S.list.slice(0, shown).map((turn, mi) => {
               const isLive = animated && mi === S.k;
               const hasA = !isLive || S.ph === 'ans' || S.ph === 'clear';
@@ -288,14 +297,14 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
                           </p>
                         )}
                         {hasA && (turn.acts.length > 0 || turn.cta) && (
-                          <div className="ic-acts" style={{ opacity: on(p.total + 400) ? 1 : 0, transform: on(p.total + 400) ? 'none' : 'translateY(6px)' }}>
+                          <div className="ic-acts" inert={!on(p.total + 400)} style={{ opacity: on(p.total + 400) ? 1 : 0, transform: on(p.total + 400) ? 'none' : 'translateY(6px)' }}>
                             {turn.cta
                               ? <a className="ic-act is-main" href={hablemosHref}>{hablemosLabel}</a>
                               : turn.acts.map((a, ai) => <span key={ai} className={ai === 0 ? 'ic-act is-main' : 'ic-act'}>{a}</span>)}
                           </div>
                         )}
                         {hasA && isLast && turn.sugg.length > 0 && (
-                          <div className="ic-sugg" style={{ opacity: on(p.total + 650) ? 1 : 0 }}>
+                          <div className="ic-sugg" inert={!on(p.total + 650)} style={{ opacity: on(p.total + 650) ? 1 : 0 }}>
                             <span className="ic-k">{copy.more}</span>
                             <div className="ic-sugg-row">
                               {turn.sugg.map((sg, gi) => (
@@ -332,7 +341,7 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
           </div>
         </form>
       </div>
-      <div className="sr-only" aria-live="polite">{announce.text && <p key={announce.n}>{announce.text}</p>}</div>
+      <div className="sr-only" aria-live="polite">{announce.map((a) => <p key={a.n}>{a.text}</p>)}</div>
     </div>
   );
 }

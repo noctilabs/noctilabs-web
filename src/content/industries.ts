@@ -265,7 +265,7 @@ export const industries: Record<IndustryId, Localized<Industry>> = {
           ]),
           T('What can we solve today?', [
             P('I found **two available alternatives**:'),
-            L('Transfer **1,180 units** from the North Plant.',
+            L('Transfer **1,180 units** from Planta Norte.',
               'Place an urgent order for **700 units** with the secondary supplier.'),
             P('Combined, they would cover about **82%** of the immediate need.'),
           ], '', ['Create transfer', 'Request quote', 'Send purchase for approval']),
