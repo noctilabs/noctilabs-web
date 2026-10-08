@@ -18,7 +18,8 @@ interface Props {
 }
 
 type Phase = 'idle' | 'type' | 'think' | 'ans' | 'clear' | 'hold' | 'static';
-interface Turn extends ChatTurn { cta?: boolean }
+/** `mine`: pedido del visitante (cada pedido es un objeto nuevo, así se anuncia una vez por pedido). */
+interface Turn extends ChatTurn { cta?: boolean; mine?: boolean }
 interface State {
   c: number;
   list: Turn[];
@@ -113,7 +114,15 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
     // Fuera de pantalla arranca de cero; si ya está a la vista, deja la conversación completa y sigue desde la espera.
     if (!mq.matches && !touched) setS(inView ? { ...full(convs), ph: 'hold', seen: true } : start(convs));
     setMounted(true);
-    const onMq = () => { setReduced(mq.matches); if (mq.matches) setS((st) => ({ ...st, ph: 'static', k: st.list.length - 1 })); };
+    const onMq = () => {
+      setReduced(mq.matches);
+      if (!mq.matches) return;
+      // Un pedido a medio responder se completa al instante: se anuncia antes de dejar la fase activa.
+      const st = live.current.s;
+      const cur = st.list[st.k];
+      if (cur?.mine && st.ph !== 'static') say(cur);
+      setS((x) => ({ ...x, ph: 'static', k: x.list.length - 1 }));
+    };
     mq.addEventListener('change', onMq);
     let io: IntersectionObserver | null = null;
     if (el && typeof IntersectionObserver !== 'undefined') {
@@ -148,7 +157,7 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
     if (S.ph === 'think') return setS(e > 950 ? { ...S, ph: 'ans', e: 0 } : { ...S, e });
     if (S.ph === 'ans') {
       // Sólo se anuncian las respuestas que pidió el visitante; el avance automático no habla (spec 009 §3.E).
-      if (S.user && S.e < total && e >= total) say(turn);
+      if (turn.mine && S.e < total && e >= total) say(turn);
       const hold = total + (last ? (S.user ? 7000 : 4500) : 2600);
       if (e < hold) return setS({ ...S, e });
       return setS(last ? { ...S, ph: 'clear', e: 0 } : { ...S, k: S.k + 1, ph: 'type', e: 0 });
@@ -162,12 +171,13 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
 
   /** Agrega un turno del visitante (seguimiento o texto propio) a la conversación en curso. */
   const push = useCallback((turn: Turn, ph: Phase) => {
-    // Un pedido anterior que todavía piensa o responde queda como historia, completo: se anuncia ahora.
+    // Un pedido anterior que todavía se escribe, piensa o responde queda como historia, completo: se anuncia ahora.
     const S0 = live.current.s;
     const prev = S0.list[S0.k];
-    if (S0.user && prev && (S0.ph === 'think' || S0.ph === 'ans')) say(prev);
+    if (prev?.mine && S0.ph !== 'clear' && S0.ph !== 'static') say(prev);
     setS((S) => {
-      const kc = S.ph === 'clear' ? -1 : S.ph === 'type' || S.ph === 'idle' ? S.k - 1 : S.k;
+      // Sólo se descarta la pregunta automática que se estaba escribiendo; los pedidos del visitante se conservan.
+      const kc = S.ph === 'clear' ? -1 : (S.ph === 'type' || S.ph === 'idle') && !S.list[S.k]?.mine ? S.k - 1 : S.k;
       const list = (S.ph === 'clear' ? [] : S.list.slice(0, kc + 1)).concat([turn]);
       if (live.current.reduced) return { ...S, list, k: list.length - 1, ph: 'static', e: 0, user: true, seen: true };
       return { ...S, list, k: list.length - 1, ph, e: 0, user: true, seen: true };
@@ -180,7 +190,7 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
     ev.preventDefault();
     const t = draft.trim();
     if (!t) return;
-    push({ u: t, blocks: [{ type: 'p', t: copy.reply }], src: '', acts: [], sugg: [], cta: true }, 'think');
+    push({ u: t, blocks: [{ type: 'p', t: copy.reply }], src: '', acts: [], sugg: [], cta: true, mine: true }, 'think');
   };
 
   useLayoutEffect(() => {
@@ -194,7 +204,7 @@ export default function IndustryChat({ convs, company, copy, hablemosHref, hable
   /** Al elegir un seguimiento el botón desaparece: el foco pasa a la región de mensajes (prioridad 4). */
   const choose = (sg: ChatTurn) => {
     stick.current = true;
-    push(sg, 'type');
+    push({ ...sg, mine: true }, 'type');
     sc.current?.focus({ preventScroll: true });
   };
 
