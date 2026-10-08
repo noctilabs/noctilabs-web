@@ -9,7 +9,6 @@ export const INDUSTRY_SLUGS = {
   manufactura: { es: 'manufactura', en: 'manufacturing' },
   consumo: { es: 'alimentos-consumo', en: 'food-consumer-goods' },
   salud: { es: 'salud-fitness', en: 'health-fitness' },
-  servicios: { es: 'servicios', en: 'professional-services' },
 } as const satisfies Record<string, Record<Locale, string>>;
 
 export type IndustryId = keyof typeof INDUSTRY_SLUGS;
@@ -50,7 +49,7 @@ export function href(page: PageRef, locale: Locale, hash = ''): string {
   return fragment ? `${pathOf(page, locale)}#${fragment}` : pathOf(page, locale);
 }
 
-/** Las 11 páginas fijas (22 URLs). Los artículos no están: sus slugs sólo se conocen consultando el CMS. */
+/** Las 10 páginas fijas (20 URLs). Los artículos no están: sus slugs sólo se conocen consultando el CMS. */
 export const PAGES: PageRef[] = [
   ...(Object.keys(PATHS) as SimpleId[]).map((id) => ({ id })),
   ...(Object.keys(INDUSTRY_SLUGS) as IndustryId[]).map((industry) => ({ id: 'industria' as const, industry })),

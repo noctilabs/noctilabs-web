@@ -1,9 +1,11 @@
 ---
-// Página Nosotros (spec 002 §4.4, Inv §4): hero, «Quiénes somos / Por qué», «Qué creemos», equipo y banda.
+// Página Nosotros (spec 009 §3.G, v6): Quiénes somos, Nuestra tesis, Qué estamos construyendo, Cómo lo construimos,
+// equipo (oculto sin personas, G5) y banda.
 import Base from '../../../layouts/Base.astro';
 import HablemosBand from '../../HablemosBand.astro';
 import Container from '../../ui/Container.astro';
-import DarkBig from '../../ui/DarkBig.astro';
+import CardBig from '../../ui/CardBig.astro';
+import HeadRow from '../../ui/HeadRow.astro';
 import Kicker from '../../ui/Kicker.astro';
 import Team from './Team.astro';
 import Txt from '../../Brand.astro';
@@ -17,33 +19,62 @@ const { locale } = Astro.props;
 const page = { id: 'nosotros' } as const;
 const meta = pageMeta(page, locale);
 const t = nosotros[locale];
+const BIG = 'clamp(72px,9vw,144px)';
 ---
 <Base locale={locale} page={page} title={meta.title} description={meta.description}>
   <div class="page">
     <section class="hero">
       <Kicker size={13}>{t.kicker}</Kicker>
       <h1 class="h1-int">{ui[locale].pages.nosotros.h1}</h1>
+      <p class="hero-lead"><Txt text={t.lead} /></p>
     </section>
 
-    <Container gap="clamp(39.4px,4.9vw,72.2px)" class="blocks">
-      {t.blocks.map((b) => (
-        <div class="block">
-          <Kicker as="h2"><Txt text={b.kicker} /></Kicker>
-          <p class="b-title">{b.title}</p>
-          <p class="b-text"><Txt text={b.text} /></p>
-        </div>
-      ))}
+    <Container gap={BIG} class="thesis" aria-labelledby="tesis-title">
+      <HeadRow>
+        <Kicker as="p">{t.thesis.kicker}</Kicker>
+        <h2 id="tesis-title" class="h2 t18">{t.thesis.h2}</h2>
+        <Fragment slot="lead">{t.thesis.lead}</Fragment>
+      </HeadRow>
+      <div class="quote-wrap">
+        <p class="quote">{t.thesis.quote.a} <span>{t.thesis.quote.b}</span></p>
+      </div>
     </Container>
 
-    <Container gap="12px">
-      <DarkBig class="beliefs">
-        <Kicker as="h2" tone="dark-muted">{t.beliefs.kicker}</Kicker>
-        <ol>
-          {t.beliefs.items.map((text, i) => (
-            <li><span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><span class="b">{text}</span></li>
+    <Container gap={BIG} class="what" aria-labelledby="que-title">
+      <HeadRow>
+        <Kicker as="p">{t.what.kicker}</Kicker>
+        <h2 id="que-title" class="h2 t16">{t.what.h2}</h2>
+        <Fragment slot="lead">{t.what.lead}</Fragment>
+      </HeadRow>
+      <div>
+        <ol class="rows">
+          {t.what.rows.map((r) => (
+            <li class="row">
+              <span class="rt"><span class="rn" aria-hidden="true">{r.n}</span><span class="rw">{r.t}</span></span>
+              <span class="rd">{r.d}</span>
+            </li>
           ))}
         </ol>
-      </DarkBig>
+        <p class="close">{t.what.close}</p>
+      </div>
+    </Container>
+
+    <Container gap={BIG} aria-labelledby="como-title">
+      <CardBig class="how">
+        <div class="head">
+          <Kicker as="p">{t.how.kicker}</Kicker>
+          <h2 id="como-title" class="h2">{t.how.h2}</h2>
+        </div>
+        <ol class="steps">
+          {t.how.steps.map((s) => (
+            <li class="step">
+              <span class="sn">{s.n}</span>
+              <h3>{s.t}</h3>
+              <p class="sd">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+      </CardBig>
     </Container>
 
     <Team locale={locale} {...t.team} />
@@ -52,8 +83,10 @@ const t = nosotros[locale];
 </Base>
 
 <style>
-  /* Inv §4: <main> flex column con padding inferior de 24px; la banda va después (Inv §8). */
+  /* v6: <main> flex column con padding inferior de 24px; la banda va después (Inv §8). */
   .page { display: flex; flex-direction: column; padding-bottom: 24px; }
+  ol { list-style: none; margin: 0; padding: 0; }
+  h3, p { margin: 0; }
   .hero {
     max-width: 1320px;
     width: 100%;
@@ -61,34 +94,70 @@ const t = nosotros[locale];
     padding: clamp(39.4px, 5.7vw, 85.3px) var(--edge) 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: clamp(24px, 3vw, 40px);
   }
-  .hero h1 { max-width: 14ch; }
-  .page :global(.blocks) {
+  .hero h1 { max-width: 15ch; }
+  .hero-lead { max-width: 52ch; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.5; color: var(--muted); }
+  .t18 { max-width: 18ch; }
+  .t16 { max-width: 16ch; }
+
+  .page :global(.thesis) { display: flex; flex-direction: column; gap: clamp(48px, 6vw, 96px); }
+  .quote-wrap {
+    padding: clamp(48px, 7vw, 120px) 0;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .quote {
+    max-width: 30ch;
+    text-align: center;
+    font-size: clamp(28px, 3.8vw, 56px);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -.04em;
+    text-wrap: balance;
+  }
+  .quote span { color: #5A5A5E; }
+
+  .page :global(.what) { display: flex; flex-direction: column; gap: clamp(28px, 3.5vw, 48px); }
+  .row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 8px 48px;
+    align-items: baseline;
+    padding: clamp(18px, 2.2vw, 30px) 0;
+    border-top: 1px solid var(--line);
   }
-  .block {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 28px;
-    padding: clamp(19.7px, 2.5vw, 32.8px);
+  .rt { display: flex; gap: 18px; align-items: baseline; }
+  .rn { font-family: var(--font-mono); font-size: 13px; color: var(--muted); min-width: 28px; }
+  .rw { font-size: clamp(28px, 3.2vw, 46px); font-weight: 500; letter-spacing: -.045em; line-height: 1; }
+  .rd { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.45; color: var(--muted); }
+  .close {
+    padding-top: clamp(18px, 2.2vw, 30px);
+    border-top: 1px solid var(--ink);
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 500;
+    letter-spacing: -.03em;
+    line-height: 1.2;
+  }
+
+  .page :global(.how) { display: flex; flex-direction: column; gap: 36px; }
+  .head { display: flex; flex-direction: column; gap: 14px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+  .step {
+    border-radius: 24px;
+    padding: 24px;
+    min-height: 240px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-  }
-  .b-title { margin: 0; font-size: clamp(21.3px, 2.1vw, 29.5px); font-weight: 500; letter-spacing: -.04em; line-height: 1.08; }
-  .b-text { margin: 0; font-size: 15px; color: var(--muted); }
-  .page :global(.beliefs) { display: flex; flex-direction: column; gap: 24px; }
-  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 24px; }
-  li {
-    display: grid;
-    grid-template-columns: 56px minmax(0, 1fr);
     gap: 12px;
-    padding: 18px 0;
-    border-top: 1px solid #2A2A2E;
+    background: var(--bg);
+    color: var(--ink);
   }
-  .n { font-family: var(--font-mono); font-size: 13px; color: #7A7A80; padding-top: 8px; }
-  .b { font-size: clamp(19.7px, 2.5vw, 36.1px); font-weight: 500; letter-spacing: -.04em; line-height: 1.08; }
+  .step:last-child { background: var(--dark); color: var(--bg); }
+  .sn { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .step:last-child .sn { color: #A7A7AC; }
+  .step h3 { margin-top: auto; font-size: clamp(22px, 1.8vw, 26px); font-weight: 500; letter-spacing: -.04em; line-height: 1.05; }
+  .sd { font-size: 15px; line-height: 1.45; opacity: .75; }
 </style>

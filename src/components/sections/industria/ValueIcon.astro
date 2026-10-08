@@ -1,0 +1,55 @@
+---
+// Íconos de «Dónde aparece el valor» (spec 009 §3.F, v6 `icon()` de Industry Page V2): línea con pulso, grilla que
+// titila y estrella con anillo. SMIL con begin="indefinite": el marcado queda quieto en su estado base y
+// scripts/value-icons.ts lo anima al entrar en pantalla (≤ 5 s) y con hover; con reduced motion no se anima.
+interface Props { kind: 0 | 1 | 2 }
+const { kind } = Astro.props;
+const K = '#0B0B0C';
+const B = '#0047FF';
+const f = (n: number) => +n.toFixed(3);
+
+type Anim = { attr: string; values: string; dur: number; delay?: number; reps: number };
+const an = ({ attr, values, dur, delay = 0, reps }: Anim) =>
+  `<animate attributeName="${attr}" values="${values}" dur="${dur}s" begin="indefinite" repeatCount="${reps}" data-delay="${delay}"/>`;
+
+let body = '';
+if (kind === 0) {
+  const pts = [[8, 50], [22, 40], [36, 44], [56, 14]] as const;
+  const d = 'M' + pts.map((p) => p.join(' ')).join(' L');
+  body += `<path d="${d}" fill="none" stroke="${K}" stroke-width="1.4"/>`;
+  pts.slice(0, 3).forEach(([x, y]) => { body += `<circle cx="${x}" cy="${y}" r="2.6" fill="${K}"/>`; });
+  body += `<circle cx="56" cy="14" r="3.4" fill="none" stroke="${B}" stroke-width="1.2" opacity=".8">${an({ attr: 'r', values: '3.4;11;11', dur: 2.4, reps: 2 })}${an({ attr: 'opacity', values: '.8;0;0', dur: 2.4, reps: 2 })}</circle>`;
+  body += `<circle cx="56" cy="14" r="3.6" fill="${B}"/>`;
+  // El punto que recorre la línea sólo se ve mientras corre la animación.
+  body += `<circle r="2" fill="${B}" opacity="0"><animateMotion path="${d}" dur="2.4s" begin="indefinite" repeatCount="2" data-delay="0"/>${an({ attr: 'opacity', values: '1;1', dur: 2.4, reps: 2 })}</circle>`;
+} else if (kind === 1) {
+  const g = [14, 32, 50];
+  g.forEach((x) => g.forEach((y) => {
+    if (x === 32 && y === 32) return;
+    if (x === 32 || y === 32) body += `<line x1="32" y1="32" x2="${x}" y2="${y}" stroke="${K}" stroke-width="1.2"/>`;
+  }));
+  let k = 0;
+  g.forEach((x) => g.forEach((y) => {
+    if (x === 32 && y === 32) return;
+    const corner = x !== 32 && y !== 32;
+    const a = corner ? an({ attr: 'opacity', values: '1;.12;.12;1', dur: 3.2, delay: (k++) * 0.4, reps: 1 }) : '';
+    body += `<circle cx="${x}" cy="${y}" r="${corner ? 2.2 : 2.8}" fill="${K}">${a}</circle>`;
+  }));
+  body += `<circle cx="32" cy="32" r="4" fill="${B}"/>`;
+} else {
+  for (let i = 0; i < 6; i++) {
+    const t = (i / 6) * Math.PI * 2 - Math.PI / 2;
+    const x = f(32 + 21 * Math.cos(t));
+    const y = f(32 + 21 * Math.sin(t));
+    body += `<line x1="32" y1="32" x2="${x}" y2="${y}" stroke="${K}" stroke-width="1.2">${an({ attr: 'opacity', values: '.25;1;.25', dur: 2.4, delay: f(i * 0.4), reps: 1 })}</line>`;
+    body += `<circle cx="${x}" cy="${y}" r="2.6" fill="${K}"/>`;
+  }
+  body += `<circle cx="32" cy="32" r="4" fill="none" stroke="${B}" stroke-width="1.2" opacity=".7">${an({ attr: 'r', values: '4;21;21', dur: 2.4, reps: 2 })}${an({ attr: 'opacity', values: '.7;0;0', dur: 2.4, reps: 2 })}</circle>`;
+  body += `<circle cx="32" cy="32" r="4.2" fill="${B}"/>`;
+}
+---
+<svg class="vicon" viewBox="0 0 64 64" aria-hidden="true" focusable="false" data-value-icon set:html={body} />
+
+<style>
+  .vicon { width: 64px; height: 64px; display: block; overflow: visible; }
+</style>

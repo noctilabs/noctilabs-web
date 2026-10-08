@@ -30,7 +30,6 @@ describe('href', () => {
     ['manufactura', '/industrias/manufactura/', '/en/industries/manufacturing/'],
     ['consumo', '/industrias/alimentos-consumo/', '/en/industries/food-consumer-goods/'],
     ['salud', '/industrias/salud-fitness/', '/en/industries/health-fitness/'],
-    ['servicios', '/industrias/servicios/', '/en/industries/professional-services/'],
   ] as const)('industria %s con slug traducido', (industry, es, en) => {
     expect(href({ id: 'industria', industry }, 'es')).toBe(es);
     expect(href({ id: 'industria', industry }, 'en')).toBe(en);
@@ -60,7 +59,6 @@ describe('alternates', () => {
     ['manufactura', { id: 'industria', industry: 'manufactura' }, `${O}/industrias/manufactura/`, `${O}/en/industries/manufacturing/`],
     ['consumo', { id: 'industria', industry: 'consumo' }, `${O}/industrias/alimentos-consumo/`, `${O}/en/industries/food-consumer-goods/`],
     ['salud', { id: 'industria', industry: 'salud' }, `${O}/industrias/salud-fitness/`, `${O}/en/industries/health-fitness/`],
-    ['servicios', { id: 'industria', industry: 'servicios' }, `${O}/industrias/servicios/`, `${O}/en/industries/professional-services/`],
     ['nosotros', { id: 'nosotros' }, `${O}/nosotros/`, `${O}/en/about/`],
     ['insights', { id: 'insights' }, `${O}/blog/`, `${O}/en/blog/`],
     ['hablemos', { id: 'hablemos' }, `${O}/hablemos/`, `${O}/en/contact/`],
@@ -78,7 +76,6 @@ describe('pageFromPath', () => {
     ['/industrias/manufactura/', { id: 'industria', industry: 'manufactura' }, 'es'],
     ['/industrias/alimentos-consumo/', { id: 'industria', industry: 'consumo' }, 'es'],
     ['/industrias/salud-fitness/', { id: 'industria', industry: 'salud' }, 'es'],
-    ['/industrias/servicios/', { id: 'industria', industry: 'servicios' }, 'es'],
     ['/nosotros/', { id: 'nosotros' }, 'es'],
     ['/blog/', { id: 'insights' }, 'es'],
     ['/hablemos/', { id: 'hablemos' }, 'es'],
@@ -89,7 +86,6 @@ describe('pageFromPath', () => {
     ['/en/industries/manufacturing/', { id: 'industria', industry: 'manufactura' }, 'en'],
     ['/en/industries/food-consumer-goods/', { id: 'industria', industry: 'consumo' }, 'en'],
     ['/en/industries/health-fitness/', { id: 'industria', industry: 'salud' }, 'en'],
-    ['/en/industries/professional-services/', { id: 'industria', industry: 'servicios' }, 'en'],
     ['/en/about/', { id: 'nosotros' }, 'en'],
     ['/en/blog/', { id: 'insights' }, 'en'],
     ['/en/contact/', { id: 'hablemos' }, 'en'],
@@ -109,16 +105,18 @@ describe('pageFromPath', () => {
     '/es/', '/es/producto/', '/producto/extra/', '/en/industries/manufactura/',
     '/producto//', '/en/product//', '/en/privacidad/', '/privacy/',
     '/insights/', '/en/insights/', '/insights', '/en/insights', '/en/blog//', '/es/blog/',
+    // Spec 009 §3.A: Servicios dejó de existir (redirige a la Home por vercel.json).
+    '/industrias/servicios/', '/en/industries/professional-services/',
   ])('%s → null', (path) => {
     expect(pageFromPath(path)).toBeNull();
   });
 });
 
 describe('PAGES (spec 004 §2.4)', () => {
-  test('11 referencias fijas, 22 URLs distintas', () => {
-    expect(PAGES).toHaveLength(11);
+  test('10 referencias fijas, 20 URLs distintas (spec 009: sin Servicios)', () => {
+    expect(PAGES).toHaveLength(10);
     const urls = PAGES.flatMap((p) => [href(p, 'es'), href(p, 'en')]);
-    expect(new Set(urls).size).toBe(22);
+    expect(new Set(urls).size).toBe(20);
     expect(urls).toContain('/privacidad/');
     expect(urls).toContain('/en/privacy/');
   });

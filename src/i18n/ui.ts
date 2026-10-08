@@ -18,8 +18,8 @@ const es = {
     },
     nosotros: {
       title: 'Nosotros',
-      h1: 'Construimos el cerebro operativo de las empresas.',
-      description: 'Quiénes somos y por qué construimos Nocti: contexto, IA operativa y agentes sobre la operación real.',
+      h1: 'Construimos el cerebro organizacional de las empresas.',
+      description: 'Quiénes somos, nuestra tesis y cómo construimos el cerebro organizacional de las empresas.',
     },
     insights: {
       title: 'Blog',
@@ -86,8 +86,8 @@ const en: Dict = {
     },
     nosotros: {
       title: 'About',
-      h1: 'We build the operational brain of companies.',
-      description: 'Who we are and why we build Nocti: context, operational AI and agents on top of real operations.',
+      h1: 'We build the organizational brain of companies.',
+      description: 'Who we are, our thesis and how we build the organizational brain of companies.',
     },
     insights: {
       title: 'Blog',

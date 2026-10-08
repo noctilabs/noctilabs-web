@@ -17,7 +17,8 @@ const ids = Object.keys(INDUSTRY_SLUGS) as IndustryId[];
 // §3.5: ancho real del visor (CONT + CARD-BIG + 1 px de borde por lado; máximo 1014,4 px).
 const SIZES = '(min-width: 1583px) 1015px, (min-width: 1391px) calc(1106px - 5.8vw), (min-width: 1200px) calc(1198px - 12.4vw), (min-width: 1000px) calc(87.6vw - 2px), (min-width: 452px) calc(94.2vw - 34px), calc(100vw - 61px)';
 ---
-<Container gap="clamp(13.1px,1.6vw,19.7px)">
+<!-- Spec 009 G3: destino de las redirecciones de la industria Servicios (vercel.json). -->
+<Container gap="clamp(13.1px,1.6vw,19.7px)" id={locale === 'es' ? 'industrias' : 'industries'}>
   <CardBig>
     <div class="ind" data-tabs>
       <h2 class="h2 title">{t.h2}</h2>

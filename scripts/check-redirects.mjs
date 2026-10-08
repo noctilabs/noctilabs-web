@@ -31,8 +31,13 @@ const fileFor = (destination) => join(dist, ...destination.split('/').filter(Boo
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 const checked = (config.redirects ?? []).map(({ source, destination, permanent }) => {
   const problems = [];
-  if (!/^\/([a-z0-9-]+\/)*$/.test(destination)) problems.push('el destino no es una ruta interna con barra final');
-  else if (!existsSync(fileFor(destination))) problems.push(`no existe ${fileFor(destination)}`);
+  // Spec 009 G3: el destino puede llevar un fragmento; se comprueba la ruta y que su HTML tenga ese id.
+  const [path, fragment] = destination.split('#');
+  if (!/^\/([a-z0-9-]+\/)*$/.test(path)) problems.push('el destino no es una ruta interna con barra final');
+  else if (!existsSync(fileFor(path))) problems.push(`no existe ${fileFor(path)}`);
+  else if (fragment !== undefined && !(/^[a-z0-9-]+$/.test(fragment) && readFileSync(fileFor(path), 'utf8').includes(`id="${fragment}"`))) {
+    problems.push(`${fileFor(path)} no tiene id="${fragment}"`);
+  }
   if (permanent !== true) problems.push('no es permanente');
   return { source, destination, ok: problems.length === 0, problems };
 });

@@ -17,7 +17,7 @@ export interface HablemosCopy {
     role: Field;
     message: Field;
   };
-  /** Las opciones son los labels de las 5 industrias (industries.ts) más «Otra». */
+  /** Las opciones son los labels de las industrias de industries.ts (4 desde el spec 009) más «Otra». */
   industry: { label: string; empty: string; other: string };
   submit: string;
   sending: string;

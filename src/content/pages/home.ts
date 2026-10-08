@@ -23,7 +23,6 @@ export interface DiagramLabels {
 }
 
 interface Card { n: string; t: string; d: string; ex: string }
-interface Step extends Card { who: string }
 
 export interface HomeCopy {
   before: {
@@ -42,7 +41,7 @@ export interface HomeCopy {
     dot: string;
   };
   capabilities: { kicker: string; h2: string; items: [Card, Card, Card, Card]; cta: string };
-  steps: { h2: string; lead: string; items: [Step, Step, Step, Step] };
+  steps: { h2: string; lead: string; items: [Card, Card, Card, Card] };
   industries: { h2: string; lead: string; tablist: string; more: string; moreAbout: string };
   /** Frase de la v4 que se revela palabra por palabra (spec 007 §3 A): `a` en tinta, `b` en gris. */
   frase: { a: string; b: string };
@@ -108,14 +107,14 @@ export const home: Localized<HomeCopy> = {
       cta: 'Creá tus propios agentes, integrá los que ya tenés o construílos con NoctiLabs.',
     },
     steps: {
-      // Spec 007 §3 A: título y bajada de la v4.
-      h2: 'Tu empresa, un solo lugar.',
-      lead: 'NoctiLabs implementa y evoluciona Nocti junto a tu organización.',
+      // Spec 009 §3.C: título, bajada y pasos del v6.
+      h2: 'Un cerebro construido alrededor de tu empresa.',
+      lead: 'NoctiLabs conecta cómo funciona tu negocio —sus sistemas, conocimiento, procesos y reglas— para darle a tu organización un contexto compartido sobre el que personas e IA pueden trabajar.',
       items: [
-        { n: '01', who: 'NoctiLabs', t: 'Entendemos', d: 'Cómo funciona realmente tu empresa.', ex: 'Procesos y reglas reales del negocio.' },
-        { n: '02', who: 'NoctiLabs', t: 'Conectamos', d: 'Sistemas, información y conocimiento.', ex: 'ERP, CRM, planillas, correo y documentos, sin migrar nada.' },
-        { n: '03', who: 'NoctiLabs + Nocti', t: 'Implementamos', d: 'Nocti sobre el contexto de tu negocio.', ex: 'Primeros casos de uso en producción, por rol.' },
-        { n: '04', who: 'Tu equipo + Nocti', t: 'Evolucionamos', d: 'Nuevos procesos, agentes y capacidades sobre la misma base.', ex: 'Nuevos agentes y procesos sobre el mismo contexto.' },
+        { n: '01', t: 'Entendemos', d: 'Cómo funciona realmente tu empresa.', ex: 'Procesos, decisiones, reglas, excepciones y conocimiento.' },
+        { n: '02', t: 'Conectamos', d: 'Los sistemas y fuentes donde vive tu operación.', ex: 'ERP, CRM, documentos, planillas, correo y otras herramientas.' },
+        { n: '03', t: 'Creamos', d: 'El cerebro de tu empresa.', ex: 'Un contexto compartido para personas e IA.' },
+        { n: '04', t: 'Evolucionamos', d: 'El cerebro crece con tu operación.', ex: 'Nuevas preguntas, procesos, decisiones y capacidades sobre la misma base.' },
       ],
     },
     industries: {
@@ -189,14 +188,14 @@ export const home: Localized<HomeCopy> = {
       cta: 'Create your own agents, integrate the ones you already have or build them with NoctiLabs.',
     },
     steps: {
-      // Spec 007 §3 A: la v4 no trae estas claves en i18n-en.js; traducción provisoria (F4).
-      h2: 'Your company, in one place.',
-      lead: 'NoctiLabs implements and evolves Nocti alongside your organization.',
+      // Spec 009 §3.C y G4.
+      h2: 'A brain built around your company.',
+      lead: 'NoctiLabs connects how your business works —its systems, knowledge, processes and rules— to give your organization a shared context that people and AI can work on.',
       items: [
-        { n: '01', who: 'NoctiLabs', t: 'We understand', d: 'How your company really works.', ex: 'Real business processes and rules.' },
-        { n: '02', who: 'NoctiLabs', t: 'We connect', d: 'Systems, information and knowledge.', ex: 'ERP, CRM, spreadsheets, email and documents, with nothing to migrate.' },
-        { n: '03', who: 'NoctiLabs + Nocti', t: 'We implement', d: 'Nocti on top of your business context.', ex: 'First use cases in production, by role.' },
-        { n: '04', who: 'Your team + Nocti', t: 'We evolve', d: 'New processes, agents and capabilities on the same foundation.', ex: 'New agents and processes on the same context.' },
+        { n: '01', t: 'We understand', d: 'How your company really works.', ex: 'Processes, decisions, rules, exceptions and knowledge.' },
+        { n: '02', t: 'We connect', d: 'The systems and sources where your operation lives.', ex: 'ERP, CRM, documents, spreadsheets, email and other tools.' },
+        { n: '03', t: 'We build', d: 'Your company’s brain.', ex: 'A shared context for people and AI.' },
+        { n: '04', t: 'We evolve', d: 'The brain grows with your operation.', ex: 'New questions, processes, decisions and capabilities on the same foundation.' },
       ],
     },
     industries: {
