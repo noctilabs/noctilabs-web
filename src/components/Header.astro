@@ -109,8 +109,12 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
       <div class="surface">
         <span class="kicker">{panel.kicker}</span>
         <div class="grid">
-          {panel.items.map((item) => (
-            <a class="mega-item" href={item.href} tabindex="0"><span class="mega-label">{item.label}</span><span class="mega-desc">{item.desc}</span></a>
+          {[0, 1].map((c) => (
+            <div class="col">
+              {panel.items.filter((_, i) => i % 2 === c).map((item) => (
+                <a class="mega-item" href={item.href} tabindex="0"><span class="mega-label">{item.label}</span><span class="mega-desc">{item.desc}</span></a>
+              ))}
+            </div>
           ))}
         </div>
       </div>
@@ -294,7 +298,9 @@ const MENU_OPEN = 'M4 8h16M4 16h16';
     gap: 20px;
   }
   .kicker { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .02em; }
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 40px; }
+  /* Dos columnas independientes: cada ítem queda a 22 px del de arriba aunque el de al lado tenga una línea más. */
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; align-items: start; }
+  .col { display: flex; flex-direction: column; gap: 22px; }
   .mega-item {
     display: flex;
     flex-direction: column;

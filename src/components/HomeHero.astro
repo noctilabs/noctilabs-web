@@ -61,6 +61,11 @@ const { title, lead, primary, secondary } = Astro.props;
   @media (max-width: 999px) {
     .hero { height: 100vh; height: 100svh; }
   }
+  /* En escritorio el header va con zoom .9 (global.css) y ocupa 68,4 px: el hero sube eso, no 76, o asoma la sección
+     siguiente al pie de la pantalla. */
+  @media (min-width: 1000px) {
+    .hero { margin-top: calc(-76px * .9); }
+  }
   .poster { position: absolute; inset: 0; display: block; }
   .poster img, .media {
     position: absolute;
