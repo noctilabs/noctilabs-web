@@ -4,6 +4,7 @@
 // «Ver como» (de la variante «Interactivo») queda con los cuatro roles que protagonizan el montaje y salta a su acto.
 // Sin escalado: el escenario se arma a tamaño real y, por debajo de 860 px de ancho, pasa a una columna (textos ≥ 12 px).
 // La línea de tiempo y el contrato del marcado están en src/scripts/montage.ts; el SSR deja cada acto en su estado final.
+// Tiempos reales del spec 010 (sin el 1,2× del diseño): cada acto termina quieto el tiempo de leerlo.
 import Container from '../../ui/Container.astro';
 import HeadRow from '../../ui/HeadRow.astro';
 import Mark from '../../Mark.astro';
@@ -33,8 +34,8 @@ const GRID = [32, 31, 30, 29, 28, 27];
 const MX = `${((10 / 11) * 100).toFixed(2)}%`;
 const CAUSE_GEO = [[0, 50], [50, 34.375], [84.375, 15.625]] as const;
 
-const NODES = ['200:r,900:d', '900:r,1600:d', '1600:r,2100:w,5500:ok', '5800:r,6600:d'];
-const PANES: [number, number | undefined][] = [[0, 3700], [3700, 5000], [5000, undefined]];
+const NODES = ['200:r,800:d', '800:r,1400:d', '1400:r,1900:w,5400:ok', '5600:r,6300:d'];
+const PANES: [number, number | undefined][] = [[0, 3000], [3000, 6300], [6300, undefined]];
 const ROLES = ['ceo', 'comercial', 'operaciones', 'agentes'] as const;
 const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM2 14h2M20 14h2M9 13v2M15 13v2';
 ---
@@ -67,27 +68,27 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
       <div class="act a1" data-act="0" data-cur>
         {ask.askers.map((r, i) => (
           <div class="who" data-who={i} data-cur={i === 0 ? '' : undefined}>
-            <div class="panel" {...A(0, 2300)}>
+            <div class="panel" {...A(0, 1500)}>
               <div class="pin">
-                <div class="q fx" {...A(0, 2400)}>
+                <div class="q fx" {...A(0, 1600)}>
                   <div class="qwho"><span>{r.name}</span><span class="av" style={`background:${r.bg}`}>{r.initials}</span></div>
                   <div class="bubble">{r.q}</div>
                 </div>
-                <div class="nrow fx" {...A(0, 2700)}>
+                <div class="nrow fx" {...A(0, 1800)}>
                   <span class="mk"><Mark size={26} /></span>
                   <span class="nn">Nocti</span>
-                  <span class="cl sw" {...A(0, 0, 3900)}>{ask.consulting}</span>
-                  <span class="cl sw" {...A(0, 3900)}>{ask.consulted}</span>
-                  <span class="srcs">{r.cx.map((c, j) => <span class="chip fx" {...A(0, 2900 + j * 300)}>{c}</span>)}</span>
+                  <span class="cl sw" {...A(0, 0, 2700)}>{ask.consulting}</span>
+                  <span class="cl sw" {...A(0, 2700)}>{ask.consulted}</span>
+                  <span class="srcs">{r.cx.map((c, j) => <span class="chip fx" {...A(0, 1950 + j * 200)}>{c}</span>)}</span>
                 </div>
-                <div class="ans fade" {...A(0, 3900)}>
-                  <span class="alead fx" {...A(0, 3900)}>{r.lead}</span>
+                <div class="ans fade" {...A(0, 2700)}>
+                  <span class="alead fx" {...A(0, 2700)}>{r.lead}</span>
                   {r.items.map((it, j) => (
-                    <div class="item fx" {...A(0, 4300 + j * 380)}><span class="inum">{j + 1}</span><span>{it}</span></div>
+                    <div class="item fx" {...A(0, 3000 + j * 350)}><span class="inum">{j + 1}</span><span>{it}</span></div>
                   ))}
-                  <div class="cxrow fade" {...A(0, 5500)}><span class="cxl">{ask.connections}</span>{r.cx.map((c) => <span class="chip">{c}</span>)}</div>
-                  <span class="perm fade" {...A(0, 5800)}><span class="tick">✓</span> {r.perm}</span>
-                  <div class="acts fx" {...A(0, 6100)}>{r.acts.map((x, j) => <span class:list={['pill', j === 0 && 'pri']}>{x}</span>)}</div>
+                  <div class="cxrow fade" {...A(0, 4100)}><span class="cxl">{ask.connections}</span>{r.cx.map((c) => <span class="chip">{c}</span>)}</div>
+                  <span class="perm fade" {...A(0, 4300)}><span class="tick">✓</span> {r.perm}</span>
+                  <div class="acts fx" {...A(0, 4500)}>{r.acts.map((x, j) => <span class:list={['pill', j === 0 && 'pri']}>{x}</span>)}</div>
                 </div>
               </div>
             </div>
@@ -112,15 +113,15 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
               {GRID.map((v) => <span class="gl" style={`top:${pct(v)}`}></span>)}
               <svg class="ylab" focusable="false">{GRID.map((v) => <text x="0" y={pct(v)} dominant-baseline="middle">{v}%</text>)}</svg>
               <svg class="chart" viewBox="0 0 500 240" preserveAspectRatio="none" focusable="false">
-                <path class="area dr" d={area} {...A(1, 2200)} />
-                <path class="ln" d={line} pathLength="100" data-draw="300,1900" style="stroke-dashoffset:0" vector-effect="non-scaling-stroke" />
-                <path class="drop dr" d={drop} {...A(1, 2200)} vector-effect="non-scaling-stroke" />
+                <path class="area dr" d={area} {...A(1, 2300)} />
+                <path class="ln" d={line} pathLength="100" data-draw="800,1500" style="stroke-dashoffset:0" vector-effect="non-scaling-stroke" />
+                <path class="drop dr" d={drop} {...A(1, 2300)} vector-effect="non-scaling-stroke" />
               </svg>
-              <span class="mkl dr" style={`left:${MX}`} {...A(1, 2500)}></span>
-              <span class="tip dr" {...A(1, 2500)}><span class="tl">{u.anomaly}</span><span>{u.anomalyText}</span></span>
-              <span class="ldot dr" style={`top:${pct(28.2)}`} {...A(1, 2200)}></span>
+              <span class="mkl dr" style={`left:${MX}`} {...A(1, 2600)}></span>
+              <span class="tip dr" {...A(1, 2600)}><span class="tl">{u.anomaly}</span><span>{u.anomalyText}</span></span>
+              <span class="ldot dr" style={`top:${pct(28.2)}`} {...A(1, 2300)}></span>
             </div>
-            <div class="tbl" {...A(1, 5600)}>
+            <div class="tbl" {...A(1, 8300)}>
               <span class="crumbs">{u.crumbs[0]} → {u.crumbs[1]} → <span class="cur">{u.crumbs[2]}</span></span>
               {u.tx.map(([c, p, d, m, id]) => (
                 <div class="row">
@@ -133,18 +134,18 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
             </div>
           </div>
           <div class="chat2">
-            <div class="q2 fx" {...A(1, 900)}><div class="bubble">{u.q}</div><span class="av" style={`background:${u.who.bg}`}>{u.who.initials}</span></div>
-            <div class="nrow fx" {...A(1, 1400)}><span class="mk"><Mark size={26} /></span><span class="nn">Nocti</span></div>
-            <div class="ans a2ans fade" {...A(1, 1400)}>
-              <span class="alead2 fade" {...A(1, 1600)}>{u.lead}</span>
+            <div class="q2 fx" {...A(1, 200)}><div class="bubble">{u.q}</div><span class="av" style={`background:${u.who.bg}`}>{u.who.initials}</span></div>
+            <div class="nrow fx" {...A(1, 600)}><span class="mk"><Mark size={26} /></span><span class="nn">Nocti</span></div>
+            <div class="ans a2ans fade" {...A(1, 600)}>
+              <span class="alead2 fade" {...A(1, 2900)}>{u.lead}</span>
               {u.causes.map(([c, pp], i) => (
-                <div class="cause fx" {...A(1, 2900 + i * 500)} style={`--l:${CAUSE_GEO[i]![0]}%;--w:${CAUSE_GEO[i]![1]}%`}>
+                <div class="cause fx" {...A(1, 3300 + i * 500)} style={`--l:${CAUSE_GEO[i]![0]}%;--w:${CAUSE_GEO[i]![1]}%`}>
                   <div class="ch"><span>{c}</span><span class="neg">{pp}</span></div>
                   <div class="trk"><span class="fill"></span></div>
                 </div>
               ))}
-              <div class="tot fade" {...A(1, 4400)}><span>{u.total}</span><span class="neg">{u.totalPp}</span></div>
-              <div class="brow fade" {...A(1, 4400)}><span class="pill vt" {...A(1, 5000)}>{u.button}</span></div>
+              <div class="tot fade" {...A(1, 4900)}><span>{u.total}</span><span class="neg">{u.totalPp}</span></div>
+              <div class="brow fade" {...A(1, 4900)}><span class="pill vt" {...A(1, 8300)}>{u.button}</span></div>
             </div>
           </div>
         </div>
@@ -157,8 +158,8 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
             <div class="ahead">
               <div class="aname"><span class="aic"><svg width="16" height="16" viewBox="0 0 24 24" focusable="false"><path d={BOT} /></svg></span><span>{a.agent}</span></div>
               <div class="astat">
-                <span class="stamp" {...A(2, 7000)}>{a.stamp}</span>
-                <span class="st" {...S(2, '0:run,2100:wait,5500:run,6600:done')}>
+                <span class="stamp" {...A(2, 6700)}>{a.stamp}</span>
+                <span class="st" {...S(2, '0:run,1900:wait,5400:run,6300:done')}>
                   <span class="sdot"></span>
                   <span class="sv v-run">{a.status.run}</span><span class="sv v-wait">{a.status.wait}</span><span class="sv v-done">{a.status.done}</span>
                 </span>
@@ -174,12 +175,12 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
               ))}
             </div>
           </div>
-          <div class="dev" {...A(2, 2500)}>
+          <div class="dev" {...A(2, 2100)}>
             <div class="tabs">{a.tabs.map((x, i) => <span class="tab" {...A(2, PANES[i]![0], PANES[i]![1])}>{x}</span>)}</div>
             <div class="panes">
               <div class="pane" {...A(2, ...PANES[0]!)}>
                 <span class="plab">{a.panel.label}</span>
-                <div class="pbox np" {...S(2, '2500:wait,4700:ok')}>
+                <div class="pbox np" {...S(2, '2100:wait,4800:ok')}>
                   <div class="nph"><span class="mk sm"><Mark size={22} /></span><span class="npt">{a.panel.title}</span><span class="tag"><span class="tv p">{a.panel.tag.none}</span><span class="tv wait">{a.panel.tag.wait}</span><span class="tv ok">{a.panel.tag.ok}</span></span></div>
                   <div class="npb">
                     <span class="nph2"><span class="tv nok">{a.panel.head.wait}</span><span class="tv ok">{a.panel.head.ok}</span></span>
@@ -199,12 +200,12 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
                   <div class="scr">
                     <div class="wh"><span class="wmk"><Mark size={18} /></span><span class="wn"><span class="wt">Nocti</span><span class="wo">{a.wa.online}</span></span><span class="wl">WhatsApp</span></div>
                     <div class="wb">
-                      <div class="typing sw" {...A(2, 2700, 3400)}><span></span><span></span><span></span></div>
-                      <div class="msg sw" {...A(2, 3400)}>
+                      <div class="typing sw" {...A(2, 2400, 3000)}><span></span><span></span><span></span></div>
+                      <div class="msg sw" {...A(2, 3000)}>
                         <div class="mb"><span class="ms">{a.wa.sender}</span><span class="mo">{a.panel.oc}</span><span class="mt">{a.wa.text}</span></div>
-                        {a.wa.replies.map((x, i) => <span class="qr" {...(i === 0 ? S(2, '4300:press,4700:ok') : {})}>{x}</span>)}
+                        {a.wa.replies.map((x, i) => <span class="qr" {...(i === 0 ? S(2, '4400:press,4800:ok') : {})}>{x}</span>)}
                       </div>
-                      <div class="reply sw" {...A(2, 4700)}>{a.wa.reply}</div>
+                      <div class="reply sw" {...A(2, 4800)}>{a.wa.reply}</div>
                     </div>
                   </div>
                 </div>
@@ -212,7 +213,7 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
               <div class="pane" {...A(2, ...PANES[2]!)}>
                 <span class="plab">{a.mail.label}</span>
                 <div class="pbox mail">
-                  <div class="mh"><span class="mdot" {...S(2, '2700:new,4700:ok')}></span><span>{a.mail.inbox}</span></div>
+                  <div class="mh"><span class="mdot" {...S(2, '2400:new,4800:ok')}></span><span>{a.mail.inbox}</span></div>
                   <span><span class="mut">{a.mail.from[0]}</span> {a.mail.from[1]}</span>
                   <span><span class="mut">{a.mail.to[0]}</span> {a.mail.to[1]}</span>
                   <span class="subj">{a.mail.subject}</span>
@@ -228,6 +229,8 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
         </div>
       </div>
     </div>
+
+    <p class="cap">{t.captions.map((c, k) => <span data-cap={k} data-cur={k === 0 ? '' : undefined}>{c}</span>)}</p>
 
     <div class="ctrl">
       <div class="segs">
@@ -306,11 +309,11 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
     min-width: 0;
     padding: 20px 16px;
     opacity: 0;
-    transform: scale(1.035);
+    transform: scale(1.02);
     visibility: hidden;
-    transition: opacity .7s ease, transform 1.1s cubic-bezier(.3, 0, .2, 1), visibility 0s 1.1s;
+    transition: opacity .45s ease, transform .5s cubic-bezier(.3, 0, .2, 1), visibility 0s .5s;
   }
-  .act[data-cur] { opacity: 1; transform: none; visibility: visible; transition: opacity .7s ease, transform 1.1s cubic-bezier(.3, 0, .2, 1); }
+  .act[data-cur] { opacity: 1; transform: none; visibility: visible; transition: opacity .45s ease, transform .5s cubic-bezier(.3, 0, .2, 1); }
   @container (min-width: 860px) {
     .act { padding: 56px 72px; }
     .ans { padding: 18px 20px; }
@@ -362,7 +365,7 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
   .a1 { justify-items: center; }
   .who { grid-area: 1 / 1; align-self: center; width: min(760px, 100%); display: flex; flex-direction: column; gap: 14px; }
   .who:not([data-cur]) { visibility: hidden; }
-  .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .9s cubic-bezier(.4, 0, .2, 1); }
+  .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.4, 0, .2, 1); }
   .panel[data-on] { grid-template-rows: 1fr; }
   .pin { min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; }
   .q { align-self: flex-end; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-width: 92%; }
@@ -632,6 +635,10 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
   }
 
   /* Controles: tres etapas con su barra de progreso y la pausa (44 px). */
+  /* Línea por acto (spec 010 §3.E): las tres apiladas en la misma celda, así el alto no salta al cambiar. */
+  .cap { display: grid; margin: 0; text-align: center; font-size: 15px; line-height: 1.45; color: var(--muted); text-wrap: balance; }
+  .cap > span { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s .3s; }
+  .cap > [data-cur] { opacity: 1; visibility: visible; transition: opacity .3s; }
   .ctrl { display: flex; align-items: center; gap: 14px; }
   .segs { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; min-width: 0; }
   .seg {
@@ -678,8 +685,10 @@ const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2
   /* Medición del alto del escenario (montage.ts): todo abierto y sin transiciones durante un cuadro. */
   [data-still] .stage *, [data-still] .stage { transition: none !important; }
   [data-measure] .panel { grid-template-rows: 1fr; }
+  /* Reinicio limpio (spec 010 §3.B): el acto que arranca de cero se pinta sin transiciones; su propio fundido sí corre. */
+  .act[data-still] * { transition: none !important; }
 
   @media (prefers-reduced-motion: reduce) {
-    .stage, .stage *, .va button, .slab { transition: none !important; }
+    .stage, .stage *, .va button, .slab, .cap > span { transition: none !important; }
   }
 </style>

@@ -21,6 +21,8 @@ export interface MontageCopy {
   viewAs: string;
   roles: { ceo: string; comercial: string; operaciones: string; agentes: string };
   segs: [string, string, string];
+  /** Una línea visible por acto que resume el beneficio (spec 010 §3.E). */
+  captions: [string, string, string];
   /** Nombre accesible del botón de pausa y de los segmentos. */
   pause: string;
   play: string;
@@ -67,6 +69,11 @@ export const montage: Localized<MontageCopy> = {
     viewAs: 'Ver como',
     roles: { ceo: 'CEO', comercial: 'Comercial', operaciones: 'Operaciones', agentes: 'Agentes' },
     segs: ['Preguntá', 'Entendé', 'Actuá'],
+    captions: [
+      'Cada persona pregunta y recibe respuestas con fuentes, según sus permisos.',
+      'Del indicador a la causa, y de la causa a la transacción que la explica.',
+      'Los agentes trabajan dentro de límites y piden aprobación cuando corresponde.',
+    ],
     pause: 'Pausar la demo',
     play: 'Reanudar la demo',
     alt: {
@@ -173,6 +180,11 @@ export const montage: Localized<MontageCopy> = {
     viewAs: 'View as',
     roles: { ceo: 'CEO', comercial: 'Sales', operaciones: 'Operations', agentes: 'Agents' },
     segs: ['Ask', 'Understand', 'Act'],
+    captions: [
+      'Everyone asks and gets answers with sources, based on their permissions.',
+      'From the metric to its cause, and from the cause to the transaction behind it.',
+      'Agents work within limits and ask for approval when needed.',
+    ],
     pause: 'Pause the demo',
     play: 'Resume the demo',
     alt: {
