@@ -1,15 +1,15 @@
 import type { Localized } from '../types';
 
-/** Quien pregunta en el acto 1: alterna entre Comercial y Operaciones en cada vuelta del montaje. */
+/** Quien pregunta en el acto 1: rota entre Comercial, Operaciones, Finanzas, Marketing y RRHH en cada vuelta (mismo orden que `ASKERS` de montage.ts). */
 interface Asker {
-  role: 'comercial' | 'operaciones';
+  role: 'comercial' | 'operaciones' | 'finanzas' | 'marketing' | 'rrhh';
   name: string;
   initials: string;
   bg: string;
   q: string;
   lead: string;
   items: [string, string, string];
-  cx: [string, string, string];
+  cx: string[];
   perm: string;
   acts: [string, string, string];
 }
@@ -19,7 +19,7 @@ export interface MontageCopy {
   h2: string;
   lead: string;
   viewAs: string;
-  roles: { ceo: string; comercial: string; operaciones: string; agentes: string };
+  roles: { ceo: string; comercial: string; operaciones: string; finanzas: string; marketing: string; rrhh: string; agentes: string };
   segs: [string, string, string];
   /** Una línea visible por acto que resume el beneficio (spec 010 §3.E). */
   captions: [string, string, string];
@@ -28,7 +28,7 @@ export interface MontageCopy {
   play: string;
   /** Alternativa textual de cada acto (el escenario es decorativo y va con aria-hidden). */
   alt: { title: string; acts: [string, string, string] };
-  ask: { placeholder: string; consulting: string; consulted: string; connections: string; askers: [Asker, Asker] };
+  ask: { placeholder: string; consulting: string; consulted: string; connections: string; askers: Asker[] };
   understand: {
     kpi: string;
     value: string;
@@ -67,7 +67,7 @@ export const montage: Localized<MontageCopy> = {
     h2: 'Preguntá. Entendé. Actuá.',
     lead: 'Personas y agentes trabajan sobre el mismo contexto, con la información, las fuentes y los permisos que les corresponden.',
     viewAs: 'Ver como',
-    roles: { ceo: 'CEO', comercial: 'Comercial', operaciones: 'Operaciones', agentes: 'Agentes' },
+    roles: { ceo: 'CEO', comercial: 'Comercial', operaciones: 'Operaciones', finanzas: 'Finanzas', marketing: 'Marketing', rrhh: 'RRHH', agentes: 'Agentes' },
     segs: ['Preguntá', 'Entendé', 'Actuá'],
     captions: [
       'Cada persona pregunta y recibe respuestas con fuentes, según sus permisos.',
@@ -79,7 +79,7 @@ export const montage: Localized<MontageCopy> = {
     alt: {
       title: 'Qué muestra la demo',
       acts: [
-        'Preguntá: Jorge Rodríguez, de Comercial, pregunta qué clientes debería contactar hoy y por qué. Nocti consulta el CRM y el ERP y responde con 12 clientes prioritarios, solo de sus cuentas, con acciones para seguir. En la vuelta siguiente, Silvana Pérez, de Operaciones, pregunta qué está frenando la operación y recibe los 7 pedidos con riesgo.',
+        'Preguntá: Jorge Rodríguez, de Comercial, pregunta qué clientes debería contactar hoy y por qué. Nocti consulta el CRM y el ERP y responde con 12 clientes prioritarios, solo de sus cuentas, con acciones para seguir. En las vueltas siguientes preguntan también Silvana Pérez, de Operaciones, qué está frenando la operación (recibe los 7 pedidos con riesgo); Martín López, de Finanzas, dónde se está perdiendo margen; Sofía Fernández, de Marketing, qué campañas generan ventas reales, y Ana Martínez, de RRHH, dónde hay mayor presión de capacidad en los equipos.',
         'Entendé: Laura Méndez, la CEO, pregunta por qué cayó el margen bruto, que bajó de 31,4 % a 28,2 % esta semana. Nocti marca la anomalía (el costo de resina subió 11 % desde el 1/9), explica las tres causas (insumos, −1,6 pp; descuentos en mayoristas, −1,1 pp, y cambio de mix, −0,5 pp) y baja a las transacciones del ERP.',
         'Actuá: el agente de compras detecta stock bajo del SKU 4410 y prepara la OC-4471 por $18.400.000. Como supera el límite de $10.000.000 para compras automáticas, pide aprobación en el panel de Nocti, por WhatsApp y por correo. Martín López, de Finanzas, la aprueba desde WhatsApp; la orden se envía y queda registrada en auditoría.',
       ],
@@ -111,6 +111,45 @@ export const montage: Localized<MontageCopy> = {
           cx: ['ERP · Pedidos', 'WMS · Stock', 'Logística · Entregas'],
           perm: 'Silvana ve pedidos, stock, proveedores y logística.',
           acts: ['Ver pedidos afectados →', 'Priorizar reposición →', 'Escalar bloqueos →'],
+        },
+        {
+          role: 'finanzas', name: 'Martín López', initials: 'ML', bg: '#3A3A38',
+          q: '¿Dónde estamos perdiendo margen este mes?',
+          lead: 'El margen bruto cayó 2,7 pp frente al promedio de los últimos tres meses:',
+          items: [
+            'Insumos: tres líneas concentran 54% del impacto por aumento de costos.',
+            'Descuentos: dos cuentas están operando por encima de la política habitual.',
+            'Logística: la zona norte tuvo un aumento de 18% en costo por entrega.',
+          ],
+          cx: ['ERP · Costos', 'ERP · Ventas', 'CRM · Descuentos', 'Logística · Costos'],
+          perm: 'Martín ve costos, margen, cobranzas, pagos y flujo de caja.',
+          acts: ['Ver productos afectados →', 'Revisar descuentos →', 'Analizar costo logístico →'],
+        },
+        {
+          role: 'marketing', name: 'Sofía Fernández', initials: 'SF', bg: '#8A3A2F',
+          q: '¿Qué campañas están generando ventas reales?',
+          lead: 'Tres campañas concentran 72% de las ventas atribuidas este mes:',
+          items: [
+            'Remarketing: ROAS 4,8x y mayor tasa de conversión.',
+            'Search de marca: ROAS 3,9x y menor costo de adquisición.',
+            'Awareness: alto volumen de tráfico, pero baja contribución directa a ventas.',
+          ],
+          cx: ['Meta Ads', 'Google Ads', 'CRM', 'ERP Ventas'],
+          perm: 'Sofía ve campañas, audiencias, productos, leads y ventas atribuidas.',
+          acts: ['Ver campañas →', 'Reasignar presupuesto →', 'Explorar segmentos →'],
+        },
+        {
+          role: 'rrhh', name: 'Ana Martínez', initials: 'AM', bg: '#5B3E8A',
+          q: '¿Dónde tenemos mayor presión de capacidad en los equipos?',
+          lead: 'Operaciones concentra la mayor presión esta semana:',
+          items: [
+            'Operaciones: 18% más tareas abiertas que su promedio trimestral.',
+            'Compras: aumentó el tiempo promedio de resolución en 21%.',
+            'Administración: tres procesos manuales explican gran parte de la carga repetitiva.',
+          ],
+          cx: ['HRIS', 'ERP', 'Gestión de tareas'],
+          perm: 'Ana ve equipos, carga de trabajo, procesos internos y datos organizacionales autorizados.',
+          acts: ['Ver carga por equipo →', 'Revisar procesos →', 'Identificar tareas automatizables →'],
         },
       ],
     },
@@ -178,7 +217,7 @@ export const montage: Localized<MontageCopy> = {
     h2: 'Ask. Understand. Act.',
     lead: 'People and agents work on the same context, with the information, sources and permissions that apply to them.',
     viewAs: 'View as',
-    roles: { ceo: 'CEO', comercial: 'Sales', operaciones: 'Operations', agentes: 'Agents' },
+    roles: { ceo: 'CEO', comercial: 'Sales', operaciones: 'Operations', finanzas: 'Finance', marketing: 'Marketing', rrhh: 'HR', agentes: 'Agents' },
     segs: ['Ask', 'Understand', 'Act'],
     captions: [
       'Everyone asks and gets answers with sources, based on their permissions.',
@@ -190,7 +229,7 @@ export const montage: Localized<MontageCopy> = {
     alt: {
       title: 'What the demo shows',
       acts: [
-        'Ask: Jorge Rodríguez, from Sales, asks which customers he should contact today and why. Nocti checks the CRM and the ERP and answers with 12 priority customers, only from his accounts, with next actions. On the next loop, Silvana Pérez, from Operations, asks what is holding operations back and gets the 7 orders at risk.',
+        'Ask: Jorge Rodríguez, from Sales, asks which customers he should contact today and why. Nocti checks the CRM and the ERP and answers with 12 priority customers, only from his accounts, with next actions. On the following loops, Silvana Pérez, from Operations, asks what is holding operations back (she gets the 7 orders at risk); Martín López, from Finance, asks where margin is being lost; Sofía Fernández, from Marketing, asks which campaigns are driving real sales; and Ana Martínez, from HR, asks where teams are under the most capacity pressure.',
         'Understand: Laura Méndez, the CEO, asks why gross margin fell from 31.4% to 28.2% this week. Nocti flags the anomaly (resin cost up 11% since 9/1), explains the three causes (input costs, −1.6 pp; wholesale discounts, −1.1 pp; mix shift, −0.5 pp) and drills down to the ERP transactions.',
         'Act: the purchasing agent detects low stock on SKU 4410 and prepares OC-4471 for $18,400,000. Since it exceeds the $10,000,000 limit for automatic purchases, it requests approval in the Nocti panel, on WhatsApp and by email. Martín López, from Finance, approves it on WhatsApp; the order is sent and logged in the audit trail.',
       ],
@@ -222,6 +261,45 @@ export const montage: Localized<MontageCopy> = {
           cx: ['ERP · Orders', 'WMS · Stock', 'Logistics · Deliveries'],
           perm: 'Silvana sees orders, stock, suppliers and logistics.',
           acts: ['View affected orders →', 'Prioritize restocking →', 'Escalate blockers →'],
+        },
+        {
+          role: 'finanzas', name: 'Martín López', initials: 'ML', bg: '#3A3A38',
+          q: 'Where are we losing margin this month?',
+          lead: 'Gross margin fell 2.7 pp versus the average of the last three months:',
+          items: [
+            'Inputs: three lines account for 54% of the impact from higher costs.',
+            'Discounts: two accounts are operating above the usual policy.',
+            'Logistics: the north zone had an 18% increase in delivery cost.',
+          ],
+          cx: ['ERP · Costs', 'ERP · Sales', 'CRM · Discounts', 'Logistics · Costs'],
+          perm: 'Martín sees costs, margin, collections, payments and cash flow.',
+          acts: ['View affected products →', 'Review discounts →', 'Analyze logistics cost →'],
+        },
+        {
+          role: 'marketing', name: 'Sofía Fernández', initials: 'SF', bg: '#8A3A2F',
+          q: 'Which campaigns are generating real sales?',
+          lead: 'Three campaigns account for 72% of the sales attributed this month:',
+          items: [
+            'Remarketing: ROAS 4.8x and the highest conversion rate.',
+            'Brand search: ROAS 3.9x and the lowest acquisition cost.',
+            'Awareness: high traffic volume, but low direct contribution to sales.',
+          ],
+          cx: ['Meta Ads', 'Google Ads', 'CRM', 'ERP Sales'],
+          perm: 'Sofía sees campaigns, audiences, products, leads and attributed sales.',
+          acts: ['View campaigns →', 'Reallocate budget →', 'Explore segments →'],
+        },
+        {
+          role: 'rrhh', name: 'Ana Martínez', initials: 'AM', bg: '#5B3E8A',
+          q: 'Where are our teams under the most capacity pressure?',
+          lead: 'Operations has the most pressure this week:',
+          items: [
+            'Operations: 18% more open tasks than its quarterly average.',
+            'Purchasing: average resolution time went up 21%.',
+            'Administration: three manual processes explain much of the repetitive load.',
+          ],
+          cx: ['HRIS', 'ERP', 'Task management'],
+          perm: 'Ana sees teams, workload, internal processes and authorized organizational data.',
+          acts: ['View workload by team →', 'Review processes →', 'Identify automatable tasks →'],
         },
       ],
     },

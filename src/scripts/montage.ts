@@ -10,7 +10,7 @@
 //       [data-steps="ms:s,…"]     data-s = el último estado cuyo ms ≤ t (o 'p' antes del primero).
 //       [data-draw="desde,dur"]   path con pathLength 100: el trazo se dibuja entre desde y desde + dur.
 //       [data-type][data-q]       barra del chat: escribe data-q entre 150 y 1350 ms, con data-on mientras escribe.
-//       [data-who=<i>]            en el acto 0, quien pregunta (alterna en cada vuelta); data-cur en el visible.
+//       [data-who=<i>]            en el acto 0, quien pregunta (rota por ASKERS en cada vuelta); data-cur en el visible.
 //     [data-cap=<k>]              la línea de texto de cada acto; data-cur en la del acto en curso.
 //     button[data-seg=<k>] > [data-seg-bar]   segmentos con su barra de progreso (scaleX).
 //     button[data-role=<rol>]     «Ver como»: reproduce el acto de ese rol; aria-pressed sigue al acto en curso.
@@ -40,17 +40,20 @@ export function stepAt(steps: string, t: number): string {
 /** Si un [data-at][data-to] está encendido en el tiempo t. */
 export const isOn = (at: number, to: number | undefined, t: number) => at <= t && (to === undefined || t < to);
 
-/** El acto que sigue a `act`; al volver al acto 0 alterna quién pregunta. */
+/** Quienes preguntan en el acto 0, en el orden de `ask.askers` y de [data-who]. */
+export const ASKERS = ['comercial', 'operaciones', 'finanzas', 'marketing', 'rrhh'] as const;
+
+/** El acto que sigue a `act`; al volver al acto 0 pasa al siguiente que pregunta. */
 export function nextAct(act: number, who: number): { act: number; who: number } {
   const k = (act + 1) % 3;
-  return { act: k, who: k === 0 ? 1 - who : who };
+  return { act: k, who: k === 0 ? (who + 1) % ASKERS.length : who };
 }
 
 /** «Reanudar» pasa al acto siguiente sólo si el acto elegido ya terminó; a mitad de acto sigue desde t. */
 export const resumeAdvances = (picked: boolean, act: number, t: number) => picked && t >= DUR[act]!;
 
-type Role = 'ceo' | 'comercial' | 'operaciones' | 'agentes';
-const roleOf = (act: number, who: number): Role => (act === 0 ? (who ? 'operaciones' : 'comercial') : act === 1 ? 'ceo' : 'agentes');
+type Role = 'ceo' | (typeof ASKERS)[number] | 'agentes';
+const roleOf = (act: number, who: number): Role => (act === 0 ? ASKERS[who]! : act === 1 ? 'ceo' : 'agentes');
 
 export function initMontage(root: HTMLElement): void {
   const stage = root.querySelector<HTMLElement>('[data-stage]')!;
@@ -82,6 +85,7 @@ export function initMontage(root: HTMLElement): void {
   let vis = false;
   let last = 0;
   let raf = 0;
+  let shown = '';
 
   const moving = () => !rm && !held && vis;
 
@@ -124,6 +128,20 @@ export function initMontage(root: HTMLElement): void {
     });
     const r = roleOf(act, who);
     roles.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.role === r)));
+    if (r !== shown) {
+      shown = r;
+      reveal(roles.find((b) => b.dataset.role === r));
+    }
+  }
+
+  // Con siete roles la fila puede desbordar (mobile): la pastilla activa queda a la vista dentro de la fila, sin mover la página.
+  function reveal(b: HTMLElement | undefined): void {
+    const row = b?.parentElement;
+    if (!b || !row || row.scrollWidth <= row.clientWidth) return;
+    const pad = 12;
+    const left = b.offsetLeft - row.offsetLeft;
+    const to = left < row.scrollLeft + pad ? left - pad : left + b.offsetWidth + pad > row.scrollLeft + row.clientWidth ? left + b.offsetWidth + pad - row.clientWidth : null;
+    if (to !== null) row.scrollTo({ left: Math.max(0, to), behavior: rm ? 'auto' : 'smooth' });
   }
 
   function frame(now: number): void {
@@ -212,8 +230,8 @@ export function initMontage(root: HTMLElement): void {
   segs.forEach((s, k) => s.addEventListener('click', () => pick(k, who)));
   roles.forEach((b) => b.addEventListener('click', () => {
     const r = b.dataset.role as Role;
-    if (r === 'comercial') pick(0, 0);
-    else if (r === 'operaciones') pick(0, 1);
+    const i = (ASKERS as readonly string[]).indexOf(r);
+    if (i >= 0) pick(0, i);
     else pick(r === 'ceo' ? 1 : 2, who);
   }));
   toggle.addEventListener('click', () => {

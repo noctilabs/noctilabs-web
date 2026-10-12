@@ -1,7 +1,7 @@
 ---
 // «Preguntá. Entendé. Actuá.» (spec 007 §3.B): reemplaza a «Toda la empresa puede preguntar» con el montaje animado de
 // `Home Montage.dc.html` (variante por defecto de la v4) y su sistema de tres etapas con progreso y pausa.
-// «Ver como» (de la variante «Interactivo») queda con los cuatro roles que protagonizan el montaje y salta a su acto.
+// «Ver como» (de la variante «Interactivo») tiene los siete roles de Producto; cada uno salta a su acto (los cinco que preguntan comparten «Preguntá»).
 // Sin escalado: el escenario se arma a tamaño real y, por debajo de 860 px de ancho, pasa a una columna (textos ≥ 12 px).
 // La línea de tiempo y el contrato del marcado están en src/scripts/montage.ts; el SSR deja cada acto en su estado final.
 // Tiempos reales del spec 010 (sin el 1,2× del diseño): cada acto termina quieto el tiempo de leerlo.
@@ -36,7 +36,7 @@ const CAUSE_GEO = [[0, 50], [50, 34.375], [84.375, 15.625]] as const;
 
 const NODES = ['200:r,800:d', '800:r,1400:d', '1400:r,1900:w,5400:ok', '5600:r,6300:d'];
 const PANES: [number, number | undefined][] = [[0, 3000], [3000, 6300], [6300, undefined]];
-const ROLES = ['ceo', 'comercial', 'operaciones', 'agentes'] as const;
+const ROLES = ['ceo', 'comercial', 'operaciones', 'finanzas', 'marketing', 'rrhh', 'agentes'] as const;
 const BOT = 'M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM2 14h2M20 14h2M9 13v2M15 13v2';
 ---
 <Container gap="L" class="mtg" aria-labelledby="mtg-title">

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { DUR, isOn, nextAct, resumeAdvances, stepAt } from '../src/scripts/montage';
+import { ASKERS, DUR, isOn, nextAct, resumeAdvances, stepAt } from '../src/scripts/montage';
 
 // Lógica pura del montaje del home (spec 010 §3.A y §3.C).
 
@@ -24,11 +24,14 @@ describe('isOn', () => {
 });
 
 describe('nextAct', () => {
-  test('avanza y, al volver al acto 0, alterna quién pregunta', () => {
+  test('avanza y, al volver al acto 0, pasa al siguiente que pregunta', () => {
     expect(nextAct(0, 0)).toEqual({ act: 1, who: 0 });
     expect(nextAct(1, 0)).toEqual({ act: 2, who: 0 });
     expect(nextAct(2, 0)).toEqual({ act: 0, who: 1 });
-    expect(nextAct(2, 1)).toEqual({ act: 0, who: 0 });
+    expect(nextAct(2, 1)).toEqual({ act: 0, who: 2 });
+  });
+  test('después del último que pregunta vuelve al primero', () => {
+    expect(nextAct(2, ASKERS.length - 1)).toEqual({ act: 0, who: 0 });
   });
 });
 
